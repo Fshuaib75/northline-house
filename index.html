@@ -2,24 +2,23 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<meta name="theme-color" content="#0E1B2C">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Northline House Agents</title>
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500;6..96,600&family=Figtree:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Figtree:wght@400;500;600;700&display=swap">
 <style>
 /* Layout: phone-first catalogue; one sticky order bar at the bottom opens the order sheet. */
 :root{
-  --bg:#f4f4f2; --surface:#ffffff; --ink:#16171b; --muted:#696b72; --line:#dedcd8;
-  --accent:#6e1f2b; --accent-soft:#f3e6e8; --good:#2f6b46;
-  --display:"Bodoni Moda","Didot","Bodoni 72",Georgia,serif;
+  --bg:#F7F5F0; --surface:#FFFFFF; --ink:#0E1B2C; --muted:#6B7480; --line:#E4E1DA; --navy:#0E1B2C; --sky:#4A9FD8; --accent:#1F5F8B; --accent-soft:#E6F1FA; --gold:#B8925A; --photo:#EEF2F6; --good:#1E7A55; --warn:#A8641A;
+  --display:"Fraunces",Georgia,"Times New Roman",serif;
   --ui:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
   color-scheme:light;
 }
-@media (prefers-color-scheme: dark){:root{
-  --bg:#121316; --surface:#1b1c20; --ink:#ecebe7; --muted:#9a9ca3; --line:#2c2d33;
-  --accent:#d98a96; --accent-soft:#3a2328; --good:#7cc49a; color-scheme:dark}}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){ --bg:#0B1520; --surface:#122030; --ink:#EAF0F6; --muted:#93A0AE; --line:#223246; --navy:#08111B; --sky:#4A9FD8; --accent:#7CC0EE; --accent-soft:#16334C; --gold:#D4B07A; --photo:#1A2A3C; --good:#6FCB9C; --warn:#E2A95C; color-scheme:dark }}
+:root[data-theme="dark"]{ --bg:#0B1520; --surface:#122030; --ink:#EAF0F6; --muted:#93A0AE; --line:#223246; --navy:#08111B; --sky:#4A9FD8; --accent:#7CC0EE; --accent-soft:#16334C; --gold:#D4B07A; --photo:#1A2A3C; --good:#6FCB9C; --warn:#E2A95C; color-scheme:dark }
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 html,body{margin:0}
@@ -33,6 +32,7 @@ header{padding-block:28px 14px;display:grid;gap:6px}
 .panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;min-width:0}
 .panel h2{margin:0 0 6px;font:600 13px var(--ui);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
 .panel p{margin:4px 0 0;font-size:14px;max-width:62ch}
+.shoplink code{display:block;font:13px ui-monospace,Menlo,monospace;background:var(--accent-soft);color:var(--accent);padding:8px 10px;border-radius:8px;margin:8px 0;word-break:break-all}
 .notice{margin-top:10px;padding:9px 12px;border-left:3px solid var(--accent);background:var(--bg,#fff);border-radius:6px;font-size:14px}
 .notice b{color:var(--accent)}
 .big{font-family:var(--display);font-size:26px;font-weight:600;color:var(--accent)}
@@ -94,13 +94,33 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .gbar b{font-family:var(--display);font-size:18px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .gbar a,.gbar button{color:#fff;background:transparent;border:1px solid rgba(255,255,255,.4);border-radius:999px;padding:7px 13px;font:600 13px var(--ui);text-decoration:none;cursor:pointer}
 .toast{position:fixed;left:50%;bottom:calc(76px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--accent);color:#fff;padding:9px 16px;border-radius:999px;font-weight:600;font-size:13px;z-index:10}
+.hero{background:var(--navy);color:#F7F5F0;box-shadow:0 0 0 100vmax var(--navy);clip-path:inset(0 -100vmax);border-bottom:3px solid var(--sky);padding-block:26px 20px!important;margin-bottom:6px}
+.hero .word{font-family:var(--ui);font-weight:600;letter-spacing:.34em;font-size:clamp(26px,5.4vw,42px);color:#fff}
+.hero .word i{font-style:normal;color:var(--sky)}
+.hero .sub{color:#9FB6CC}
+.panel{border-radius:14px;box-shadow:0 1px 2px rgba(14,27,44,.05)}
+.big{font-family:var(--display);color:var(--accent)}
+.notice{background:var(--accent-soft)!important;border-left-color:var(--sky)!important}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:8px 8px 12px;transition:box-shadow .15s,transform .15s}
+.card:hover{box-shadow:0 6px 20px rgba(14,27,44,.08)}
+.card>*:not(.ph){padding-inline:4px}
+.ph{border-radius:10px!important;background:var(--photo)!important}
+.mname{font-family:var(--display);font-weight:600;letter-spacing:-.005em}
+.price{color:var(--ink)}
+.earn{display:inline-block;background:var(--accent-soft);color:var(--accent);border-radius:999px;padding:2px 8px;font-size:12px;font-weight:600;vertical-align:1px}
+.add{background:var(--sky)!important;border-color:var(--sky)!important;color:#0E1B2C!important}
+.seg button[aria-pressed="true"]{background:var(--navy);color:#fff}
+.obar{background:var(--navy)!important;color:#fff!important;border-top:3px solid var(--sky)}
+.obar button span:last-child{background:var(--sky);color:#0E1B2C;padding:7px 14px;border-radius:999px}
+.toast{background:var(--navy)!important;border:1px solid var(--sky)}
+.sheet h3{font-family:var(--display)}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <header>
+  <header class="hero">
     <span class="sub">Agent catalogue · prices updated <span id="upd">2 Oct 2026</span></span>
-    <span class="word">NORTHLINE</span>
+    <span class="word">NORTH<i>LINE</i></span>
   </header>
 
   <section class="agent">
@@ -109,6 +129,12 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
       <label class="f" for="agentCode">Enter it once; it’s added to every order you send.
         <input id="agentCode" placeholder="e.g. AMINA-KD" autocomplete="off">
       </label>
+      <div class="shoplink" id="shopBox" hidden>
+        <h2 style="margin-top:14px">Your shop link</h2>
+        <p>Share it on your status, Instagram or with customers. They browse and order themselves, and every order through it is credited to you.</p>
+        <code id="shopUrl"></code>
+        <div class="acts"><button class="mini" id="shopCopy">Copy link</button><a class="mini" id="shopWa" target="_blank" rel="noopener">Share on WhatsApp</a></div>
+      </div>
     </div>
     <div class="panel">
       <h2>Your commission</h2>
@@ -204,7 +230,7 @@ function cardHtml(i){
       <input type="number" min="1" value="1" aria-label="Quantity">
       <button class="add">Add</button>
     </div>
-    <div class="acts"><button class="mini cap">Copy caption</button>${i.full?`<a class="mini" href="${esc(i.full)}" target="_blank" rel="noopener">Save photo</a>`:""}</div>
+    <div class="acts"><button class="mini cap">Copy caption</button><button class="mini shr">Copy shop link</button>${i.full?`<a class="mini" href="${esc(i.full)}" target="_blank" rel="noopener">Save photo</a>`:""}</div>
   </article>`;
 }
 function render(){
@@ -225,14 +251,22 @@ function copy(text, fallbackEl){
 function orderText(){
   const code=$("agentCode").value.trim();
   const lines=cart.map((c,n)=>`${n+1}. ${c.model} · ${c.colour||"—"}${c.size&&c.size!=="One size"?" · size "+c.size:""} · x${c.qty} · ${N(c.price*c.qty)} [${c.ref}${c.comm?" · earns "+N(c.comm)+(c.qty>1?" each":""):""}]`);
-  return ["NORTHLINE ORDER", `Agent: ${code}`, "", `Customer: ${$("cName").value.trim()}`, `Phone: ${$("cPhone").value.trim()}`, `Delivery: ${$("cAddr").value.trim()}`, $("cNote").value.trim()?`Note: ${$("cNote").value.trim()}`:"", "", ...lines, "", `Total: ${N(cart.reduce((s,c)=>s+c.price*c.qty,0))} (${cart.reduce((s,c)=>s+c.qty,0)} items)`].filter((x,i,a)=>!(x===""&&a[i-1]==="")).join("\n");
+  return ["NORTHLINE ORDER", `Agent: ${code}`, "", `Customer: ${$("cName").value.trim()}`, `Phone: ${$("cPhone").value.trim()}`, `Delivery: ${$("cAddr").value.trim()}`, $("cNote").value.trim()?`Note: ${$("cNote").value.trim()}`:"", "", ...lines, "", `Total: ${N(cart.reduce((s,c)=>s+c.price*c.qty,0))} (${((n)=>n+" item"+(n===1?"":"s"))(cart.reduce((s,c)=>s+c.qty,0))})`].filter((x,i,a)=>!(x===""&&a[i-1]==="")).join("\n");
 }
 function drawSheet(){
   $("lines").innerHTML = cart.length ? cart.map((c,n)=>`<div class="line"><img src="${esc(c.img||"")}" alt=""><div><b>${esc(c.model)}</b><small>${esc(c.colour||"")}${c.size!=="One size"?" · size "+esc(c.size):""} · x${c.qty}</small><small>${N(c.price*c.qty)}</small></div><button class="x" data-n="${n}" aria-label="Remove">✕</button></div>`).join("") : `<p class="hint">Your order is empty.</p>`;
   $("total").textContent=N(cart.reduce((s,c)=>s+c.price*c.qty,0));
 }
 $("agentCode").value=store.get("nl-agent","");
-$("agentCode").addEventListener("input",e=>store.set("nl-agent",e.target.value.trim()));
+$("agentCode").addEventListener("input",e=>{ store.set("nl-agent",e.target.value.trim()); shopBox(); });
+// personal shop link: shop/?a=CODE (and &i=REF for one style); orders from it carry the agent code
+const SHOP = location.origin + location.pathname.replace(/[^/]*$/,"") + "shop/";
+const code = () => $("agentCode").value.trim().replace(/[^A-Za-z0-9_-]/g,"").slice(0,24);
+const shopUrl = ref => SHOP + "?a=" + encodeURIComponent(code()) + (ref ? "&i=" + encodeURIComponent(ref) : "");
+function shopBox(){ const c=code(); $("shopBox").hidden=!c; if(!c) return; $("shopUrl").textContent=shopUrl();
+  $("shopWa").href="https://wa.me/?text="+encodeURIComponent("Shop Turkish shoes, bags and baby clothes from Northline House, delivered in Nigeria: "+shopUrl()); }
+$("shopCopy").onclick=()=>copy(shopUrl());
+shopBox();
 $("waShow").textContent="+"+WA;
 function tabs(){ ["M","B","BG"].forEach(g=>{ const has=ITEMS.some(i=>i.g===g); document.querySelector(`#gSeg [data-g="${g}"]`).hidden=!has; if(!has&&S.g===g){ S.g="W"; S.f.clear(); document.querySelectorAll("#gSeg button").forEach(x=>x.setAttribute("aria-pressed",x.dataset.g==="W")); } }); }
 tabs();
@@ -247,6 +281,10 @@ $("grid").addEventListener("click",e=>{
     store.set("nl-cart",cart); render(); toast(`Added ${i.model}${size!=="One size"?", size "+size:""}`);
   }
   if(e.target.closest(".ph")){ openGal(i.model+(i.colour?" · "+i.colour:""), (i.imgs&&i.imgs.length)?i.imgs:[i.full||i.img]); return; }
+  if(e.target.closest(".shr")){
+    if(!code()){ toast("Enter your agent code first"); $("agentCode").focus(); return; }
+    copy(`${i.model}${i.colour?" · "+i.colour:""} · ${N(i.price)}\nOrder here: ${shopUrl(i.ref)}`); return;
+  }
   if(e.target.closest(".cap")){
     copy(`${i.model}${i.colour?" · "+i.colour:""}\n${i.desc?i.desc[0].toUpperCase()+i.desc.slice(1)+"\n":""}${N(i.price)}\nSizes ${sizesOf(i)[0]}${sizesOf(i).length>1?"–"+sizesOf(i).at(-1):""} · DM to order`);
   }
@@ -272,7 +310,7 @@ function check(){
 $("send").addEventListener("click",e=>{ if(!cart.length||!check()){ e.preventDefault(); return; } e.currentTarget.href="https://wa.me/"+WA+"?text="+encodeURIComponent(orderText()); });
 $("copyOrder").onclick=()=>{ if(!cart.length) return; copy(orderText(), $("orderText")); };
 chips(); render();
-const BUILD="20261002121225";
+const BUILD="20261002122635";
 // commission rule switch (Nigeria time). Before the date: today's prices + a notice. From the date: prices.json "next".
 let SWITCH="2026-10-16";
 const todayNG = () => new Date(Date.now()+3600e3).toISOString().slice(0,10);
