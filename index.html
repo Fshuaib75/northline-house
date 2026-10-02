@@ -142,6 +142,11 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .bchip span{color:var(--muted);font-weight:500;margin-left:6px;font-variant-numeric:tabular-nums}
 .bchip[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
 .bchip[aria-pressed="true"] span{color:#9FB6CC}
+.bchip.drop{border-color:var(--gold);color:var(--gold-ink)}
+.bchip.drop[aria-pressed="true"]{background:var(--gold);border-color:var(--gold);color:#0E1B2C}
+.bchip.drop[aria-pressed="true"] span{color:#0E1B2C}
+.dropbar{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;background:var(--surface);border:1px solid var(--gold);border-radius:14px;padding:10px 14px}
+.dropbar b{font-family:var(--display);font-size:18px}
 .bhead{grid-column:1/-1;margin:12px 0 -4px;padding-bottom:6px;border-bottom:1px solid var(--line);font:600 22px/1.2 var(--display);display:flex;align-items:baseline;gap:10px}
 .bhead span{font:500 13px var(--ui);color:var(--muted)}
 </style>
@@ -289,7 +294,7 @@ function chips(){
 function list(){
   const q=S.q.trim().toLowerCase();
   const byK={}; S.f.forEach(x=>{const [k,v]=x.split(":"); (byK[k]=byK[k]||new Set()).add(v);});
-  const out = ITEMS.filter(i=>i.g===S.g && Object.entries(byK).every(([k,set])=>set.has(i[k])) && (!q || (i.brand+" "+i.model+" "+i.colour+" "+(i.fam||"")+" "+i.desc+" "+i.kind).toLowerCase().includes(q)));
+  const out = ITEMS.filter(i=>(!S.drop||(DROP&&DROP.refs.includes(i.ref))) && i.g===S.g && Object.entries(byK).every(([k,set])=>set.has(i[k])) && (!q || (i.brand+" "+i.model+" "+i.colour+" "+(i.fam||"")+" "+i.desc+" "+i.kind).toLowerCase().includes(q)));
   return sortItems(out);
 }
 // Recommended: styles in the price range customers buy most (₦20k–50k) and with several photos come first; then brands and
@@ -320,19 +325,24 @@ function cardHtml(i){
   </article>`;
 }
 // ---------- shop by brand: one row of brands with counts, single choice; Brand A–Z sort adds a heading per brand ----------
+let DROP=null;   // {week, refs}: this week's drop, published from the owner's book (else the newest additions)
 const selBrand = () => { const x=[...S.f].find(k=>k.startsWith("brand:")); return x?x.slice(6):""; };
 function brandRow(pool){ const n=new Map(); pool.forEach(i=>n.set(i.brand,(n.get(i.brand)||0)+1)); const sel=selBrand();
-  $("brands").hidden = n.size<2;
-  $("brands").innerHTML = `<button class="bchip" data-b="" aria-pressed="${!sel}">All brands<span>${pool.length}</span></button>`
+  const dn = DROP ? pool.filter(i=>DROP.refs.includes(i.ref)).length : 0;
+  $("brands").hidden = n.size<2 && !dn;
+  $("brands").innerHTML = (dn?`<button class="bchip drop" data-b="__drop" aria-pressed="${!!S.drop}">✦ ${esc(DROP.label)}<span>${dn}</span></button>`:"")
+    + `<button class="bchip" data-b="" aria-pressed="${!sel&&!S.drop}">All brands<span>${pool.length}</span></button>`
     + [...n].sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0])).map(([b,c])=>`<button class="bchip" data-b="${esc(b)}" aria-pressed="${sel===b}">${esc(b)}<span>${c}</span></button>`).join(""); }
 function setBrand(b){ [...S.f].filter(k=>k.startsWith("brand:")).forEach(k=>S.f.delete(k)); if(b) S.f.add("brand:"+b); chips(); render(); if(typeof shopBox==="function") shopBox(); }
-$("brands").addEventListener("click",e=>{ const b=e.target.closest(".bchip"); if(!b) return; const v=b.dataset.b; setBrand(v===selBrand()?"":v); if(v) track("brand/"+v, v); });
+$("brands").addEventListener("click",e=>{ const b=e.target.closest(".bchip"); if(!b) return; const v=b.dataset.b;
+  if(v==="__drop"){ S.drop=!S.drop; [...S.f].filter(k=>k.startsWith("brand:")).forEach(k=>S.f.delete(k)); chips(); render(); if(S.drop) track("drop/open","This week"); return; }
+  S.drop=false; setBrand(v===selBrand()?"":v); if(v) track("brand/"+v, v); });
 function brandParam(){ const b=new URLSearchParams(location.search).get("b"); if(!b||brandParam.done) return; const hit=ITEMS.find(i=>i.brand.toLowerCase()===b.toLowerCase()); if(!hit) return; brandParam.done=true;
   if(!ITEMS.some(i=>i.g===S.g&&i.brand===hit.brand)){ S.g=hit.g; document.querySelectorAll("#gSeg button").forEach(x=>x.setAttribute("aria-pressed",x.dataset.g===S.g)); }
   setBrand(hit.brand); }
 function render(){
   const l=list();
-  let last=null; $("grid").innerHTML=l.map(i=>{ let h=""; if(S.sort==="brand"&&i.brand!==last){ last=i.brand; h=`<h3 class="bhead">${esc(i.brand)}<span>${l.filter(x=>x.brand===i.brand).length} styles</span></h3>`; } return h+cardHtml(i); }).join("");
+  let last=null; $("grid").innerHTML=(S.drop&&DROP?`<div class="dropbar"><span><b>${esc(DROP.label)}</b> · ${l.length} styles</span>${typeof dropImages==="function"?`<button class="mini st" id="dropAll">Status images for all</button>`:""}</div>`:"")+l.map(i=>{ let h=""; if(S.sort==="brand"&&i.brand!==last){ last=i.brand; h=`<h3 class="bhead">${esc(i.brand)}<span>${l.filter(x=>x.brand===i.brand).length} styles</span></h3>`; } return h+cardHtml(i); }).join("");
   $("empty").hidden=l.length>0;
   const total=cart.reduce((s,c)=>s+c.price*c.qty,0), pairs=cart.reduce((s,c)=>s+c.qty,0);
   $("obar").hidden=!cart.length;
@@ -492,6 +502,14 @@ $("stShare").onclick=async()=>{ const i=ST.i; if(!ST.blob){ toast("Take a screen
   else { $("stSave").click(); toast("Image saved. Caption copied."); } };
 $("stClose").onclick=()=>{$("stSheet").hidden=true;};
 $("stSheet").addEventListener("click",e=>{ if(e.target.id==="stSheet") $("stSheet").hidden=true; });
+async function dropImages(){ const list=list_()||[]; if(!list.length) return; const files=[]; const btn=$("dropAll"); btn.disabled=true;
+  for(let n=0;n<list.length;n++){ btn.textContent=`Making ${n+1} of ${list.length}…`; ST.i=list[n]; ST.fmt="story"; ST.img=await stPhoto(list[n]); await stDraw(); if(ST.blob) files.push(new File([ST.blob],`northline-${list[n].ref}.png`,{type:"image/png"})); }
+  btn.disabled=false; btn.textContent="Status images for all"; track("drop/images", files.length+" images");
+  const cap=list.map(i=>stCaption(i)).join("\n\n"); try{ await navigator.clipboard.writeText(cap); }catch(e){}
+  if(files.length && navigator.canShare && navigator.canShare({files})){ try{ await navigator.share({files, text:"This week at Northline"}); }catch(e){} }
+  else { files.forEach((f,k)=>setTimeout(()=>{ const a=document.createElement("a"); a.href=URL.createObjectURL(f); a.download=f.name; a.click(); },k*400)); toast(`${files.length} images saved. Captions copied.`); } }
+const list_ = () => list();
+$("grid").addEventListener("click",e=>{ if(e.target.id==="dropAll") dropImages(); });
 // </status>
 $("openSheet").onclick=()=>{drawSheet();$("sheet").hidden=false;};
 $("closeSheet").onclick=()=>{$("sheet").hidden=true;};
@@ -503,7 +521,7 @@ function check(){
 $("send").addEventListener("click",e=>{ if(!cart.length||!check()){ e.preventDefault(); return; } e.currentTarget.href="https://wa.me/"+WA+"?text="+encodeURIComponent(orderText()); track("order/sent", cart.reduce((s,c)=>s+c.qty,0)+" items"); });
 $("copyOrder").onclick=()=>{ if(!cart.length) return; copy(orderText(), $("orderText")); };
 chips(); render(); brandParam();
-const BUILD="20261002134436";
+const BUILD="20261002135707";
 // commission rule switch (Nigeria time). Before the date: today's prices + a notice. From the date: prices.json "next".
 let SWITCH="2026-10-16";
 const todayNG = () => new Date(Date.now()+3600e3).toISOString().slice(0,10);
@@ -514,7 +532,10 @@ function commText(){ const on = SWITCH && todayNG()>=SWITCH;
 commText();
 const fresh = f => fetch(f+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.ok?r.json():null).catch(()=>null);
 fresh("build.json").then(j=>{ if(j&&j.build&&j.build!==BUILD) $("stale").hidden=false; });
-Promise.all([fresh("products.json"), fresh("prices.json")]).then(([added,j])=>{
+Promise.all([fresh("products.json"), fresh("prices.json"), fresh("drop.json")]).then(([added,j,drop])=>{
+  const weekAgo=new Date(Date.now()-7*864e5).toISOString().slice(0,10);
+  if(drop&&Array.isArray(drop.refs)&&drop.refs.length&&drop.week>=weekAgo) DROP={label:"This week",refs:drop.refs};
+  else if(Array.isArray(added)){ const nw=added.filter(a=>a&&a.added&&a.added>=weekAgo).map(a=>a.ref); if(nw.length) DROP={label:"New this week",refs:nw}; }
   if(Array.isArray(added) && added.length){
     const known=new Set(ALL.map(i=>i.ref));
     ALL = ALL.concat(added.filter(a=>a&&a.ref&&!known.has(a.ref)).map(a=>({...a, desc:a.desc||"", colour:a.colour||"", fam:a.fam||"", heel:a.heel||"", full:a.img})));
