@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Add to Northline</title>
+<link rel="stylesheet" href="popup.css">
+</head>
+<body>
+<header class="top">
+  <span class="word">NORTH<i>LINE</i></span>
+  <span class="tag">Add to review inbox</span>
+  <a href="options.html" target="_blank" class="gear" title="Settings" aria-label="Settings">⚙</a>
+</header>
+
+<main>
+  <p class="status" id="status" aria-live="polite">Reading this page…</p>
+
+  <section id="form" hidden>
+    <div class="photos" id="photos" aria-label="Photos: tap to include or leave out; the first one you keep is the main photo"></div>
+    <p class="hint" id="photoHint"></p>
+
+    <div class="grid">
+      <label class="wide">Model name <small>(English, as customers will see it)</small><input id="model" autocomplete="off"></label>
+      <label>Brand<input id="brand" autocomplete="off"></label>
+      <label>Category<select id="cat"></select></label>
+      <label>For<select id="who"></select></label>
+      <label>Type<select id="kind"></select></label>
+      <label id="heelBox">Heel<select id="heel"></select></label>
+      <label>Colour<input id="colour" autocomplete="off"></label>
+      <label>Colour group<select id="fam"></select></label>
+      <label class="wide">Sizes in stock <small>(comma between sizes)</small><input id="sizes" autocomplete="off"></label>
+      <label class="wide">Short description <small>(optional)</small><input id="desc" autocomplete="off" maxlength="120"></label>
+      <label>Price on the site (₺)<input id="tl" inputmode="decimal" autocomplete="off"></label>
+      <label>Weight packed (kg) <small>optional</small><input id="kg" inputmode="decimal" autocomplete="off"></label>
+      <label class="wide">Reference <small>(unique code)</small><input id="ref" autocomplete="off"></label>
+    </div>
+
+    <div class="est" id="est" hidden></div>
+    <p class="warn" id="dup" hidden></p>
+    <p class="err" id="err" hidden></p>
+    <button class="primary" id="add">Add to list</button>
+  </section>
+
+  <section class="queue" id="queueBox" hidden>
+    <h2>Ready to send <span id="qCount"></span></h2>
+    <div id="queue"></div>
+    <button class="send" id="send">Send to review inbox</button>
+    <div class="row"><button class="mini" id="download">Download findings</button><button class="mini" id="clear">Clear list</button></div>
+    <p class="hint" id="sendHint">Sealed so only your book can open it. Nothing goes live until you approve it there.</p>
+  </section>
+</main>
+<script src="guess.js"></script>
+<script src="seal.js"></script>
+<script src="popup.js"></script>
+</body>
+</html>
