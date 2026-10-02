@@ -136,6 +136,14 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .card .acts{display:grid;grid-template-columns:1fr 1fr;gap:6px}
 .card .acts .mini{text-align:center;padding:6px 4px;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .card .acts .st{background:var(--navy);border-color:var(--navy);color:#fff}
+.brands{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.brands::-webkit-scrollbar{display:none}
+.bchip{flex:0 0 auto;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:600 13.5px var(--ui);padding:7px 13px;border-radius:999px;white-space:nowrap;cursor:pointer}
+.bchip span{color:var(--muted);font-weight:500;margin-left:6px;font-variant-numeric:tabular-nums}
+.bchip[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
+.bchip[aria-pressed="true"] span{color:#9FB6CC}
+.bhead{grid-column:1/-1;margin:12px 0 -4px;padding-bottom:6px;border-bottom:1px solid var(--line);font:600 22px/1.2 var(--display);display:flex;align-items:baseline;gap:10px}
+.bhead span{font:500 13px var(--ui);color:var(--muted)}
 </style>
 </head>
 <body>
@@ -152,7 +160,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
         <input id="agentCode" placeholder="e.g. AMINA-KD" autocomplete="off">
       </label>
       <div class="shoplink" id="shopBox" hidden>
-        <h2 style="margin-top:14px">Your shop link</h2>
+        <h2 style="margin-top:14px">Your shop link<span id="shopFor" style="text-transform:none;letter-spacing:0"></span></h2>
         <p>Share it on your status, Instagram or with customers. They browse and order themselves, and every order through it is credited to you.</p>
         <code id="shopUrl"></code>
         <div class="acts"><button class="mini" id="shopCopy">Copy link</button><a class="mini" id="shopWa" target="_blank" rel="noopener">Share on WhatsApp</a></div>
@@ -178,6 +186,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
       <input type="search" id="q" placeholder="Search style or colour">
       <select id="sort" aria-label="Sort"><option value="rec">Recommended</option><option value="low">Price: low to high</option><option value="high">Price: high to low</option><option value="brand">Brand A–Z</option></select>
     </div>
+    <div class="row brands" id="brands" role="group" aria-label="Brands"></div>
     <div class="row" id="chips"></div>
     <div class="row more" id="more" hidden></div>
   </div>
@@ -268,7 +277,8 @@ const MAIN=new Set(["for","kind","band"]);
 function chips(){
   const pool = ITEMS.filter(i=>i.g===S.g);
   const brands=[...new Set(pool.map(i=>i.brand))].sort();
-  const all=[...FILTERS.filter(f=>f[0]!=="brand"), ...(brands.length>1?brands.map(b=>["brand",b,b]):[])].filter(([k,v])=>pool.some(i=>i[k]===v));
+  const all=FILTERS.filter(f=>f[0]!=="brand").filter(([k,v])=>pool.some(i=>i[k]===v));   // brands have their own row
+  brandRow(pool);
   const html=list=>{ let last=""; return list.map(([k,v,l])=>{ const g=k===last?"":`<span class="glabel">${GROUP[k]}</span>`; last=k; return g+`<button class="chip" data-k="${k}" data-v="${esc(v)}" aria-pressed="${S.f.has(k+":"+v)}">${esc(l)}</button>`; }).join(""); };
   const extra=all.filter(f=>!MAIN.has(f[0])), nOn=[...S.f].filter(x=>!MAIN.has(x.split(":")[0])).length;
   $("chips").innerHTML = html(all.filter(f=>MAIN.has(f[0])))
@@ -309,9 +319,20 @@ function cardHtml(i){
     <div class="acts"><button class="mini cap" title="Copy caption">Caption</button><button class="mini shr" title="Copy your shop link for this style">Link</button><button class="mini st" title="Make a status or Instagram image">Status</button>${i.full?`<a class="mini" href="${esc(i.full)}" target="_blank" rel="noopener" title="Save photo">Photo</a>`:""}</div>
   </article>`;
 }
+// ---------- shop by brand: one row of brands with counts, single choice; Brand A–Z sort adds a heading per brand ----------
+const selBrand = () => { const x=[...S.f].find(k=>k.startsWith("brand:")); return x?x.slice(6):""; };
+function brandRow(pool){ const n=new Map(); pool.forEach(i=>n.set(i.brand,(n.get(i.brand)||0)+1)); const sel=selBrand();
+  $("brands").hidden = n.size<2;
+  $("brands").innerHTML = `<button class="bchip" data-b="" aria-pressed="${!sel}">All brands<span>${pool.length}</span></button>`
+    + [...n].sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0])).map(([b,c])=>`<button class="bchip" data-b="${esc(b)}" aria-pressed="${sel===b}">${esc(b)}<span>${c}</span></button>`).join(""); }
+function setBrand(b){ [...S.f].filter(k=>k.startsWith("brand:")).forEach(k=>S.f.delete(k)); if(b) S.f.add("brand:"+b); chips(); render(); if(typeof shopBox==="function") shopBox(); }
+$("brands").addEventListener("click",e=>{ const b=e.target.closest(".bchip"); if(!b) return; const v=b.dataset.b; setBrand(v===selBrand()?"":v); if(v) track("brand/"+v, v); });
+function brandParam(){ const b=new URLSearchParams(location.search).get("b"); if(!b||brandParam.done) return; const hit=ITEMS.find(i=>i.brand.toLowerCase()===b.toLowerCase()); if(!hit) return; brandParam.done=true;
+  if(!ITEMS.some(i=>i.g===S.g&&i.brand===hit.brand)){ S.g=hit.g; document.querySelectorAll("#gSeg button").forEach(x=>x.setAttribute("aria-pressed",x.dataset.g===S.g)); }
+  setBrand(hit.brand); }
 function render(){
   const l=list();
-  $("grid").innerHTML=l.map(cardHtml).join("");
+  let last=null; $("grid").innerHTML=l.map(i=>{ let h=""; if(S.sort==="brand"&&i.brand!==last){ last=i.brand; h=`<h3 class="bhead">${esc(i.brand)}<span>${l.filter(x=>x.brand===i.brand).length} styles</span></h3>`; } return h+cardHtml(i); }).join("");
   $("empty").hidden=l.length>0;
   const total=cart.reduce((s,c)=>s+c.price*c.qty,0), pairs=cart.reduce((s,c)=>s+c.qty,0);
   $("obar").hidden=!cart.length;
@@ -338,8 +359,8 @@ $("agentCode").addEventListener("input",e=>{ store.set("nl-agent",e.target.value
 // personal shop link: shop/?a=CODE (and &i=REF for one style); orders from it carry the agent code
 const SHOP = location.origin + location.pathname.replace(/[^/]*$/,"") + "shop/";
 const code = () => $("agentCode").value.trim().replace(/[^A-Za-z0-9_-]/g,"").slice(0,24);
-const shopUrl = ref => SHOP + "?a=" + encodeURIComponent(code()) + (ref ? "&i=" + encodeURIComponent(ref) : "");
-function shopBox(){ const c=code(); $("shopBox").hidden=!c; if(!c) return; $("shopUrl").textContent=shopUrl();
+const shopUrl = ref => SHOP + "?a=" + encodeURIComponent(code()) + (ref ? "&i=" + encodeURIComponent(ref) : (selBrand() ? "&b=" + encodeURIComponent(selBrand()) : ""));
+function shopBox(){ const c=code(); $("shopBox").hidden=!c; if(!c) return; $("shopUrl").textContent=shopUrl(); $("shopFor").textContent=selBrand()?` (${selBrand()} only)`:"";
   $("shopWa").href="https://wa.me/?text="+encodeURIComponent("Shop Turkish shoes, bags and baby clothes from Northline House, delivered in Nigeria: "+shopUrl()); }
 $("shopCopy").onclick=()=>copy(shopUrl());
 shopBox();
@@ -481,8 +502,8 @@ function check(){
 }
 $("send").addEventListener("click",e=>{ if(!cart.length||!check()){ e.preventDefault(); return; } e.currentTarget.href="https://wa.me/"+WA+"?text="+encodeURIComponent(orderText()); track("order/sent", cart.reduce((s,c)=>s+c.qty,0)+" items"); });
 $("copyOrder").onclick=()=>{ if(!cart.length) return; copy(orderText(), $("orderText")); };
-chips(); render();
-const BUILD="20261002132903";
+chips(); render(); brandParam();
+const BUILD="20261002134436";
 // commission rule switch (Nigeria time). Before the date: today's prices + a notice. From the date: prices.json "next".
 let SWITCH="2026-10-16";
 const todayNG = () => new Date(Date.now()+3600e3).toISOString().slice(0,10);
@@ -504,7 +525,7 @@ Promise.all([fresh("products.json"), fresh("prices.json")]).then(([added,j])=>{
   ITEMS = ALL.filter(i=>P[i.ref]).map(i=>({...i, price:P[i.ref][0], comm:P[i.ref][1], band:band(P[i.ref][0])}));
   cart = store.get("nl-cart",[]).filter(c=>ITEMS.some(i=>i.ref===c.ref)).map(c=>{ const i=ITEMS.find(x=>x.ref===c.ref); return {...c, price:i.price, comm:i.comm, g:i.g}; }); store.set("nl-cart",cart);
   try{ $("upd").textContent=new Date(j.updated).toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"}); }catch(e){}
-  tabs(); chips(); render();
+  tabs(); chips(); render(); brandParam();
 });
 </script>
 <script data-goatcounter="https://northlinehouse.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
