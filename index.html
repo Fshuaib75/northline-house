@@ -12,13 +12,13 @@
 <style>
 /* Layout: phone-first catalogue; one sticky order bar at the bottom opens the order sheet. */
 :root{
-  --bg:#F7F5F0; --surface:#FFFFFF; --ink:#0E1B2C; --muted:#6B7480; --line:#E4E1DA; --navy:#0E1B2C; --sky:#4A9FD8; --accent:#1F5F8B; --accent-soft:#E6F1FA; --gold:#B8925A; --photo:#EEF2F6; --good:#1E7A55; --warn:#A8641A;
+  --bg:#F7F5F0; --surface:#FFFFFF; --ink:#0E1B2C; --muted:#5F6873; --line:#E4E1DA; --navy:#0E1B2C; --sky:#4A9FD8; --accent:#1F5F8B; --accent-soft:#E6F1FA; --gold:#B8925A; --gold-ink:#8A6A35; --photo:#EEF2F6; --good:#1E7A55; --warn:#95560F;
   --display:"Fraunces",Georgia,"Times New Roman",serif;
   --ui:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
   color-scheme:light;
 }
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){ --bg:#0B1520; --surface:#122030; --ink:#EAF0F6; --muted:#93A0AE; --line:#223246; --navy:#08111B; --sky:#4A9FD8; --accent:#7CC0EE; --accent-soft:#16334C; --gold:#D4B07A; --photo:#1A2A3C; --good:#6FCB9C; --warn:#E2A95C; color-scheme:dark }}
-:root[data-theme="dark"]{ --bg:#0B1520; --surface:#122030; --ink:#EAF0F6; --muted:#93A0AE; --line:#223246; --navy:#08111B; --sky:#4A9FD8; --accent:#7CC0EE; --accent-soft:#16334C; --gold:#D4B07A; --photo:#1A2A3C; --good:#6FCB9C; --warn:#E2A95C; color-scheme:dark }
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){ --bg:#0B1520; --surface:#122030; --ink:#EAF0F6; --muted:#93A0AE; --line:#223246; --navy:#08111B; --sky:#4A9FD8; --accent:#7CC0EE; --accent-soft:#16334C; --gold:#D4B07A; --gold-ink:#D4B07A; --photo:#1A2A3C; --good:#6FCB9C; --warn:#E2A95C; color-scheme:dark }}
+:root[data-theme="dark"]{ --bg:#0B1520; --surface:#122030; --ink:#EAF0F6; --muted:#93A0AE; --line:#223246; --navy:#08111B; --sky:#4A9FD8; --accent:#7CC0EE; --accent-soft:#16334C; --gold:#D4B07A; --gold-ink:#D4B07A; --photo:#1A2A3C; --good:#6FCB9C; --warn:#E2A95C; color-scheme:dark }
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 html,body{margin:0}
@@ -428,7 +428,7 @@ function wrap(x,t,maxW,maxLines){ const words=String(t).split(/\s+/), out=[]; le
 const sizeLine=i=>{ const z=sizesOf(i); return i.g==="BG"?"":i.g==="B"?`Ages ${z[0]} to ${z.at(-1)}`:`Sizes ${z[0]}${z.length>1?"–"+z.at(-1):""}`; };
 async function stDraw(){ const i=ST.i, post=ST.fmt==="post", W=1080, H=post?1080:1920, cv=$("stCanvas"); cv.width=W; cv.height=H; const x=cv.getContext("2d"), showP=$("stPrice").checked;
   try{ await Promise.all(["600 76px Fraunces","700 120px Figtree","600 30px Figtree","500 40px Figtree"].map(f=>document.fonts.load(f))); }catch(e){}
-  const NAVY="#0E1B2C", SKY="#4A9FD8", BG="#F7F5F0", GOLD="#B8925A", MUTED="#6B7480";
+  const NAVY="#0E1B2C", SKY="#4A9FD8", BG="#F7F5F0", GOLD="#8A6A35", MUTED="#5F6873";
   x.fillStyle=BG; x.fillRect(0,0,W,H); x.textBaseline="alphabetic"; x.textAlign="left";
   if(!post){
     x.fillStyle=NAVY; x.fillRect(0,0,W,200); x.fillStyle=SKY; x.fillRect(0,200,W,8);
@@ -477,7 +477,7 @@ function check(){
 $("send").addEventListener("click",e=>{ if(!cart.length||!check()){ e.preventDefault(); return; } e.currentTarget.href="https://wa.me/"+WA+"?text="+encodeURIComponent(orderText()); });
 $("copyOrder").onclick=()=>{ if(!cart.length) return; copy(orderText(), $("orderText")); };
 chips(); render();
-const BUILD="20261002130053";
+const BUILD="20261002130312";
 // commission rule switch (Nigeria time). Before the date: today's prices + a notice. From the date: prices.json "next".
 let SWITCH="2026-10-16";
 const todayNG = () => new Date(Date.now()+3600e3).toISOString().slice(0,10);
