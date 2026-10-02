@@ -117,6 +117,25 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .picker{grid-template-columns:minmax(0,1fr) 52px!important}
 .picker .add{grid-column:1/-1;padding:9px 12px}
 .picker input{text-align:center}
+#sort{flex:0 0 auto;width:auto;padding:8px 10px;border-radius:999px;font-weight:600;font-size:13.5px}
+.more{padding-top:2px}
+.chip.morebtn{border-style:dashed;font-weight:600}
+.chip.clr{color:var(--muted)}
+.sgb{border:0;background:none;padding:2px 0;color:var(--accent);font:600 12.5px var(--ui);text-decoration:underline;text-underline-offset:3px;justify-self:start;cursor:pointer}
+.sg table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.sg th,.sg td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);font-size:14.5px}
+.sg th{font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.sg tr.hit td{background:var(--accent-soft);color:var(--accent);font-weight:700}
+.sg ol{margin:0;padding-left:20px;display:grid;gap:4px;font-size:14px}
+.sg .src{font-size:12px;color:var(--muted)}
+.sg .res{font-weight:700;font-size:16px;color:var(--accent);min-height:1.4em}
+.sg .find{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:end}
+#stCanvas{display:block;max-width:100%;max-height:56vh;height:auto;margin:0 auto;border-radius:12px;box-shadow:0 6px 24px rgba(14,27,44,.18);background:var(--photo)}
+.ck{display:flex;gap:8px;align-items:center;font-size:14px}
+.ck input{width:auto}
+.card .acts{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.card .acts .mini{text-align:center;padding:6px 4px;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card .acts .st{background:var(--navy);border-color:var(--navy);color:#fff}
 </style>
 </head>
 <body>
@@ -157,8 +176,10 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
         <button data-g="BG" aria-pressed="false">Bags</button>
       </div>
       <input type="search" id="q" placeholder="Search style or colour">
+      <select id="sort" aria-label="Sort"><option value="rec">Recommended</option><option value="low">Price: low to high</option><option value="high">Price: high to low</option><option value="brand">Brand A–Z</option></select>
     </div>
     <div class="row" id="chips"></div>
+    <div class="row more" id="more" hidden></div>
   </div>
 
   <main class="grid" id="grid"></main>
@@ -175,6 +196,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
     <label class="f" for="cName">Customer name<input id="cName" autocomplete="off"></label>
     <label class="f" for="cPhone">Customer phone<input id="cPhone" inputmode="tel" autocomplete="off"></label>
     <label class="f" for="cAddr">Delivery address and city<textarea id="cAddr"></textarea></label>
+    <label class="f" for="cFoot">Foot length in cm (optional, helps us check the size)<input id="cFoot" inputmode="decimal" placeholder="e.g. 24.5"></label>
     <label class="f" for="cNote">Note (optional)<input id="cNote"></label>
     <div class="err" id="err" hidden></div>
     <a class="send" id="send" href="#" target="_blank" rel="noopener">Send order to Northline on WhatsApp</a>
@@ -183,6 +205,31 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
     <textarea id="orderText" hidden readonly aria-label="Order text"></textarea>
   </div>
 </div>
+<div class="sheet" id="sgSheet" hidden>
+  <div class="in sg" role="dialog" aria-modal="true" aria-labelledby="sgTitle">
+    <div class="row" style="justify-content:space-between"><h3 id="sgTitle">Size guide</h3><button class="x" id="sgClose" aria-label="Close">✕</button></div>
+    <ol id="sgHow"></ol>
+    <div class="find"><label class="f" for="sgIn"><span id="sgInLabel">Foot length (cm)</span><input id="sgIn" inputmode="decimal" placeholder="e.g. 24.5"></label><button class="mini" id="sgUse" hidden>Choose this size</button></div>
+    <div class="res" id="sgRes" aria-live="polite"></div>
+    <table><thead id="sgHead"></thead><tbody id="sgBody"></tbody></table>
+    <p class="src" id="sgSrc"></p>
+    <p class="hint">Sizes can’t be exchanged. If you’re unsure, put your foot length in cm on the order and Northline will double-check before you pay.</p>
+  </div>
+</div>
+<!--status-->
+<div class="sheet" id="stSheet" hidden>
+  <div class="in" role="dialog" aria-modal="true" aria-labelledby="stTitle">
+    <div class="row" style="justify-content:space-between"><h3 id="stTitle">Status image</h3><button class="x" id="stClose" aria-label="Close">✕</button></div>
+    <div class="row"><div class="seg" role="group" aria-label="Format" id="stFmt"><button data-f="story" aria-pressed="true">Status / story</button><button data-f="post" aria-pressed="false">Instagram post</button></div>
+    <label class="ck"><input type="checkbox" id="stPrice" checked> Show price</label></div>
+    <canvas id="stCanvas" width="1080" height="1920" aria-label="Preview of the image"></canvas>
+    <p class="hint" id="stMsg"></p>
+    <button class="send" id="stShare" style="border:0;cursor:pointer">Share image</button>
+    <a class="mini" id="stSave" download="northline.png" style="justify-self:start">Save image</a>
+    <p class="hint">On most Android phones “Share image” opens WhatsApp or Instagram directly. The caption, with your shop link, is copied at the same time: paste it on your status.</p>
+  </div>
+</div>
+<!--/status-->
 <div class="gal" id="gal" hidden role="dialog" aria-modal="true" aria-label="Photos">
   <div class="gbar top"><b id="gtitle"></b><button id="gclose">✕ Close</button></div>
   <div class="gtrack" id="gtrack"></div>
@@ -199,9 +246,10 @@ const WA = "2348101073068";
 const SIZES = {W:["36","37","38","39","40","41"], M:["40","41","42","43","44","45"], B:["0-3m","3-6m","6-9m","9-12m","12-18m","18-24m","2-3y","3-4y"], BG:["One size"]};
 const sizesOf = i => (i.sizes&&i.sizes.length) ? i.sizes : SIZES[i.g]||["One size"];
 const unit = (n,g) => (g==="B"||g==="BG") ? `${n} piece${n===1?"":"s"}` : `${n} pair${n===1?"":"s"}`;
-const S = {g:"W", q:"", f:new Set()};
+const S = {g:"W", q:"", f:new Set(), sort:"rec", more:false};
 let cart = [];
 const store = {get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}}, set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+S.sort = ["rec","low","high","brand"].includes(store.get("nl-sort","rec")) ? store.get("nl-sort","rec") : "rec";
 cart = store.get("nl-cart",[]).filter(c=>ITEMS.some(i=>i.ref===c.ref));
 const $ = id=>document.getElementById(id);
 const N = n=>"₦"+Math.round(n).toLocaleString("en-NG");
@@ -212,28 +260,49 @@ let FILTERS = [["for","Women","For women"],["for","Men","For men"],["for","Girl"
   ["band","₦30k and under","₦30k and under"],["band","₦30k–50k","₦30k–50k"],["band","₦50k–80k","₦50k–80k"],["band","₦80k+","₦80k+"],
   ...FAM_ORDER.map(f=>["fam",f,f]), ...(BRANDS.length>1?BRANDS.map(b=>["brand",b,b]):[])];
 const GROUP={for:"For",kind:"Type",heel:"Heel",band:"Price",fam:"Colour",brand:"Brand"};
+const MAIN=new Set(["for","kind","band"]);
 function chips(){
   const pool = ITEMS.filter(i=>i.g===S.g);
-  const brands=[...new Set(pool.map(i=>i.brand))].sort(), all=[...FILTERS.filter(f=>f[0]!=="brand"), ...(brands.length>1?brands.map(b=>["brand",b,b]):[])];
-  let last=""; $("chips").innerHTML = all.filter(([k,v])=>pool.some(i=>i[k]===v)).map(([k,v,l])=>{ const g=k===last?"":`<span class="glabel">${GROUP[k]}</span>`; last=k; return g+`<button class="chip" data-k="${k}" data-v="${v}" aria-pressed="${S.f.has(k+":"+v)}">${l}</button>`; }).join("");
+  const brands=[...new Set(pool.map(i=>i.brand))].sort();
+  const all=[...FILTERS.filter(f=>f[0]!=="brand"), ...(brands.length>1?brands.map(b=>["brand",b,b]):[])].filter(([k,v])=>pool.some(i=>i[k]===v));
+  const html=list=>{ let last=""; return list.map(([k,v,l])=>{ const g=k===last?"":`<span class="glabel">${GROUP[k]}</span>`; last=k; return g+`<button class="chip" data-k="${k}" data-v="${esc(v)}" aria-pressed="${S.f.has(k+":"+v)}">${esc(l)}</button>`; }).join(""); };
+  const extra=all.filter(f=>!MAIN.has(f[0])), nOn=[...S.f].filter(x=>!MAIN.has(x.split(":")[0])).length;
+  $("chips").innerHTML = html(all.filter(f=>MAIN.has(f[0])))
+    + (extra.length?`<button class="chip morebtn" id="moreBtn" aria-expanded="${S.more}">${S.more?"Fewer filters":"More filters"}${nOn?` · ${nOn}`:""}</button>`:"")
+    + (S.f.size?`<button class="chip clr" id="clrBtn">Clear filters</button>`:"");
+  $("more").innerHTML = html(extra); $("more").hidden = !S.more || !extra.length;
 }
 function list(){
   const q=S.q.trim().toLowerCase();
   const byK={}; S.f.forEach(x=>{const [k,v]=x.split(":"); (byK[k]=byK[k]||new Set()).add(v);});
-  return ITEMS.filter(i=>i.g===S.g && Object.entries(byK).every(([k,set])=>set.has(i[k])) && (!q || (i.brand+" "+i.model+" "+i.colour+" "+(i.fam||"")+" "+i.desc+" "+i.kind).toLowerCase().includes(q))).sort((a,b)=>a.price-b.price);
+  const out = ITEMS.filter(i=>i.g===S.g && Object.entries(byK).every(([k,set])=>set.has(i[k])) && (!q || (i.brand+" "+i.model+" "+i.colour+" "+(i.fam||"")+" "+i.desc+" "+i.kind).toLowerCase().includes(q)));
+  return sortItems(out);
+}
+// Recommended: styles in the price range customers buy most (₦20k–50k) and with several photos come first; then brands and
+// models are spread evenly through the list, so the first screen isn't one brand or one shoe in six colours.
+function sortItems(l){
+  if(S.sort==="low") return l.sort((a,b)=>a.price-b.price);
+  if(S.sort==="high") return l.sort((a,b)=>b.price-a.price);
+  if(S.sort==="brand") return l.sort((a,b)=>a.brand.localeCompare(b.brand)||a.model.localeCompare(b.model)||a.price-b.price);
+  const score=i=>(i.price>=20000&&i.price<=50000?2:i.price<=65000?1:0)+((i.imgs||[]).length>1?1:0);
+  const byBrand=new Map();
+  l.slice().sort((a,b)=>score(b)-score(a)||a.price-b.price).forEach(i=>{ if(!byBrand.has(i.brand)) byBrand.set(i.brand,[]); byBrand.get(i.brand).push(i); });
+  const spread=arr=>{ const n=new Map(); return arr.map((x,k)=>{ const r=n.get(x.model)||0; n.set(x.model,r+1); return [x,r,k]; }).sort((a,b)=>a[1]-b[1]||a[2]-b[2]).map(z=>z[0]); };
+  return [...byBrand.values()].map(spread).flatMap(q=>q.map((x,k)=>[x,(k+0.5)/Math.pow(q.length,0.6)]))   /* big brands spread out, small brands surface earlier */.sort((a,b)=>a[1]-b[1]).map(z=>z[0]);
 }
 function cardHtml(i){
   const img = i.img ? `<img loading="lazy" src="${esc(i.img)}" alt="${esc(i.model+" "+i.colour)}" onerror="this.outerHTML='<div class=miss>Photo unavailable</div>'">` : `<div class="miss">Photo coming soon</div>`;
   return `<article class="card" data-ref="${esc(i.ref)}">
     <div class="ph">${img}${(i.imgs||[]).length>1?`<span class="pcount">More photos ›</span>`:""}</div>
     <div><div class="mname">${esc(i.model)}</div><div class="mcol">${esc([i.colour,i.desc].filter(Boolean).join(" · "))}</div></div>
-    <div class="price">${N(i.price)} <span class="earn">· you earn ${N(i.comm)}</span></div>
+    <div class="price">${N(i.price)} <span class="earn">you earn ${N(i.comm)}</span></div>
     <div class="picker">
       <select aria-label="Size">${sizesOf(i).map(s=>`<option>${s}</option>`).join("")}</select>
       <input type="number" min="1" value="1" aria-label="Quantity">
       <button class="add">Add</button>
     </div>
-    <div class="acts"><button class="mini cap">Copy caption</button><button class="mini shr">Copy shop link</button>${i.full?`<a class="mini" href="${esc(i.full)}" target="_blank" rel="noopener">Save photo</a>`:""}</div>
+    ${i.g!=="BG"?`<button class="sgb">Size guide</button>`:""}
+    <div class="acts"><button class="mini cap" title="Copy caption">Caption</button><button class="mini shr" title="Copy your shop link for this style">Link</button><button class="mini st" title="Make a status or Instagram image">Status</button>${i.full?`<a class="mini" href="${esc(i.full)}" target="_blank" rel="noopener" title="Save photo">Photo</a>`:""}</div>
   </article>`;
 }
 function render(){
@@ -254,7 +323,7 @@ function copy(text, fallbackEl){
 function orderText(){
   const code=$("agentCode").value.trim();
   const lines=cart.map((c,n)=>`${n+1}. ${c.model} · ${c.colour||"—"}${c.size&&c.size!=="One size"?" · size "+c.size:""} · x${c.qty} · ${N(c.price*c.qty)} [${c.ref}${c.comm?" · earns "+N(c.comm)+(c.qty>1?" each":""):""}]`);
-  return ["NORTHLINE ORDER", `Agent: ${code}`, "", `Customer: ${$("cName").value.trim()}`, `Phone: ${$("cPhone").value.trim()}`, `Delivery: ${$("cAddr").value.trim()}`, $("cNote").value.trim()?`Note: ${$("cNote").value.trim()}`:"", "", ...lines, "", `Total: ${N(cart.reduce((s,c)=>s+c.price*c.qty,0))} (${((n)=>n+" item"+(n===1?"":"s"))(cart.reduce((s,c)=>s+c.qty,0))})`].filter((x,i,a)=>!(x===""&&a[i-1]==="")).join("\n");
+  return ["NORTHLINE ORDER", `Agent: ${code}`, "", `Customer: ${$("cName").value.trim()}`, `Phone: ${$("cPhone").value.trim()}`, `Delivery: ${$("cAddr").value.trim()}`, $("cFoot").value.trim()?`Foot length: ${$("cFoot").value.trim()} cm`:"", $("cNote").value.trim()?`Note: ${$("cNote").value.trim()}`:"", "", ...lines, "", `Total: ${N(cart.reduce((s,c)=>s+c.price*c.qty,0))} (${((n)=>n+" item"+(n===1?"":"s"))(cart.reduce((s,c)=>s+c.qty,0))})`].filter((x,i,a)=>!(x===""&&a[i-1]==="")).join("\n");
 }
 function drawSheet(){
   $("lines").innerHTML = cart.length ? cart.map((c,n)=>`<div class="line"><img src="${esc(c.img||"")}" alt=""><div><b>${esc(c.model)}</b><small>${esc(c.colour||"")}${c.size!=="One size"?" · size "+esc(c.size):""} · x${c.qty}</small><small>${N(c.price*c.qty)}</small></div><button class="x" data-n="${n}" aria-label="Remove">✕</button></div>`).join("") : `<p class="hint">Your order is empty.</p>`;
@@ -274,7 +343,12 @@ $("waShow").textContent="+"+WA;
 function tabs(){ ["M","B","BG"].forEach(g=>{ const has=ITEMS.some(i=>i.g===g); document.querySelector(`#gSeg [data-g="${g}"]`).hidden=!has; if(!has&&S.g===g){ S.g="W"; S.f.clear(); document.querySelectorAll("#gSeg button").forEach(x=>x.setAttribute("aria-pressed",x.dataset.g==="W")); } }); }
 tabs();
 $("gSeg").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;S.g=b.dataset.g;S.f.clear();document.querySelectorAll("#gSeg button").forEach(x=>x.setAttribute("aria-pressed",x===b));chips();render();});
-$("chips").addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;const key=b.dataset.k+":"+b.dataset.v;S.f.has(key)?S.f.delete(key):S.f.add(key);b.setAttribute("aria-pressed",S.f.has(key));render();});
+function chipClick(e){ const b=e.target.closest(".chip"); if(!b) return;
+  if(b.id==="moreBtn"){ S.more=!S.more; chips(); return; }
+  if(b.id==="clrBtn"){ S.f.clear(); chips(); render(); return; }
+  const key=b.dataset.k+":"+b.dataset.v; S.f.has(key)?S.f.delete(key):S.f.add(key); chips(); render(); }
+$("chips").addEventListener("click",chipClick); $("more").addEventListener("click",chipClick);
+$("sort").value=S.sort; $("sort").addEventListener("change",e=>{ S.sort=e.target.value; store.set("nl-sort",S.sort); render(); window.scrollTo({top:$("grid").offsetTop-120,behavior:"smooth"}); });
 $("q").addEventListener("input",e=>{S.q=e.target.value;render();});
 $("grid").addEventListener("click",e=>{
   const card=e.target.closest(".card"); if(!card) return; const i=ITEMS.find(x=>x.ref===card.dataset.ref);
@@ -283,6 +357,8 @@ $("grid").addEventListener("click",e=>{
     const ex=cart.find(c=>c.ref===i.ref&&c.size===size); if(ex) ex.qty+=qty; else cart.push({ref:i.ref,model:i.model,colour:i.colour,price:i.price,comm:i.comm,g:i.g,img:i.img,size,qty});
     store.set("nl-cart",cart); render(); toast(`Added ${i.model}${size!=="One size"?", size "+size:""}`);
   }
+  if(e.target.closest(".sgb")){ openSG(i, card); return; }
+  if(e.target.closest(".st")){ openStatus(i); return; }
   if(e.target.closest(".ph")){ openGal(i.model+(i.colour?" · "+i.colour:""), (i.imgs&&i.imgs.length)?i.imgs:[i.full||i.img]); return; }
   if(e.target.closest(".shr")){
     if(!code()){ toast("Enter your agent code first"); $("agentCode").focus(); return; }
@@ -303,6 +379,94 @@ G("gprev").onclick=()=>{ const t=G("gtrack"); t.scrollBy({left:-t.clientWidth,be
 G("gnext").onclick=()=>{ const t=G("gtrack"); t.scrollBy({left:t.clientWidth,behavior:"smooth"}); };
 G("gclose").onclick=closeGal;
 document.addEventListener("keydown",e=>{ if(G("gal").hidden) return; if(e.key==="Escape") closeGal(); if(e.key==="ArrowRight") G("gnext").click(); if(e.key==="ArrowLeft") G("gprev").click(); });
+// ---------- size guide ----------
+// Capone: their own chart (caponeoutfitters.com.tr/pages/beden-tablosu). Others publish no chart we can read, so they use the
+// general European guide (foot length ≈ EU size ÷ 1.5 − 1.5 cm). Baby: the usual European height ranges.
+const SIZE_CHARTS={
+  Capone:{src:"Capone’s own size chart.", rows:[["36",23],["37",23.5],["38",24],["39",25],["40",26],["41",26.5],["42",27],["43",27.5]]},
+  _eu:{src:"General European guide: this brand doesn’t publish a chart we could check, so treat it as approximate.", rows:[["35",22],["36",22.5],["37",23.2],["38",23.8],["39",24.5],["40",25.2],["41",25.8],["42",26.5],["43",27.2],["44",27.8],["45",28.5],["46",29.2]]},
+  _baby:{src:"General European baby sizes by height. Babies grow fast: if in doubt, take the bigger size.", rows:[["0-3m",56,62],["3-6m",62,68],["6-9m",68,74],["9-12m",74,80],["12-18m",80,86],["18-24m",86,92],["2-3y",92,98],["3-4y",98,104]]}
+};
+const SG={i:null,card:null,pick:null};
+function sgChart(i){ if(i.g==="B") return SIZE_CHARTS._baby; const c=SIZE_CHARTS[i.brand]||SIZE_CHARTS._eu, have=new Set(sizesOf(i));
+  const rows=c.rows.filter(r=>have.has(r[0])); return {src:c.src, rows:rows.length?rows:c.rows}; }
+function openSG(i, card){ SG.i=i; SG.card=card; SG.pick=null; const baby=i.g==="B", c=sgChart(i);
+  $("sgTitle").textContent="Size guide · "+i.brand;
+  $("sgHow").innerHTML = baby ? "<li>Lay your baby down straight and measure from the top of the head to the heel, in cm.</li><li>Find the height below. If your baby is between two sizes, take the bigger one.</li>"
+    : "<li>Stand on a sheet of paper with your heel against a wall.</li><li>Mark the tip of your longest toe and measure from the wall to the mark, in cm.</li><li>Measure both feet and use the longer one. If you’re between two sizes, take the bigger one.</li>";
+  $("sgInLabel").textContent = baby ? "Baby’s height (cm)" : "Foot length (cm)";
+  $("sgHead").innerHTML = baby ? "<tr><th>Size</th><th>Height</th></tr>" : "<tr><th>EU size</th><th>Foot length</th></tr>";
+  $("sgBody").innerHTML = c.rows.map(r=>`<tr data-s="${esc(r[0])}"><td>${esc(r[0])}</td><td>${baby?r[1]+"–"+r[2]+" cm":String(r[1]).replace(".",",")+" cm"}</td></tr>`).join("");
+  $("sgSrc").textContent=c.src; $("sgIn").value=$("cFoot").value&&!baby?$("cFoot").value:""; sgFind(); $("sgSheet").hidden=false; }
+function sgFind(){ const i=SG.i, baby=i.g==="B", c=sgChart(i), v=parseFloat(($("sgIn").value||"").replace(",","."));
+  let hit=null; if(v>0){ hit = baby ? (c.rows.find(r=>v<r[2])||null) : (c.rows.find(r=>r[1]>=v)||null); }
+  SG.pick=hit?hit[0]:null;
+  document.querySelectorAll("#sgBody tr").forEach(tr=>tr.classList.toggle("hit",!!hit&&tr.dataset.s===hit[0]));
+  $("sgRes").textContent = !(v>0) ? "" : hit ? `Your size: ${hit[0]}` : (baby ? "Taller than this chart: message Northline for the right size." : "Longer than this style’s sizes: message Northline before ordering.");
+  const sel=SG.card&&SG.card.querySelector("select"); $("sgUse").hidden = !(hit && sel && [...sel.options].some(o=>o.value===hit[0])); }
+$("sgIn").addEventListener("input",sgFind);
+$("sgUse").onclick=()=>{ const sel=SG.card.querySelector("select"); sel.value=SG.pick; if(SG.i.g!=="B") $("cFoot").value=$("sgIn").value.trim(); $("sgSheet").hidden=true; toast("Size "+SG.pick+" selected"); };
+$("sgClose").onclick=()=>{$("sgSheet").hidden=true;};
+$("sgSheet").addEventListener("click",e=>{ if(e.target.id==="sgSheet") $("sgSheet").hidden=true; });
+// <status>
+// ---------- status / post image: drawn on a canvas in the Northline look, shared straight to WhatsApp or Instagram ----------
+const ST={i:null,fmt:"story",img:null,url:null};
+const loadImg=u=>new Promise(res=>{ const im=new Image(); im.crossOrigin="anonymous"; im.onload=()=>res(im); im.onerror=()=>res(null); im.src=u; });
+async function stPhoto(i){ const u=(i.imgs&&i.imgs[0])||i.full||i.img; if(!u) return null;
+  return await loadImg(u) || await loadImg("https://wsrv.nl/?url="+encodeURIComponent(u)+"&w=1400&output=jpg"); }   // image proxy adds the CORS header some shops leave out
+function spaced(x,t,X,Y,sp,align){ let w=0; for(const ch of t) w+=x.measureText(ch).width+sp; w-=sp; let cx=align==="center"?X-w/2:align==="right"?X-w:X; const a=x.textAlign; x.textAlign="left"; for(const ch of t){ x.fillText(ch,cx,Y); cx+=x.measureText(ch).width+sp; } x.textAlign=a; return w; }
+function wordmark(x,X,Y,px,align,dark){ x.font=`600 ${px}px Figtree, sans-serif`; const sp=px*.34; let w=0; for(const ch of "NORTHLINE") w+=x.measureText(ch).width+sp; w-=sp;
+  let cx=align==="center"?X-w/2:align==="right"?X-w:X; x.fillStyle=dark?"#0E1B2C":"#FFFFFF"; cx+=spaced(x,"NORTH",cx,Y,sp)+sp; x.fillStyle="#4A9FD8"; spaced(x,"LINE",cx,Y,sp); }
+function rrect(x,X,Y,w,h,r){ x.beginPath(); x.moveTo(X+r,Y); x.arcTo(X+w,Y,X+w,Y+h,r); x.arcTo(X+w,Y+h,X,Y+h,r); x.arcTo(X,Y+h,X,Y,r); x.arcTo(X,Y,X+w,Y,r); x.closePath(); }
+function photoBox(x,im,X,Y,w,h,r){ x.save(); rrect(x,X,Y,w,h,r); x.clip(); x.fillStyle="#FFFFFF"; x.fillRect(X,Y,w,h);
+  if(im){ const s=Math.min(w/im.width,h/im.height), dw=im.width*s, dh=im.height*s; x.drawImage(im,X+(w-dw)/2,Y+(h-dh)/2,dw,dh); }
+  else { x.fillStyle="#EEF2F6"; x.fillRect(X,Y,w,h); x.fillStyle="#6B7480"; x.font="500 36px Figtree, sans-serif"; x.textAlign="center"; x.fillText("Photo couldn’t load",X+w/2,Y+h/2); x.textAlign="left"; }
+  x.restore(); }
+function wrap(x,t,maxW,maxLines){ const words=String(t).split(/\s+/), out=[]; let cur="";
+  for(const wd of words){ const nx=cur?cur+" "+wd:wd; if(x.measureText(nx).width<=maxW||!cur) cur=nx; else { out.push(cur); cur=wd; } } if(cur) out.push(cur);
+  if(out.length>maxLines){ out.length=maxLines; let l=out[maxLines-1]; while(x.measureText(l+"…").width>maxW&&l.length) l=l.slice(0,-1); out[maxLines-1]=l+"…"; } return out; }
+const sizeLine=i=>{ const z=sizesOf(i); return i.g==="BG"?"":i.g==="B"?`Ages ${z[0]} to ${z.at(-1)}`:`Sizes ${z[0]}${z.length>1?"–"+z.at(-1):""}`; };
+async function stDraw(){ const i=ST.i, post=ST.fmt==="post", W=1080, H=post?1080:1920, cv=$("stCanvas"); cv.width=W; cv.height=H; const x=cv.getContext("2d"), showP=$("stPrice").checked;
+  try{ await Promise.all(["600 76px Fraunces","700 120px Figtree","600 30px Figtree","500 40px Figtree"].map(f=>document.fonts.load(f))); }catch(e){}
+  const NAVY="#0E1B2C", SKY="#4A9FD8", BG="#F7F5F0", GOLD="#B8925A", MUTED="#6B7480";
+  x.fillStyle=BG; x.fillRect(0,0,W,H); x.textBaseline="alphabetic"; x.textAlign="left";
+  if(!post){
+    x.fillStyle=NAVY; x.fillRect(0,0,W,200); x.fillStyle=SKY; x.fillRect(0,200,W,8);
+    wordmark(x,W/2,112,62,"center"); x.fillStyle="#9FB6CC"; x.font="600 26px Figtree, sans-serif"; spaced(x,"ISTANBUL → NIGERIA",W/2,162,7,"center");
+    photoBox(x,ST.img,60,262,960,960,40);
+    let y=1318; x.fillStyle=GOLD; x.font="700 30px Figtree, sans-serif"; spaced(x,i.brand.toUpperCase(),60,y,6);
+    x.font="600 76px Fraunces, Georgia, serif"; x.fillStyle=NAVY; for(const l of wrap(x,i.model,960,2)){ y+=90; x.fillText(l,60,y); }
+    if(i.colour){ y+=58; x.font="500 40px Figtree, sans-serif"; x.fillStyle=MUTED; x.fillText(wrap(x,i.colour,960,1)[0],60,y); }
+    if(showP){ y+=128; x.font="700 118px Figtree, sans-serif"; x.fillStyle=NAVY; x.fillText(N(i.price),60,y); }
+    const sl=sizeLine(i); if(sl){ y+=64; x.font="500 38px Figtree, sans-serif"; x.fillStyle=MUTED; x.fillText(sl,60,y); }
+    const cta="DM me to order"; x.font="700 44px Figtree, sans-serif"; const cw=x.measureText(cta).width+88; x.fillStyle=SKY; rrect(x,60,1676,cw,96,48); x.fill(); x.fillStyle=NAVY; x.fillText(cta,104,1739);
+    x.fillStyle=NAVY; x.fillRect(0,1820,W,100); x.fillStyle="#B9C8D6"; x.font="500 28px Figtree, sans-serif"; x.textAlign="center"; x.fillText("Turkish shoes, bags & baby clothes · delivered in Nigeria",W/2,1880); x.textAlign="left";
+  } else {
+    photoBox(x,ST.img,0,0,W,780,0);
+    x.fillStyle=GOLD; x.font="700 26px Figtree, sans-serif"; spaced(x,i.brand.toUpperCase(),56,840,5);
+    x.font="600 58px Fraunces, Georgia, serif"; x.fillStyle=NAVY; const pw = showP ? (x.font="700 76px Figtree, sans-serif", x.measureText(N(i.price)).width) : 0;
+    x.font="600 58px Fraunces, Georgia, serif"; x.fillText(wrap(x,i.model,W-112-pw-40,1)[0],56,910);
+    x.font="500 32px Figtree, sans-serif"; x.fillStyle=MUTED; x.fillText(wrap(x,[i.colour,sizeLine(i)].filter(Boolean).join(" · "),W-112-pw-40,1)[0],56,960);
+    if(showP){ x.font="700 76px Figtree, sans-serif"; x.fillStyle=NAVY; x.textAlign="right"; x.fillText(N(i.price),W-56,930); x.textAlign="left"; }
+    x.fillStyle=NAVY; x.fillRect(0,1000,W,80); x.fillStyle=SKY; x.fillRect(0,1000,W,5); wordmark(x,56,1056,30,"left");
+    x.fillStyle="#CFE6F7"; x.font="600 28px Figtree, sans-serif"; x.textAlign="right"; x.fillText("DM to order",W-56,1053); x.textAlign="left";
+  }
+  try{ const b=await new Promise(r=>cv.toBlob(r,"image/png")); if(ST.url) URL.revokeObjectURL(ST.url); ST.url=URL.createObjectURL(b); $("stSave").href=ST.url; $("stSave").download=`northline-${i.ref}-${ST.fmt}.png`; $("stSave").hidden=false; ST.blob=b; }
+  catch(e){ ST.blob=null; $("stSave").hidden=true; $("stMsg").textContent="This photo can’t be turned into an image here. Take a screenshot of the preview instead."; }
+}
+const stCaption=i=>`${i.model}${i.colour?" · "+i.colour:""}\n${N(i.price)}${sizeLine(i)?" · "+sizeLine(i):""}\n${code()?"Order here: "+shopUrl(i.ref):"DM me to order"}`;
+async function openStatus(i){ ST.i=i; ST.img=null; ST.blob=null; $("stMsg").textContent="Loading photo…"; $("stSheet").hidden=false; await stDraw();
+  ST.img=await stPhoto(i); $("stMsg").textContent = ST.img ? (code()?"":"Tip: enter your agent code at the top so the caption includes your shop link.") : "The photo couldn’t be loaded. Try again in a moment, or use Save photo on the item."; await stDraw(); }
+$("stFmt").addEventListener("click",e=>{ const b=e.target.closest("button"); if(!b) return; ST.fmt=b.dataset.f; document.querySelectorAll("#stFmt button").forEach(x=>x.setAttribute("aria-pressed",x===b)); stDraw(); });
+$("stPrice").addEventListener("change",stDraw);
+$("stShare").onclick=async()=>{ const i=ST.i; if(!ST.blob){ toast("Take a screenshot of the preview"); return; }
+  const cap=stCaption(i); try{ await navigator.clipboard.writeText(cap); }catch(e){}
+  const f=new File([ST.blob],`northline-${i.ref}.png`,{type:"image/png"});
+  if(navigator.canShare && navigator.canShare({files:[f]})){ try{ await navigator.share({files:[f], text:cap}); }catch(e){} }
+  else { $("stSave").click(); toast("Image saved. Caption copied."); } };
+$("stClose").onclick=()=>{$("stSheet").hidden=true;};
+$("stSheet").addEventListener("click",e=>{ if(e.target.id==="stSheet") $("stSheet").hidden=true; });
+// </status>
 $("openSheet").onclick=()=>{drawSheet();$("sheet").hidden=false;};
 $("closeSheet").onclick=()=>{$("sheet").hidden=true;};
 $("sheet").addEventListener("click",e=>{ if(e.target.id==="sheet") $("sheet").hidden=true; const x=e.target.closest(".line .x"); if(x){cart.splice(+x.dataset.n,1);store.set("nl-cart",cart);drawSheet();render(); if(!cart.length) $("sheet").hidden=true;} });
@@ -313,7 +477,7 @@ function check(){
 $("send").addEventListener("click",e=>{ if(!cart.length||!check()){ e.preventDefault(); return; } e.currentTarget.href="https://wa.me/"+WA+"?text="+encodeURIComponent(orderText()); });
 $("copyOrder").onclick=()=>{ if(!cart.length) return; copy(orderText(), $("orderText")); };
 chips(); render();
-const BUILD="20261002124920";
+const BUILD="20261002130053";
 // commission rule switch (Nigeria time). Before the date: today's prices + a notice. From the date: prices.json "next".
 let SWITCH="2026-10-16";
 const todayNG = () => new Date(Date.now()+3600e3).toISOString().slice(0,10);
