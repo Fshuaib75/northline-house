@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Add to Northline · Settings</title>
+<link rel="stylesheet" href="popup.css">
+<style>
+body{width:auto;max-width:620px;margin:0 auto}
+main{gap:16px}
+ol{margin:0;padding-left:20px;display:grid;gap:5px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:grid;gap:10px}
+h1{font:600 22px var(--display);margin:0}
+h2{margin:0;font:600 12px var(--ui);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+code{background:var(--soft);color:var(--accent);padding:1px 5px;border-radius:4px}
+</style>
+</head>
+<body>
+<header class="top"><span class="word">NORTH<i>LINE</i></span><span class="tag">Settings</span></header>
+<main>
+  <section class="card">
+    <h1>Connect your review inbox</h1>
+    <p class="hint">The extension adds sealed batches to <code>inbox.json</code> in your repo, exactly like the weekly robot. It needs a GitHub token that can only touch that one repo.</p>
+    <h2>Make the token (2 minutes)</h2>
+    <ol class="hint">
+      <li>Open <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">github.com → new fine-grained token</a>.</li>
+      <li>Name it “Add to Northline”. Expiration: 90 days.</li>
+      <li>Repository access: <b>Only select repositories</b> → <b>northline-house</b>.</li>
+      <li>Permissions → Repository permissions → <b>Contents: Read and write</b>. Leave everything else as it is.</li>
+      <li>Generate, copy it, paste it below and press Save.</li>
+    </ol>
+    <label>GitHub token<input id="token" type="password" autocomplete="off" placeholder="github_pat_…"></label>
+    <div class="grid">
+      <label>Repository<input id="repo" autocomplete="off"></label>
+      <label>Branch<input id="branch" autocomplete="off"></label>
+    </div>
+    <div class="row"><button class="primary" id="save">Save</button><button class="mini" id="test">Test connection</button></div>
+    <p class="status" id="msg" aria-live="polite"></p>
+    <p class="hint">The token stays in this browser only (Chrome’s extension storage). It is never put in the site or the repo. If you lose this computer, delete the token on GitHub.</p>
+  </section>
+</main>
+<script src="seal.js"></script>
+<script src="options.js"></script>
+</body>
+</html>
