@@ -1,0 +1,83 @@
+# Northline: one Instagram post (+ story) a day, picked from this week's drop and the best-value styles.
+# Set the secrets IG_USER_ID and IG_TOKEN (and optionally FB_PAGE_ID) to go live; until then every run is a preview.
+name: Instagram daily post
+
+on:
+  schedule:
+    - cron: "30 17 * * *"        # 18:30 in Lagos every day
+  workflow_dispatch:
+    inputs:
+      preview:
+        description: "Preview only (make the images, post nothing)"
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ig-autopost
+  cancel-in-progress: false
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install pillow==11.3.0
+
+      - name: Pick a style and draw the images
+        id: make
+        run: python tools/ig/autopost.py
+
+      - name: Keep the images (preview)
+        uses: actions/upload-artifact@v4
+        with:
+          name: ig-${{ steps.make.outputs.base }}
+          path: ig/${{ steps.make.outputs.base }}*
+
+      - name: Decide whether to post
+        id: live
+        env:
+          HAS_IG: ${{ secrets.IG_USER_ID != '' && secrets.IG_TOKEN != '' }}
+          PREVIEW: ${{ github.event_name == 'workflow_dispatch' && inputs.preview }}
+        run: |
+          if [ "$HAS_IG" = "true" ] && [ "$PREVIEW" != "true" ]; then echo "go=yes" >> "$GITHUB_OUTPUT"; else echo "go=no" >> "$GITHUB_OUTPUT"; echo "Preview only: images are in the run's artifacts. Nothing was posted."; fi
+
+      - name: Put the images online (Instagram fetches them from the repo)
+        if: steps.live.outputs.go == 'yes'
+        run: |
+          git config user.name "Northline poster"
+          git config user.email "actions@users.noreply.github.com"
+          find ig -name '*.jpg' -mtime +30 -delete 2>/dev/null || true
+          git add ig
+          git commit -m "Instagram: ${{ steps.make.outputs.ref }}" || true
+          git pull --rebase origin gh-pages
+          git push origin HEAD:gh-pages
+          sleep 20
+
+      - name: Post to Instagram
+        if: steps.live.outputs.go == 'yes'
+        env:
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          IG_TOKEN: ${{ secrets.IG_TOKEN }}
+          FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
+          BASE: ${{ steps.make.outputs.base }}
+          REF: ${{ steps.make.outputs.ref }}
+        run: python tools/ig/autopost.py --publish
+
+      - name: Remember what was posted
+        if: steps.live.outputs.go == 'yes'
+        run: |
+          git add tools/ig/posted.json
+          git commit -m "Instagram: posted ${{ steps.make.outputs.ref }}" || true
+          git pull --rebase origin gh-pages
+          git push origin HEAD:gh-pages
+          git push origin HEAD:main || true
