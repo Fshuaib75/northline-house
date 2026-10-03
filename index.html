@@ -154,7 +154,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 <body>
 <div class="wrap">
   <header class="hero">
-    <span class="sub">Agent catalogue · prices updated <span id="upd">2 Oct 2026</span></span>
+    <span class="sub">Agent catalogue · prices updated <span id="upd">3 Oct 2026</span></span>
     <span class="word">NORTH<i>LINE</i></span>
   </header>
 
@@ -521,7 +521,7 @@ function check(){
 $("send").addEventListener("click",e=>{ if(!cart.length||!check()){ e.preventDefault(); return; } e.currentTarget.href="https://wa.me/"+WA+"?text="+encodeURIComponent(orderText()); track("order/sent", cart.reduce((s,c)=>s+c.qty,0)+" items"); });
 $("copyOrder").onclick=()=>{ if(!cart.length) return; copy(orderText(), $("orderText")); };
 chips(); render(); brandParam();
-const BUILD="20261002135707";
+const BUILD="20261003065405";
 // commission rule switch (Nigeria time). Before the date: today's prices + a notice. From the date: prices.json "next".
 let SWITCH="2026-10-16";
 const todayNG = () => new Date(Date.now()+3600e3).toISOString().slice(0,10);

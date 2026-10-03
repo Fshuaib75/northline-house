@@ -440,7 +440,7 @@ function check(){
 $("send").addEventListener("click",e=>{ if(!cart.length||!check()){ e.preventDefault(); return; } e.currentTarget.href="https://wa.me/"+WA+"?text="+encodeURIComponent(orderText()); track("order/sent", cart.reduce((s,c)=>s+c.qty,0)+" items"); });
 $("copyOrder").onclick=()=>{ if(!cart.length) return; copy(orderText(), $("orderText")); };
 chips(); render(); brandParam();
-const BUILD="20261002135707";
+const BUILD="20261003065405";
 // price list switch date (Nigeria time)
 let SWITCH="2026-10-16";
 const todayNG = () => new Date(Date.now()+3600e3).toISOString().slice(0,10);
