@@ -184,16 +184,15 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 
   <div class="bar">
     <div class="row">
-      <div class="seg" role="group" aria-label="Line" id="gSeg">
-        <button data-g="W" aria-pressed="true">Women</button>
-        <button data-g="M" aria-pressed="false">Men</button>
-        <button data-g="B" aria-pressed="false">Baby</button>
-        <button data-g="BG" aria-pressed="false">Bags</button>
-        <button data-g="CL" aria-pressed="false" hidden>Clothing</button>
+      <div class="seg" role="group" aria-label="Who for" id="gSeg">
+        <button data-g="M" aria-pressed="true">Men</button>
+        <button data-g="W" aria-pressed="false">Women</button>
+        <button data-g="K" aria-pressed="false">Kids</button>
       </div>
       <input type="search" id="q" placeholder="Search style or colour">
       <select id="sort" aria-label="Sort"><option value="rec">Recommended</option><option value="new">Newest</option><option value="low">Price: low to high</option><option value="high">Price: high to low</option><option value="brand">Brand A–Z</option></select>
     </div>
+    <div class="row brands secs" id="secs" role="group" aria-label="Section"></div>
     <div class="row brands" id="brands" role="group" aria-label="Brands"></div>
     <div class="row" id="chips"></div>
     <div class="row more" id="more" hidden></div>
@@ -263,7 +262,17 @@ const WA = "2348101073068";
 const SIZES = {W:["36","37","38","39","40","41"], M:["40","41","42","43","44","45"], B:["0-3m","3-6m","6-9m","9-12m","12-18m","18-24m","2-3y","3-4y"], BG:["One size"], CL:["S","M","L","XL"]};
 const sizesOf = i => (i.sizes&&i.sizes.length) ? i.sizes : SIZES[i.g]||["One size"];
 const unit = (n,g) => (g==="B"||g==="BG"||g==="CL") ? `${n} piece${n===1?"":"s"}` : `${n} pair${n===1?"":"s"}`;
-const S = {g:"W", q:"", f:new Set(), sort:"rec", more:false};
+const S = {g:"M", sec:"", q:"", f:new Set(), sort:"rec", more:false};
+// Who for (Men / Women / Kids) → section (Shoes / Clothing / Bags) → type. Items keep their own line (i.g) for sizes.
+const audOf=i=>i.g==="M"?"M":i.g==="W"?"W":i.g==="B"?"K":(i.for==="Men"?"M":(i.for==="Girl"||i.for==="Boy")?"K":"W");
+const secOf=i=>i.g==="BG"?"Bags":(i.g==="CL"||i.g==="B")?"Clothing":"Shoes";
+const SEC_ORDER=["Shoes","Clothing","Bags"];
+const KIND_ORDER={Shoes:["slide","sandal","flipflop","loafer","sneaker","other"],Clothing:["abaya","hijab","dress","set","top","shirt","trousers","bodysuit","other"],Bags:["shoulder","handbag","crossbody","tote","clutch","backpack","waist","other"]};
+const KIND_LABEL={slide:"Slides",sandal:"Sandals",flipflop:"Toe-posts & flip-flops",loafer:"Loafers",sneaker:"Sneakers",abaya:"Abayas",hijab:"Hijabs & scarves",dress:"Dresses",set:"Sets",top:"Tops",shirt:"Shirts",trousers:"Trousers & skirts",bodysuit:"Bodysuits",shoulder:"Shoulder bags",handbag:"Handbags",crossbody:"Crossbody bags",tote:"Totes",clutch:"Clutches",backpack:"Backpacks",waist:"Waist bags"};
+const kindLabel=(i)=>{ const sec=secOf(i), k=KIND_ORDER[sec].includes(i.kind)?i.kind:"other";
+  if(k==="slide"&&audOf(i)==="M") return "Palms & slides"; if(k==="other") return sec==="Shoes"?"Clogs, mules & more":sec==="Bags"?"Other bags":"More clothing"; return KIND_LABEL[k]||k; };
+const typeKey=i=>{ const sec=secOf(i), ks=KIND_ORDER[sec], k=ks.includes(i.kind)?i.kind:"other"; return SEC_ORDER.indexOf(sec)*100+ks.indexOf(k); };
+const inView=i=>audOf(i)===S.g&&(!S.sec||secOf(i)===S.sec);
 let cart = [];
 const store = {get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}}, set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
 S.sort = ["rec","new","low","high","brand"].includes(store.get("nl-sort","rec")) ? store.get("nl-sort","rec") : "rec";
@@ -277,15 +286,15 @@ const N = n=>"₦"+Math.round(n).toLocaleString("en-NG");
 const esc = s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const FAM_ORDER=["Black","Brown","Tan & camel","Beige & nude","White","Metallic","Red & burgundy","Pink & purple","Blue","Green & khaki","Orange & yellow","Grey","Print & multi"];
 let BRANDS=[...new Set(ALL.map(i=>i.brand))].sort();
-let FILTERS = [["for","Women","For women"],["for","Men","For men"],["for","Girl","Girls"],["for","Boy","Boys"],["kind","shoulder","Shoulder bags"],["kind","crossbody","Crossbody"],["kind","handbag","Handbags"],["kind","tote","Totes"],["kind","clutch","Clutches"],["kind","backpack","Backpacks"],["kind","waist","Waist bags"],["kind","slide","Slides"],["kind","sandal","Sandals"],["kind","loafer","Loafers"],["kind","sneaker","Sneakers"],["kind","flipflop","Flip-flops"],["kind","dress","Dresses"],["kind","set","Sets"],["kind","top","Tops"],["kind","bodysuit","Bodysuits"],["kind","abaya","Abayas"],["kind","hijab","Hijabs & scarves"],["kind","shirt","Shirts"],["kind","trousers","Trousers & skirts"],["kind","other","Other"],["heel","Flat","Flat"],["heel","Low heel","Low heel"],["heel","Wedge","Wedge"],["heel","Platform","Platform"],["heel","Heel","Heel"],["heel","Closed","Closed toe"],
+let FILTERS = [["for","Women","For women"],["for","Men","For men"],["for","Girl","Girls"],["for","Boy","Boys"],["kind","shoulder","Shoulder bags"],["kind","crossbody","Crossbody"],["kind","handbag","Handbags"],["kind","tote","Totes"],["kind","clutch","Clutches"],["kind","backpack","Backpacks"],["kind","waist","Waist bags"],["kind","slide","Slides"],["kind","sandal","Sandals"],["kind","loafer","Loafers"],["kind","sneaker","Sneakers"],["kind","flipflop","Toe-posts"],["kind","dress","Dresses"],["kind","set","Sets"],["kind","top","Tops"],["kind","bodysuit","Bodysuits"],["kind","abaya","Abayas"],["kind","hijab","Hijabs & scarves"],["kind","shirt","Shirts"],["kind","trousers","Trousers & skirts"],["kind","other","Other"],["heel","Flat","Flat"],["heel","Low heel","Low heel"],["heel","Wedge","Wedge"],["heel","Platform","Platform"],["heel","Heel","Heel"],["heel","Closed","Closed toe"],
   ["band","₦30k and under","₦30k and under"],["band","₦30k–50k","₦30k–50k"],["band","₦50k–80k","₦50k–80k"],["band","₦80k+","₦80k+"],
   ...FAM_ORDER.map(f=>["fam",f,f]), ...(BRANDS.length>1?BRANDS.map(b=>["brand",b,b]):[])];
 const GROUP={for:"For",kind:"Type",heel:"Heel",band:"Price",fam:"Colour",brand:"Brand"};
 const MAIN=new Set(["for","kind","band"]);
 function chips(){
-  const pool = ITEMS.filter(i=>i.g===S.g);
+  const aud = ITEMS.filter(i=>audOf(i)===S.g), pool = aud.filter(i=>!S.sec||secOf(i)===S.sec); secRow(aud);
   const brands=[...new Set(pool.map(i=>i.brand))].sort();
-  const all=FILTERS.filter(f=>f[0]!=="brand").filter(([k,v])=>pool.some(i=>i[k]===v));   // brands have their own row
+  const all=FILTERS.filter(f=>f[0]!=="brand"&&(f[0]!=="for"||S.g==="K")).filter(([k,v])=>pool.some(i=>i[k]===v)).map(f=>f[0]==="kind"&&f[1]==="slide"&&S.g==="M"?["kind","slide","Palms & slides"]:f).sort((a,b)=>{ const G={for:0,kind:1,heel:2,band:3,fam:4}, K=[...KIND_ORDER.Shoes,...KIND_ORDER.Clothing,...KIND_ORDER.Bags]; return (G[a[0]]-G[b[0]])||(a[0]==="kind"?K.indexOf(a[1])-K.indexOf(b[1]):0); });   // brands have their own row
   brandRow(pool);
   const html=list=>{ let last=""; return list.map(([k,v,l])=>{ const g=k===last?"":`<span class="glabel">${GROUP[k]}</span>`; last=k; return g+`<button class="chip" data-k="${k}" data-v="${esc(v)}" aria-pressed="${S.f.has(k+":"+v)}">${esc(l)}</button>`; }).join(""); };
   const extra=all.filter(f=>!MAIN.has(f[0])), nOn=[...S.f].filter(x=>!MAIN.has(x.split(":")[0])).length;
@@ -297,12 +306,13 @@ function chips(){
 function list(){
   const q=S.q.trim().toLowerCase();
   const byK={}; S.f.forEach(x=>{const [k,v]=x.split(":"); (byK[k]=byK[k]||new Set()).add(v);});
-  const out = ITEMS.filter(i=>(!S.drop||(DROP&&DROP.refs.includes(i.ref))) && i.g===S.g && Object.entries(byK).every(([k,set])=>set.has(i[k])) && (!q || (i.brand+" "+i.model+" "+i.colour+" "+(i.fam||"")+" "+i.desc+" "+i.kind).toLowerCase().includes(q)));
+  const out = ITEMS.filter(i=>(!S.drop||(DROP&&DROP.refs.includes(i.ref))) && inView(i) && Object.entries(byK).every(([k,set])=>set.has(i[k])) && (!q || (i.brand+" "+i.model+" "+i.colour+" "+(i.fam||"")+" "+i.desc+" "+i.kind).toLowerCase().includes(q)));
   return sortItems(out);
 }
 // Recommended: styles in the price range customers buy most (₦20k–50k) and with several photos come first; then brands and
 // models are spread evenly through the list, so the first screen isn't one brand or one shoe in six colours.
-function sortItems(l){
+function sortItems(l){ const r=sortItems0(l); if(S.sort==="brand") return r; const pos=new Map(r.map((x,n)=>[x,n])); return r.slice().sort((a,b)=>typeKey(a)-typeKey(b)||pos.get(a)-pos.get(b)); }
+function sortItems0(l){
   if(S.sort==="low") return l.sort((a,b)=>a.price-b.price);
   if(S.sort==="high") return l.sort((a,b)=>b.price-a.price);
   if(S.sort==="new"){ const r=recOrder(l), d=r.filter(i=>i.added).sort((a,b)=>String(b.added).localeCompare(String(a.added))); return d.concat(r.filter(i=>!i.added)); }
@@ -351,11 +361,11 @@ $("brands").addEventListener("click",e=>{ const b=e.target.closest(".bchip"); if
   if(v==="__drop"){ S.drop=!S.drop; [...S.f].filter(k=>k.startsWith("brand:")).forEach(k=>S.f.delete(k)); chips(); render(); if(S.drop) track("drop/open","This week"); return; }
   S.drop=false; setBrand(v===selBrand()?"":v); if(v) track("brand/"+v, v); });
 function brandParam(){ const b=new URLSearchParams(location.search).get("b"); if(!b||brandParam.done) return; const hit=ITEMS.find(i=>i.brand.toLowerCase()===b.toLowerCase()); if(!hit) return; brandParam.done=true;
-  if(!ITEMS.some(i=>i.g===S.g&&i.brand===hit.brand)){ S.g=hit.g; document.querySelectorAll("#gSeg button").forEach(x=>x.setAttribute("aria-pressed",x.dataset.g===S.g)); }
+  if(!ITEMS.some(i=>inView(i)&&i.brand===hit.brand)){ S.g=audOf(hit); S.sec=""; document.querySelectorAll("#gSeg button").forEach(x=>x.setAttribute("aria-pressed",x.dataset.g===S.g)); }
   setBrand(hit.brand); }
 function render(){
   const l=list();
-  let last=null; $("grid").innerHTML=(S.drop&&DROP?`<div class="dropbar"><span><b>${esc(DROP.label)}</b> · ${l.length} styles</span>${typeof dropImages==="function"?`<button class="mini st" id="dropAll">Status images for all</button>`:""}</div>`:"")+l.map(i=>{ let h=""; if(S.sort==="brand"&&i.brand!==last){ last=i.brand; h=`<h3 class="bhead">${esc(i.brand)}<span>${l.filter(x=>x.brand===i.brand).length} styles</span></h3>`; } return h+cardHtml(i); }).join("");
+  let last=null; $("grid").innerHTML=(S.drop&&DROP?`<div class="dropbar"><span><b>${esc(DROP.label)}</b> · ${l.length} styles</span>${typeof dropImages==="function"?`<button class="mini st" id="dropAll">Status images for all</button>`:""}</div>`:"")+l.map(i=>{ let h=""; if(S.sort==="brand"){ if(i.brand!==last){ last=i.brand; h=`<h3 class="bhead">${esc(i.brand)}<span>${l.filter(x=>x.brand===i.brand).length} styles</span></h3>`; } } else { const t=typeKey(i); if(t!==last){ last=t; h=`<h3 class="bhead">${esc(kindLabel(i))}<span>${l.filter(x=>typeKey(x)===t).length} styles</span></h3>`; } } return h+cardHtml(i); }).join("");
   $("empty").hidden=l.length>0;
   const total=cart.reduce((s,c)=>s+c.price*c.qty,0), pairs=cart.reduce((s,c)=>s+c.qty,0);
   $("obar").hidden=!cart.length;
@@ -388,9 +398,13 @@ function shopBox(){ const c=code(); $("shopBox").hidden=!c; if(!c) return; $("sh
 $("shopCopy").onclick=()=>copy(shopUrl());
 shopBox();
 $("waShow").textContent="+"+WA;
-function tabs(){ ["M","B","BG","CL"].forEach(g=>{ const has=ITEMS.some(i=>i.g===g); document.querySelector(`#gSeg [data-g="${g}"]`).hidden=!has; if(!has&&S.g===g){ S.g="W"; S.f.clear(); document.querySelectorAll("#gSeg button").forEach(x=>x.setAttribute("aria-pressed",x.dataset.g==="W")); } }); }
+function tabs(){ const has=g=>ITEMS.some(i=>audOf(i)===g); ["M","W","K"].forEach(g=>{ document.querySelector(`#gSeg [data-g="${g}"]`).hidden=!has(g); });
+  if(!has(S.g)){ S.g=["M","W","K"].find(has)||"W"; S.sec=""; S.f.clear(); document.querySelectorAll("#gSeg button").forEach(x=>x.setAttribute("aria-pressed",x.dataset.g===S.g)); } }
+function secRow(aud){ const n=new Map(); aud.forEach(i=>n.set(secOf(i),(n.get(secOf(i))||0)+1)); const el=$("secs"); el.hidden=n.size<2; if(S.sec&&!n.has(S.sec)) S.sec="";
+  el.innerHTML=`<button class="bchip" data-s="" aria-pressed="${!S.sec}">Everything<span>${aud.length}</span></button>`+SEC_ORDER.filter(x=>n.has(x)).map(x=>`<button class="bchip" data-s="${x}" aria-pressed="${S.sec===x}">${x}<span>${n.get(x)}</span></button>`).join(""); }
+$("secs").addEventListener("click",e=>{ const b=e.target.closest(".bchip"); if(!b) return; S.sec=b.dataset.s===S.sec?"":b.dataset.s; [...S.f].filter(k=>k.startsWith("kind:")).forEach(k=>S.f.delete(k)); chips(); render(); });
 tabs();
-$("gSeg").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;S.g=b.dataset.g;S.f.clear();document.querySelectorAll("#gSeg button").forEach(x=>x.setAttribute("aria-pressed",x===b));chips();render();});
+$("gSeg").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;S.g=b.dataset.g;S.sec="";S.f.clear();document.querySelectorAll("#gSeg button").forEach(x=>x.setAttribute("aria-pressed",x===b));chips();render();});
 function chipClick(e){ const b=e.target.closest(".chip"); if(!b) return;
   if(b.id==="moreBtn"){ S.more=!S.more; chips(); return; }
   if(b.id==="clrBtn"){ S.f.clear(); chips(); render(); return; }
@@ -534,7 +548,7 @@ function check(){
 $("send").addEventListener("click",e=>{ if(!cart.length||!check()){ e.preventDefault(); return; } e.currentTarget.href="https://wa.me/"+WA+"?text="+encodeURIComponent(orderText()); track("order/sent", cart.reduce((s,c)=>s+c.qty,0)+" items"); });
 $("copyOrder").onclick=()=>{ if(!cart.length) return; copy(orderText(), $("orderText")); };
 chips(); render(); brandParam();
-const BUILD="20261003070941";
+const BUILD="20261003072126";
 // commission rule switch (Nigeria time). Before the date: today's prices + a notice. From the date: prices.json "next".
 let SWITCH="2026-10-16";
 const todayNG = () => new Date(Date.now()+3600e3).toISOString().slice(0,10);
