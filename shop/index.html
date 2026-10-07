@@ -511,8 +511,8 @@ function typeRail(){
   SEC_ORDER.forEach(sec=>{ const inSec=aud.filter(i=>secOf(i)===sec); if(!inSec.length) return;
     if(sec==="Bags") { opts.push(["sec:Bags","Bags"]); return; }
     KIND_ORDER[sec].forEach(k=>{ if(inSec.some(i=>kindOf(i)===k)) opts.push([`kind:${sec}:${k}`, typeLabel(sec,k,S.g)]); }); });
-  if(S.type&&S.type!=="drop"&&!opts.some(o=>o[0]===S.type)) S.type="";
-  if(S.type==="drop"&&!nDrop) S.type="";
+  if(LOADED&&S.type&&S.type!=="drop"&&!opts.some(o=>o[0]===S.type)) S.type="";   // before the data loads, a chip may just not be known yet
+  if(LOADED&&S.type==="drop"&&!nDrop) S.type="";
   $("types").innerHTML=`<button class="chip" data-t="" aria-pressed="${!S.type}">All</button>`
     +(nDrop?`<button class="chip pick" data-t="drop" aria-pressed="${S.type==="drop"}">✦ ${esc(DROP.label)}</button>`:"")
     +opts.map(([v,l])=>`<button class="chip" data-t="${esc(v)}" aria-pressed="${S.type===v}">${esc(l)}</button>`).join("");
@@ -534,13 +534,13 @@ function cardHtml(c){
 // ?g=M&t=kind:Shoes:slide&s=low&q=…&f=fam:Black&p=3 (defaults left out). A shared or reloaded link shows exactly that page
 // of that list, and each history entry also keeps its view, so Back/Forward step through what the shopper actually saw.
 try{ history.scrollRestoration="manual"; }catch(e){}
-const PAGE_N=36; let LIST=[], SIG=null, LOADED=false, QUIET=false, LASTPG=null;
+const PAGE_N=36; let LIST=[], SIG=null, LOADED=false, QUIET=false, LASTPG=null, SEARCHING=false, FORCE_PUSH=false;
 const VIEW_KEYS=["g","t","s","q","f","p"], F_KEYS=["for","kind","band","fam","heel","brand"], SORTS=["rec","new","low","high","brand"];
 function viewFromURL(){ const sp=new URLSearchParams(location.search); if(!VIEW_KEYS.some(k=>sp.has(k))) return null;
   const g=sp.get("g"), s=sp.get("s"), p=parseInt(sp.get("p"),10);
   return {g:["W","M","K"].includes(g)?g:"W", type:sp.get("t")||"", sort:SORTS.includes(s)?s:"rec", q:sp.get("q")||"",
     f:sp.getAll("f").filter(x=>F_KEYS.includes(x.split(":")[0])).sort(), page:p>0?p:1}; }
-const view=()=>({g:S.g, type:S.type, sort:S.sort, q:S.q, f:[...S.f].sort(), page:S.page});
+const view=()=>({g:S.g, type:S.type, sort:S.sort, q:S.q.trim(), f:[...S.f].sort(), page:S.page});
 function applyView(v){ S.g=v.g; S.type=v.type; S.sort=v.sort; S.q=v.q; S.f=new Set(v.f); S.page=v.page; syncControls(); }
 function syncControls(){ $("sort").value=S.sort; $("q").value=S.q;
   if(S.q&&$("searchRow").hidden){ $("searchRow").hidden=false; $("searchBtn").setAttribute("aria-expanded",true); document.documentElement.style.setProperty("--toolsTop", document.querySelector(".top").offsetHeight+"px"); }
@@ -552,8 +552,9 @@ function urlFor(extra){ const u=new URL(location.href), sp=u.searchParams; VIEW_
 const here=()=>location.pathname+location.search+location.hash;
 // write the view into the link: push = a new Back step; replace keeps an open overlay's own entry (and a product's ?i=)
 function setURL(push){ try{ if(push){ history.pushState({v:view()},"",urlFor()); return; }
-  const st=history.state, ov=st&&st.ov, pd=ov==="pd"&&PD.i; history.replaceState(ov?{ov, v:view()}:{v:view()},"",urlFor(pd?{i:PD.i.ref}:null)); }catch(e){} }
-const V0=viewFromURL(), INIT_I=new URLSearchParams(location.search).get("i");
+  const st=history.state, ov=st&&st.ov, pd=OPEN.includes("pd")&&PD.i; history.replaceState(ov?{ov, v:view()}:{v:view()},"",urlFor(pd?{i:PD.i.ref}:null)); }catch(e){} }
+const V0=(history.state&&history.state.v)||viewFromURL(), INIT_I=new URLSearchParams(location.search).get("i");
+const INIT_OV=history.state&&history.state.ov;   // reloaded (or came Back) onto an overlay's entry: reopen it once the data is in
 if(V0){ S.g=V0.g; S.type=V0.type; S.sort=V0.sort; S.q=V0.q; S.f=new Set(V0.f); S.page=V0.page; }
 // what the list depends on: when any of it changes, go back to page 1 (a new Back step; typing a search just updates the link)
 const sigOf=()=>JSON.stringify([S.g,S.type,S.q.trim().toLowerCase(),[...S.f].sort(),S.sort]);
@@ -567,17 +568,18 @@ function pageList(cur,n,compact){ const s=new Set([1,n,cur]);
   a.forEach((x,k)=>{ if(k){ const gap=x-a[k-1]; if(gap===2) out.push(x-1); else if(gap>2) out.push("…"); } out.push(x); }); return out; }
 function render(){
   LIST=cards(); const sig=sigOf();
-  if(SIG!==null&&sig!==SIG&&!QUIET){ S.page=1; setURL(!sameButSearch(SIG,sig)&&!OPEN.length); }
-  SIG=sig;
+  if(SIG!==null&&sig!==SIG&&!QUIET){ S.page=1; setURL((FORCE_PUSH||(!SEARCHING&&!sameButSearch(SIG,sig)))&&!OPEN.length); }
+  SIG=sig; FORCE_PUSH=false;
   const pages=Math.max(1,Math.ceil(LIST.length/PAGE_N));
   if(LOADED&&S.page>pages){ S.page=pages; setURL(false); }
   const cur=Math.min(S.page,pages), from=(cur-1)*PAGE_N, to=Math.min(LIST.length,from+PAGE_N); let html="", last=null;
   for(let k=from;k<to;k++){ const c=LIST[k]; if(S.sort==="brand"&&c.rep.brand!==last){ last=c.rep.brand; html+=`<h3 class="bhead">${esc(last)}<span>${LIST.filter(x=>x.rep.brand===last).length} styles</span></h3>`; } html+=cardHtml(c); }
   $("grid").innerHTML=html;
   $("empty").hidden=LIST.length>0;
-  $("count").innerHTML=`${LIST.length} ${LIST.length===1?"style":"styles"}`+(pages>1?`<span class="pgof"> · page ${cur} of ${pages}</span>`:"");
+  $("count").innerHTML=`<span class="pgof">${LIST.length} ${LIST.length===1?"style":"styles"}</span>`+(pages>1?`<span class="pgof"> · page ${cur} of ${pages}</span>`:"");
   const nf=S.f.size; $("filterN").hidden=!nf; $("filterN").textContent=nf; $("clearAll").hidden=!(nf||S.q.trim());
   drawPager(cur,pages,from,to);
+  store.set("nl-aud",S.g); store.set("nl-sort",S.sort);
 }
 function drawPager(cur,pages,from,to){ LASTPG=[cur,pages,from,to];
   const p=$("pager"), info=$("pginfo"); p.hidden=info.hidden=pages<2; if(pages<2){ p.innerHTML=""; return; }
@@ -600,11 +602,11 @@ $("types").addEventListener("click",e=>{ const b=e.target.closest(".chip"); if(!
   if(!S.type.startsWith("sec:Bags")) [...S.f].filter(k=>k.startsWith("kind:")).forEach(k=>S.f.delete(k));
   if(S.type==="drop") track("drop/open","This week"); refresh(); toTop(); b.scrollIntoView({block:"nearest",inline:"nearest"}); });
 $("sort").value=S.sort; $("sort").addEventListener("change",e=>{ S.sort=e.target.value; store.set("nl-sort",S.sort); render(); toTop(); });
-$("q").addEventListener("input",e=>{ S.q=e.target.value; clearTimeout(render.t); render.t=setTimeout(refresh,120); });
+$("q").addEventListener("input",e=>{ S.q=e.target.value; clearTimeout(render.t); render.t=setTimeout(()=>{ SEARCHING=true; refresh(); SEARCHING=false; },120); });
 $("searchBtn").onclick=()=>{ const r=$("searchRow"), open=r.hidden; r.hidden=!open; $("searchBtn").setAttribute("aria-expanded",open);
   document.documentElement.style.setProperty("--toolsTop", document.querySelector(".top").offsetHeight+"px");
-  if(open) $("q").focus(); else if(S.q){ S.q=""; $("q").value=""; refresh(); } };
-$("clearAll").onclick=()=>{ S.f.clear(); S.q=""; $("q").value=""; refresh(); };
+  if(open) $("q").focus(); else if(S.q){ S.q=""; $("q").value=""; FORCE_PUSH=true; refresh(); } };
+$("clearAll").onclick=()=>{ S.f.clear(); S.q=""; $("q").value=""; FORCE_PUSH=true; refresh(); };
 $("grid").addEventListener("click",e=>{ const c=e.target.closest(".card"); if(c) openPD(c.dataset.ref); });
 $("grid").addEventListener("keydown",e=>{ if(e.key==="Enter"){ const c=e.target.closest(".card"); if(c) openPD(c.dataset.ref); } });
 $("grid").addEventListener("mouseover",e=>{ const im=e.target.closest(".card")?.querySelector("img.alt[data-src]"); if(!im) return; im.src=im.dataset.src; im.removeAttribute("data-src"); im.onload=()=>im.parentNode.classList.add("alton"); im.onerror=()=>im.remove(); });
@@ -648,13 +650,21 @@ window.addEventListener("popstate",e=>{
   if(OWN_BACK){ OWN_BACK=false; if(!OPEN.length&&here()!==urlFor()) setURL(true); return; }
   // Back from an overlay opened over another one (size guide or photos over a product): close only what is above it
   if(st.ov&&OPEN.includes(st.ov)){ while(OPEN.length&&OPEN[OPEN.length-1]!==st.ov) closeOv(true); return; }
+  // landing on an overlay's own entry while it is closed (Forward after closing it): show its view and reopen it
+  if(st.ov){ const keep=st.ov==="gal"||st.ov==="sgSheet"?["pd"]:[]; while(OPEN.length&&!keep.includes(OPEN[OPEN.length-1])) closeOv(true);
+    showView(st.v); reopen(st.ov); return; }
   const hadFilters=OPEN.includes("filters"); while(OPEN.length) closeOv(true);
   if(hadFilters&&here()!==urlFor()){ setURL(true); return; }   // Back closed the filter panel: keep the new filters as a step
-  // otherwise the entry is the truth: show the view it was saved with
-  const v=st.v||viewFromURL()||LOAD_VIEW;
-  if(JSON.stringify(v)!==JSON.stringify(view())){ QUIET=true; applyView(v); typeRail(); render(); QUIET=false; listTop(); }
-  if(st.ov==="pd"){ const ref=new URLSearchParams(location.search).get("i"); if(ref&&BYREF.has(ref)) openPD(ref,true); }   // Forward onto a product
+  showView(st.v||viewFromURL()||LOAD_VIEW);   // otherwise the entry is the truth: show the view it was saved with
 });
+function showView(v){ if(v&&JSON.stringify(v)!==JSON.stringify(view())){ QUIET=true; applyView(v); typeRail(); render(); QUIET=false; listTop(); } }
+// reopen an overlay on its own history entry (no new entry): products come from ?i=, the rest from the open product
+function reopen(ov){ const ref=new URLSearchParams(location.search).get("i");
+  if(["pd","gal","sgSheet"].includes(ov)&&!OPEN.includes("pd")){ if(!ref||!BYREF.has(ref)) return; openPD(ref,true); }
+  if(ov==="gal"&&PD.i) openGal(PD.i.model+(PD.i.colour?" · "+PD.i.colour:""), pdPhotos(PD.i), 0, true);
+  if(ov==="sgSheet"&&PD.i) openSG(PD.i, true);
+  if(ov==="filters"){ drawFilters(); openOv("filters",null,true); }
+  if(ov==="bag"){ drawBag(); openOv("bag",null,true); } }
 document.querySelectorAll(".ov").forEach(o=>o.addEventListener("click",e=>{ if(e.target===o||e.target.closest("[data-close]")) closeOv(); }));
 $("pd").addEventListener("click",e=>{ if(e.target.id==="pd") closeOv(); });
 $("pdClose").onclick=()=>closeOv();
@@ -745,7 +755,7 @@ $("waShow").textContent="+"+WA; $("footWa").textContent="+"+WA; $("footWa").href
 
 // ---------- full-screen photos ----------
 const G=id=>document.getElementById(id);
-function openGal(title, urls, start){ G("gtitle").textContent=title; G("gtrack").innerHTML=urls.map(u=>`<img src="${esc(u)}" alt="" onerror="this.remove();galUpd()">`).join(""); openOv("gal");
+function openGal(title, urls, start, noPush){ G("gtitle").textContent=title; G("gtrack").innerHTML=urls.map(u=>`<img src="${esc(u)}" alt="" onerror="this.remove();galUpd()">`).join(""); openOv("gal",null,noPush);
   requestAnimationFrame(()=>{ G("gtrack").scrollLeft=(start||0)*G("gtrack").clientWidth; galUpd(); }); }
 function closeGal(){ if(OPEN[OPEN.length-1]==="gal") closeOv(); }
 function galUpd(){ const t=G("gtrack"), imgs=t.querySelectorAll("img"), k=Math.max(0,Math.min(Math.round(t.scrollLeft/(t.clientWidth||1)),imgs.length-1)); G("gcount").textContent=imgs.length?`${k+1} / ${imgs.length}`:"No photos"; G("gsave").href=imgs[k]?imgs[k].src:"#"; }
@@ -766,14 +776,14 @@ const SIZE_CHARTS={
 const SG={i:null,pick:null};
 function sgChart(i){ if(i.g==="B") return SIZE_CHARTS._baby; const c=SIZE_CHARTS[i.brand]||SIZE_CHARTS._eu, have=new Set(sizesOf(i));
   const rows=c.rows.filter(r=>have.has(r[0])); return {src:c.src, rows:rows.length?rows:c.rows}; }
-function openSG(i){ SG.i=i; SG.pick=null; const baby=i.g==="B", c=sgChart(i);
+function openSG(i, noPush){ SG.i=i; SG.pick=null; const baby=i.g==="B", c=sgChart(i);
   $("sgTitle").textContent="Size guide · "+i.brand;
   $("sgHow").innerHTML = baby ? "<li>Lay your baby down straight and measure from the top of the head to the heel, in cm.</li><li>Find the height below. If your baby is between two sizes, take the bigger one.</li>"
     : "<li>Stand on a sheet of paper with your heel against a wall.</li><li>Mark the tip of your longest toe and measure from the wall to the mark, in cm.</li><li>Measure both feet and use the longer one. If you’re between two sizes, take the bigger one.</li>";
   $("sgInLabel").textContent = baby ? "Baby’s height (cm)" : "Foot length (cm)";
   $("sgHead").innerHTML = baby ? "<tr><th>Size</th><th>Height</th></tr>" : "<tr><th>EU size</th><th>Foot length</th></tr>";
   $("sgBody").innerHTML = c.rows.map(r=>`<tr data-s="${esc(r[0])}"><td>${esc(r[0])}</td><td>${baby?r[1]+"–"+r[2]+" cm":String(r[1]).replace(".",",")+" cm"}</td></tr>`).join("");
-  $("sgSrc").textContent=c.src; $("sgIn").value=$("cFoot").value&&!baby?$("cFoot").value:""; sgFind(); openOv("sgSheet"); }
+  $("sgSrc").textContent=c.src; $("sgIn").value=$("cFoot").value&&!baby?$("cFoot").value:""; sgFind(); openOv("sgSheet",null,noPush); }
 function sgFind(){ const i=SG.i, baby=i.g==="B", c=sgChart(i), v=parseFloat(($("sgIn").value||"").replace(",","."));
   let hit=null; if(v>0){ hit = baby ? (c.rows.find(r=>v<r[2])||null) : (c.rows.find(r=>r[1]>=v)||null); }
   SG.pick=hit?hit[0]:null;
@@ -789,13 +799,14 @@ function brandParam(){ const b=new URLSearchParams(location.search).get("b"); if
   [...S.f].filter(k=>k.startsWith("brand:")).forEach(k=>S.f.delete(k)); S.f.add("brand:"+hit.brand); }
 // ?i=REF opens that style once the catalogue has loaded; a plain style link (no view in it) switches to that style's tab
 function itemParam(){ if(itemParam.done) return; itemParam.done=true; const ref=INIT_I;
+  if(INIT_OV){ if(!OPEN.length) reopen(INIT_OV); return; }
   if(!ref||!BYREF.has(ref)||OPEN.includes("pd")) return;
   const i=BYREF.get(ref).items.find(x=>x.ref===ref);
-  if(!V0&&audOf(i)!==S.g){ S.g=audOf(i); S.type=""; S.f.clear(); S.page=1; QUIET=true; audTabs(); refresh(); QUIET=false; setURL(false); }
-  openPD(ref); }
+  if(!V0&&audOf(i)!==S.g){ S.g=audOf(i); S.type=""; S.f.clear(); S.page=1; QUIET=true; audTabs(); refresh(); QUIET=false; }
+  setURL(false); openPD(ref); }
 
 buildGroups(); brandParam(); syncControls(); refresh(); bagUI();
-const LOAD_VIEW=view(); try{ history.replaceState({v:view()},"",here()); }catch(e){}
+let LOAD_VIEW=view(); try{ history.replaceState(INIT_OV?{ov:INIT_OV, v:view()}:{v:view()},"",here()); }catch(e){}
 const BUILD="20261003072126";
 // price list switch date (Nigeria time): only when prices.json names one
 let SWITCH="";
@@ -819,7 +830,8 @@ Promise.all([fresh("products.json"), fresh("prices.json"), fresh("drop.json")]).
   cart = store.get("nl-shop-cart",[]).filter(c=>ITEMS.some(i=>i.ref===c.ref)).map(c=>{ const i=ITEMS.find(x=>x.ref===c.ref); return {...c, price:i.price, comm:i.comm, g:i.g}; }); store.set("nl-shop-cart",cart);
   LOADED=true; buildGroups();
   if(OPEN.includes("pd")&&PD.i){ const g=BYREF.get(PD.i.ref); if(g){ PD.items=g.items; PD.i=g.items.find(x=>x.ref===PD.i.ref)||g.items[0]; drawPD(false); } }   // a product opened before the data arrived
-  QUIET=true; brandParam(); syncControls(); refresh(); QUIET=false; bagUI(); setURL(false); itemParam();
+  S.f=new Set([...S.f].filter(x=>{ const n=x.indexOf(":"), k=x.slice(0,n), v=x.slice(n+1); return ITEMS.some(i=>String(i[k])===v); }));
+  QUIET=true; brandParam(); syncControls(); refresh(); QUIET=false; LOAD_VIEW=view(); bagUI(); itemParam(); setURL(false);
 });
 </script>
 <script data-goatcounter="https://northlinehouse.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>

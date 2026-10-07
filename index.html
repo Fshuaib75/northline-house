@@ -65,6 +65,9 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .pgtop:empty{display:none}
 .pgtop+.grid{margin-top:10px}
 .pgof{white-space:nowrap}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .seg button[aria-pressed="true"],:root:not([data-theme="light"]) .bchip:not(.drop)[aria-pressed="true"]{background:var(--sky);border-color:var(--sky);color:#0B1520}:root:not([data-theme="light"]) .bchip:not(.drop)[aria-pressed="true"] span{color:#0B1520}}
+:root[data-theme="dark"] .seg button[aria-pressed="true"],:root[data-theme="dark"] .bchip:not(.drop)[aria-pressed="true"]{background:var(--sky);border-color:var(--sky);color:#0B1520}
+:root[data-theme="dark"] .bchip:not(.drop)[aria-pressed="true"] span{color:#0B1520}
 @media (max-width:520px){.pager{gap:3px}.pgb{width:40px;min-width:40px;padding:0}.pgb span{display:none}.pgn{min-width:34px;padding:0 4px;height:40px}.pgdots{min-width:12px}}
 @media (max-width:420px){.grid{grid-template-columns:1fr 1fr;gap:16px 10px}}
 .card{min-width:0;display:flex;flex-direction:column;gap:6px}
@@ -368,6 +371,7 @@ let DROP=null;   // {week, refs}: this week's drop, published from the owner's b
 const selBrand = () => { const x=[...S.f].find(k=>k.startsWith("brand:")); return x?x.slice(6):""; };
 function brandRow(pool){ const n=new Map(); pool.forEach(i=>n.set(i.brand,(n.get(i.brand)||0)+1)); const sel=selBrand();
   const dn = DROP ? pool.filter(i=>DROP.refs.includes(i.ref)).length : 0;
+  if(LOADED&&!dn&&S.drop) S.drop=false;
   $("brands").hidden = n.size<2 && !dn;
   $("brands").innerHTML = (dn?`<button class="bchip drop" data-b="__drop" aria-pressed="${!!S.drop}">✦ ${esc(DROP.label)}<span>${dn}</span></button>`:"")
     + `<button class="bchip" data-b="" aria-pressed="${!sel&&!S.drop}">All brands<span>${pool.length}</span></button>`
@@ -389,9 +393,9 @@ function viewFromURL(){ const sp=new URLSearchParams(location.search); if(!VIEW_
   const g=sp.get("g"), sec=sp.get("sec"), so=sp.get("s"), p=parseInt(sp.get("p"),10);
   return {g:["M","W","K"].includes(g)?g:"M", sec:SEC_ORDER.includes(sec)?sec:"", sort:SORTS.includes(so)?so:"rec", q:sp.get("q")||"",
     f:sp.getAll("f").filter(x=>F_KEYS.includes(x.split(":")[0])).sort(), drop:sp.get("d")==="1", page:p>0?p:1}; }
-const view=()=>({g:S.g, sec:S.sec, sort:S.sort, q:S.q, f:[...S.f].sort(), drop:!!S.drop, page:PG});
+const view=()=>({g:S.g, sec:S.sec, sort:S.sort, q:S.q.trim(), f:[...S.f].sort(), drop:!!S.drop, page:PG});
 function applyView(v){ S.g=v.g; S.sec=v.sec; S.sort=v.sort; S.q=v.q; S.f=new Set(v.f); S.drop=v.drop; PG=v.page; syncControls(); }
-function syncControls(){ document.querySelectorAll("#gSeg button").forEach(x=>x.setAttribute("aria-pressed",x.dataset.g===S.g)); $("q").value=S.q; $("sort").value=S.sort; chips(); }
+function syncControls(){ document.querySelectorAll("#gSeg button").forEach(x=>x.setAttribute("aria-pressed",x.dataset.g===S.g)); $("q").value=S.q; $("sort").value=S.sort; chips(); shopBox(); }
 function urlFor(){ const u=new URL(location.href), sp=u.searchParams; VIEW_KEYS.concat(["b"]).forEach(k=>sp.delete(k));
   if(S.g!=="M") sp.set("g",S.g); if(S.sec) sp.set("sec",S.sec); if(S.sort!=="rec") sp.set("s",S.sort); if(S.q.trim()) sp.set("q",S.q.trim());
   [...S.f].sort().forEach(x=>sp.append("f",x)); if(S.drop) sp.set("d","1"); if(PG>1) sp.set("p",PG);
@@ -399,7 +403,7 @@ function urlFor(){ const u=new URL(location.href), sp=u.searchParams; VIEW_KEYS.
 const here=()=>location.pathname+location.search+location.hash;
 function setURL(push){ try{ if(push){ history.pushState({v:view()},"",urlFor()); return; } const st=history.state;
   history.replaceState(st&&st.ov?{ov:st.ov, v:view()}:{v:view()},"",urlFor()); }catch(e){} }
-const V0=viewFromURL();
+const V0=(history.state&&history.state.v)||viewFromURL();
 if(V0){ S.g=V0.g; S.sec=V0.sec; S.sort=V0.sort; S.q=V0.q; S.f=new Set(V0.f); S.drop=V0.drop; PG=V0.page; }
 // what the list depends on: when any of it changes, go back to page 1 (adding to an order doesn't)
 const sigOf=()=>JSON.stringify([S.g,S.sec,S.q.trim().toLowerCase(),[...S.f].sort(),S.sort,!!S.drop]);
@@ -431,10 +435,12 @@ new MutationObserver(ms=>ms.forEach(m=>{ const id=m.target.id; if(!OVS.includes(
   if(open&&at<0){ OVOPEN.push(id); try{ history.pushState({ov:id, v:view()},"",here()); }catch(e){} }
   else if(!open&&at>=0){ OVOPEN.splice(at,1); try{ if(history.state&&history.state.ov===id){ OWN_BACK=true; history.back(); } }catch(e){} } }))
   .observe(document.body,{subtree:true,attributes:true,attributeFilter:["hidden"]});
+document.addEventListener("keydown",e=>{ if(e.key==="Escape"&&OVOPEN.length){ const id=OVOPEN[OVOPEN.length-1]; if(id!=="gal") $(id).hidden=true; } });
 function popClose(){ const id=OVOPEN.pop(); (OVCLOSE[id]||(()=>{ $(id).hidden=true; }))(); }   // taken off OVOPEN first, so closing it adds no extra Back
 window.addEventListener("popstate",e=>{ const st=e.state||{};
   if(OWN_BACK){ OWN_BACK=false; return; }
   if(st.ov&&OVOPEN.includes(st.ov)){ while(OVOPEN.length&&OVOPEN[OVOPEN.length-1]!==st.ov) popClose(); return; }
+  if(st.ov) try{ history.replaceState({v:st.v||view()},"",here()); }catch(e){}
   while(OVOPEN.length) popClose();
   const v=st.v||viewFromURL()||LOAD_VIEW;
   if(JSON.stringify(v)!==JSON.stringify(view())){ QUIET=true; applyView(v); render(); QUIET=false; listTop(); }
@@ -449,6 +455,7 @@ function render(){
   let last=null; $("grid").innerHTML=(S.drop&&DROP?`<div class="dropbar"><span><b>${esc(DROP.label)}</b> · ${all.length} styles</span>${typeof dropImages==="function"?`<button class="mini st" id="dropAll">Status images for all</button>`:""}</div>`:"")+l.map(i=>{ let h=""; if(S.sort==="brand"){ if(i.brand!==last){ last=i.brand; h=`<h3 class="bhead">${esc(i.brand)}<span>${all.filter(x=>x.brand===i.brand).length} styles</span></h3>`; } } else if(S.sort==="rec"){ const t=typeKey(i); if(t!==last){ last=t; h=`<h3 class="bhead">${esc(kindLabel(i))}<span>${all.filter(x=>typeKey(x)===t).length} styles</span></h3>`; } } return h+cardHtml(i); }).join("");
   $("empty").hidden=all.length>0;
   drawPager(cur,pages,from,to,all.length);
+  store.set("nl-sort",S.sort);
   const total=cart.reduce((s,c)=>s+c.price*c.qty,0), pairs=cart.reduce((s,c)=>s+c.qty,0);
   $("obar").hidden=!cart.length;
   $("obarCount").textContent=`${pairs} item${pairs===1?"":"s"}`;
@@ -630,7 +637,7 @@ function check(){
 $("send").addEventListener("click",e=>{ if(!cart.length||!check()){ e.preventDefault(); return; } e.currentTarget.href="https://wa.me/"+WA+"?text="+encodeURIComponent(orderText()); track("order/sent", cart.reduce((s,c)=>s+c.qty,0)+" items"); });
 $("copyOrder").onclick=()=>{ if(!cart.length) return; copy(orderText(), $("orderText")); };
 brandParam(); syncControls(); render();
-const LOAD_VIEW=view(); try{ history.replaceState({v:view()},"",here()); }catch(e){}
+let LOAD_VIEW=view(); try{ history.replaceState({v:view()},"",here()); }catch(e){}
 const BUILD="20261003072126";
 // commission rule switch (Nigeria time). Before the date: today's prices + a notice. From the date: prices.json "next".
 let SWITCH="";
@@ -657,7 +664,8 @@ Promise.all([fresh("products.json"), fresh("prices.json"), fresh("drop.json")]).
   ITEMS = ALL.filter(i=>P[i.ref]).map(i=>({...i, price:P[i.ref][0], comm:P[i.ref][1], band:band(P[i.ref][0])}));
   cart = store.get("nl-cart",[]).filter(c=>ITEMS.some(i=>i.ref===c.ref)).map(c=>{ const i=ITEMS.find(x=>x.ref===c.ref); return {...c, price:i.price, comm:i.comm, g:i.g}; }); store.set("nl-cart",cart);
   try{ $("upd").textContent=new Date(j.updated).toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"}); }catch(e){}
-  QUIET=true; tabs(); brandParam(); syncControls(); render(); QUIET=false; setURL(false);
+  S.f=new Set([...S.f].filter(x=>{ const n=x.indexOf(":"), k=x.slice(0,n), v=x.slice(n+1); return ITEMS.some(i=>String(i[k])===v); }));
+  QUIET=true; tabs(); brandParam(); syncControls(); render(); QUIET=false; LOAD_VIEW=view(); setURL(false);
 });
 </script>
 <script data-goatcounter="https://northlinehouse.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
