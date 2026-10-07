@@ -90,7 +90,7 @@ svg{display:block}
 .sortw select{width:auto;border:0;background:transparent;padding:4px 2px;font:600 13px var(--ui);color:var(--ink);cursor:pointer}
 
 /* grid + cards */
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:30px 12px;padding-block:14px 40px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:30px 12px;padding-block:14px 32px}
 @media (min-width:720px){.grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:40px 20px}}
 @media (min-width:1080px){.grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:44px 24px}}
 .card{min-width:0;cursor:pointer;display:flex;flex-direction:column;gap:12px;outline-offset:4px}
@@ -114,7 +114,16 @@ svg{display:block}
 .bhead span{font:500 13px var(--ui);color:var(--muted)}
 .empty{padding:60px 0;text-align:center;color:var(--muted)}
 .empty b{display:block;font:500 22px var(--display);color:var(--ink);margin-bottom:6px}
-#more{height:1px}
+/* pages */
+.pager{display:flex;align-items:center;justify-content:center;gap:6px;padding-top:6px}
+.pgb,.pgn{height:42px;min-width:42px;padding:0 14px;display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid var(--line-2);border-radius:999px;background:var(--surface);font:600 14px var(--ui);font-variant-numeric:tabular-nums}
+.pgn{padding:0 8px}
+.pgb:hover:not(:disabled),.pgn:hover{border-color:var(--ink)}
+.pgn[aria-current="page"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.pgb:disabled{opacity:.35;cursor:default}
+.pgdots{min-width:18px;text-align:center;color:var(--muted)}
+.pginfo{text-align:center;font-size:13px;color:var(--muted);margin:12px 0 36px}
+@media (max-width:520px){.pager{gap:3px}.pgb{width:40px;min-width:40px;padding:0}.pgb span{display:none}.pgn{min-width:34px;padding:0 4px;height:40px}.pgdots{min-width:12px}}
 
 /* sheets and drawers */
 .ov{position:fixed;inset:0;z-index:40;background:rgba(14,27,44,.45);display:flex;opacity:0;transition:opacity .2s}
@@ -289,7 +298,8 @@ body.hasbar .foot{padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}
     <label class="sortw">Sort <select id="sort" aria-label="Sort"><option value="rec">Featured</option><option value="new">New in</option><option value="low">Price: low to high</option><option value="high">Price: high to low</option><option value="brand">Brand A–Z</option></select></label></div>
   <div class="grid" id="grid"></div>
   <div class="empty" id="empty" hidden><b>No styles match</b>Try fewer filters, or another search.</div>
-  <div id="more"></div>
+  <nav class="pager" id="pager" aria-label="Pages" hidden></nav>
+  <p class="pginfo" id="pginfo" hidden></p>
 </main>
 
 <footer class="foot">
@@ -436,7 +446,7 @@ const fewSizes=i=>{ const z=i.sizes||[]; return z.length>0&&z.length<=2&&z[0]!==
 const itemRank=i=>(inDrop(i)?8:0)+(isFresh(i)?4:0)+Math.min(photos(i),4)*0.5+(fewSizes(i)?-2:0)+((i.sizes||[]).length>4?0.5:0);
 
 // ---------- state ----------
-const S = {g:"W", type:"", q:"", f:new Set(), sort:"rec", shown:0};
+const S = {g:"W", type:"", q:"", f:new Set(), sort:"rec", page:1};
 S.g = ["W","M","K"].includes(store.get("nl-aud","W")) ? store.get("nl-aud","W") : "W";
 S.sort = ["rec","new","low","high","brand"].includes(store.get("nl-sort","rec")) ? store.get("nl-sort","rec") : "rec";
 let cart = store.get("nl-shop-cart",[]).filter(c=>ITEMS.some(i=>i.ref===c.ref));
@@ -516,19 +526,43 @@ function cardHtml(c){
       <span class="p">${N(i.price)}</span>${fewSizes(i)?`<span class="few">Few sizes left</span>`:""}</div>
   </article>`;
 }
-const PAGE_N=36; let LIST=[];
-function render(reset){
-  if(reset!==false){ LIST=cards(); S.shown=0; $("grid").innerHTML=""; }
-  const from=S.shown, to=Math.min(LIST.length, S.shown+PAGE_N); let html="", last=from?LIST[from-1].rep.brand:null;
+// ---------- numbered pages: 36 styles a page (2, 3 or 4 across); the page is kept in the link as ?p=N ----------
+const PAGE_N=36; let LIST=[], SIG=null, LOADED=false;
+const pageFromURL=()=>{ const n=parseInt(new URLSearchParams(location.search).get("p"),10); return n>0?n:1; };
+S.page=pageFromURL();
+// what the list depends on: when any of it changes, go back to page 1
+const sigOf=()=>JSON.stringify([S.g,S.type,S.q.trim().toLowerCase(),[...S.f].sort(),S.sort]);
+function setPageURL(push){ try{ const u=new URL(location.href); if(S.page>1) u.searchParams.set("p",S.page); else u.searchParams.delete("p"); const url=u.pathname+u.search+u.hash;
+  if(push) history.pushState({pg:S.page},"",url); else history.replaceState(history.state&&history.state.ov?history.state:{pg:S.page},"",url); }catch(e){} }
+function pageList(cur,n){ const s=new Set([1,n,cur-1,cur,cur+1]); if(cur<=3) [2,3,4].forEach(x=>s.add(x)); if(cur>=n-2) [n-1,n-2,n-3].forEach(x=>s.add(x));
+  const a=[...s].filter(x=>x>=1&&x<=n).sort((x,y)=>x-y), out=[];
+  a.forEach((x,k)=>{ if(k){ const gap=x-a[k-1]; if(gap===2) out.push(x-1); else if(gap>2) out.push("…"); } out.push(x); }); return out; }
+function render(){
+  LIST=cards(); const sig=sigOf();
+  if(SIG!==null&&sig!==SIG&&S.page!==1){ S.page=1; setPageURL(false); }
+  SIG=sig;
+  const pages=Math.max(1,Math.ceil(LIST.length/PAGE_N));
+  if(LOADED&&S.page>pages){ S.page=pages; setPageURL(false); }
+  const cur=Math.min(S.page,pages), from=(cur-1)*PAGE_N, to=Math.min(LIST.length,from+PAGE_N); let html="", last=null;
   for(let k=from;k<to;k++){ const c=LIST[k]; if(S.sort==="brand"&&c.rep.brand!==last){ last=c.rep.brand; html+=`<h3 class="bhead">${esc(last)}<span>${LIST.filter(x=>x.rep.brand===last).length} styles</span></h3>`; } html+=cardHtml(c); }
-  $("grid").insertAdjacentHTML("beforeend",html); S.shown=to;
+  $("grid").innerHTML=html;
   $("empty").hidden=LIST.length>0;
-  $("count").textContent=`${LIST.length} ${LIST.length===1?"style":"styles"}`;
+  $("count").textContent=`${LIST.length} ${LIST.length===1?"style":"styles"}`+(pages>1?` · page ${cur} of ${pages}`:"");
   const nf=S.f.size; $("filterN").hidden=!nf; $("filterN").textContent=nf; $("clearAll").hidden=!(nf||S.q.trim());
+  drawPager(cur,pages,from,to);
 }
+function drawPager(cur,pages,from,to){
+  const p=$("pager"), info=$("pginfo"); p.hidden=info.hidden=pages<2; if(pages<2){ p.innerHTML=""; return; }
+  p.innerHTML=`<button class="pgb" data-p="${cur-1}" ${cur===1?"disabled":""} aria-label="Previous page"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 6-6 6 6 6"/></svg><span>Previous</span></button>`
+    + pageList(cur,pages).map(x=>x==="…"?`<span class="pgdots" aria-hidden="true">…</span>`:`<button class="pgn" data-p="${x}" ${x===cur?'aria-current="page"':""} aria-label="Page ${x}">${x}</button>`).join("")
+    + `<button class="pgb" data-p="${cur+1}" ${cur===pages?"disabled":""} aria-label="Next page"><span>Next</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 6 6 6-6 6"/></svg></button>`;
+  info.textContent=`Showing ${from+1}–${to} of ${LIST.length} styles`;
+}
+// jump to the top of the list (below the sticky bars)
+function listTop(){ const target=document.querySelector(".meta").getBoundingClientRect().top+scrollY-(document.querySelector(".tools").offsetHeight+document.querySelector(".top").offsetHeight); window.scrollTo({top:Math.max(0,target)}); }
+$("pager").addEventListener("click",e=>{ const b=e.target.closest("button[data-p]"); if(!b||b.disabled) return; const n=+b.dataset.p, pages=Math.max(1,Math.ceil(LIST.length/PAGE_N));
+  if(n<1||n>pages||n===Math.min(S.page,pages)) return; S.page=n; setPageURL(true); render(); listTop(); track("page/"+n,"Page "+n); });
 function refresh(){ typeRail(); render(); }
-const io=("IntersectionObserver" in window)?new IntersectionObserver(es=>{ if(es.some(e=>e.isIntersecting)&&S.shown<LIST.length) render(false); },{rootMargin:"1200px 0px"}):null;
-if(io) io.observe($("more")); else window.addEventListener("scroll",()=>{ if(S.shown<LIST.length&&$("more").getBoundingClientRect().top<innerHeight+1200) render(false); },{passive:true});
 // after changing what is shown, bring the top of the list back into view (only if the shopper had scrolled past it)
 function toTop(){ const target=document.querySelector(".meta").getBoundingClientRect().top+scrollY-(document.querySelector(".tools").offsetHeight+document.querySelector(".top").offsetHeight); if(scrollY>target) window.scrollTo({top:target}); }
 
@@ -577,8 +611,13 @@ function openOv(id, url){ const el=$(id); if(OPEN.includes(id)) return; OPEN.pus
   setTimeout(()=>{ const f=el.querySelector("[data-close],.x"); if(f) f.focus({preventScroll:true}); },50); }
 function closeOv(fromPop){ const id=OPEN.pop(); if(!id) return; hide($(id)); lockBody();
   if(id==="pd") PD.items=null;
-  if(!fromPop){ try{ if(history.state&&history.state.ov===id) history.back(); }catch(e){} } }
-window.addEventListener("popstate",()=>{ if(OPEN.length) closeOv(true); });
+  if(!fromPop){ try{ if(history.state&&history.state.ov===id){ OWN_BACK=true; history.back(); } }catch(e){} } }
+let OWN_BACK=false;
+// back/forward: close the top overlay if one is open, otherwise show the page named in the link
+window.addEventListener("popstate",()=>{
+  if(OWN_BACK){ OWN_BACK=false; if(pageFromURL()!==S.page) setPageURL(false); return; }
+  if(OPEN.length){ closeOv(true); if(pageFromURL()!==S.page) setPageURL(false); return; }
+  const n=pageFromURL(); if(n!==S.page){ S.page=n; render(); listTop(); } });
 document.querySelectorAll(".ov").forEach(o=>o.addEventListener("click",e=>{ if(e.target===o||e.target.closest("[data-close]")) closeOv(); }));
 $("pd").addEventListener("click",e=>{ if(e.target.id==="pd") closeOv(); });
 $("pdClose").onclick=()=>closeOv();
@@ -710,13 +749,13 @@ $("sgUse").onclick=()=>{ PD.size=SG.pick; if(SG.i.g!=="B") $("cFoot").value=$("s
 // ---------- links: ?b=Brand opens that brand, ?i=REF opens that style ----------
 function brandParam(){ const b=new URLSearchParams(location.search).get("b"); if(!b||brandParam.done) return; const hit=ITEMS.find(i=>i.brand.toLowerCase()===b.toLowerCase()); if(!hit) return; brandParam.done=true;
   if(!ITEMS.some(i=>audOf(i)===S.g&&i.brand===hit.brand)){ S.g=audOf(hit); S.type=""; audTabs(); }
-  S.f.add("brand:"+hit.brand); refresh(); }
+  S.f.add("brand:"+hit.brand); }
 function itemParam(){ const ref=new URLSearchParams(location.search).get("i"); if(!ref||itemParam.done||!BYREF.has(ref)) return; itemParam.done=true;
   const i=BYREF.get(ref).items.find(x=>x.ref===ref); if(audOf(i)!==S.g){ S.g=audOf(i); S.type=""; S.f.clear(); audTabs(); refresh(); }
   try{ const u=new URL(location.href); u.searchParams.delete("i"); history.replaceState(null,"",u.pathname+u.search); }catch(e){}
   openPD(ref); }
 
-buildGroups(); audTabs(); refresh(); bagUI(); brandParam();
+buildGroups(); audTabs(); brandParam(); refresh(); bagUI();
 const BUILD="20261003072126";
 // price list switch date (Nigeria time): only when prices.json names one
 let SWITCH="";
@@ -738,7 +777,7 @@ Promise.all([fresh("products.json"), fresh("prices.json"), fresh("drop.json")]).
     ITEMS = ALL.filter(i=>P[i.ref]).map(i=>({...i, price:P[i.ref][0], comm:P[i.ref][1], band:band(P[i.ref][0])}));
   } else ITEMS = ALL.filter(i=>i.price).map(i=>({...i, band:band(i.price)}));
   cart = store.get("nl-shop-cart",[]).filter(c=>ITEMS.some(i=>i.ref===c.ref)).map(c=>{ const i=ITEMS.find(x=>x.ref===c.ref); return {...c, price:i.price, comm:i.comm, g:i.g}; }); store.set("nl-shop-cart",cart);
-  buildGroups(); audTabs(); refresh(); bagUI(); brandParam(); itemParam();
+  LOADED=true; buildGroups(); audTabs(); brandParam(); refresh(); bagUI(); itemParam();
 });
 </script>
 <script data-goatcounter="https://northlinehouse.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
