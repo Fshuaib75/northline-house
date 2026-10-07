@@ -474,7 +474,7 @@ $("copyOrder").onclick=()=>{ if(!cart.length) return; copy(orderText(), $("order
 chips(); render(); brandParam();
 const BUILD="20261003072126";
 // price list switch date (Nigeria time)
-let SWITCH="2026-10-16";
+let SWITCH="";
 const todayNG = () => new Date(Date.now()+3600e3).toISOString().slice(0,10);
 function commText(){ return !!SWITCH && todayNG()>=SWITCH; }
 const fresh = f => fetch("../"+f+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.ok?r.json():null).catch(()=>null);
@@ -488,7 +488,7 @@ Promise.all([fresh("products.json"), fresh("prices.json"), fresh("drop.json")]).
     ALL = ALL.concat(added.filter(a=>a&&a.ref&&!known.has(a.ref)).map(a=>({...a, desc:a.desc||"", colour:a.colour||"", fam:a.fam||"", heel:a.heel||"", img:IMG(a.img), full:IMG(a.img), imgs:(a.imgs||[]).map(IMG)})));
   }
   if(!j||!j.prices) { if(added&&added.length){ ITEMS = ALL.filter(i=>i.price).map(i=>({...i, band:band(i.price)})); tabs(); chips(); render(); } return; }
-  if(j.switchAt) SWITCH=j.switchAt;
+  SWITCH=j.switchAt||"";
   const P = (commText() && j.next) ? Object.assign({}, j.prices, j.next) : j.prices;
   ITEMS = ALL.filter(i=>P[i.ref]).map(i=>({...i, price:P[i.ref][0], comm:P[i.ref][1], band:band(P[i.ref][0])}));
   cart = store.get("nl-shop-cart",[]).filter(c=>ITEMS.some(i=>i.ref===c.ref)).map(c=>{ const i=ITEMS.find(x=>x.ref===c.ref); return {...c, price:i.price, comm:i.comm, g:i.g}; }); store.set("nl-shop-cart",cart);
