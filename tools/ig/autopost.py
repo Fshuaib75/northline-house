@@ -43,8 +43,11 @@ def catalogue():
     lagos_today = (dt.datetime.utcnow() + dt.timedelta(hours=1)).date().isoformat()
     use_next = bool(prices.get("switchAt")) and lagos_today >= prices["switchAt"]
     hidden = set(prices.get("hidden", []))
+    fresh = load(os.path.join(ROOT, "capone.json"), {}).get("styles", {})   # Capone's current photo links (weekly check)
     out = []
     for i in items:
+        f = (fresh.get(i["ref"]) or {}).get("img")
+        if f: i["imgs"] = f + [u for u in (i.get("imgs") or []) if u not in f]
         p = (prices.get("next", {}) if use_next else {}).get(i["ref"]) or prices.get("prices", {}).get(i["ref"])
         if not p or i["ref"] in hidden or not (i.get("img") or i.get("imgs")): continue
         i["price"] = p[0]; out.append(i)

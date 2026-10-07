@@ -123,10 +123,12 @@ async function checkStyle(s, run){ const i=s.item, chain=photoChain(i.img, i.img
   return {state:"dead", why:"none of its "+chain.length+" photo links load"+(slow?` (${slow} on a server that didn’t answer)`:"")}; }
 
 async function load(){
-  const [html, added, prices]=await Promise.all([fresh("shop/index.html",true), fresh("products.json"), fresh("prices.json")]);
+  const [html, added, prices, cap]=await Promise.all([fresh("shop/index.html",true), fresh("products.json"), fresh("prices.json"), fresh("capone.json")]);
   const m=html&&html.match(/let ALL = (\[.*?\]);\n/s); if(!m){ $("status").textContent="Couldn’t read the catalogue. Reload the page."; return; }
   let all=JSON.parse(m[1]); const known=new Set(all.map(i=>i.ref));
   if(Array.isArray(added)) all=all.concat(added.filter(a=>a&&a.ref&&!known.has(a.ref)).map(a=>({...a, img:IMG(a.img), full:IMG(a.img), imgs:(a.imgs||[]).map(IMG)})));
+  const st=(cap&&cap.styles)||{};   // Capone's current photo links from the weekly check, as the shop uses them
+  all=all.map(i=>{ const im=st[i.ref]&&st[i.ref].img; if(!im||!im.length) return i; const at=w=>im[0].replace(/\?.*$/,"")+"?width="+w; return {...i, img:at(700), full:at(2000), imgs:im}; });
   const P=(prices&&prices.prices)||{}, hidden=new Set((prices&&prices.hidden)||[]);
   STYLES=all.map(i=>({item:i, inShop:!!P[i.ref]&&!hidden.has(i.ref)}));
   const brands=[...new Set(all.map(i=>i.brand))].sort();

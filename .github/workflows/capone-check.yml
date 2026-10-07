@@ -6,10 +6,7 @@ name: Capone weekly check
 on:
   schedule:
     - cron: "47 4 * * 1"        # Mondays 05:47 in Lagos
-  workflow_dispatch:
-  push:                          # development runs from the working branch only print the report
-    branches: [claude/gifted-brown-d71piq]
-    paths: [tools/capone/**, .github/workflows/capone-check.yml]
+  workflow_dispatch:              # runs started from any branch but main only print the report
 
 permissions:
   contents: write
