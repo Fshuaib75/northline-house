@@ -52,47 +52,46 @@ def main():
     cap, P = catalogue()
     prods = products()
     print("\n== Capone store:", len(prods), "products")
-    if prods:
-        p = prods[0]
-        print("product keys:", sorted(p.keys()))
-        print("variant keys:", sorted(p["variants"][0].keys()) if p.get("variants") else None)
-        print("image keys:", sorted(p["images"][0].keys()) if p.get("images") else None)
-        print("options:", p.get("options"))
-        for q in prods[:3]:
-            print("--", q.get("handle"), "|", q.get("title"), "| type", q.get("product_type"), "| tags", (q.get("tags") or [])[:8])
-            print("   variants:", [(v.get("sku"), v.get("option1"), v.get("option2"), v.get("available"), v.get("price")) for v in q.get("variants", [])[:6]])
-            print("   images:", [fname(i["src"]) for i in q.get("images", [])[:6]])
-    # stems on the store
-    store = collections.defaultdict(list)
-    nost = collections.Counter()
-    for q in prods:
-        for im in q.get("images", []):
-            s = stem(im["src"])
-            if s: store[s].append(q["handle"])
-            else: nost[fname(im["src"])[:40]] += 1
-    print("\nstore image stems:", len(store), "| images without a stem:", sum(nost.values()), list(nost)[:8])
-    # our Capone styles
     hidden = set(P.get("hidden", []))
-    def ours(i):
-        return {stem(u) for u in [i.get("img")] + (i.get("imgs") or []) if u and stem(u)}
-    res = collections.Counter(); miss = []
+    by_stem = collections.defaultdict(list)          # stem -> [(product, image src)]
+    for q in prods:
+        for im in sorted(q.get("images", []), key=lambda x: x.get("position", 0)):
+            s = stem(im["src"])
+            if s: by_stem[s].append((q, im["src"]))
+    def ours(i): return [stem(u) for u in [i.get("img")] + (i.get("imgs") or []) if u and stem(u)]
+    def sizes(q, s):
+        art, col = s.rsplit("_", 1)
+        vs = [v for v in q.get("variants", []) if (v.get("sku") or "").startswith(art + col)]
+        return vs
+    shown = 0
+    stats = collections.Counter()
     for i in cap:
-        st = ours(i)
         grp = "hidden" if i["ref"] in hidden else ("shop" if i["ref"] in P["prices"] else "unpriced")
-        hit = any(s in store for s in st)
-        res[(grp, "no stem" if not st else ("found" if hit else "not found"))] += 1
-        if st and not hit and grp != "unpriced" and len(miss) < 12: miss.append((i["ref"], sorted(st)[:2]))
-    print("\nour Capone styles vs the store:")
-    for k, v in sorted(res.items()): print("  ", k, v)
-    print("sample not found:", miss)
-    # article code only (without colour), to see if styles moved to new photos
-    art = collections.Counter(s.rsplit("_", 1)[0] for s in store)
-    def arts(i): return {s.rsplit("_", 1)[0] for s in ours(i)}
-    r2 = collections.Counter()
-    for i in cap:
-        if i["ref"] in hidden:
-            r2["hidden: article still on the store" if any(a in art for a in arts(i)) else "hidden: article gone"] += 1
-    print(r2)
+        if grp == "unpriced": continue
+        st = [x for x in ours(i) if x]
+        s0 = st[0] if st else None
+        hits = by_stem.get(s0, []) if s0 else []
+        if not hits:
+            stats[(grp, "not on store")] += 1
+            art = s0.rsplit("_", 1)[0] if s0 else ""
+            alt = sorted({k for k in by_stem if art and k.startswith(art)})
+            print("NOT ON STORE", grp, i["ref"], s0, "| same article on store:", alt[:4])
+            continue
+        q = hits[0][0]
+        vs = sizes(q, s0)
+        avail = [v.get("option2") or v.get("option1") for v in vs if v.get("available")]
+        same = fname(i["img"]) in [fname(u) for _, u in hits]
+        stats[(grp, "listed", "same file" if same else "new file", "in stock" if avail else ("sold out" if vs else "no matching sizes"))] += 1
+        if grp == "hidden" and shown < 6:
+            shown += 1
+            print("HIDDEN", i["ref"], "| ours:", fname(i["img"]), "| store:", [fname(u) for _, u in hits][:3], "| sizes ours", i.get("sizes"), "| in stock", avail, "| products", len({id(h[0]) for h in hits}))
+    print("\nsummary:")
+    for k, v in sorted(stats.items()): print("  ", k, v)
+    # does an image src on the store load as given, with and without ?width
+    q = prods[0]; u = q["images"][0]["src"]
+    print("\nsample src:", u)
+    for t in [u, u.split("?")[0] + "?width=700", u.replace("https://cdn.shopify.com/s/files/1/0566/3732/5374/files/", STORE + "/cdn/shop/files/")]:
+        print("  ", get(t)[0], t[:120])
 
 if __name__ == "__main__":
     main()
