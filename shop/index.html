@@ -416,20 +416,74 @@ const N = n=>"₦"+Math.round(n).toLocaleString("en-NG");
 const esc = s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const IMG = u => !u || /^https?:/.test(u) ? u : "../"+u;   // added products store photos relative to the site root
 
-// ---------- photos: when a photo link fails, try the style's other links before giving up ----------
-// Capone's own site and Shopify's main image server hold the same files (Shopify's is tried first), then the shop's own
-// link, the style's other photos, and last an image relay (wsrv.nl) for shops that refuse photos shown on other sites.
-const TWINS=[["https://www.caponeoutfitters.com.tr/cdn/shop/files/","https://cdn.shopify.com/s/files/1/0566/3732/5374/files/"]];
-const twinOf=u=>{ for(const [a,b] of TWINS) if(u.startsWith(a)) return b+u.slice(a.length); return ""; };
+// ---------- photos: when a photo link fails or never answers, try the style's other links before giving up ----------
+// Capone's photos are on Shopify's main image server and on Capone's own site (the same files; Shopify's copy is tried
+// first). After those come the style's other photos, then an image relay (wsrv.nl) for shops that refuse photos shown on
+// other sites. Links that failed are remembered for the visit, and a server that has failed every time is skipped (its
+// photos go through the relay instead), so redrawing the list doesn't fetch dead links again.
+const TWINS=[["https://cdn.shopify.com/s/files/1/0566/3732/5374/files/","https://www.caponeoutfitters.com.tr/cdn/shop/files/"]];
+const copiesOf=u=>{ for(const [a,b] of TWINS){ if(u.startsWith(a)) return [u, b+u.slice(a.length)]; if(u.startsWith(b)) return [a+u.slice(b.length), u]; } return [u]; };
+// one key per photo file: the same file at another width is the same photo
+const fileOf=u=>{ const [p,q=""]=copiesOf(u)[0].split("?"), k=q.split("&").filter(x=>x&&!/^(width|height|v)=/.test(x)).join("&"); return k?p+"?"+k:p; };
 const viaRelay=u=>/^https?:/.test(u)&&!u.startsWith("https://wsrv.nl/")?"https://wsrv.nl/?url="+encodeURIComponent(u)+"&w=900&output=jpg":"";
-function photoChain(...lists){ const all=lists.flat().filter(Boolean), out=[], add=u=>{ if(u&&!out.includes(u)) out.push(u); };
-  all.forEach(u=>{ add(twinOf(u)); add(u); }); if(all.length) add(viaRelay(all[0])); return out; }
-// an <img> that walks its chain on error; when nothing loads: "card" shows the placeholder, "pg"/"gal" update the gallery
-function imgTag(chain, attrs, mode){ return chain.length?`<img src="${esc(chain[0])}" data-alts="${esc(JSON.stringify(chain.slice(1)))}" data-gone="${mode||""}" referrerpolicy="no-referrer" onerror="imgNext(this)" ${attrs||""}>`:""; }
-function imgNext(el){ let rest=[]; try{ rest=JSON.parse(el.dataset.alts||"[]"); }catch(e){}
-  if(rest.length){ el.dataset.alts=JSON.stringify(rest.slice(1)); el.src=rest[0]; return; }
-  const mode=el.dataset.gone, box=el.parentNode; el.remove();
-  if(mode==="card"&&box) box.classList.add("nophoto"); if(mode==="pg") pgUpd(); if(mode==="gal") galUpd(); }
+const PH={bad:new Set(), ok:new Set(), host:new Map()};   // this visit: links that failed, links that loaded, each server's record
+const hostOf=u=>{ try{ return new URL(u,location.href).host; }catch(e){ return ""; } };
+const hostRec=u=>{ const h=hostOf(u); if(!PH.host.has(h)) PH.host.set(h,{ok:0,fail:0}); return PH.host.get(h); };
+// a server is skipped once nothing from it has loaded and 3 tries failed (the relay: 8, as it also fails for photos that are gone)
+const hostDead=u=>{ const h=hostOf(u), r=PH.host.get(h); return !!r&&!r.ok&&r.fail>=(h==="wsrv.nl"?8:3); };
+// every link worth trying for a style, in order: both copies of each photo file, then the relay
+function photoChain(...lists){ const all=lists.flat().filter(Boolean), out=[], files=new Set();
+  all.forEach(u=>{ const f=fileOf(u); if(files.has(f)) return; files.add(f); copiesOf(u).forEach(c=>{ if(!out.includes(c)) out.push(c); }); });
+  if(all.length) out.push(viaRelay(copiesOf(all[0])[0])); return out.filter(Boolean); }
+// the next link to try: one that already loaded, else the next one on a server that works; a dead server's photo via the relay
+function pickNext(list){ list=list.filter(u=>!PH.bad.has(u));
+  let k=list.findIndex(u=>PH.ok.has(u)); if(k<0) k=list.findIndex(u=>!hostDead(u));
+  if(k>=0) return [list[k], list.filter((u,n)=>n!==k)];
+  for(let n=0;n<list.length;n++){ const r=viaRelay(copiesOf(list[n])[0]); if(r&&!PH.bad.has(r)&&!hostDead(r)) return [r, list.slice(n+1)]; }
+  return ["", []]; }
+// an <img> that walks its chain; mode says what is left when nothing loads (see photoGone)
+function imgTag(chain, attrs, mode){ const [u,rest]=pickNext(chain); if(!u) return GONE[mode||""]||"";
+  return `<img src="${esc(u)}" data-alts="${esc(JSON.stringify(rest))}" data-gone="${mode||""}" referrerpolicy="no-referrer" onload="imgOk(this)" onerror="imgNext(this)" ${attrs||""}>`; }
+function imgOk(el){ const u=el.getAttribute("src"); if(u&&!PH.ok.has(u)){ PH.ok.add(u); hostRec(u).ok++; } dropProbes(el); if(el.dataset.gone==="gal") galUpd(); }
+// a link failed: note it, then try the next link, or give up
+function imgNext(el){ const u=el.getAttribute("src")||"";
+  if(u){ PH.bad.add(u); if(el._failed!==u){ el._failed=u; hostRec(u).fail++; } }
+  if(!el.isConnected){ dropProbes(el); return; }   // no longer on the page (the list was redrawn): stop here
+  let rest=[]; try{ rest=JSON.parse(el.dataset.alts||"[]"); }catch(e){}
+  const [n,left]=pickNext(rest);
+  if(n){ el.dataset.alts=JSON.stringify(left); el.src=n; return; }
+  if(el._probes&&el._probes.length){ el._wait=true; return; }   // a link started alongside (below) may still arrive
+  photoGone(el); }
+// A photo on screen that hasn't arrived after a while (a server that never answers, or just a slow network): start the
+// next link from another server alongside it and show whichever arrives first. Nothing is cancelled until one arrives,
+// so on a slow network this costs a little data, never the photo.
+const SLOWNET=/2g|3g/.test((navigator.connection||{}).effectiveType||"")?2:1;
+function dropProbes(el){ (el._probes||[]).forEach(p=>{ p.onload=p.onerror=null; p.src=""; }); el._probes=[]; }
+function hedge(el){ const busy=[el.getAttribute("src"), ...(el._probes||[]).map(p=>p._u)].map(hostOf);
+  let rest=[]; try{ rest=JSON.parse(el.dataset.alts||"[]"); }catch(e){}
+  const [c]=pickNext(rest.filter(x=>!busy.includes(hostOf(x)))); if(!c||busy.includes(hostOf(c))) return;
+  el.dataset.alts=JSON.stringify(rest.filter(x=>x!==c));
+  const im=new Image(); im._u=c; im.referrerPolicy="no-referrer"; (el._probes=el._probes||[]).push(im);
+  im.onload=()=>{ if(!PH.ok.has(c)){ PH.ok.add(c); hostRec(c).ok++; }
+    el._probes=el._probes.filter(p=>p!==im);
+    if(!el.isConnected||(el.complete&&el.naturalWidth)) return;
+    [el.getAttribute("src"), ...el._probes.map(p=>p._u)].forEach(x=>{ if(x) hostRec(x).fail++; });   // they lost to this one
+    dropProbes(el); el._wait=false; el.src=c; };
+  im.onerror=()=>{ PH.bad.add(c); hostRec(c).fail++; el._probes=el._probes.filter(p=>p!==im);
+    if(el._wait&&!el._probes.length){ el._wait=false; imgNext(el); } };
+  im.src=c; }
+// every second: photos on screen still on their way; patient while nothing has arrived yet (the network may just be slow)
+setInterval(()=>{ if(document.hidden) return; let anyOk=false; PH.host.forEach(r=>{ if(r.ok) anyOk=true; });
+  document.querySelectorAll("img[data-alts]").forEach(el=>{ const u=el.getAttribute("src"); if(!u||el.complete) return;
+    const r=el.getBoundingClientRect(); if(!r.width||r.bottom<0||r.right<0||r.top>innerHeight||r.left>innerWidth) return;
+    if(!el._w||el._w.u!==u) el._w={u, t:0};
+    const h=PH.host.get(hostOf(u)), lim=(h&&h.ok?20:anyOk?8:15)*SLOWNET;
+    if(++el._w.t%lim===0) hedge(el); }); }, 1000);
+// when nothing loads: a card shows its placeholder, a gallery drops the photo, a swatch or bag line keeps an empty frame
+const GONE={card:"", pg:"", gal:"", alt:"", "":`<img alt="">`};
+function photoGone(el){ const mode=el.dataset.gone, box=el.parentNode;
+  if(!mode){ el.removeAttribute("onerror"); el.removeAttribute("onload"); el.removeAttribute("src"); el.removeAttribute("data-alts"); return; }
+  el.remove(); if(mode==="card"&&box) box.classList.add("nophoto"); if(mode==="pg") pgUpd(); if(mode==="gal") galUpd(); }
 const store = {get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}}, set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
 
 // visit counting (GoatCounter, no cookies): page views plus a few actions, so we learn what people look at and order
@@ -537,8 +591,8 @@ function dotsHtml(items, max){ const fams=[]; items.forEach(i=>{ const f=FAM_HEX
 function cardHtml(c){
   const i=c.rep, n=c.g.items.length, alt=(i.imgs||[]).find(u=>u&&u!==i.img&&u!==i.full&&u!==(i.imgs||[])[0]) || ((i.imgs||[]).length>1?i.imgs[1]:"");
   const tag=inDrop(i)?`<span class="tag pick">This week</span>`:isFresh(i)?`<span class="tag">New</span>`:"";
-  const chain=photoChain(i.img, i.imgs||[], i.full), altc=alt?photoChain(alt):[];
-  const ph=chain.length?imgTag(chain, `class="main" loading="lazy" alt="${esc(i.model+" "+(i.colour||""))}"`, "card")+(altc.length?`<img class="alt" alt="" data-src="${esc(altc[0])}" data-alts="${esc(JSON.stringify(altc.slice(1)))}" referrerpolicy="no-referrer" onerror="imgNext(this)">`:""):"";
+  const main=imgTag(photoChain(i.img, i.imgs||[], i.full), `class="main" loading="lazy" alt="${esc(i.model+" "+(i.colour||""))}"`, "card");
+  const ph=main?main+(alt?`<img class="alt" alt="" data-lazy="1" data-alts="${esc(JSON.stringify(photoChain(alt)))}" data-gone="alt" referrerpolicy="no-referrer" onload="imgOk(this)" onerror="imgNext(this)">`:""):"";
   return `<article class="card" data-ref="${esc(i.ref)}" tabindex="0" role="link" aria-label="${esc(i.brand+" "+i.model+", "+(i.colour||"")+", "+N(i.price))}">
     <div class="ph${ph?"":" nophoto"}">${ph}${tag}</div>
     <div class="info"><span class="b">${esc(i.brand)}</span><span class="m">${esc(i.model)}</span>
@@ -625,7 +679,7 @@ $("searchBtn").onclick=()=>{ const r=$("searchRow"), open=r.hidden; r.hidden=!op
 $("clearAll").onclick=()=>{ S.f.clear(); S.q=""; $("q").value=""; FORCE_PUSH=true; refresh(); };
 $("grid").addEventListener("click",e=>{ const c=e.target.closest(".card"); if(c) openPD(c.dataset.ref); });
 $("grid").addEventListener("keydown",e=>{ if(e.key==="Enter"){ const c=e.target.closest(".card"); if(c) openPD(c.dataset.ref); } });
-$("grid").addEventListener("mouseover",e=>{ const im=e.target.closest(".card")?.querySelector("img.alt[data-src]"); if(!im) return; im.onload=()=>im.parentNode&&im.parentNode.classList.add("alton"); im.src=im.dataset.src; im.removeAttribute("data-src"); });
+$("grid").addEventListener("mouseover",e=>{ const im=e.target.closest(".card")?.querySelector("img.alt[data-lazy]"); if(!im) return; im.removeAttribute("data-lazy"); im.addEventListener("load",()=>im.parentNode&&im.parentNode.classList.add("alton")); imgNext(im); });
 
 // ---------- filters panel ----------
 function fOpts(key, values, label){
@@ -699,7 +753,7 @@ function drawPD(newGallery){
   $("pdBrand").textContent=i.brand; $("pdName").textContent=i.model; $("pdPrice").textContent=N(i.price);
   const d=(i.desc||"").replace(/,?\s*confirm size before payment/i,"").trim(); $("pdDesc").textContent=d?d[0].toUpperCase()+d.slice(1)+".":""; $("pdDesc").hidden=!d;
   $("pdColour").textContent=i.colour||""; $("pdColours").hidden=PD.items.length<2&&!i.colour;
-  $("pdSw").innerHTML=PD.items.length>1?PD.items.map(x=>`<button class="sw" data-ref="${esc(x.ref)}" aria-pressed="${x===i}" aria-label="${esc(x.colour||x.ref)}" title="${esc(x.colour||"")}">${imgTag(photoChain(x.img, x.imgs||[], x.full), 'alt="" loading="lazy"')}</button>`).join(""):"";
+  $("pdSw").innerHTML=PD.items.length>1?PD.items.map(x=>`<button class="sw" data-ref="${esc(x.ref)}" aria-pressed="${x===i}" aria-label="${esc(x.colour||x.ref)}" title="${esc(x.colour||"")}">${x.img?imgTag(photoChain(x.img, x.imgs||[], x.full), 'alt="" loading="lazy"'):""}</button>`).join(""):"";
   if(PD.size&&!sz.includes(PD.size)) PD.size=null; if(one) PD.size="One size";
   $("pdSizes").hidden=one; $("pdSG").hidden=i.g==="BG"||i.g==="CL";
   $("pdSz").innerHTML=one?"":sz.map(s=>`<button class="sz" data-s="${esc(s)}" aria-pressed="${PD.size===s}">${esc(s)}</button>`).join("");
@@ -713,7 +767,7 @@ function pgUpd(){ const t=$("pgt"); if(!t.querySelector("img,.nophoto")) t.inner
 $("pgt").addEventListener("scroll",()=>{ clearTimeout(pgUpd.t); pgUpd.t=setTimeout(pgUpd,60); });
 $("pgPrev").onclick=()=>{ const t=$("pgt"); t.scrollBy({left:-t.clientWidth,behavior:"smooth"}); };
 $("pgNext").onclick=()=>{ const t=$("pgt"); t.scrollBy({left:t.clientWidth,behavior:"smooth"}); };
-$("pgt").addEventListener("click",e=>{ if(e.target.tagName!=="IMG") return; const imgs=[...$("pgt").querySelectorAll("img")]; openGal(PD.i.model+(PD.i.colour?" · "+PD.i.colour:""), imgs.map(x=>x.src), imgs.indexOf(e.target)); track("photos/"+PD.i.ref, PD.i.brand+" "+PD.i.model); });
+$("pgt").addEventListener("click",e=>{ if(e.target.tagName!=="IMG") return; const imgs=[...$("pgt").querySelectorAll("img")]; openGal(PD.i.model+(PD.i.colour?" · "+PD.i.colour:""), imgs.map(x=>{ let r=[]; try{ r=JSON.parse(x.dataset.alts||"[]"); }catch(_){} return [x.getAttribute("src"), ...r]; }), imgs.indexOf(e.target)); track("photos/"+PD.i.ref, PD.i.brand+" "+PD.i.model); });
 $("pdSw").addEventListener("click",e=>{ const b=e.target.closest(".sw"); if(!b) return; const x=PD.items.find(y=>y.ref===b.dataset.ref); if(!x||x===PD.i) return; PD.i=x; drawPD(true);
   try{ history.replaceState(history.state,"",urlFor({i:x.ref})); }catch(e){} });
 $("pdSz").addEventListener("click",e=>{ const b=e.target.closest(".sz"); if(!b) return; PD.size=b.dataset.s; drawPD(false); });
@@ -731,7 +785,7 @@ function bagUI(){ const n=cart.reduce((s,c)=>s+c.qty,0), total=cart.reduce((s,c)
   $("bagN").hidden=!n; $("bagN").textContent=n; $("obar").hidden=!n; document.body.classList.toggle("hasbar",!!n);
   $("obarCount").textContent=`View bag · ${n} item${n===1?"":"s"}`; $("obarTotal").textContent=N(total); }
 function drawBag(){
-  $("lines").innerHTML = cart.length ? cart.map((c,n)=>`<div class="line"><div class="t">${imgTag(photoChain(c.img), 'alt=""')}</div>
+  $("lines").innerHTML = cart.length ? cart.map((c,n)=>`<div class="line"><div class="t">${c.img?imgTag(photoChain(c.img), 'alt=""'):""}</div>
     <div><b>${esc(c.model)}</b><small>${esc(c.colour||"")}${c.size&&c.size!=="One size"?" · size "+esc(c.size):""}</small><small>${N(c.price)} each</small>
       <div class="qty"><button data-n="${n}" data-d="-1" aria-label="One less">−</button><span>${c.qty}</span><button data-n="${n}" data-d="1" aria-label="One more">+</button></div></div>
     <div><div class="lp">${N(c.price*c.qty)}</div><button class="rm" data-rm="${n}">Remove</button></div></div>`).join("") : `<div class="emptybag">Your bag is empty.</div>`;
