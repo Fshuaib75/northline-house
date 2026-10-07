@@ -61,6 +61,10 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .pgb:disabled{opacity:.35;cursor:default}
 .pgdots{min-width:18px;text-align:center;color:var(--muted)}
 .pginfo{text-align:center;font-size:13px;color:var(--muted);margin:10px 0 24px}
+.pgtop{margin-top:14px;font-size:13px;color:var(--muted);outline:none}
+.pgtop:empty{display:none}
+.pgtop+.grid{margin-top:10px}
+.pgof{white-space:nowrap}
 @media (max-width:520px){.pager{gap:3px}.pgb{width:40px;min-width:40px;padding:0}.pgb span{display:none}.pgn{min-width:34px;padding:0 4px;height:40px}.pgdots{min-width:12px}}
 @media (max-width:420px){.grid{grid-template-columns:1fr 1fr;gap:16px 10px}}
 .card{min-width:0;display:flex;flex-direction:column;gap:6px}
@@ -206,6 +210,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
     <div class="row more" id="more" hidden></div>
   </div>
 
+  <div class="pgtop" id="pgtop" tabindex="-1"></div>
   <main class="grid" id="grid"></main>
   <div class="empty" id="empty" hidden>No styles match.</div>
   <nav class="pager" id="pager" aria-label="Pages" hidden></nav>
@@ -373,35 +378,73 @@ $("brands").addEventListener("click",e=>{ const b=e.target.closest(".bchip"); if
   S.drop=false; setBrand(v===selBrand()?"":v); if(v) track("brand/"+v, v); });
 function brandParam(){ const b=new URLSearchParams(location.search).get("b"); if(!b||brandParam.done) return; const hit=ITEMS.find(i=>i.brand.toLowerCase()===b.toLowerCase()); if(!hit) return; brandParam.done=true;
   if(!ITEMS.some(i=>inView(i)&&i.brand===hit.brand)){ S.g=audOf(hit); S.sec=""; document.querySelectorAll("#gSeg button").forEach(x=>x.setAttribute("aria-pressed",x.dataset.g===S.g)); }
-  setBrand(hit.brand); }
-// ---------- numbered pages: 36 styles a page; the page is kept in the link as ?p=N ----------
-const PAGE_N=36; let SIG=null, LOADED=false;
-const pageFromURL=()=>{ const n=parseInt(new URLSearchParams(location.search).get("p"),10); return n>0?n:1; };
-let PG=pageFromURL();
+  [...S.f].filter(k=>k.startsWith("brand:")).forEach(k=>S.f.delete(k)); S.f.add("brand:"+hit.brand); if(typeof shopBox==="function") shopBox(); }
+// ---------- numbered pages, and the whole view in the link ----------
+// ?g=W&sec=Bags&s=low&q=…&f=brand:Capone&d=1&p=3 (defaults left out). A reload or shared link shows exactly that page of
+// that list; each history entry keeps its view, so Back/Forward step through what the agent saw.
+try{ history.scrollRestoration="manual"; }catch(e){}
+const PAGE_N=36; let SIG=null, LOADED=false, QUIET=false, LASTPG=null, PG=1;
+const VIEW_KEYS=["g","sec","s","q","f","d","p"], F_KEYS=["for","kind","heel","band","fam","brand"], SORTS=["rec","new","low","high","brand"];
+function viewFromURL(){ const sp=new URLSearchParams(location.search); if(!VIEW_KEYS.some(k=>sp.has(k))) return null;
+  const g=sp.get("g"), sec=sp.get("sec"), so=sp.get("s"), p=parseInt(sp.get("p"),10);
+  return {g:["M","W","K"].includes(g)?g:"M", sec:SEC_ORDER.includes(sec)?sec:"", sort:SORTS.includes(so)?so:"rec", q:sp.get("q")||"",
+    f:sp.getAll("f").filter(x=>F_KEYS.includes(x.split(":")[0])).sort(), drop:sp.get("d")==="1", page:p>0?p:1}; }
+const view=()=>({g:S.g, sec:S.sec, sort:S.sort, q:S.q, f:[...S.f].sort(), drop:!!S.drop, page:PG});
+function applyView(v){ S.g=v.g; S.sec=v.sec; S.sort=v.sort; S.q=v.q; S.f=new Set(v.f); S.drop=v.drop; PG=v.page; syncControls(); }
+function syncControls(){ document.querySelectorAll("#gSeg button").forEach(x=>x.setAttribute("aria-pressed",x.dataset.g===S.g)); $("q").value=S.q; $("sort").value=S.sort; chips(); }
+function urlFor(){ const u=new URL(location.href), sp=u.searchParams; VIEW_KEYS.concat(["b"]).forEach(k=>sp.delete(k));
+  if(S.g!=="M") sp.set("g",S.g); if(S.sec) sp.set("sec",S.sec); if(S.sort!=="rec") sp.set("s",S.sort); if(S.q.trim()) sp.set("q",S.q.trim());
+  [...S.f].sort().forEach(x=>sp.append("f",x)); if(S.drop) sp.set("d","1"); if(PG>1) sp.set("p",PG);
+  const qs=sp.toString(); return u.pathname+(qs?"?"+qs:"")+u.hash; }
+const here=()=>location.pathname+location.search+location.hash;
+function setURL(push){ try{ if(push){ history.pushState({v:view()},"",urlFor()); return; } const st=history.state;
+  history.replaceState(st&&st.ov?{ov:st.ov, v:view()}:{v:view()},"",urlFor()); }catch(e){} }
+const V0=viewFromURL();
+if(V0){ S.g=V0.g; S.sec=V0.sec; S.sort=V0.sort; S.q=V0.q; S.f=new Set(V0.f); S.drop=V0.drop; PG=V0.page; }
 // what the list depends on: when any of it changes, go back to page 1 (adding to an order doesn't)
 const sigOf=()=>JSON.stringify([S.g,S.sec,S.q.trim().toLowerCase(),[...S.f].sort(),S.sort,!!S.drop]);
-function setPageURL(push){ try{ const u=new URL(location.href); if(PG>1) u.searchParams.set("p",PG); else u.searchParams.delete("p"); const url=u.pathname+u.search+u.hash;
-  if(push) history.pushState({pg:PG},"",url); else history.replaceState({pg:PG},"",url); }catch(e){} }
-function pageList(cur,n){ const s=new Set([1,n,cur-1,cur,cur+1]); if(cur<=3) [2,3,4].forEach(x=>s.add(x)); if(cur>=n-2) [n-1,n-2,n-3].forEach(x=>s.add(x));
+const sameButSearch=(a,b)=>{ const x=JSON.parse(a), y=JSON.parse(b); x.splice(2,1); y.splice(2,1); return JSON.stringify(x)===JSON.stringify(y); };
+const NARROW=window.matchMedia?matchMedia("(max-width:379px)"):{matches:false};
+function pageList(cur,n,compact){ const s=new Set([1,n,cur]);
+  if(compact){ if(cur<=2) [2,3].forEach(x=>s.add(x)); if(cur>=n-1) [n-1,n-2].forEach(x=>s.add(x)); }
+  else { s.add(cur-1); s.add(cur+1); if(cur<=3) [2,3,4].forEach(x=>s.add(x)); if(cur>=n-2) [n-1,n-2,n-3].forEach(x=>s.add(x)); }
   const a=[...s].filter(x=>x>=1&&x<=n).sort((x,y)=>x-y), out=[];
   a.forEach((x,k)=>{ if(k){ const gap=x-a[k-1]; if(gap===2) out.push(x-1); else if(gap>2) out.push("…"); } out.push(x); }); return out; }
-function drawPager(cur,pages,from,to,total){
+function drawPager(cur,pages,from,to,total){ LASTPG=[cur,pages,from,to,total];
+  $("pgtop").innerHTML=total?`${total} ${total===1?"style":"styles"}`+(pages>1?`<span class="pgof"> · page ${cur} of ${pages}</span>`:""):"";
   const p=$("pager"), info=$("pginfo"); p.hidden=info.hidden=pages<2; if(pages<2){ p.innerHTML=""; return; }
   p.innerHTML=`<button class="pgb" data-p="${cur-1}" ${cur===1?"disabled":""} aria-label="Previous page">‹<span>Previous</span></button>`
-    + pageList(cur,pages).map(x=>x==="…"?`<span class="pgdots" aria-hidden="true">…</span>`:`<button class="pgn" data-p="${x}" ${x===cur?'aria-current="page"':""} aria-label="Page ${x}">${x}</button>`).join("")
+    + pageList(cur,pages,NARROW.matches).map(x=>x==="…"?`<span class="pgdots" aria-hidden="true">…</span>`:`<button class="pgn" data-p="${x}" ${x===cur?'aria-current="page"':""} aria-label="Page ${x}">${x}</button>`).join("")
     + `<button class="pgb" data-p="${cur+1}" ${cur===pages?"disabled":""} aria-label="Next page"><span>Next</span>›</button>`;
   info.textContent=`Showing ${from+1}–${to} of ${total} styles`;
 }
+try{ NARROW.addEventListener("change",()=>{ if(LASTPG) drawPager(...LASTPG); }); }catch(e){}
 // jump to the top of the list (below the filter bar when it is sticky)
-function listTop(){ const bar=document.querySelector(".bar"), sticky=getComputedStyle(bar).position==="sticky"; window.scrollTo({top:Math.max(0,$("grid").getBoundingClientRect().top+scrollY-(sticky?bar.offsetHeight:0)-12)}); }
-$("pager").addEventListener("click",e=>{ const b=e.target.closest("button[data-p]"); if(!b||b.disabled) return; const n=+b.dataset.p; if(n<1||n===PG) return; PG=n; setPageURL(true); render(); listTop(); track("page/"+n,"Page "+n); });
-window.addEventListener("popstate",()=>{ const n=pageFromURL(); if(n!==PG){ PG=n; render(); listTop(); } });
+function listTop(){ const bar=document.querySelector(".bar"), sticky=getComputedStyle(bar).position==="sticky"; window.scrollTo({top:Math.max(0,$("pgtop").getBoundingClientRect().top+scrollY-(sticky?bar.offsetHeight:0)-12)}); }
+$("pager").addEventListener("click",e=>{ const b=e.target.closest("button[data-p]"); if(!b||b.disabled) return; const n=+b.dataset.p, pages=Math.max(1,Math.ceil(list().length/PAGE_N));
+  if(n<1||n>pages||n===Math.min(PG,pages)) return; PG=n; setURL(true); render(); listTop(); $("pgtop").focus({preventScroll:true}); track("page/"+n,"Page "+n); });
+// pop-up windows (order, size guide, status image, photos) get a history entry, so the phone's Back closes the top one
+// instead of changing the page behind it
+const OVS=["sheet","sgSheet","stSheet","gal"].filter(id=>$(id)); let OVOPEN=[], OWN_BACK=false;
+const OVCLOSE={gal:()=>closeGal()};
+new MutationObserver(ms=>ms.forEach(m=>{ const id=m.target.id; if(!OVS.includes(id)) return; const open=!m.target.hidden, at=OVOPEN.indexOf(id);
+  if(open&&at<0){ OVOPEN.push(id); try{ history.pushState({ov:id, v:view()},"",here()); }catch(e){} }
+  else if(!open&&at>=0){ OVOPEN.splice(at,1); try{ if(history.state&&history.state.ov===id){ OWN_BACK=true; history.back(); } }catch(e){} } }))
+  .observe(document.body,{subtree:true,attributes:true,attributeFilter:["hidden"]});
+function popClose(){ const id=OVOPEN.pop(); (OVCLOSE[id]||(()=>{ $(id).hidden=true; }))(); }   // taken off OVOPEN first, so closing it adds no extra Back
+window.addEventListener("popstate",e=>{ const st=e.state||{};
+  if(OWN_BACK){ OWN_BACK=false; return; }
+  if(st.ov&&OVOPEN.includes(st.ov)){ while(OVOPEN.length&&OVOPEN[OVOPEN.length-1]!==st.ov) popClose(); return; }
+  while(OVOPEN.length) popClose();
+  const v=st.v||viewFromURL()||LOAD_VIEW;
+  if(JSON.stringify(v)!==JSON.stringify(view())){ QUIET=true; applyView(v); render(); QUIET=false; listTop(); }
+});
 function render(){
   const all=list(), sig=sigOf();
-  if(SIG!==null&&sig!==SIG&&PG!==1){ PG=1; setPageURL(false); }
+  if(SIG!==null&&sig!==SIG&&!QUIET){ PG=1; setURL(!sameButSearch(SIG,sig)); }
   SIG=sig;
   const pages=Math.max(1,Math.ceil(all.length/PAGE_N));
-  if(LOADED&&PG>pages){ PG=pages; setPageURL(false); }
+  if(LOADED&&PG>pages){ PG=pages; setURL(false); }
   const cur=Math.min(PG,pages), from=(cur-1)*PAGE_N, to=Math.min(all.length,from+PAGE_N), l=all.slice(from,to);
   let last=null; $("grid").innerHTML=(S.drop&&DROP?`<div class="dropbar"><span><b>${esc(DROP.label)}</b> · ${all.length} styles</span>${typeof dropImages==="function"?`<button class="mini st" id="dropAll">Status images for all</button>`:""}</div>`:"")+l.map(i=>{ let h=""; if(S.sort==="brand"){ if(i.brand!==last){ last=i.brand; h=`<h3 class="bhead">${esc(i.brand)}<span>${all.filter(x=>x.brand===i.brand).length} styles</span></h3>`; } } else if(S.sort==="rec"){ const t=typeKey(i); if(t!==last){ last=t; h=`<h3 class="bhead">${esc(kindLabel(i))}<span>${all.filter(x=>typeKey(x)===t).length} styles</span></h3>`; } } return h+cardHtml(i); }).join("");
   $("empty").hidden=all.length>0;
@@ -586,7 +629,8 @@ function check(){
 }
 $("send").addEventListener("click",e=>{ if(!cart.length||!check()){ e.preventDefault(); return; } e.currentTarget.href="https://wa.me/"+WA+"?text="+encodeURIComponent(orderText()); track("order/sent", cart.reduce((s,c)=>s+c.qty,0)+" items"); });
 $("copyOrder").onclick=()=>{ if(!cart.length) return; copy(orderText(), $("orderText")); };
-chips(); render(); brandParam();
+brandParam(); syncControls(); render();
+const LOAD_VIEW=view(); try{ history.replaceState({v:view()},"",here()); }catch(e){}
 const BUILD="20261003072126";
 // commission rule switch (Nigeria time). Before the date: today's prices + a notice. From the date: prices.json "next".
 let SWITCH="";
@@ -613,7 +657,7 @@ Promise.all([fresh("products.json"), fresh("prices.json"), fresh("drop.json")]).
   ITEMS = ALL.filter(i=>P[i.ref]).map(i=>({...i, price:P[i.ref][0], comm:P[i.ref][1], band:band(P[i.ref][0])}));
   cart = store.get("nl-cart",[]).filter(c=>ITEMS.some(i=>i.ref===c.ref)).map(c=>{ const i=ITEMS.find(x=>x.ref===c.ref); return {...c, price:i.price, comm:i.comm, g:i.g}; }); store.set("nl-cart",cart);
   try{ $("upd").textContent=new Date(j.updated).toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"}); }catch(e){}
-  tabs(); chips(); render(); brandParam();
+  QUIET=true; tabs(); brandParam(); syncControls(); render(); QUIET=false; setURL(false);
 });
 </script>
 <script data-goatcounter="https://northlinehouse.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>

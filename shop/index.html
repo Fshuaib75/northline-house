@@ -123,9 +123,13 @@ svg{display:block}
 .pgb:disabled{opacity:.35;cursor:default}
 .pgdots{min-width:18px;text-align:center;color:var(--muted)}
 .pginfo{text-align:center;font-size:13px;color:var(--muted);margin:12px 0 36px}
+.pgof{white-space:nowrap}
+#count:focus{outline:none}
+@media (max-width:360px){.sortw .sl{display:none}}
 @media (max-width:520px){.pager{gap:3px}.pgb{width:40px;min-width:40px;padding:0}.pgb span{display:none}.pgn{min-width:34px;padding:0 4px;height:40px}.pgdots{min-width:12px}}
 
 /* sheets and drawers */
+#sgSheet{z-index:50}
 .ov{position:fixed;inset:0;z-index:40;background:rgba(14,27,44,.45);display:flex;opacity:0;transition:opacity .2s}
 .ov.on{opacity:1}
 .drawer{margin-left:auto;width:min(460px,100%);height:100%;background:var(--bg);display:flex;flex-direction:column;transform:translateX(24px);transition:transform .25s ease}
@@ -294,8 +298,8 @@ body.hasbar .foot{padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}
 </nav>
 
 <main class="wrap">
-  <div class="meta"><span><span id="count"></span><button class="clr" id="clearAll" hidden>Clear filters</button></span>
-    <label class="sortw">Sort <select id="sort" aria-label="Sort"><option value="rec">Featured</option><option value="new">New in</option><option value="low">Price: low to high</option><option value="high">Price: high to low</option><option value="brand">Brand A–Z</option></select></label></div>
+  <div class="meta"><span><span id="count" tabindex="-1"></span><button class="clr" id="clearAll" hidden>Clear filters</button></span>
+    <label class="sortw"><span class="sl">Sort</span> <select id="sort" aria-label="Sort"><option value="rec">Featured</option><option value="new">New in</option><option value="low">Price: low to high</option><option value="high">Price: high to low</option><option value="brand">Brand A–Z</option></select></label></div>
   <div class="grid" id="grid"></div>
   <div class="empty" id="empty" hidden><b>No styles match</b>Try fewer filters, or another search.</div>
   <nav class="pager" id="pager" aria-label="Pages" hidden></nav>
@@ -391,7 +395,7 @@ body.hasbar .foot{padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}
 </div>
 
 <div class="gal" id="gal" hidden role="dialog" aria-modal="true" aria-label="Photos">
-  <div class="gbar top"><b id="gtitle"></b><button id="gclose">✕ Close</button></div>
+  <div class="gbar top"><b id="gtitle"></b><button id="gclose" data-close>✕ Close</button></div>
   <div class="gtrack" id="gtrack"></div>
   <div class="gbar bot"><span id="gcount"></span><span><button id="gprev" aria-label="Previous photo">‹</button> <button id="gnext" aria-label="Next photo">›</button></span><a id="gsave" target="_blank" rel="noopener">Open photo to save</a></div>
 </div>
@@ -526,42 +530,67 @@ function cardHtml(c){
       <span class="p">${N(i.price)}</span>${fewSizes(i)?`<span class="few">Few sizes left</span>`:""}</div>
   </article>`;
 }
-// ---------- numbered pages: 36 styles a page (2, 3 or 4 across); the page is kept in the link as ?p=N ----------
-const PAGE_N=36; let LIST=[], SIG=null, LOADED=false;
-const pageFromURL=()=>{ const n=parseInt(new URLSearchParams(location.search).get("p"),10); return n>0?n:1; };
-S.page=pageFromURL();
-// what the list depends on: when any of it changes, go back to page 1
+// ---------- numbered pages, and the whole view in the link ----------
+// ?g=M&t=kind:Shoes:slide&s=low&q=…&f=fam:Black&p=3 (defaults left out). A shared or reloaded link shows exactly that page
+// of that list, and each history entry also keeps its view, so Back/Forward step through what the shopper actually saw.
+try{ history.scrollRestoration="manual"; }catch(e){}
+const PAGE_N=36; let LIST=[], SIG=null, LOADED=false, QUIET=false, LASTPG=null;
+const VIEW_KEYS=["g","t","s","q","f","p"], F_KEYS=["for","kind","band","fam","heel","brand"], SORTS=["rec","new","low","high","brand"];
+function viewFromURL(){ const sp=new URLSearchParams(location.search); if(!VIEW_KEYS.some(k=>sp.has(k))) return null;
+  const g=sp.get("g"), s=sp.get("s"), p=parseInt(sp.get("p"),10);
+  return {g:["W","M","K"].includes(g)?g:"W", type:sp.get("t")||"", sort:SORTS.includes(s)?s:"rec", q:sp.get("q")||"",
+    f:sp.getAll("f").filter(x=>F_KEYS.includes(x.split(":")[0])).sort(), page:p>0?p:1}; }
+const view=()=>({g:S.g, type:S.type, sort:S.sort, q:S.q, f:[...S.f].sort(), page:S.page});
+function applyView(v){ S.g=v.g; S.type=v.type; S.sort=v.sort; S.q=v.q; S.f=new Set(v.f); S.page=v.page; syncControls(); }
+function syncControls(){ $("sort").value=S.sort; $("q").value=S.q;
+  if(S.q&&$("searchRow").hidden){ $("searchRow").hidden=false; $("searchBtn").setAttribute("aria-expanded",true); document.documentElement.style.setProperty("--toolsTop", document.querySelector(".top").offsetHeight+"px"); }
+  audTabs(); }
+function urlFor(extra){ const u=new URL(location.href), sp=u.searchParams; VIEW_KEYS.concat(["b","i"]).forEach(k=>sp.delete(k));
+  if(S.g!=="W") sp.set("g",S.g); if(S.type) sp.set("t",S.type); if(S.sort!=="rec") sp.set("s",S.sort); if(S.q.trim()) sp.set("q",S.q.trim());
+  [...S.f].sort().forEach(x=>sp.append("f",x)); if(S.page>1) sp.set("p",S.page);
+  if(extra) Object.entries(extra).forEach(([k,v])=>sp.set(k,v)); const qs=sp.toString(); return u.pathname+(qs?"?"+qs:"")+u.hash; }
+const here=()=>location.pathname+location.search+location.hash;
+// write the view into the link: push = a new Back step; replace keeps an open overlay's own entry (and a product's ?i=)
+function setURL(push){ try{ if(push){ history.pushState({v:view()},"",urlFor()); return; }
+  const st=history.state, ov=st&&st.ov, pd=ov==="pd"&&PD.i; history.replaceState(ov?{ov, v:view()}:{v:view()},"",urlFor(pd?{i:PD.i.ref}:null)); }catch(e){} }
+const V0=viewFromURL(), INIT_I=new URLSearchParams(location.search).get("i");
+if(V0){ S.g=V0.g; S.type=V0.type; S.sort=V0.sort; S.q=V0.q; S.f=new Set(V0.f); S.page=V0.page; }
+// what the list depends on: when any of it changes, go back to page 1 (a new Back step; typing a search just updates the link)
 const sigOf=()=>JSON.stringify([S.g,S.type,S.q.trim().toLowerCase(),[...S.f].sort(),S.sort]);
-function setPageURL(push){ try{ const u=new URL(location.href); if(S.page>1) u.searchParams.set("p",S.page); else u.searchParams.delete("p"); const url=u.pathname+u.search+u.hash;
-  if(push) history.pushState({pg:S.page},"",url); else history.replaceState(history.state&&history.state.ov?history.state:{pg:S.page},"",url); }catch(e){} }
-function pageList(cur,n){ const s=new Set([1,n,cur-1,cur,cur+1]); if(cur<=3) [2,3,4].forEach(x=>s.add(x)); if(cur>=n-2) [n-1,n-2,n-3].forEach(x=>s.add(x));
+const sameButSearch=(a,b)=>{ const x=JSON.parse(a), y=JSON.parse(b); x.splice(2,1); y.splice(2,1); return JSON.stringify(x)===JSON.stringify(y); };
+const NARROW=window.matchMedia?matchMedia("(max-width:379px)"):{matches:false};
+// page numbers: first, last, current and its neighbours (only the current one on very narrow phones), "…" for gaps
+function pageList(cur,n,compact){ const s=new Set([1,n,cur]);
+  if(compact){ if(cur<=2) [2,3].forEach(x=>s.add(x)); if(cur>=n-1) [n-1,n-2].forEach(x=>s.add(x)); }
+  else { s.add(cur-1); s.add(cur+1); if(cur<=3) [2,3,4].forEach(x=>s.add(x)); if(cur>=n-2) [n-1,n-2,n-3].forEach(x=>s.add(x)); }
   const a=[...s].filter(x=>x>=1&&x<=n).sort((x,y)=>x-y), out=[];
   a.forEach((x,k)=>{ if(k){ const gap=x-a[k-1]; if(gap===2) out.push(x-1); else if(gap>2) out.push("…"); } out.push(x); }); return out; }
 function render(){
   LIST=cards(); const sig=sigOf();
-  if(SIG!==null&&sig!==SIG&&S.page!==1){ S.page=1; setPageURL(false); }
+  if(SIG!==null&&sig!==SIG&&!QUIET){ S.page=1; setURL(!sameButSearch(SIG,sig)&&!OPEN.length); }
   SIG=sig;
   const pages=Math.max(1,Math.ceil(LIST.length/PAGE_N));
-  if(LOADED&&S.page>pages){ S.page=pages; setPageURL(false); }
+  if(LOADED&&S.page>pages){ S.page=pages; setURL(false); }
   const cur=Math.min(S.page,pages), from=(cur-1)*PAGE_N, to=Math.min(LIST.length,from+PAGE_N); let html="", last=null;
   for(let k=from;k<to;k++){ const c=LIST[k]; if(S.sort==="brand"&&c.rep.brand!==last){ last=c.rep.brand; html+=`<h3 class="bhead">${esc(last)}<span>${LIST.filter(x=>x.rep.brand===last).length} styles</span></h3>`; } html+=cardHtml(c); }
   $("grid").innerHTML=html;
   $("empty").hidden=LIST.length>0;
-  $("count").textContent=`${LIST.length} ${LIST.length===1?"style":"styles"}`+(pages>1?` · page ${cur} of ${pages}`:"");
+  $("count").innerHTML=`${LIST.length} ${LIST.length===1?"style":"styles"}`+(pages>1?`<span class="pgof"> · page ${cur} of ${pages}</span>`:"");
   const nf=S.f.size; $("filterN").hidden=!nf; $("filterN").textContent=nf; $("clearAll").hidden=!(nf||S.q.trim());
   drawPager(cur,pages,from,to);
 }
-function drawPager(cur,pages,from,to){
+function drawPager(cur,pages,from,to){ LASTPG=[cur,pages,from,to];
   const p=$("pager"), info=$("pginfo"); p.hidden=info.hidden=pages<2; if(pages<2){ p.innerHTML=""; return; }
   p.innerHTML=`<button class="pgb" data-p="${cur-1}" ${cur===1?"disabled":""} aria-label="Previous page"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 6-6 6 6 6"/></svg><span>Previous</span></button>`
-    + pageList(cur,pages).map(x=>x==="…"?`<span class="pgdots" aria-hidden="true">…</span>`:`<button class="pgn" data-p="${x}" ${x===cur?'aria-current="page"':""} aria-label="Page ${x}">${x}</button>`).join("")
+    + pageList(cur,pages,NARROW.matches).map(x=>x==="…"?`<span class="pgdots" aria-hidden="true">…</span>`:`<button class="pgn" data-p="${x}" ${x===cur?'aria-current="page"':""} aria-label="Page ${x}">${x}</button>`).join("")
     + `<button class="pgb" data-p="${cur+1}" ${cur===pages?"disabled":""} aria-label="Next page"><span>Next</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 6 6 6-6 6"/></svg></button>`;
   info.textContent=`Showing ${from+1}–${to} of ${LIST.length} styles`;
 }
+try{ NARROW.addEventListener("change",()=>{ if(LASTPG) drawPager(...LASTPG); }); }catch(e){}
 // jump to the top of the list (below the sticky bars)
 function listTop(){ const target=document.querySelector(".meta").getBoundingClientRect().top+scrollY-(document.querySelector(".tools").offsetHeight+document.querySelector(".top").offsetHeight); window.scrollTo({top:Math.max(0,target)}); }
 $("pager").addEventListener("click",e=>{ const b=e.target.closest("button[data-p]"); if(!b||b.disabled) return; const n=+b.dataset.p, pages=Math.max(1,Math.ceil(LIST.length/PAGE_N));
-  if(n<1||n>pages||n===Math.min(S.page,pages)) return; S.page=n; setPageURL(true); render(); listTop(); track("page/"+n,"Page "+n); });
+  if(n<1||n>pages||n===Math.min(S.page,pages)) return; S.page=n; setURL(true); render(); listTop(); $("count").focus({preventScroll:true}); track("page/"+n,"Page "+n); });
 function refresh(){ typeRail(); render(); }
 // after changing what is shown, bring the top of the list back into view (only if the shopper had scrolled past it)
 function toTop(){ const target=document.querySelector(".meta").getBoundingClientRect().top+scrollY-(document.querySelector(".tools").offsetHeight+document.querySelector(".top").offsetHeight); if(scrollY>target) window.scrollTo({top:target}); }
@@ -606,28 +635,36 @@ let OPEN=[];
 function lockBody(){ document.body.classList.toggle("lock", OPEN.length>0); }
 function show(el){ el.hidden=false; requestAnimationFrame(()=>el.classList.add("on")); }
 function hide(el){ el.classList.remove("on"); el.hidden=true; }
-function openOv(id, url){ const el=$(id); if(OPEN.includes(id)) return; OPEN.push(id); show(el); lockBody();
-  try{ history.pushState({ov:id}, "", url||location.href); }catch(e){}
+function openOv(id, url, noPush){ const el=$(id); if(OPEN.includes(id)) return; OPEN.push(id); show(el); lockBody();
+  if(!noPush) try{ history.pushState({ov:id, v:view()}, "", url||here()); }catch(e){}
   setTimeout(()=>{ const f=el.querySelector("[data-close],.x"); if(f) f.focus({preventScroll:true}); },50); }
 function closeOv(fromPop){ const id=OPEN.pop(); if(!id) return; hide($(id)); lockBody();
-  if(id==="pd") PD.items=null;
+  if(id==="pd") PD.items=null; if(id==="gal") G("gtrack").innerHTML="";
   if(!fromPop){ try{ if(history.state&&history.state.ov===id){ OWN_BACK=true; history.back(); } }catch(e){} } }
 let OWN_BACK=false;
-// back/forward: close the top overlay if one is open, otherwise show the page named in the link
-window.addEventListener("popstate",()=>{
-  if(OWN_BACK){ OWN_BACK=false; if(pageFromURL()!==S.page) setPageURL(false); return; }
-  if(OPEN.length){ closeOv(true); if(pageFromURL()!==S.page) setPageURL(false); return; }
-  const n=pageFromURL(); if(n!==S.page){ S.page=n; render(); listTop(); } });
+window.addEventListener("popstate",e=>{
+  const st=e.state||{};
+  // our own history.back() after an overlay closed: if the list changed while it was open (filters), keep that as a new step
+  if(OWN_BACK){ OWN_BACK=false; if(!OPEN.length&&here()!==urlFor()) setURL(true); return; }
+  // Back from an overlay opened over another one (size guide or photos over a product): close only what is above it
+  if(st.ov&&OPEN.includes(st.ov)){ while(OPEN.length&&OPEN[OPEN.length-1]!==st.ov) closeOv(true); return; }
+  const hadFilters=OPEN.includes("filters"); while(OPEN.length) closeOv(true);
+  if(hadFilters&&here()!==urlFor()){ setURL(true); return; }   // Back closed the filter panel: keep the new filters as a step
+  // otherwise the entry is the truth: show the view it was saved with
+  const v=st.v||viewFromURL()||LOAD_VIEW;
+  if(JSON.stringify(v)!==JSON.stringify(view())){ QUIET=true; applyView(v); typeRail(); render(); QUIET=false; listTop(); }
+  if(st.ov==="pd"){ const ref=new URLSearchParams(location.search).get("i"); if(ref&&BYREF.has(ref)) openPD(ref,true); }   // Forward onto a product
+});
 document.querySelectorAll(".ov").forEach(o=>o.addEventListener("click",e=>{ if(e.target===o||e.target.closest("[data-close]")) closeOv(); }));
 $("pd").addEventListener("click",e=>{ if(e.target.id==="pd") closeOv(); });
 $("pdClose").onclick=()=>closeOv();
-document.addEventListener("keydown",e=>{ if(e.key!=="Escape") return; if(!$("gal").hidden){ closeGal(); return; } if(OPEN.length) closeOv(); });
+document.addEventListener("keydown",e=>{ if(e.key!=="Escape") return; if(OPEN.length) closeOv(); });
 
 // ---------- product sheet ----------
 const PD={items:null,i:null,size:null,qty:1};
-function openPD(ref){ const g=BYREF.get(ref); if(!g) return; const i=g.items.find(x=>x.ref===ref)||g.items[0];
+function openPD(ref, noPush){ const g=BYREF.get(ref); if(!g) return; const i=g.items.find(x=>x.ref===ref)||g.items[0];
   PD.items=g.items; PD.i=i; PD.size=null; PD.qty=1; drawPD(true);
-  const u=new URL(location.href); u.searchParams.set("i",i.ref); openOv("pd", u.pathname+u.search);
+  openOv("pd", urlFor({i:i.ref}), noPush);
   $("pd").querySelector(".pdin").scrollTop=0; track("view/"+i.ref, i.brand+" "+i.model+" · "+(i.colour||"")); }
 function pdPhotos(i){ const l=(i.imgs&&i.imgs.length)?i.imgs:[i.full||i.img]; return l.filter(Boolean); }
 function drawPD(newGallery){
@@ -651,7 +688,7 @@ $("pgPrev").onclick=()=>{ const t=$("pgt"); t.scrollBy({left:-t.clientWidth,beha
 $("pgNext").onclick=()=>{ const t=$("pgt"); t.scrollBy({left:t.clientWidth,behavior:"smooth"}); };
 $("pgt").addEventListener("click",e=>{ if(e.target.tagName!=="IMG") return; const imgs=[...$("pgt").querySelectorAll("img")]; openGal(PD.i.model+(PD.i.colour?" · "+PD.i.colour:""), imgs.map(x=>x.src), imgs.indexOf(e.target)); track("photos/"+PD.i.ref, PD.i.brand+" "+PD.i.model); });
 $("pdSw").addEventListener("click",e=>{ const b=e.target.closest(".sw"); if(!b) return; const x=PD.items.find(y=>y.ref===b.dataset.ref); if(!x||x===PD.i) return; PD.i=x; drawPD(true);
-  try{ const u=new URL(location.href); u.searchParams.set("i",x.ref); history.replaceState(history.state,"",u.pathname+u.search); }catch(e){} });
+  try{ history.replaceState(history.state,"",urlFor({i:x.ref})); }catch(e){} });
 $("pdSz").addEventListener("click",e=>{ const b=e.target.closest(".sz"); if(!b) return; PD.size=b.dataset.s; drawPD(false); });
 $("qMinus").onclick=()=>{ PD.qty=Math.max(1,PD.qty-1); $("qN").textContent=PD.qty; };
 $("qPlus").onclick=()=>{ PD.qty=Math.min(20,PD.qty+1); $("qN").textContent=PD.qty; };
@@ -708,9 +745,9 @@ $("waShow").textContent="+"+WA; $("footWa").textContent="+"+WA; $("footWa").href
 
 // ---------- full-screen photos ----------
 const G=id=>document.getElementById(id);
-function openGal(title, urls, start){ G("gtitle").textContent=title; G("gtrack").innerHTML=urls.map(u=>`<img src="${esc(u)}" alt="" onerror="this.remove();galUpd()">`).join(""); G("gal").hidden=false; document.body.classList.add("lock");
+function openGal(title, urls, start){ G("gtitle").textContent=title; G("gtrack").innerHTML=urls.map(u=>`<img src="${esc(u)}" alt="" onerror="this.remove();galUpd()">`).join(""); openOv("gal");
   requestAnimationFrame(()=>{ G("gtrack").scrollLeft=(start||0)*G("gtrack").clientWidth; galUpd(); }); }
-function closeGal(){ G("gal").hidden=true; G("gtrack").innerHTML=""; lockBody(); }
+function closeGal(){ if(OPEN[OPEN.length-1]==="gal") closeOv(); }
 function galUpd(){ const t=G("gtrack"), imgs=t.querySelectorAll("img"), k=Math.max(0,Math.min(Math.round(t.scrollLeft/(t.clientWidth||1)),imgs.length-1)); G("gcount").textContent=imgs.length?`${k+1} / ${imgs.length}`:"No photos"; G("gsave").href=imgs[k]?imgs[k].src:"#"; }
 G("gtrack").addEventListener("scroll",()=>{ clearTimeout(galUpd.t); galUpd.t=setTimeout(galUpd,60); });
 G("gprev").onclick=()=>{ const t=G("gtrack"); t.scrollBy({left:-t.clientWidth,behavior:"smooth"}); };
@@ -749,13 +786,16 @@ $("sgUse").onclick=()=>{ PD.size=SG.pick; if(SG.i.g!=="B") $("cFoot").value=$("s
 // ---------- links: ?b=Brand opens that brand, ?i=REF opens that style ----------
 function brandParam(){ const b=new URLSearchParams(location.search).get("b"); if(!b||brandParam.done) return; const hit=ITEMS.find(i=>i.brand.toLowerCase()===b.toLowerCase()); if(!hit) return; brandParam.done=true;
   if(!ITEMS.some(i=>audOf(i)===S.g&&i.brand===hit.brand)){ S.g=audOf(hit); S.type=""; audTabs(); }
-  S.f.add("brand:"+hit.brand); }
-function itemParam(){ const ref=new URLSearchParams(location.search).get("i"); if(!ref||itemParam.done||!BYREF.has(ref)) return; itemParam.done=true;
-  const i=BYREF.get(ref).items.find(x=>x.ref===ref); if(audOf(i)!==S.g){ S.g=audOf(i); S.type=""; S.f.clear(); audTabs(); refresh(); }
-  try{ const u=new URL(location.href); u.searchParams.delete("i"); history.replaceState(null,"",u.pathname+u.search); }catch(e){}
+  [...S.f].filter(k=>k.startsWith("brand:")).forEach(k=>S.f.delete(k)); S.f.add("brand:"+hit.brand); }
+// ?i=REF opens that style once the catalogue has loaded; a plain style link (no view in it) switches to that style's tab
+function itemParam(){ if(itemParam.done) return; itemParam.done=true; const ref=INIT_I;
+  if(!ref||!BYREF.has(ref)||OPEN.includes("pd")) return;
+  const i=BYREF.get(ref).items.find(x=>x.ref===ref);
+  if(!V0&&audOf(i)!==S.g){ S.g=audOf(i); S.type=""; S.f.clear(); S.page=1; QUIET=true; audTabs(); refresh(); QUIET=false; setURL(false); }
   openPD(ref); }
 
-buildGroups(); audTabs(); brandParam(); refresh(); bagUI();
+buildGroups(); brandParam(); syncControls(); refresh(); bagUI();
+const LOAD_VIEW=view(); try{ history.replaceState({v:view()},"",here()); }catch(e){}
 const BUILD="20261003072126";
 // price list switch date (Nigeria time): only when prices.json names one
 let SWITCH="";
@@ -777,7 +817,9 @@ Promise.all([fresh("products.json"), fresh("prices.json"), fresh("drop.json")]).
     ITEMS = ALL.filter(i=>P[i.ref]).map(i=>({...i, price:P[i.ref][0], comm:P[i.ref][1], band:band(P[i.ref][0])}));
   } else ITEMS = ALL.filter(i=>i.price).map(i=>({...i, band:band(i.price)}));
   cart = store.get("nl-shop-cart",[]).filter(c=>ITEMS.some(i=>i.ref===c.ref)).map(c=>{ const i=ITEMS.find(x=>x.ref===c.ref); return {...c, price:i.price, comm:i.comm, g:i.g}; }); store.set("nl-shop-cart",cart);
-  LOADED=true; buildGroups(); audTabs(); brandParam(); refresh(); bagUI(); itemParam();
+  LOADED=true; buildGroups();
+  if(OPEN.includes("pd")&&PD.i){ const g=BYREF.get(PD.i.ref); if(g){ PD.items=g.items; PD.i=g.items.find(x=>x.ref===PD.i.ref)||g.items[0]; drawPD(false); } }   // a product opened before the data arrived
+  QUIET=true; brandParam(); syncControls(); refresh(); QUIET=false; bagUI(); setURL(false); itemParam();
 });
 </script>
 <script data-goatcounter="https://northlinehouse.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
