@@ -311,7 +311,8 @@ function list(){
 }
 // Recommended: styles in the price range customers buy most (₦20k–50k) and with several photos come first; then brands and
 // models are spread evenly through the list, so the first screen isn't one brand or one shoe in six colours.
-function sortItems(l){ const r=sortItems0(l); if(S.sort==="brand") return r; const pos=new Map(r.map((x,n)=>[x,n])); return r.slice().sort((a,b)=>typeKey(a)-typeKey(b)||pos.get(a)-pos.get(b)); }
+// Recommended groups styles by type (slides, sandals…); price and newest sorts run across the whole list
+function sortItems(l){ const r=sortItems0(l); if(S.sort!=="rec") return r; const pos=new Map(r.map((x,n)=>[x,n])); return r.slice().sort((a,b)=>typeKey(a)-typeKey(b)||pos.get(a)-pos.get(b)); }
 function sortItems0(l){
   if(S.sort==="low") return l.sort((a,b)=>a.price-b.price);
   if(S.sort==="high") return l.sort((a,b)=>b.price-a.price);
@@ -365,7 +366,7 @@ function brandParam(){ const b=new URLSearchParams(location.search).get("b"); if
   setBrand(hit.brand); }
 function render(){
   const l=list();
-  let last=null; $("grid").innerHTML=(S.drop&&DROP?`<div class="dropbar"><span><b>${esc(DROP.label)}</b> · ${l.length} styles</span>${typeof dropImages==="function"?`<button class="mini st" id="dropAll">Status images for all</button>`:""}</div>`:"")+l.map(i=>{ let h=""; if(S.sort==="brand"){ if(i.brand!==last){ last=i.brand; h=`<h3 class="bhead">${esc(i.brand)}<span>${l.filter(x=>x.brand===i.brand).length} styles</span></h3>`; } } else { const t=typeKey(i); if(t!==last){ last=t; h=`<h3 class="bhead">${esc(kindLabel(i))}<span>${l.filter(x=>typeKey(x)===t).length} styles</span></h3>`; } } return h+cardHtml(i); }).join("");
+  let last=null; $("grid").innerHTML=(S.drop&&DROP?`<div class="dropbar"><span><b>${esc(DROP.label)}</b> · ${l.length} styles</span>${typeof dropImages==="function"?`<button class="mini st" id="dropAll">Status images for all</button>`:""}</div>`:"")+l.map(i=>{ let h=""; if(S.sort==="brand"){ if(i.brand!==last){ last=i.brand; h=`<h3 class="bhead">${esc(i.brand)}<span>${l.filter(x=>x.brand===i.brand).length} styles</span></h3>`; } } else if(S.sort==="rec"){ const t=typeKey(i); if(t!==last){ last=t; h=`<h3 class="bhead">${esc(kindLabel(i))}<span>${l.filter(x=>typeKey(x)===t).length} styles</span></h3>`; } } return h+cardHtml(i); }).join("");
   $("empty").hidden=l.length>0;
   const total=cart.reduce((s,c)=>s+c.price*c.qty,0), pairs=cart.reduce((s,c)=>s+c.qty,0);
   $("obar").hidden=!cart.length;
