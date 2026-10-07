@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Northline · Photo check</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Figtree:wght@400;500;600;700&display=swap">
+<style>
+/* Photo check: loads every style's photo in this browser, on this network, and lists the ones that don't show. */
+:root{ --bg:#FAF8F4; --surface:#FFFFFF; --ink:#0E1B2C; --ink-2:#344050; --muted:#6B7380; --line:#E9E4DB; --line-2:#D8D1C4; --photo:#F1EEE8;
+  --sky:#4A9FD8; --sky-ink:#1F5F8B; --good:#1E7A55; --warn:#95560F; --bad:#B3261E;
+  --display:"Fraunces",Georgia,serif; --ui:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif; color-scheme:light }
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:15px/1.5 var(--ui);-webkit-font-smoothing:antialiased}
+.wrap{max-width:980px;margin:0 auto;padding:28px 16px 60px}
+h1{margin:6px 0 6px;font:400 clamp(30px,6vw,44px)/1.1 var(--display);letter-spacing:-.01em}
+.eyebrow{font:600 11px var(--ui);letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+p{margin:0 0 10px;color:var(--ink-2);max-width:62ch}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px;margin-top:18px}
+.controls{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+select{font:15px var(--ui);color:var(--ink);background:var(--surface);border:1px solid var(--line-2);border-radius:4px;padding:10px 12px}
+label.ck{display:flex;gap:8px;align-items:center;font-size:14px}
+button{font:600 15px var(--ui);cursor:pointer;border:0;border-radius:4px;padding:12px 20px;background:var(--ink);color:#fff}
+button.ghost{background:transparent;color:var(--ink);border:1px solid var(--line-2)}
+button:disabled{opacity:.5;cursor:default}
+.bar{height:8px;background:var(--line);border-radius:4px;overflow:hidden;margin:14px 0 8px}
+.bar i{display:block;height:100%;width:0;background:var(--sky);transition:width .2s}
+.status{font-size:14px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:14px}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line)}
+th{font:600 11px var(--ui);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+td.n,th.n{text-align:right}
+.ok{color:var(--good)} .fix{color:var(--warn)} .dead{color:var(--bad)}
+.list{display:grid;gap:10px;margin-top:10px}
+.row{display:grid;grid-template-columns:64px minmax(0,1fr);gap:12px;align-items:center;padding:10px;border:1px solid var(--line);border-radius:6px;background:var(--surface)}
+.thumb{width:64px;aspect-ratio:4/5;background:var(--photo);border-radius:3px;overflow:hidden;display:grid;place-items:center;font-size:10px;color:var(--muted);text-align:center}
+.thumb img{width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply}
+.row b{font:500 16px/1.2 var(--display);display:block}
+.row small{display:block;color:var(--muted);font-size:12.5px;word-break:break-all}
+.tag{display:inline-block;font:700 10.5px var(--ui);letter-spacing:.12em;text-transform:uppercase;padding:3px 7px;border-radius:2px;margin-right:6px}
+.tag.dead{background:#FBE9E7} .tag.fix{background:#FFF3E0}
+h2{font:500 22px var(--display);margin:26px 0 6px}
+textarea{width:100%;min-height:160px;font:12.5px ui-monospace,Menlo,monospace;border:1px solid var(--line-2);border-radius:4px;padding:10px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 18px;border-radius:999px;font-weight:600;font-size:13.5px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="eyebrow">Northline · tools</span>
+  <h1>Photo check</h1>
+  <p>Loads every style’s photo here, in this browser and on this network, the way a customer’s phone does, and lists the styles whose photo doesn’t show.</p>
+  <p>“Fixed automatically” means the usual photo link is broken but the shop now shows another link or another photo of that style. “No photo” means nothing loads: hide the style or find new photos for it.</p>
+
+  <div class="panel">
+    <div class="controls">
+      <select id="brand" aria-label="Brand"><option value="">All brands</option></select>
+      <label class="ck"><input type="checkbox" id="onlyShop" checked> Only styles customers can see</label>
+      <button id="go">Start the check</button>
+      <button class="ghost" id="stop" hidden>Stop</button>
+    </div>
+    <div class="bar" aria-hidden="true"><i id="barFill"></i></div>
+    <div class="status" id="status">Loading the catalogue…</div>
+  </div>
+
+  <div id="results" hidden>
+    <h2>By brand</h2>
+    <div class="panel" style="padding:4px 6px;overflow-x:auto"><table><thead><tr><th>Brand</th><th class="n">Checked</th><th class="n">Photo shows</th><th class="n">Fixed automatically</th><th class="n">No photo</th></tr></thead><tbody id="byBrand"></tbody></table></div>
+    <h2>Photo servers</h2>
+    <div class="panel" style="padding:4px 6px;overflow-x:auto"><table><thead><tr><th>Server</th><th class="n">Links tried</th><th class="n">Didn’t load</th></tr></thead><tbody id="byHost"></tbody></table></div>
+    <h2>Styles to look at</h2>
+    <p id="noneMsg" hidden>Every checked style shows its photo.</p>
+    <div class="list" id="problems"></div>
+    <h2>Report</h2>
+    <p>Copy this and paste it into your chat with Claude.</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px"><button id="copy">Copy report</button></div>
+    <textarea id="report" readonly aria-label="Report"></textarea>
+  </div>
+</div>
+<div class="toast" id="toast" hidden></div>
+<script>
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const IMG=u=>!u||/^https?:/.test(u)?u:"../"+u;
+// the same fallback order the shop uses
+const TWINS=[["https://www.caponeoutfitters.com.tr/cdn/shop/files/","https://cdn.shopify.com/s/files/1/0566/3732/5374/files/"]];
+const twinOf=u=>{ for(const [a,b] of TWINS) if(u.startsWith(a)) return b+u.slice(a.length); return ""; };
+const viaRelay=u=>/^https?:/.test(u)&&!u.startsWith("https://wsrv.nl/")?"https://wsrv.nl/?url="+encodeURIComponent(u)+"&w=900&output=jpg":"";
+const hostOf=u=>{ try{ return new URL(u,location.href).host; }catch(e){ return "?"; } };
+const fresh=(f,asText)=>fetch("../"+f+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.ok?(asText?r.text():r.json()):null).catch(()=>null);
+let STYLES=[], RUN=null;
+
+// one photo link: loads within 20 s → true
+const HOSTS=new Map();
+function tryLink(u){ return new Promise(res=>{ const h=hostOf(u), st=HOSTS.get(h)||{tried:0,failed:0}; HOSTS.set(h,st); st.tried++;
+  const im=new Image(); let done=false; const end=ok=>{ if(done) return; done=true; clearTimeout(t); if(!ok) st.failed++; im.onload=im.onerror=null; res(ok); };
+  const t=setTimeout(()=>{ im.src=""; end(false); },20000);
+  im.referrerPolicy="no-referrer"; im.onload=()=>end(im.naturalWidth>0); im.onerror=()=>end(false); im.src=u; }); }
+// a style: its card link, the Shopify copy, its other photos, then the image relay
+async function checkStyle(s){ const i=s.item, card=i.img;
+  if(!card) return {state:"dead", why:"no photo link"};
+  if(await tryLink(card)) return {state:"ok"};
+  const tw=twinOf(card); if(tw&&await tryLink(tw)) return {state:"fix", via:"the Shopify copy of the same photo", url:tw};
+  for(const u of (i.imgs||[]).concat(i.full||[])){ if(!u||u===card) continue; const t=twinOf(u);
+    if(t&&await tryLink(t)) return {state:"fix", via:"another photo of this style", url:t};
+    if(await tryLink(u)) return {state:"fix", via:"another photo of this style", url:u}; }
+  const r=viaRelay(card); if(r&&await tryLink(r)) return {state:"fix", via:"the image relay", url:r};
+  return {state:"dead", why:"none of its "+(1+(i.imgs||[]).length)+" photo links load"}; }
+
+async function load(){
+  const [html, added, prices]=await Promise.all([fresh("shop/index.html",true), fresh("products.json"), fresh("prices.json")]);
+  const m=html&&html.match(/let ALL = (\[.*?\]);\n/s); if(!m){ $("status").textContent="Couldn’t read the catalogue. Reload the page."; return; }
+  let all=JSON.parse(m[1]); const known=new Set(all.map(i=>i.ref));
+  if(Array.isArray(added)) all=all.concat(added.filter(a=>a&&a.ref&&!known.has(a.ref)).map(a=>({...a, img:IMG(a.img), full:IMG(a.img), imgs:(a.imgs||[]).map(IMG)})));
+  const P=(prices&&prices.prices)||{}, hidden=new Set((prices&&prices.hidden)||[]);
+  STYLES=all.map(i=>({item:i, inShop:!!P[i.ref]&&!hidden.has(i.ref)}));
+  const brands=[...new Set(all.map(i=>i.brand))].sort();
+  $("brand").innerHTML=`<option value="">All brands</option>`+brands.map(b=>`<option${b==="Capone"?" selected":""}>${esc(b)}</option>`).join("");
+  $("status").textContent=`${STYLES.length} styles in the catalogue. Pick a brand (or all) and start.`;
+}
+async function run(){
+  const brand=$("brand").value, only=$("onlyShop").checked;
+  const list=STYLES.filter(s=>(!brand||s.item.brand===brand)&&(!only||s.inShop));
+  if(!list.length){ $("status").textContent="No styles match."; return; }
+  RUN={stop:false}; const my=RUN; HOSTS.clear(); list.forEach(s=>s.res=null);
+  $("go").disabled=true; $("stop").hidden=false; $("results").hidden=true;
+  let next=0, done=0; const started=new Date();
+  const tick=()=>{ const f=list.filter(s=>s.res&&s.res.state==="fix").length, d=list.filter(s=>s.res&&s.res.state==="dead").length;
+    $("barFill").style.width=(100*done/list.length)+"%"; $("status").textContent=`Checked ${done} of ${list.length} · ${f} fixed automatically · ${d} with no photo`; };
+  const worker=async()=>{ while(!my.stop&&next<list.length){ const s=list[next++]; s.res=await checkStyle(s); done++; tick(); } };
+  await Promise.all(Array.from({length:6},worker));
+  $("go").disabled=false; $("stop").hidden=true; if(!my.stop) $("status").textContent+=" · done"; show(list.filter(s=>s.res), brand, only, started);
+}
+function show(list, brand, only, started){
+  const by=new Map(); list.forEach(s=>{ const b=s.item.brand, r=by.get(b)||{n:0,ok:0,fix:0,dead:0}; r.n++; r[s.res.state]++; by.set(b,r); });
+  $("byBrand").innerHTML=[...by].sort((a,b)=>b[1].dead-a[1].dead||b[1].fix-a[1].fix||a[0].localeCompare(b[0])).map(([b,r])=>`<tr><td>${esc(b)}</td><td class="n">${r.n}</td><td class="n ok">${r.ok}</td><td class="n fix">${r.fix}</td><td class="n dead">${r.dead}</td></tr>`).join("");
+  $("byHost").innerHTML=[...HOSTS].sort((a,b)=>b[1].failed-a[1].failed).map(([h,r])=>`<tr><td>${esc(h)}</td><td class="n">${r.tried}</td><td class="n ${r.failed?"dead":""}">${r.failed}</td></tr>`).join("");
+  const bad=list.filter(s=>s.res.state!=="ok").sort((a,b)=>(a.res.state==="dead"?0:1)-(b.res.state==="dead"?0:1)||a.item.brand.localeCompare(b.item.brand)||a.item.model.localeCompare(b.item.model));
+  $("noneMsg").hidden=bad.length>0;
+  $("problems").innerHTML=bad.map(s=>{ const i=s.item, r=s.res; return `<div class="row"><div class="thumb">${r.url?`<img src="${esc(r.url)}" alt="" referrerpolicy="no-referrer">`:"No photo"}</div>
+    <div><span class="tag ${r.state}">${r.state==="dead"?"No photo":"Fixed automatically"}</span><b>${esc(i.brand)} ${esc(i.model)}</b><small>${esc(i.colour||"")} · ref ${esc(i.ref)}${s.inShop?"":" · not in the shop"}</small><small>${r.state==="dead"?esc(r.why):"Shows "+esc(r.via)}</small></div></div>`; }).join("");
+  const dead=bad.filter(s=>s.res.state==="dead"), fix=bad.filter(s=>s.res.state==="fix"), line=s=>`  ${s.item.ref} | ${s.item.brand} ${s.item.model} · ${s.item.colour||""}`;
+  $("report").value=[`Northline photo check · ${started.toLocaleString("en-GB")} · ${list.length} styles (${brand||"all brands"}${only?", in the shop":""})`,
+    `Browser: ${navigator.userAgent}`, "",
+    `No photo (${dead.length}):`, ...dead.map(s=>line(s)+` | ${s.res.why}`), "",
+    `Fixed automatically (${fix.length}):`, ...fix.map(s=>line(s)+` | via ${s.res.via}`), "",
+    "Servers (links tried / didn't load):", ...[...HOSTS].map(([h,r])=>`  ${h}: ${r.tried} / ${r.failed}`)].join("\n");
+  $("results").hidden=false;
+}
+$("go").onclick=run;
+$("stop").onclick=()=>{ if(RUN) RUN.stop=true; };
+$("copy").onclick=()=>{ const t=$("report").value; const ok=()=>toast("Report copied");
+  if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(ok,()=>{ $("report").select(); toast("Select the text and copy"); }); else { $("report").select(); toast("Select the text and copy"); } };
+function toast(t){ const el=$("toast"); el.textContent=t; el.hidden=false; clearTimeout(toast.t); toast.t=setTimeout(()=>el.hidden=true,1800); }
+load();
+</script>
+</body>
+</html>

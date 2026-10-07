@@ -302,6 +302,19 @@ function track(path,title,tries){ try{ const gc=window.goatcounter; if(gc&&gc.co
   if((tries||0)<20) setTimeout(()=>track(path,title,(tries||0)+1),500); }
 const N = n=>"₦"+Math.round(n).toLocaleString("en-NG");
 const esc = s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+// ---------- photos: when a photo link fails, try the style's other links before giving up ----------
+// Capone's own site and Shopify's main image server hold the same files (Shopify's is tried first), then the shop's own
+// link, the style's other photos, and last an image relay (wsrv.nl) for shops that refuse photos shown on other sites.
+const TWINS=[["https://www.caponeoutfitters.com.tr/cdn/shop/files/","https://cdn.shopify.com/s/files/1/0566/3732/5374/files/"]];
+const twinOf=u=>{ for(const [a,b] of TWINS) if(u.startsWith(a)) return b+u.slice(a.length); return ""; };
+const viaRelay=u=>/^https?:/.test(u)&&!u.startsWith("https://wsrv.nl/")?"https://wsrv.nl/?url="+encodeURIComponent(u)+"&w=900&output=jpg":"";
+function photoChain(...lists){ const all=lists.flat().filter(Boolean), out=[], add=u=>{ if(u&&!out.includes(u)) out.push(u); };
+  all.forEach(u=>{ add(twinOf(u)); add(u); }); if(all.length) add(viaRelay(all[0])); return out; }
+// an <img> that walks its chain on error; when nothing loads: "miss" shows "Photo unavailable", "gal" updates the viewer
+function imgTag(chain, attrs, mode){ return chain.length?`<img src="${esc(chain[0])}" data-alts="${esc(JSON.stringify(chain.slice(1)))}" data-gone="${mode||""}" referrerpolicy="no-referrer" onerror="imgNext(this)" ${attrs||""}>`:""; }
+function imgNext(el){ let rest=[]; try{ rest=JSON.parse(el.dataset.alts||"[]"); }catch(e){}
+  if(rest.length){ el.dataset.alts=JSON.stringify(rest.slice(1)); el.src=rest[0]; return; }
+  const mode=el.dataset.gone; if(mode==="miss") el.insertAdjacentHTML("afterend",'<div class="miss">Photo unavailable</div>'); el.remove(); if(mode==="gal") galUpd(); }
 const FAM_ORDER=["Black","Brown","Tan & camel","Beige & nude","White","Metallic","Red & burgundy","Pink & purple","Blue","Green & khaki","Orange & yellow","Grey","Print & multi"];
 let BRANDS=[...new Set(ALL.map(i=>i.brand))].sort();
 let FILTERS = [["for","Women","For women"],["for","Men","For men"],["for","Girl","Girls"],["for","Boy","Boys"],["kind","shoulder","Shoulder bags"],["kind","crossbody","Crossbody"],["kind","handbag","Handbags"],["kind","tote","Totes"],["kind","clutch","Clutches"],["kind","backpack","Backpacks"],["kind","waist","Waist bags"],["kind","slide","Slides"],["kind","sandal","Sandals"],["kind","loafer","Loafers"],["kind","sneaker","Sneakers"],["kind","flipflop","Toe-posts"],["kind","dress","Dresses"],["kind","set","Sets"],["kind","top","Tops"],["kind","bodysuit","Bodysuits"],["kind","abaya","Abayas"],["kind","hijab","Hijabs & scarves"],["kind","shirt","Shirts"],["kind","trousers","Trousers & skirts"],["kind","other","Other"],["heel","Flat","Flat"],["heel","Low heel","Low heel"],["heel","Wedge","Wedge"],["heel","Platform","Platform"],["heel","Heel","Heel"],["heel","Closed","Closed toe"],
@@ -352,7 +365,8 @@ function recOrder(l){
     return [...byBrand.values()].map(spread).flatMap(q=>q.map((x,k)=>[x,(k+0.5)/Math.pow(q.length,0.6)])).sort((a,b)=>a[1]-b[1]).map(z=>z[0]); });
 }
 function cardHtml(i){
-  const img = i.img ? `<img loading="lazy" src="${esc(i.img)}" alt="${esc(i.model+" "+i.colour)}" onerror="this.outerHTML='<div class=miss>Photo unavailable</div>'">` : `<div class="miss">Photo coming soon</div>`;
+  const chain=photoChain(i.img, i.imgs||[], i.full);
+  const img = chain.length ? imgTag(chain, `loading="lazy" alt="${esc(i.model+" "+i.colour)}"`, "miss") : `<div class="miss">Photo coming soon</div>`;
   return `<article class="card" data-ref="${esc(i.ref)}">
     <div class="ph">${img}${(i.imgs||[]).length>1?`<span class="pcount">More photos ›</span>`:""}</div>
     <div><div class="mname">${esc(i.model)}</div><div class="mcol">${esc([i.colour,i.desc].filter(Boolean).join(" · "))}</div></div>
@@ -473,7 +487,7 @@ function orderText(){
   return ["NORTHLINE ORDER", `Agent: ${code}`, "", `Customer: ${$("cName").value.trim()}`, `Phone: ${$("cPhone").value.trim()}`, `Delivery: ${$("cAddr").value.trim()}`, $("cFoot").value.trim()?`Foot length: ${$("cFoot").value.trim()} cm`:"", $("cNote").value.trim()?`Note: ${$("cNote").value.trim()}`:"", "", ...lines, "", `Total: ${N(cart.reduce((s,c)=>s+c.price*c.qty,0))} (${((n)=>n+" item"+(n===1?"":"s"))(cart.reduce((s,c)=>s+c.qty,0))})`].filter((x,i,a)=>!(x===""&&a[i-1]==="")).join("\n");
 }
 function drawSheet(){
-  $("lines").innerHTML = cart.length ? cart.map((c,n)=>`<div class="line"><img src="${esc(c.img||"")}" alt=""><div><b>${esc(c.model)}</b><small>${esc(c.colour||"")}${c.size!=="One size"?" · size "+esc(c.size):""} · x${c.qty}</small><small>${N(c.price*c.qty)}</small></div><button class="x" data-n="${n}" aria-label="Remove">✕</button></div>`).join("") : `<p class="hint">Your order is empty.</p>`;
+  $("lines").innerHTML = cart.length ? cart.map((c,n)=>`<div class="line">${imgTag(photoChain(c.img), 'alt=""')||'<img alt="">'}<div><b>${esc(c.model)}</b><small>${esc(c.colour||"")}${c.size!=="One size"?" · size "+esc(c.size):""} · x${c.qty}</small><small>${N(c.price*c.qty)}</small></div><button class="x" data-n="${n}" aria-label="Remove">✕</button></div>`).join("") : `<p class="hint">Your order is empty.</p>`;
   $("total").textContent=N(cart.reduce((s,c)=>s+c.price*c.qty,0));
 }
 $("agentCode").value=store.get("nl-agent","");
@@ -523,7 +537,7 @@ $("grid").addEventListener("click",e=>{
 
 // ---------- photo gallery: swipe through every photo of a style ----------
 const G=id=>document.getElementById(id);
-function openGal(title, urls){ G("gtitle").textContent=title; G("gtrack").innerHTML=urls.map(u=>`<img src="${esc(u)}" alt="" onerror="this.remove();galUpd()">`).join(""); G("gal").hidden=false; G("gtrack").scrollLeft=0; galUpd(); document.body.style.overflow="hidden"; }
+function openGal(title, urls){ G("gtitle").textContent=title; G("gtrack").innerHTML=urls.map(u=>imgTag(photoChain(u), 'alt=""', "gal")).join(""); G("gal").hidden=false; G("gtrack").scrollLeft=0; galUpd(); document.body.style.overflow="hidden"; }
 function closeGal(){ G("gal").hidden=true; G("gtrack").innerHTML=""; document.body.style.overflow=""; }
 function galUpd(){ const t=G("gtrack"), imgs=t.querySelectorAll("img"), k=Math.max(0,Math.min(Math.round(t.scrollLeft/(t.clientWidth||1)),imgs.length-1)); G("gcount").textContent=imgs.length?`${k+1} / ${imgs.length}`:"No photos"; G("gsave").href=imgs[k]?imgs[k].src:"#"; }
 G("gtrack").addEventListener("scroll",()=>{ clearTimeout(galUpd.t); galUpd.t=setTimeout(galUpd,60); });
@@ -564,8 +578,11 @@ $("sgSheet").addEventListener("click",e=>{ if(e.target.id==="sgSheet") $("sgShee
 // ---------- status / post image: drawn on a canvas in the Northline look, shared straight to WhatsApp or Instagram ----------
 const ST={i:null,fmt:"story",img:null,url:null};
 const loadImg=u=>new Promise(res=>{ const im=new Image(); im.crossOrigin="anonymous"; im.onload=()=>res(im); im.onerror=()=>res(null); im.src=u; });
-async function stPhoto(i){ const u=(i.imgs&&i.imgs[0])||i.full||i.img; if(!u) return null;
-  return await loadImg(u) || await loadImg("https://wsrv.nl/?url="+encodeURIComponent(u)+"&w=1400&output=jpg"); }   // image proxy adds the CORS header some shops leave out
+// status image photo: the style's links in turn (each straight, then through the image relay, which adds the CORS header
+// some shops leave out and which drawing on a canvas needs)
+async function stPhoto(i){ const links=photoChain((i.imgs&&i.imgs[0])||i.full||i.img, i.full, i.img, i.imgs||[]).filter(u=>!u.startsWith("https://wsrv.nl/")).slice(0,4);
+  for(const u of links){ const im=await loadImg(u) || await loadImg("https://wsrv.nl/?url="+encodeURIComponent(u)+"&w=1400&output=jpg"); if(im) return im; }
+  return null; }
 function spaced(x,t,X,Y,sp,align){ let w=0; for(const ch of t) w+=x.measureText(ch).width+sp; w-=sp; let cx=align==="center"?X-w/2:align==="right"?X-w:X; const a=x.textAlign; x.textAlign="left"; for(const ch of t){ x.fillText(ch,cx,Y); cx+=x.measureText(ch).width+sp; } x.textAlign=a; return w; }
 function wordmark(x,X,Y,px,align,dark){ x.font=`600 ${px}px Figtree, sans-serif`; const sp=px*.34; let w=0; for(const ch of "NORTHLINE") w+=x.measureText(ch).width+sp; w-=sp;
   let cx=align==="center"?X-w/2:align==="right"?X-w:X; x.fillStyle=dark?"#0E1B2C":"#FFFFFF"; cx+=spaced(x,"NORTH",cx,Y,sp)+sp; x.fillStyle="#4A9FD8"; spaced(x,"LINE",cx,Y,sp); }

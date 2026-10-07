@@ -415,6 +415,21 @@ const $ = id=>document.getElementById(id);
 const N = n=>"₦"+Math.round(n).toLocaleString("en-NG");
 const esc = s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const IMG = u => !u || /^https?:/.test(u) ? u : "../"+u;   // added products store photos relative to the site root
+
+// ---------- photos: when a photo link fails, try the style's other links before giving up ----------
+// Capone's own site and Shopify's main image server hold the same files (Shopify's is tried first), then the shop's own
+// link, the style's other photos, and last an image relay (wsrv.nl) for shops that refuse photos shown on other sites.
+const TWINS=[["https://www.caponeoutfitters.com.tr/cdn/shop/files/","https://cdn.shopify.com/s/files/1/0566/3732/5374/files/"]];
+const twinOf=u=>{ for(const [a,b] of TWINS) if(u.startsWith(a)) return b+u.slice(a.length); return ""; };
+const viaRelay=u=>/^https?:/.test(u)&&!u.startsWith("https://wsrv.nl/")?"https://wsrv.nl/?url="+encodeURIComponent(u)+"&w=900&output=jpg":"";
+function photoChain(...lists){ const all=lists.flat().filter(Boolean), out=[], add=u=>{ if(u&&!out.includes(u)) out.push(u); };
+  all.forEach(u=>{ add(twinOf(u)); add(u); }); if(all.length) add(viaRelay(all[0])); return out; }
+// an <img> that walks its chain on error; when nothing loads: "card" shows the placeholder, "pg"/"gal" update the gallery
+function imgTag(chain, attrs, mode){ return chain.length?`<img src="${esc(chain[0])}" data-alts="${esc(JSON.stringify(chain.slice(1)))}" data-gone="${mode||""}" referrerpolicy="no-referrer" onerror="imgNext(this)" ${attrs||""}>`:""; }
+function imgNext(el){ let rest=[]; try{ rest=JSON.parse(el.dataset.alts||"[]"); }catch(e){}
+  if(rest.length){ el.dataset.alts=JSON.stringify(rest.slice(1)); el.src=rest[0]; return; }
+  const mode=el.dataset.gone, box=el.parentNode; el.remove();
+  if(mode==="card"&&box) box.classList.add("nophoto"); if(mode==="pg") pgUpd(); if(mode==="gal") galUpd(); }
 const store = {get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}}, set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
 
 // visit counting (GoatCounter, no cookies): page views plus a few actions, so we learn what people look at and order
@@ -522,9 +537,10 @@ function dotsHtml(items, max){ const fams=[]; items.forEach(i=>{ const f=FAM_HEX
 function cardHtml(c){
   const i=c.rep, n=c.g.items.length, alt=(i.imgs||[]).find(u=>u&&u!==i.img&&u!==i.full&&u!==(i.imgs||[])[0]) || ((i.imgs||[]).length>1?i.imgs[1]:"");
   const tag=inDrop(i)?`<span class="tag pick">This week</span>`:isFresh(i)?`<span class="tag">New</span>`:"";
-  const ph=i.img?`<img class="main" loading="lazy" src="${esc(i.img)}" alt="${esc(i.model+" "+(i.colour||""))}" onerror="this.parentNode.classList.add('nophoto');this.remove()">${alt?`<img class="alt" alt="" data-src="${esc(alt)}">`:""}`:"";
+  const chain=photoChain(i.img, i.imgs||[], i.full), altc=alt?photoChain(alt):[];
+  const ph=chain.length?imgTag(chain, `class="main" loading="lazy" alt="${esc(i.model+" "+(i.colour||""))}"`, "card")+(altc.length?`<img class="alt" alt="" data-src="${esc(altc[0])}" data-alts="${esc(JSON.stringify(altc.slice(1)))}" referrerpolicy="no-referrer" onerror="imgNext(this)">`:""):"";
   return `<article class="card" data-ref="${esc(i.ref)}" tabindex="0" role="link" aria-label="${esc(i.brand+" "+i.model+", "+(i.colour||"")+", "+N(i.price))}">
-    <div class="ph${i.img?"":" nophoto"}">${ph}${tag}</div>
+    <div class="ph${ph?"":" nophoto"}">${ph}${tag}</div>
     <div class="info"><span class="b">${esc(i.brand)}</span><span class="m">${esc(i.model)}</span>
       <span class="c">${n>1?`${dotsHtml(c.g.items,5)}${n} colours`:esc(i.colour||"")}</span>
       <span class="p">${N(i.price)}</span>${fewSizes(i)?`<span class="few">Few sizes left</span>`:""}</div>
@@ -609,7 +625,7 @@ $("searchBtn").onclick=()=>{ const r=$("searchRow"), open=r.hidden; r.hidden=!op
 $("clearAll").onclick=()=>{ S.f.clear(); S.q=""; $("q").value=""; FORCE_PUSH=true; refresh(); };
 $("grid").addEventListener("click",e=>{ const c=e.target.closest(".card"); if(c) openPD(c.dataset.ref); });
 $("grid").addEventListener("keydown",e=>{ if(e.key==="Enter"){ const c=e.target.closest(".card"); if(c) openPD(c.dataset.ref); } });
-$("grid").addEventListener("mouseover",e=>{ const im=e.target.closest(".card")?.querySelector("img.alt[data-src]"); if(!im) return; im.src=im.dataset.src; im.removeAttribute("data-src"); im.onload=()=>im.parentNode.classList.add("alton"); im.onerror=()=>im.remove(); });
+$("grid").addEventListener("mouseover",e=>{ const im=e.target.closest(".card")?.querySelector("img.alt[data-src]"); if(!im) return; im.onload=()=>im.parentNode&&im.parentNode.classList.add("alton"); im.src=im.dataset.src; im.removeAttribute("data-src"); });
 
 // ---------- filters panel ----------
 function fOpts(key, values, label){
@@ -679,11 +695,11 @@ function openPD(ref, noPush){ const g=BYREF.get(ref); if(!g) return; const i=g.i
 function pdPhotos(i){ const l=(i.imgs&&i.imgs.length)?i.imgs:[i.full||i.img]; return l.filter(Boolean); }
 function drawPD(newGallery){
   const i=PD.i, sz=sizesOf(i), one=oneSize(i);
-  if(newGallery){ const ph=pdPhotos(i); $("pgt").innerHTML=ph.map((u,n)=>`<img src="${esc(u)}" alt="${esc(i.model+" "+(i.colour||"")+" photo "+(n+1))}" ${n?'loading="lazy"':""} onerror="this.remove();pgUpd()">`).join("")||`<div class="ph nophoto" style="flex:1 0 100%"></div>`; $("pgt").scrollLeft=0; pgUpd(); }
+  if(newGallery){ const ph=pdPhotos(i); $("pgt").innerHTML=ph.map((u,n)=>imgTag(photoChain(u, n?[]:[i.full,i.img]), `alt="${esc(i.model+" "+(i.colour||"")+" photo "+(n+1))}" ${n?'loading="lazy"':""}`, "pg")).join("")||PG_EMPTY; $("pgt").scrollLeft=0; pgUpd(); }
   $("pdBrand").textContent=i.brand; $("pdName").textContent=i.model; $("pdPrice").textContent=N(i.price);
   const d=(i.desc||"").replace(/,?\s*confirm size before payment/i,"").trim(); $("pdDesc").textContent=d?d[0].toUpperCase()+d.slice(1)+".":""; $("pdDesc").hidden=!d;
   $("pdColour").textContent=i.colour||""; $("pdColours").hidden=PD.items.length<2&&!i.colour;
-  $("pdSw").innerHTML=PD.items.length>1?PD.items.map(x=>`<button class="sw" data-ref="${esc(x.ref)}" aria-pressed="${x===i}" aria-label="${esc(x.colour||x.ref)}" title="${esc(x.colour||"")}">${x.img?`<img src="${esc(x.img)}" alt="" loading="lazy">`:""}</button>`).join(""):"";
+  $("pdSw").innerHTML=PD.items.length>1?PD.items.map(x=>`<button class="sw" data-ref="${esc(x.ref)}" aria-pressed="${x===i}" aria-label="${esc(x.colour||x.ref)}" title="${esc(x.colour||"")}">${imgTag(photoChain(x.img, x.imgs||[], x.full), 'alt="" loading="lazy"')}</button>`).join(""):"";
   if(PD.size&&!sz.includes(PD.size)) PD.size=null; if(one) PD.size="One size";
   $("pdSizes").hidden=one; $("pdSG").hidden=i.g==="BG"||i.g==="CL";
   $("pdSz").innerHTML=one?"":sz.map(s=>`<button class="sz" data-s="${esc(s)}" aria-pressed="${PD.size===s}">${esc(s)}</button>`).join("");
@@ -691,7 +707,8 @@ function drawPD(newGallery){
   $("pdRef").textContent=`Ref ${i.ref}`;
   $("pdAsk").href="https://wa.me/"+WA+"?text="+encodeURIComponent(`Hello Northline, I have a question about ${i.brand} ${i.model}${i.colour?" ("+i.colour+")":""}, ref ${i.ref}.`);
 }
-function pgUpd(){ const t=$("pgt"), n=t.querySelectorAll("img").length, k=Math.max(0,Math.min(Math.round(t.scrollLeft/(t.clientWidth||1)),n-1));
+const PG_EMPTY=`<div class="ph nophoto" style="flex:1 0 100%"></div>`;
+function pgUpd(){ const t=$("pgt"); if(!t.querySelector("img,.nophoto")) t.innerHTML=PG_EMPTY; const n=t.querySelectorAll("img").length, k=Math.max(0,Math.min(Math.round(t.scrollLeft/(t.clientWidth||1)),n-1));
   $("pgd").innerHTML=n>1?Array.from({length:n},(_,j)=>`<i class="${j===k?"on":""}"></i>`).join(""):""; $("pgPrev").hidden=$("pgNext").hidden=n<2; }
 $("pgt").addEventListener("scroll",()=>{ clearTimeout(pgUpd.t); pgUpd.t=setTimeout(pgUpd,60); });
 $("pgPrev").onclick=()=>{ const t=$("pgt"); t.scrollBy({left:-t.clientWidth,behavior:"smooth"}); };
@@ -714,7 +731,7 @@ function bagUI(){ const n=cart.reduce((s,c)=>s+c.qty,0), total=cart.reduce((s,c)
   $("bagN").hidden=!n; $("bagN").textContent=n; $("obar").hidden=!n; document.body.classList.toggle("hasbar",!!n);
   $("obarCount").textContent=`View bag · ${n} item${n===1?"":"s"}`; $("obarTotal").textContent=N(total); }
 function drawBag(){
-  $("lines").innerHTML = cart.length ? cart.map((c,n)=>`<div class="line"><div class="t">${c.img?`<img src="${esc(c.img)}" alt="">`:""}</div>
+  $("lines").innerHTML = cart.length ? cart.map((c,n)=>`<div class="line"><div class="t">${imgTag(photoChain(c.img), 'alt=""')}</div>
     <div><b>${esc(c.model)}</b><small>${esc(c.colour||"")}${c.size&&c.size!=="One size"?" · size "+esc(c.size):""}</small><small>${N(c.price)} each</small>
       <div class="qty"><button data-n="${n}" data-d="-1" aria-label="One less">−</button><span>${c.qty}</span><button data-n="${n}" data-d="1" aria-label="One more">+</button></div></div>
     <div><div class="lp">${N(c.price*c.qty)}</div><button class="rm" data-rm="${n}">Remove</button></div></div>`).join("") : `<div class="emptybag">Your bag is empty.</div>`;
@@ -755,7 +772,7 @@ $("waShow").textContent="+"+WA; $("footWa").textContent="+"+WA; $("footWa").href
 
 // ---------- full-screen photos ----------
 const G=id=>document.getElementById(id);
-function openGal(title, urls, start, noPush){ G("gtitle").textContent=title; G("gtrack").innerHTML=urls.map(u=>`<img src="${esc(u)}" alt="" onerror="this.remove();galUpd()">`).join(""); openOv("gal",null,noPush);
+function openGal(title, urls, start, noPush){ G("gtitle").textContent=title; G("gtrack").innerHTML=urls.map(u=>imgTag(photoChain(u), 'alt=""', "gal")).join(""); openOv("gal",null,noPush);
   requestAnimationFrame(()=>{ G("gtrack").scrollLeft=(start||0)*G("gtrack").clientWidth; galUpd(); }); }
 function closeGal(){ if(OPEN[OPEN.length-1]==="gal") closeOv(); }
 function galUpd(){ const t=G("gtrack"), imgs=t.querySelectorAll("img"), k=Math.max(0,Math.min(Math.round(t.scrollLeft/(t.clientWidth||1)),imgs.length-1)); G("gcount").textContent=imgs.length?`${k+1} / ${imgs.length}`:"No photos"; G("gsave").href=imgs[k]?imgs[k].src:"#"; }
