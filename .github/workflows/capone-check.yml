@@ -1,0 +1,29 @@
+# Northline: weekly check of every Capone style against Capone's own site (probe stage while it is being built).
+name: Capone check
+
+on:
+  push:
+    branches: [claude/gifted-brown-d71piq]
+    paths: [tools/capone/**, .github/workflows/capone-check.yml]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: site
+      - uses: actions/checkout@v4
+        with:
+          path: code
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Check Capone
+        working-directory: site
+        run: python ../code/tools/capone/check.py
