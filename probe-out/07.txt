@@ -1,0 +1,3519 @@
+<!doctype html>
+<html lang="tr-TR" >
+<head>
+<meta charset="utf-8">
+<title>11049 - Ziya Ayakkabı | Ziya.com.tr</title>
+<meta name="description" content="Erkek ve Kadın Ayakkabı ürünleri en avantajlı fiyatlar ile Ziya.com.tr'de. Şimdi Satın Al!" />
+<meta name="copyright" content="T-Soft E-Ticaret Sistemleri" />
+<meta name="robots" content="noindex,follow,max-image-preview:large" /><link rel="canonical" href="https://www.ziya.com.tr/arama?q=11049" /><link rel="alternate" href="https://www.ziya.com.tr/arama?q=11049" hreflang="x-default"/>
+<link rel="alternate" hreflang="tr" href="https://www.ziya.com.tr/arama" />
+
+            <meta property="og:image" content="/Data/EditorFiles/ziya/svg/logo.svg"/>
+            <meta property="og:image:secure_url" content="/Data/EditorFiles/ziya/svg/logo.svg" />
+            <meta name="twitter:image" content="/Data/EditorFiles/ziya/svg/logo.svg" />
+            <meta property="og:type" content="website" />
+            <meta property="og:title" content="11049 - Ziya Ayakkabı | Ziya.com.tr" />
+            <meta property="og:description" content="Erkek ve Kadın Ayakkabı ürünleri en avantajlı fiyatlar ile Ziya.com.tr'de. Şimdi Satın Al!" />
+            <meta property="og:url" content="https://www.ziya.com.tr/arama" />
+            <meta property="og:site_name" content="Ziya.com.tr" />
+            <meta name="twitter:card" content="summary" />
+            <meta name="twitter:title" content="11049 - Ziya Ayakkabı | Ziya.com.tr" />
+            <meta name="twitter:description" content="Erkek ve Kadın Ayakkabı ürünleri en avantajlı fiyatlar ile Ziya.com.tr'de. Şimdi Satın Al!" />
+            <script type="text/javascript">
+                try {
+                    var PAGE_TYPE = 'search';
+                    var MEMBER_INFO = {"ID":0,"CODE":"","FIRST_NAME":"","BIRTH_DATE":"","GENDER":"","LAST_NAME":"","MAIL":"","MAIL_HASH":"","PHONE":"","PHONE_HASH":"","PHONE_HASH_SHA":"","GROUP":0,"TRANSACTION_COUNT":0,"REPRESENTATIVE":"","KVKK":-1,"COUNTRY":"TR","E_COUNTRY":"TR"};
+                    var IS_VENDOR = 0;
+                    var MOBILE_ACTIVE = false;
+                    var SEPET_MIKTAR = '0';
+                    var SEPET_TOPLAM = '0,00';
+                    var SESS_ID = 'f6fbef02abbb5c0610a4ae90a89655d2';
+                    var LANGUAGE = 'tr';
+                    var CURRENCY = 'TL';
+                    var SEP_DEC = ',';
+                    var SEP_THO = '.';
+                    var SERVICE_INFO = null;
+                    var CART_CSRF_TOKEN = '026f721c24d685f3e67aa79a6af85b9a85066b7b4453b4510087db66ca4da688';
+                    var CSRF_TOKEN = '3087d0f395cfc827b1ba2f95b985ad51628b109b563a';
+                    var KVKK_REQUIRED = 1;
+                    var GOOGLE_RECAPTCHA_ACTIVE = 0;
+                    var GOOGLE_RECAPTCHA_SITE_KEY = '';
+                }
+                catch(err) { }
+                
+                const DYNAMIC_LOADING_SHOW_BUTTON = 0;
+
+            </script>
+            
+<link rel="preload" as="font" href="https://www.ziya.com.tr/theme/v4-ziya/sub_theme/genel/firat/v4/font/font/tsoft.woff?91661963" type="font/woff" crossorigin="anonymous">
+<link rel="stylesheet" property="stylesheet" type="text/css" href="/theme/standart/css/opensans.css" />
+<link rel="stylesheet" property="stylesheet" type="text/css" href="https://www.ziya.com.tr/theme/v4-ziya/sub_theme/genel/firat/v4/standart.css?v=1788959375" />
+<link rel="stylesheet" property="stylesheet" type="text/css" href="https://www.ziya.com.tr/theme/v4-ziya/sub_theme/genel/firat/v4/default.css?v=1788959375" />
+<link rel="stylesheet" property="stylesheet" type="text/css" href="https://www.ziya.com.tr/theme/v4-ziya/sub_theme/genel/firat/v4/popup.css?v=1788959375" />
+<link rel="stylesheet" property="stylesheet" type="text/css" href="https://www.ziya.com.tr/theme/v4-ziya/sub_theme/genel/firat/v4/yorum.css?v=1788959375" />
+<link rel="stylesheet" property="stylesheet" type="text/css" href="https://www.ziya.com.tr/theme/v4-ziya/sub_theme/form/firat/v4/form.css?v=1788959375" />
+<link rel="stylesheet" property="stylesheet" type="text/css" href="https://www.ziya.com.tr/theme/v4-ziya/sub_theme/ust/firat/v4/ust.css?v=1788959375" />
+<link rel="stylesheet" property="stylesheet" type="text/css" href="https://www.ziya.com.tr/theme/v4-ziya/sub_theme/buton/firat/v4/buton.css?v=1788959375" />
+<link rel="stylesheet" property="stylesheet" type="text/css" href="https://www.ziya.com.tr/theme/v4-ziya/sub_theme/blok/firat/v4/blok.css?v=1788959375" />
+<link rel="stylesheet" property="stylesheet" type="text/css" href="https://www.ziya.com.tr/theme/v4-ziya/sub_theme/vitrin/firat/v4/vitrin.css?v=1788959375" />
+<link rel="stylesheet" property="stylesheet" type="text/css" href="https://www.ziya.com.tr/theme/v4-ziya/sub_theme/alt/firat/v4/alt.css?v=1788959375" />
+<link rel="stylesheet" property="stylesheet" type="text/css" href="https://www.ziya.com.tr/theme/v4-ziya/sub_theme/interaktif_vitrin/firat/v4/interaktif_vitrin.css?v=1788959375" />
+<link rel="stylesheet" property="stylesheet" type="text/css" href="https://www.ziya.com.tr/theme/v4-ziya/sub_theme/genel/firat/v4/datepicker.css?v=1788959375" />
+<script type="text/javascript" src="/srv/compressed/load/js/js1788959375.js"></script>
+<script src="/js/tsoftapps/v4/header.js?v=1788959375"></script>
+<script type="text/javascript" src="/js/webpush/app.js?1788959375"></script>
+<link rel="icon" type="image/gif" href="//www.ziya.com.tr/favicon.ico" />
+<link rel="search" href="/xml/opensearchdescription.php" type="application/opensearchdescription+xml" title="Ziya Ayakkabı | Ziya.com.tr" />
+<!-- if responsive lisans aktif ise -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<style type="text/css">
+.image-wrapper {
+padding-bottom: 150%
+}
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Ephesis&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"><script>
+if(PAGE_TYPE == 'category'){
+$(document).ready(function(){
+$(window).scrollTop(3);
+});
+}
+</script>
+<meta name="google-site-verification" content="NuAvM80GGCUO9mLB6V5gPsfyzUYkdM3E2880cKc-iKc" /><script>
+!(function (w, d, t) {
+w.TiktokAnalyticsObject = t;
+var ttq = (w[t] = w[t] || []);
+(ttq.methods = ["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie",]),
+(ttq.setAndDefer = function (t, e) {
+t[e] = function () {
+t.push([e].concat(Array.prototype.slice.call(arguments, 0)));
+};
+});
+for (var i = 0; i < ttq.methods.length; i++)
+ttq.setAndDefer(ttq, ttq.methods[i]);
+(ttq.instance = function (t) {
+for (var e = ttq._i[t] || [], n = 0; n < ttq.methods.length; n++)
+ttq.setAndDefer(e, ttq.methods[n]);
+return e;
+}),
+(ttq.load = function (e, n) {
+var i = "https://analytics.tiktok.com/i18n/pixel/events.js";
+(ttq._i = ttq._i || {}),
+(ttq._i[e] = []),
+(ttq._i[e]._u = i),
+(ttq._t = ttq._t || {}),
+(ttq._t[e] = +new Date()),
+(ttq._o = ttq._o || {}),
+(ttq._o[e] = n || {});
+var o = document.createElement("script");
+(o.type = "text/javascript"),
+(o.async = !0),
+(o.src = i + "?sdkid=" + e + "&lib=" + t);
+var a = document.getElementsByTagName("script")[0];
+a.parentNode.insertBefore(o, a);
+});
+ttq.load("CN0DGCRC77UE6652J090");
+ttq.track("Browse");
+})(window, document, "ttq");
+</script>
+<script>
+if(typeof window.FB_EVENT_ID == 'undefined'){
+window.FB_EVENT_ID = "fb_" + new Date().getTime();
+}
+</script><meta name="google-site-verification" content="NuAvM80GGCUO9mLB6V5gPsfyzUYkdM3E2880cKc-iKc" /><script type="text/javascript">
+var GA4ID = 'G-Y59KZXCJ50';
+var GA4_TRACKING_ID = 'G-Y59KZXCJ50';
+var GA_Enhanced_Ecommerce = true;
+var GTAG_TRACKING_ID = '';
+var GTAG_ADWORDS_ID = 'AW-706606626';
+var GTAG_ADWORDS_LABEL = '27o1CPuEmKwBEKLs99AC';
+var GTAG_WITH_VAT = '1';
+var GTAG_ID = 'id';
+var OPTIMIZE_ID = ''
+if (GA4_TRACKING_ID === '{{' + 'GA4_TRACKING_ID' + '}}') {
+GA4_TRACKING_ID = '';
+}
+if (GA4ID !== '' && GA4ID !== '{{' + 'GA4_TRACKING_ID' + '}}') {
+$.getScript("https://www.googletagmanager.com/gtag/js?id=G-Y59KZXCJ50");
+} else {
+$.getScript("https://www.googletagmanager.com/gtag/js?id=");
+}
+</script>
+<script>
+if(typeof window.FB_EVENT_ID == 'undefined'){
+window.FB_EVENT_ID = "fb_" + new Date().getTime();
+}
+</script>
+<script>
+var RATE = {"USD_TO_TL":49.2152,"EUR_TO_TL":55.0538};
+var DECIMAL_LENGTH = 2;
+var showHeaderCart = false;
+var showAdd2CartPopup = true;
+var PAGE_LINK = { OFFER : '' , OFFER_CONFIRMATION : '', CART : 'sepet', ORDER : 'order' };
+var PRODUCT_DATA = [] , CATEGORY_DATA = {} , BRAND_DATA = {};
+var ENDPOINT_PREFIX = '';
+</script>
+</head>
+<body>
+<input type="hidden" id="cookie-law" value="0" />
+<script>
+function accept() {
+setCookie('webpush', 1, 15);
+var width = 500;
+var height = 500;
+var left = (screen.width / 2) - (width / 2);
+var top = (screen.height / 2) - (height / 2);
+new TsoftWebPush();
+$(".tsoft-push--in-notification").remove();
+}
+function reject() {
+$(".bildirimIzin").hide();
+setCookie('webpush', 1, 2);
+}
+$(function () {
+var webpush = typeof getCookie('webpush') === 'undefined' ? '0' : getCookie('webpush');
+var isSafari = !!navigator.userAgent.match(/Version\/[\d\.]+.*Safari/);
+if (isSafari === false && webpush !== "1" && ("Notification" in window)) {
+setTimeout(function () {
+$(".bildirimIzin").show();
+}, 1000);
+}
+});
+</script>
+<div class="tsoft-push--in-notification bildirimIzin" style="top: 0px; display:none;">
+<div class="tsoft-push--in-notification-inner-container">
+<div class="tsoft-push--in-notification-logo"><img alt="" src="/Data/EditorFiles/ziya/svg/logo.svg"/></div>
+<div class="tsoft-push--in-notification-text-container">
+<div class="tsoft-push--in-notification-title">Masaüstü bildirimlerine ekleyin</div>
+<div class="tsoft-push--in-notification-description">Özel fırsatlardan ve güncel kampanyalardan haberiniz olsun ister misiniz?</div>
+</div>
+<div style="clear: both;">
+<div class="tsoft-push--in-notification-button-container">
+<a target="_blank" onclick="reject();" class="tsoft-push--in-notification-button tsoft-push--in-disallow-button">Daha Sonra</a>
+<a target="_blank" onclick="accept();" class="tsoft-push--in-notification-button tsoft-push--in-allow-button">Evet</a>
+</div>
+<div style="clear: both;"></div>
+</div>
+</div>
+</div>
+<div id="mainWrapper" class="fl"><script type="text/javascript">
+    $(document).ready(function () {
+        var leftCol = true;
+        var rightCol = true;
+        var leftContent = $('#leftColumn').html().trim();
+        var rightContent = $('#rightColumn').html().trim();
+        var contentWrap = $('.contentWrapper');
+        var content = $('#mainColumn');
+        if (leftContent == '') {
+            leftCol = false;
+            $('#leftColumn').remove();
+        }
+        if (rightContent == '') {
+            rightCol = false;
+            $('#rightColumn').remove();
+        }
+        if (leftCol && rightCol) {
+            contentWrap.attr('id', 'threeCol');
+            content.addClass('col-8 col-md-6 col-sm-12');
+        }
+        else if (leftCol || rightCol) {
+            contentWrap.attr('id', 'twoCol');
+            content.addClass('col-10 col-md-9 col-sm-12');
+        }
+        else {
+            contentWrap.attr('id', 'oneCol');
+            content.addClass('col-12');
+        }
+    });
+</script>
+<div id="skeletonWrap" class="fl">
+    <div id="skeleton" class="fl col-12">
+        <header class="col col-12">
+            <div id="header" class="row">
+                <!-- Android app uyarı -->
+<link rel="stylesheet" href="/theme/v4-ziya/assets/swiper.css">
+<script src="/theme/v4-ziya/assets/swiper.js"></script>
+<!-- Android app uyarı -->
+<div id="pageOverlay" class="col-12 animate"></div>
+<div id="mobileMenu" class="col pb forMobile">
+<div id="closeMobileMenu" class="fl col-12 text-upper">
+<div class="row mb closeMenu">
+<div class="btn col-12 text-description text-semibold passive">
+<span class="closeMenu">Menüyü Kapat</span>
+<i class="col pos-a pos-top pos-right icon-cancel-top icon-large icon-push-right icon-pull-right icon-no-radius"></i>
+</div>
+</div>
+</div>
+<div id="mobileMenuMain" class="fl col-12 mt pt">
+<ul class="fl col-12">
+<li class="fl col-12 ">
+<a href="/" title="Anasayfa" class="col col-12 text-cpt">Anasayfa</a>
+</li>
+<li class="fl col-12 ">
+<span class="col col-12 ease text-cpt toggle">
+Kadın
+<span class="fr">
+<i class="icon-arrow-simple-down icon-no-space"></i>
+<i class="icon-arrow-simple-up icon-no-space d-none"></i>
+</span>
+</span>
+<ul class="box col-12">
+<i class="squareIcon"></i>
+<li class="fl col-12 text-cpt">
+<span class="col col-12 toggle">
+Ayakkabı
+<span class="fr">
+<i class="icon-arrow-simple-down icon-no-space"></i>
+<i class="icon-arrow-simple-up icon-no-space d-none"></i>
+</span>
+</span>
+<ul class="box col-12 ">
+<li class="fl col-12">
+<a href="/kadin-gunluk-ayakkabi" title="Günlük" class="col col-12 icon-custom text-cpt ">
+Günlük</a>
+</li>
+<li class="fl col-12">
+<a href="/kadin-topuklu-ayakkabi" title="Topuklu" class="col col-12 icon-custom text-cpt ">
+Topuklu</a>
+</li>
+<li class="fl col-12">
+<a href="/kadin-comfort-ayakkabi" title="Comfort" class="col col-12 icon-custom text-cpt ">
+Comfort</a>
+</li>
+<li class="fl col-12">
+<a href="/kadin-babet" title="Babet" class="col col-12 icon-custom text-cpt ">
+Babet</a>
+</li>
+<li class="fl col-12">
+<a href="/kadin-ayakkabi" class="col col-12 icon-custom text-cpt">Tümünü Gör</a>
+</li>
+</ul>
+</li>
+<li class="fl col-12">
+<a href="/kadin-bot" title="Bot" class="col col-12 icon-custom text-cpt">Bot</a>
+</li>
+<li class="fl col-12">
+<a href="/kadin-cizme" title="Çizme" class="col col-12 icon-custom text-cpt">Çizme</a>
+</li>
+<li class="fl col-12">
+<a href="/kadin-sandalet" title="Sandalet" class="col col-12 icon-custom text-cpt">Sandalet</a>
+</li>
+<li class="fl col-12">
+<a href="/kadin-terlik" title="Terlik" class="col col-12 icon-custom text-cpt">Terlik</a>
+</li>
+<li class="fl col-12">
+<a href="/kadin" class="col col-12">Tümünü Gör </a>
+</li>
+</ul>
+</li>
+<li class="fl col-12 ">
+<span class="col col-12 ease text-cpt toggle">
+Erkek
+<span class="fr">
+<i class="icon-arrow-simple-down icon-no-space"></i>
+<i class="icon-arrow-simple-up icon-no-space d-none"></i>
+</span>
+</span>
+<ul class="box col-12">
+<i class="squareIcon"></i>
+<li class="fl col-12 text-cpt">
+<span class="col col-12 toggle">
+Ayakkabı
+<span class="fr">
+<i class="icon-arrow-simple-down icon-no-space"></i>
+<i class="icon-arrow-simple-up icon-no-space d-none"></i>
+</span>
+</span>
+<ul class="box col-12 ">
+<li class="fl col-12">
+<a href="/erkek-gunluk-ayakkabi" title="Günlük" class="col col-12 icon-custom text-cpt ">
+Günlük</a>
+</li>
+<li class="fl col-12">
+<a href="/erkek-klasik-ayakkabi" title="Klasik" class="col col-12 icon-custom text-cpt ">
+Klasik</a>
+</li>
+<li class="fl col-12">
+<a href="/erkek-comfort-ayakkabi" title="Comfort" class="col col-12 icon-custom text-cpt ">
+Comfort</a>
+</li>
+<li class="fl col-12">
+<a href="/erkek-ayakkabi" class="col col-12 icon-custom text-cpt">Tümünü Gör</a>
+</li>
+</ul>
+</li>
+<li class="fl col-12">
+<a href="/erkek-bot" title="Bot" class="col col-12 icon-custom text-cpt">Bot</a>
+</li>
+<li class="fl col-12 text-cpt">
+<span class="col col-12 toggle">
+Sandalet-Terlik
+<span class="fr">
+<i class="icon-arrow-simple-down icon-no-space"></i>
+<i class="icon-arrow-simple-up icon-no-space d-none"></i>
+</span>
+</span>
+<ul class="box col-12 ">
+<li class="fl col-12">
+<a href="/erkek-sandalet" title="Sandalet" class="col col-12 icon-custom text-cpt ">
+Sandalet</a>
+</li>
+<li class="fl col-12">
+<a href="/erkek-terlik" title="Terlik" class="col col-12 icon-custom text-cpt ">
+Terlik</a>
+</li>
+<li class="fl col-12">
+<a href="/erkek-sandalet-terlik" class="col col-12 icon-custom text-cpt">Tümünü Gör</a>
+</li>
+</ul>
+</li>
+<li class="fl col-12">
+<a href="/erkek" class="col col-12">Tümünü Gör </a>
+</li>
+</ul>
+</li>
+<li class="fl col-12 ">
+<span class="col col-12 ease text-cpt toggle">
+Aksesuar
+<span class="fr">
+<i class="icon-arrow-simple-down icon-no-space"></i>
+<i class="icon-arrow-simple-up icon-no-space d-none"></i>
+</span>
+</span>
+<ul class="box col-12">
+<i class="squareIcon"></i>
+<li class="fl col-12 text-cpt">
+<span class="col col-12 toggle">
+Kadın
+<span class="fr">
+<i class="icon-arrow-simple-down icon-no-space"></i>
+<i class="icon-arrow-simple-up icon-no-space d-none"></i>
+</span>
+</span>
+<ul class="box col-12 ">
+<li class="fl col-12">
+<a href="/kadin-canta" title="Çanta" class="col col-12 icon-custom text-cpt ">
+Çanta</a>
+</li>
+<li class="fl col-12">
+<a href="/kadin-cuzdan-kartlik" title="Cüzdan/Kartlık" class="col col-12 icon-custom text-cpt ">
+Cüzdan/Kartlık</a>
+</li>
+<li class="fl col-12">
+<a href="/aksesuar-kadin" class="col col-12 icon-custom text-cpt">Tümünü Gör</a>
+</li>
+</ul>
+</li>
+<li class="fl col-12 text-cpt">
+<span class="col col-12 toggle">
+Erkek
+<span class="fr">
+<i class="icon-arrow-simple-down icon-no-space"></i>
+<i class="icon-arrow-simple-up icon-no-space d-none"></i>
+</span>
+</span>
+<ul class="box col-12 ">
+<li class="fl col-12">
+<a href="/erkek-canta" title="Çanta" class="col col-12 icon-custom text-cpt ">
+Çanta</a>
+</li>
+<li class="fl col-12">
+<a href="/erkek-cuzdan-kartlik" title="Cüzdan/Kartlık" class="col col-12 icon-custom text-cpt ">
+Cüzdan/Kartlık</a>
+</li>
+<li class="fl col-12">
+<a href="/erkek-kemer" title="Kemer" class="col col-12 icon-custom text-cpt ">
+Kemer</a>
+</li>
+<li class="fl col-12">
+<a href="/erkek-corap" title="Çorap" class="col col-12 icon-custom text-cpt ">
+Çorap</a>
+</li>
+<li class="fl col-12">
+<a href="/aksesuar-erkek" class="col col-12 icon-custom text-cpt">Tümünü Gör</a>
+</li>
+</ul>
+</li>
+<li class="fl col-12">
+<a href="/termos" title="Termos" class="col col-12 icon-custom text-cpt">Termos</a>
+</li>
+<li class="fl col-12">
+<a href="/aksesuar" class="col col-12">Tümünü Gör </a>
+</li>
+</ul>
+</li>
+<li class="fl col-12 ">
+<span class="col col-12 ease text-cpt toggle">
+Bakım Ürünleri
+<span class="fr">
+<i class="icon-arrow-simple-down icon-no-space"></i>
+<i class="icon-arrow-simple-up icon-no-space d-none"></i>
+</span>
+</span>
+<ul class="box col-12">
+<i class="squareIcon"></i>
+<li class="fl col-12">
+<a href="/deri-boyasi" title="Deri Boyası" class="col col-12 icon-custom text-cpt">Deri Boyası</a>
+</li>
+<li class="fl col-12">
+<a href="/nubuk-boyasi" title="Nubuk Boyası" class="col col-12 icon-custom text-cpt">Nubuk Boyası</a>
+</li>
+<li class="fl col-12">
+<a href="/acma-rugan-deri-sprey" title="Açma ve Rugan Deri Spreyi" class="col col-12 icon-custom text-cpt">Açma ve Rugan Deri Spreyi</a>
+</li>
+<li class="fl col-12">
+<a href="/cila" title="Cila" class="col col-12 icon-custom text-cpt">Cila</a>
+</li>
+<li class="fl col-12">
+<a href="/firca" title="Fırça" class="col col-12 icon-custom text-cpt">Fırça</a>
+</li>
+<li class="fl col-12">
+<a href="/nubuk-silgisi" title="Nubuk Silgisi" class="col col-12 icon-custom text-cpt">Nubuk Silgisi</a>
+</li>
+<li class="fl col-12">
+<a href="/parlatma-sungeri" title="Parlatma Süngeri" class="col col-12 icon-custom text-cpt">Parlatma Süngeri</a>
+</li>
+<li class="fl col-12">
+<a href="/temizleme-sungeri" title="Temizleme Süngeri" class="col col-12 icon-custom text-cpt">Temizleme Süngeri</a>
+</li>
+<li class="fl col-12">
+<a href="/temizleme-kopugu" title="Temizleme Köpüğü" class="col col-12 icon-custom text-cpt">Temizleme Köpüğü</a>
+</li>
+<li class="fl col-12">
+<a href="/su-gecirmez-sprey" title="Su Geçirmez Sprey" class="col col-12 icon-custom text-cpt">Su Geçirmez Sprey</a>
+</li>
+<li class="fl col-12">
+<a href="/tabanlik" title="Tabanlık" class="col col-12 icon-custom text-cpt">Tabanlık</a>
+</li>
+<li class="fl col-12">
+<a href="/bakim-urunleri" class="col col-12">Tümünü Gör </a>
+</li>
+</ul>
+</li>
+<li class="fl col-12">
+<a href="/yeni-gelenler" title="Yeni Gelenler" class="col col-12 text-cpt">Yeni Gelenler</a>
+</li>
+<li class="fl col-12">
+<a href="/outlet" title="Outlet" class="col col-12 text-cpt">Outlet</a>
+</li>
+</ul>
+</div>
+<div class="col col-12 pb d-flex j-center" id="mobileOptions">
+<div class="fl">
+<div class="box d-flex text-upper c-pointer">
+<div class="col col-12 lang-hover d-flex">
+tr
+</div>
+<i class="">/</i>
+<ul class="language">
+<li class="col text-center " data-value="en">
+en
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="col col-12 p-left mt pt ">
+<div class="col col-6 p-right">
+<a id="loginMobile" href="/uye-girisi-sayfasi" class="btn btn-medium col-12 text-center">Üye Girişi</a>
+</div>
+<div class="col col-6 p-right">
+<a id="regisMobile" href="/index.php?B=YeniUye" class="btn btn-medium col-12 text-center">Üye Ol</a>
+</div>
+</div>
+</div>
+<span id="backToTop">
+<span class="backToTopSpan"> <img src="/Data/EditorFiles/ziya/svg/vitrinRight.svg" width="17px" alt=""></span>
+</span>
+<div class="fl col-12 header-wrapper">
+<div class="fl col-12" id="header-wrap">
+<div class="box col-12 d-flex j-between company-title">
+<div class="marquee-container">
+<span class="marquee-text">Sezon Ürünlerinde 2. Ürüne %30 İndirim Fırsatı Başladı!</span>
+</div>
+</div>
+<style>
+.marquee-container {
+width: 100%;
+overflow: hidden;
+background: inherit;
+}
+.marquee-text {
+display: inline-block;
+padding-left: 100%;
+animation: marquee 15s linear infinite;
+white-space: nowrap;
+}
+.marquee-container:hover .marquee-text {
+animation-play-state: paused;
+}
+@keyframes marquee {
+0% {
+transform: translate(0, 0);
+}
+100% {
+transform: translate(-100%, 0);
+}
+}
+</style>
+<div class="fl col-12 whiteBg line-bottom">
+<div class="col col-12" id="headerMain">
+<div class="row">
+<div class="inner">
+<div class="fl col-12 d-flex">
+<div class="box col-sm-1 col-xs-2 forMobile">
+<span class="icon-menu icon-no-space icon-push-left text-custom-pink" id="menuBtn"></span>
+</div>
+<div class="col">
+<span class="search-mobile"></span>
+</div>
+<div class="col col pb forMobile">
+<div class="row">
+<div id="mobileSearch" class="col pt "></div>
+</div>
+</div>
+<div id="logo" class="col col-3 col-md-2 col-sm-12 ease forMobile">
+<a href="/">
+<p><img src="/Data/EditorFiles/ziya/svg/logo.svg" alt="logo.svg (2 KB)" width="65" height="76" /></p>
+</a>
+</div>
+<div id="hmLinksMobile" class="pos-r fr col-sm-7 col-xs-5 forMobile">
+<div class="d-flex"> <a href="/uye-alisveris-listesi" class="col text-center authorLink">
+<i class="fav-icon"></i>
+</a>
+<div class="fl">
+<a href="/sepet" class="col text-upper d-flex basketLink">
+<i class="icon-basket-cart text-custom-pink"></i>
+</a>
+</div>
+</div>
+<!-- <div id="hmAccountLinkWrap" class="pos-r fr drop-down hover">
+<a data-width="500" data-url="/srv/service/customer/login-form" href="#"
+class="col col-12 drop-down-title text-upper d-flex popupWin">
+<i class="icon-member-default-top text-custom-pink"></i>
+<span class="dn-xs">Üye Girişi</span>
+</a>
+</div> -->
+</div>
+<div class="fl col-12 d-flex j-between forDesktop">
+<div id="logo" class="ease ">
+<a href="/">
+<p><img src="/Data/EditorFiles/ziya/svg/logo.svg" alt="logo.svg (2 KB)" width="65" height="76" /></p>
+</a>
+</div>
+<nav class="fl col-8" id="mainMenu">
+<ul class="fl col-12 menu d-flex">
+<li class="fl drop-down hover overlay-wrap parentLink">
+<span class="fl d-flex drop-down-title">
+<a class="fl text-bold text-upper" lang="tr" href="/kadin" title="Kadın">Kadın</a>
+</span>
+<div class="pos-a pos-top pos-left pos-right box whiteBg box-border b-top subMenu top dynamic-scroll">
+<div class="inner">
+<div class="col-12 dynamicMenu">
+<ul class="fl col-8">
+<li class="fl col-4 d-flex">
+<div class="box col-12 p-left link-wrap">
+<a href="/kadin-ayakkabi" class="fl col-12 text-semibold">Ayakkabı</a>
+<ul class="fl col-12 sublink-wrap">
+<li class="fl col-12">
+<a href="/kadin-gunluk-ayakkabi" class="fl">Günlük </a>
+</li>
+<li class="fl col-12">
+<a href="/kadin-topuklu-ayakkabi" class="fl">Topuklu </a>
+</li>
+<li class="fl col-12">
+<a href="/kadin-comfort-ayakkabi" class="fl">Comfort </a>
+</li>
+<li class="fl col-12">
+<a href="/kadin-babet" class="fl">Babet</a>
+</li>
+</ul>
+</div>
+</li>
+<li class="fl col-4 d-flex">
+<div class="box col-12 p-left link-wrap">
+<a href="/kadin-bot" class="fl col-12 text-semibold">Bot</a>
+</div>
+</li>
+<li class="fl col-4 d-flex">
+<div class="box col-12 p-left link-wrap">
+<a href="/kadin-cizme" class="fl col-12 text-semibold">Çizme</a>
+</div>
+</li>
+<li class="fl col-4 d-flex">
+<div class="box col-12 p-left link-wrap">
+<a href="/kadin-sandalet" class="fl col-12 text-semibold">Sandalet</a>
+</div>
+</li>
+<li class="fl col-4 d-flex">
+<div class="box col-12 p-left link-wrap">
+<a href="/kadin-terlik" class="fl col-12 text-semibold">Terlik</a>
+</div>
+</li>
+</ul>
+<div class="box catImgWrapper img-right-top flex-end">
+<img src="/Data/Kategori/34.jpg" alt="Kadın" />
+</div>
+</div>
+</div>
+</div>
+<div class="pos-f pos-top pos-right pos-bottom pos-left overlay"></div>
+</li>
+<li class="fl drop-down hover overlay-wrap parentLink">
+<span class="fl d-flex drop-down-title">
+<a class="fl text-bold text-upper" lang="tr" href="/erkek" title="Erkek">Erkek</a>
+</span>
+<div class="pos-a pos-top pos-left pos-right box whiteBg box-border b-top subMenu top dynamic-scroll">
+<div class="inner">
+<div class="col-12 dynamicMenu">
+<ul class="fl col-8">
+<li class="fl col-4 d-flex">
+<div class="box col-12 p-left link-wrap">
+<a href="/erkek-ayakkabi" class="fl col-12 text-semibold">Ayakkabı</a>
+<ul class="fl col-12 sublink-wrap">
+<li class="fl col-12">
+<a href="/erkek-gunluk-ayakkabi" class="fl">Günlük </a>
+</li>
+<li class="fl col-12">
+<a href="/erkek-klasik-ayakkabi" class="fl">Klasik </a>
+</li>
+<li class="fl col-12">
+<a href="/erkek-comfort-ayakkabi" class="fl">Comfort</a>
+</li>
+</ul>
+</div>
+</li>
+<li class="fl col-4 d-flex">
+<div class="box col-12 p-left link-wrap">
+<a href="/erkek-bot" class="fl col-12 text-semibold">Bot</a>
+</div>
+</li>
+<li class="fl col-4 d-flex">
+<div class="box col-12 p-left link-wrap">
+<a href="/erkek-sandalet-terlik" class="fl col-12 text-semibold">Sandalet-Terlik</a>
+<ul class="fl col-12 sublink-wrap">
+<li class="fl col-12">
+<a href="/erkek-sandalet" class="fl">Sandalet </a>
+</li>
+<li class="fl col-12">
+<a href="/erkek-terlik" class="fl">Terlik</a>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+<div class="box catImgWrapper img-right-top flex-end">
+<img src="/Data/Kategori/45.jpg" alt="Erkek" />
+</div>
+</div>
+</div>
+</div>
+<div class="pos-f pos-top pos-right pos-bottom pos-left overlay"></div>
+</li>
+<li class="fl drop-down hover overlay-wrap parentLink">
+<span class="fl d-flex drop-down-title">
+<a class="fl text-bold text-upper" lang="tr" href="/aksesuar" title="Aksesuar">Aksesuar</a>
+</span>
+<div class="pos-a pos-top pos-left pos-right box whiteBg box-border b-top subMenu top dynamic-scroll">
+<div class="inner">
+<div class="col-12 dynamicMenu">
+<ul class="fl col-8">
+<li class="fl col-4 d-flex">
+<div class="box col-12 p-left link-wrap">
+<a href="/aksesuar-kadin" class="fl col-12 text-semibold">Kadın</a>
+<ul class="fl col-12 sublink-wrap">
+<li class="fl col-12">
+<a href="/kadin-canta" class="fl">Çanta </a>
+</li>
+<li class="fl col-12">
+<a href="/kadin-cuzdan-kartlik" class="fl">Cüzdan/Kartlık</a>
+</li>
+</ul>
+</div>
+</li>
+<li class="fl col-4 d-flex">
+<div class="box col-12 p-left link-wrap">
+<a href="/aksesuar-erkek" class="fl col-12 text-semibold">Erkek</a>
+<ul class="fl col-12 sublink-wrap">
+<li class="fl col-12">
+<a href="/erkek-canta" class="fl">Çanta </a>
+</li>
+<li class="fl col-12">
+<a href="/erkek-cuzdan-kartlik" class="fl">Cüzdan/Kartlık </a>
+</li>
+<li class="fl col-12">
+<a href="/erkek-kemer" class="fl">Kemer </a>
+</li>
+<li class="fl col-12">
+<a href="/erkek-corap" class="fl">Çorap</a>
+</li>
+</ul>
+</div>
+</li>
+<li class="fl col-4 d-flex">
+<div class="box col-12 p-left link-wrap">
+<a href="/termos" class="fl col-12 text-semibold">Termos</a>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="pos-f pos-top pos-right pos-bottom pos-left overlay"></div>
+</li>
+<li class="fl drop-down hover overlay-wrap parentLink">
+<span class="fl d-flex drop-down-title">
+<a class="fl text-bold text-upper" lang="tr" href="/bakim-urunleri" title="Bakım Ürünleri">Bakım Ürünleri</a>
+</span>
+<div class="pos-a pos-top pos-left pos-right box whiteBg box-border b-top subMenu top dynamic-scroll">
+<div class="inner">
+<div class="col-12 dynamicMenu">
+<ul class="fl col-8">
+<li class="fl col-4 d-flex">
+<div class="box col-12 p-left link-wrap">
+<a href="/deri-boyasi" class="fl col-12 text-semibold">Deri Boyası</a>
+</div>
+</li>
+<li class="fl col-4 d-flex">
+<div class="box col-12 p-left link-wrap">
+<a href="/nubuk-boyasi" class="fl col-12 text-semibold">Nubuk Boyası</a>
+</div>
+</li>
+<li class="fl col-4 d-flex">
+<div class="box col-12 p-left link-wrap">
+<a href="/acma-rugan-deri-sprey" class="fl col-12 text-semibold">Açma ve Rugan Deri Spreyi</a>
+</div>
+</li>
+<li class="fl col-4 d-flex">
+<div class="box col-12 p-left link-wrap">
+<a href="/cila" class="fl col-12 text-semibold">Cila</a>
+</div>
+</li>
+<li class="fl col-4 d-flex">
+<div class="box col-12 p-left link-wrap">
+<a href="/firca" class="fl col-12 text-semibold">Fırça</a>
+</div>
+</li>
+<li class="fl col-4 d-flex">
+<div class="box col-12 p-left link-wrap">
+<a href="/nubuk-silgisi" class="fl col-12 text-semibold">Nubuk Silgisi</a>
+</div>
+</li>
+<li class="fl col-4 d-flex">
+<div class="box col-12 p-left link-wrap">
+<a href="/parlatma-sungeri" class="fl col-12 text-semibold">Parlatma Süngeri</a>
+</div>
+</li>
+<li class="fl col-4 d-flex">
+<div class="box col-12 p-left link-wrap">
+<a href="/temizleme-sungeri" class="fl col-12 text-semibold">Temizleme Süngeri</a>
+</div>
+</li>
+<li class="fl col-4 d-flex">
+<div class="box col-12 p-left link-wrap">
+<a href="/temizleme-kopugu" class="fl col-12 text-semibold">Temizleme Köpüğü</a>
+</div>
+</li>
+<li class="fl col-4 d-flex">
+<div class="box col-12 p-left link-wrap">
+<a href="/su-gecirmez-sprey" class="fl col-12 text-semibold">Su Geçirmez Sprey</a>
+</div>
+</li>
+<li class="fl col-4 d-flex">
+<div class="box col-12 p-left link-wrap">
+<a href="/tabanlik" class="fl col-12 text-semibold">Tabanlık</a>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="pos-f pos-top pos-right pos-bottom pos-left overlay"></div>
+</li>
+<li class="fl">
+<span class="fl d-flex drop-down-title">
+<a class="fl text-bold text-upper" lang="tr" href="/yeni-gelenler" title="Yeni Gelenler">Yeni Gelenler</a>
+</span>
+<div class="pos-f pos-top pos-right pos-bottom pos-left overlay"></div>
+</li>
+<li class="fl">
+<span class="fl d-flex drop-down-title">
+<a class="fl text-bold text-upper" lang="tr" href="/outlet" title="Outlet">Outlet</a>
+</span>
+<div class="pos-f pos-top pos-right pos-bottom pos-left overlay"></div>
+</li>
+</ul>
+<ul class="inner menu forMobile" id="slideMenu">
+<li class="ease">
+<a href="/kadin" title="Kadın">Kadın</a>
+</li>
+<li class="ease">
+<a href="/erkek" title="Erkek">Erkek</a>
+</li>
+<li class="ease">
+<a href="/aksesuar" title="Aksesuar">Aksesuar</a>
+</li>
+<li class="ease">
+<a href="/bakim-urunleri" title="Bakım Ürünleri">Bakım Ürünleri</a>
+</li>
+<li class="ease">
+<a href="/yeni-gelenler" title="Yeni Gelenler">Yeni Gelenler</a>
+</li>
+<li class="ease">
+<a href="/outlet" title="Outlet">Outlet</a>
+</li>
+</ul>
+</nav>
+<div class="fl col">
+<div class="fl dn-xs">
+<div class="box d-flex text-upper c-pointer">
+<div class="col col-12 lang-hover d-flex">
+tr
+</div>
+<i class="">/</i>
+<ul class="language">
+<li class="col text-center " data-value="en">
+en
+</li>
+</ul>
+</div>
+</div>
+<div class="col search-toggle">
+<i class="custom-icon c-pointer"></i>
+</div>
+<div class="fl d-flex">
+<div id="search" class="fl search-wrapper d-none">
+<div class="OverlayMy d-none"></div>
+<form id="FormAra" name="FormAra" class="box-border ease icon-custom icon-no-space" action="/arama" method="get">
+<input id="live-search" autocomplete="off" class="col withPlace ease" name="q" type="text" placeholder="Aradığınız ürünün adını yazınız." content="text/html; charset=UTF-8" />
+<span class="b-none button-close"></span>
+</form>
+</div>
+<div class="pos-r fl drop-down hover">
+<span class="col col-12 drop-down-title text-upper d-flex c-pointer">
+<i class="icon-member-default-top text-custom-pink"></i>
+</span>
+<ul class="pos-a pos-right whiteBg box-border top-right width-height d-flex f-wrap j-center member-img">
+<div class="col-10 box textOpen text-center">Ayakkabı ürünleri en avantajlı
+fiyatlar ile Ziya.com.tr'de</div>
+<li class="fl col-8 drop-down-item">
+<a data-width="500" data-url="/srv/service/customer/login-form" href="#" class="fl box col-12 text-center authorLink popupWin member-top ">Üye Girişi</a>
+</li>
+<li class="fl col-8 drop-down-item">
+<a href="/uye-kayit" class="fl box col-12 text-center dn-xs authorLink register-top">Üye Ol</a>
+</li>
+</ul>
+</div>
+<div class="fr">
+<a href="/uye-alisveris-listesi" class="col text-center authorLink p-left">
+<i class="fav-icon"></i>
+</a>
+</div>
+<div class="fr pos-r">
+<a href="/sepet" class="col text-upper d-flex basketLink " id="cart-soft-count">
+<i class="icon-basket-cart"></i>
+(<span class="fr">
+<span class="cart-soft-count">0</span>
+</span>)
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script type="text/javascript">
+$(document).ready(function() {
+$('.search-toggle, .search-mobile, .button-close').click(function(e) {
+$('#search').toggleClass('active');
+});
+});
+</script>
+<script type="text/javascript">
+function popupCallback() {
+}
+function placeCaller(id) {
+var wrapID = id || '';
+if (wrapID != '') {
+if (wrapID != 'popup-login')
+$('#' + wrapID).find('.withPlace').removeClass('withPlace');
+flexPlace();
+}
+}
+$(document).ready(function() {
+if (/Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent)) {
+if ($(window).width() < 769) {
+$('#search').appendTo('#mobileSearch');
+}
+if (/webOS|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+$('option[disabled]').remove();
+}
+$('.parentLink > a, .parent > a').click(function(e) {
+e.preventDefault();
+$(this).next('ul').slideToggle();
+});
+var currentPage = location.pathname;
+$('#slideMenu a[href="' + currentPage + '"]').parent().addClass('current');
+} else {
+if (navigator.appVersion.indexOf('Trident') > -1 && navigator.appVersion.indexOf('Edge') == -1) {
+$('.withPlace').removeClass('withPlace');
+}
+}
+flexPlace();
+if (/^.*?[\?\&]q=/ig.test(window.location.href)) {
+var sWord = window.location.href.replace(/^.*?[\?\&]q=/ig, '');
+sWord = sWord.replace(/\&.*?$/ig, '').replace(/\+/ig, ' ');
+$('#live-search').val(decodeURIComponent(sWord));
+}
+var mobileAppCookie = getaCookie('MobileNotifyClose');
+if (mobileAppCookie == null && !isSafari) {
+$('.MobileAppNotify').fadeIn();
+}
+$('.MobileNotifyClose').click(function() {
+setaCookie('MobileNotifyClose', 'Closed', 3);
+$('.MobileAppNotify').fadeOut();
+});
+$('#FormAra').click(function() {
+if (!$(this).hasClass('focus')) {
+$(this).addClass('focus');
+$(this).find('input[type="text"]').focus();
+}
+});
+$('body').click(function(e) {
+var elem = e.target.id;
+if ($('#' + elem).parents('#search').length < 1) {
+$('#FormAra').removeClass('focus');
+$('#FormAra input[type="text"]').val('');
+$('#live-search-box').empty().fadeOut();
+}
+});
+$('body').keydown(function(e) {
+if (e.keyCode == 27) {
+$('#FormAra').removeClass('focus');
+$('#FormAra input[type="text"]').val('');
+$('#live-search-box').empty().fadeOut();
+}
+});
+$('.language li').click(function() {
+setLanguage($(this).attr('data-value'));
+});
+$('.currency li').click(function() {
+setCurrency($(this).attr('data-value'));
+});
+});
+function scrollShowCallback() {
+if (!$('#header-wrap').hasClass('sticky')) {
+$('#header-wrap').addClass('sticky');
+$('#header-wrap').parent().css('padding-top', $('#header-wrap').innerHeight());
+}
+}
+function scrollHideCallback() {
+if ($('#header-wrap').hasClass('sticky')) {
+$('#header-wrap').removeClass('sticky');
+$('#header-wrap').parent().removeAttr('style');
+}
+}
+$('body').css('padding-top', $('.header-wrapper').innerHeight());
+function setaCookie(cname, cvalue, exdays) {
+var d = new Date();
+d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+var expires = "expires=" + d.toUTCString();
+document.cookie = cname + "=" + cvalue + "; " + expires;
+}
+function getaCookie(name) {
+var dc = document.cookie;
+var prefix = name + "=";
+var begin = dc.indexOf("; " + prefix);
+if (begin == -1) {
+begin = dc.indexOf(prefix);
+if (begin != 0)
+return null;
+} else {
+begin += 2;
+var end = document.cookie.indexOf(";", begin);
+if (end == -1) {
+end = dc.length;
+}
+}
+return unescape(dc.substring(begin + prefix.length, end));
+}
+</script>
+            </div>
+        </header>
+        <div class="contentWrapper col col-12">
+            <div id="content" class="row">
+                <div class="inner">
+                    <aside class="col col-2 col-md-3 col-sm-12 p-left" id="leftColumn">
+                        <div class="col col-12">
+    <div class="row mb" onclick="colToggle($(this));">
+        <div class="fl col-12 a-center pageTitle small-title b-bottom">
+            <i class="icon-sitemap text-custom-pink"></i>
+            Kategoriler
+        </div>
+    </div>
+    <div class="row mb">
+        <div style="visibility:hidden;" id="categoryPanel" class="fl col-12 angularTemplate" data-callback="categoryReady" data-url="/srv/service/filter/get/categories">
+            <ul class="fl col-12" id="filterCats">
+                <li class="fl col-12 line-bottom parent" ng-repeat="CAT in CATEGORIES">
+                    <a ng-if="CHILD.SELECTED == 1" class="col col-12 text-title icon-custom icon-pull-right text-bold text-custom-pink" ng-href="/{{CAT.URL}}" data-after="»">{{CAT.NAME}} ({{CAT.COUNT}})</a>
+                    <a ng-if="CHILD.SELECTED != 1" class="col col-12 text-title icon-custom icon-pull-right" ng-href="/{{CAT.URL}}" data-after="»">{{CAT.NAME}} ({{CAT.COUNT}})</a>
+                    <ul ng-if="CAT.CHILDREN.length > 0" class="box col-12 line-top">
+                        <li ng-repeat="CHILD in CAT.CHILDREN" class="fl col-12 parent">
+                            <a ng-if="CHILD.SELECTED == 1" class="col col-12 text-description icon-custom icon-pull-right text-bold text-custom-pink" ng-href="/{{CHILD.URL}}">» {{CHILD.NAME}} ({{CHILD.COUNT}})</a>
+                            <a ng-if="CHILD.SELECTED != 1" class="col col-12 text-description icon-custom icon-pull-right" ng-href="/{{CHILD.URL}}">» {{CHILD.NAME}} ({{CHILD.COUNT}})</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function categoryReady(data){
+        $('#filterCats a').click(function(e){
+            e.preventDefault();
+            window.location.href = $(this).attr('href');
+        });
+    }
+</script><link rel="stylesheet" property="stylesheet" type="text/css"
+    href="/theme/v4/sub_theme/blok_kategori/firat/v4/StandartMenuFirat.css" />
+<div class="col col-4 col-sm-12 filterFixed">
+    <div class="row mb" id="filterTpl" v-cloak>
+        <div class="fl pos-r col-12">
+            <div class="fl col-12 d-flex">
+                <span class="box col-12 sort--text">Filtre</span>
+                <span id="filterClear" @click="runDelt();"><i
+                        class="fr icon-garbage icon-pull-right icon-push-right text-custom-gray mr pr "></i></span>
+                <div class="closer l100 b100" onclick="$('.filter-list').trigger('click')"></div>
+            </div>
+        </div>
+        <div class="col col-12" id="leftFilter">
+            <div class="col col-12 text-semibold forMobile active" id="filterMobileBtn">
+            </div>
+            <div class="fl col-12" id="filterWrapper">
+                <div id="filterPanel" class="fl col-12">
+                    <!-- <div class="row mb filter-wrap" v-if="categories.length > 0">
+                        <span class="fl col-12 "></span>
+                        <div class="col col-12  text-custom-gray text-semibold col-title filter-title" onclick="colToggle($(this));">
+                            {{translate.categories}}
+                            <i class="fr icon-plus icon-pull-right icon-push-right text-custom-gray" ></i>
+                            <i class="fr icon-minus icon-pull-right icon-push-right text-custom-gray" ></i>
+                        </div>
+                        <div class="fl col-12">
+                            <ul class="fl col-12 catMenu" id="filterCats">
+                                <li class="fl col-12 parent" v-for="(CAT,index) in categories">
+                                    <a v-bind:class="{'text-bold text-custom-pink currentCat' : CAT.SELECTED == 1}" v-bind:href="'/' + CAT.URL" class="col col-12 text-description icon-custom icon-pull-right" data-after="">{{CAT.NAME}} <font v-show="settings.SHOW_COUNT">({{CAT.COUNT}})</font></a>
+                                    <ul v-if="CAT.CHILDREN.length>0" class="col col-12">
+                                        <li class="fl col-12" v-for="(CHILD,index) in CAT.CHILDREN">
+                                            <a v-bind:class="{'text-bold text-custom-pink currentCat' : CHILD.SELECTED == 1}"  v-bind:href="'/' + CHILD.URL" class="fl col-12 text-description icon-custom icon-pull-right" data-after="">{{CHILD.NAME}} <font v-show="settings.SHOW_COUNT">({{CHILD.COUNT}})</font></a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div> -->
+                    <div class="row mb filter-wrap line-top line-bottom" v-for="(F,index) in filters">
+                        <span class="fl col-12 "></span>
+                        <div class="col col-12 line-top text-custom-gray text-semibold col-title filter-title"
+                            onclick="colToggle($(this));">
+                            {{F.NAME}}
+                            <i class="fr icon-plus icon-pull-right icon-push-right text-custom-gray"></i>
+                            <i class="fr icon-minus icon-pull-right icon-push-right text-custom-gray"></i>
+                        </div>
+                        <div class="box p-bottom col-12 filter-wrap" v-if="F.TYPE != 2">
+                            <div class="pos-r row mb form-control medium" v-if="F.VALUES.length > 10">
+                                <input type="text" v-bind:id="'filter' + F.ID" v-bind:name="'filter' + F.ID"
+                                    class="col col-12 box-border withPlace filter-search"
+                                    @keyup="searchInList('filter' + F.ID, 'search-filter-' + F.ID)" />
+                                <i class="pos-a pos-top pos-right icon-cancel text-custom-gray icon-no-space mr filter-search-clear"
+                                    @click.prevent="searchClear('filter' + F.ID, 'search-filter-' + F.ID)"></i>
+                            </div>
+                            <div class="fl col-12 filter-item-list" v-bind:data-filter-body="'search-filter-' + F.ID">
+                                <div class="fl col-12 mb filter-item" v-for="(ROW, subIndex) in F.VALUES"
+                                    v-bind:data-title="ROW.NAME">
+                                    <label v-bind:for="F.TYPE + ROW.ID" class="fl col-12 col-text form-item myFilter"
+                                        v-on:click.prevent='filter(index,subIndex)'>
+                                        <input type="checkbox" v-bind:id="F.TYPE + ROW.ID" v-bind:value="ROW.ID"
+                                            v-bind:checked='ROW.SELECTED == 1' />
+                                        <span class="fl icon-wrapper">
+                                            <i class="fl icon-square-unchecked icon-small"></i>
+                                            <i class="fl icon-square-checked icon-small"></i>
+                                        </span>
+                                        {{ROW.NAME}} <span v-if="settings.SHOW_COUNT">({{ROW.COUNT}})</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="fl col-12 mySlideFilter" v-if="F.TYPE == 2 && (F.MAX != 0)"
+                            title="Decimal Filtre ise" v-bind:data-id="F.ID">
+                            <div class="row mb myFilter" v-if="!isMobile" v-bind:data-type="F.TYPE"
+                                v-bind:data-filter-id="F.ID">
+                                <div class="priceWrap fl col-12 mt mb text-center">
+                                    <span class="incrementFilter" data-increment="1"></span>
+                                    <span class="minFilter" v-bind:data-min="F.MIN"
+                                        v-bind:data-selected="F.MIN_SELECTED">{{F.MIN_SELECTED}}</span>
+                                    <span>-</span>
+                                    <span class="maxFilter" v-bind:data-max="F.MAX"
+                                        v-bind:data-selected="F.MAX_SELECTED">{{F.MAX_SELECTED}}</span>
+                                </div>
+                                <div class="col col-9 col-ml-1 pos-r">
+                                    <div class="sliderRun"></div>
+                                </div>
+                            </div>
+                            <div class="row mb myFilter" v-if="isMobile" v-bind:data-type="F.TYPE"
+                                v-bind:data-filter-id="F.ID">
+                                <div class="col col-12">
+                                    <div class="col col-12 p-right">
+                                        <div class="row">
+                                            <div class="box col-4 col-xs-6 p-top p-left form-control large">
+                                                <input type="text" v-bind:id="'decimalMinValue' + F.ID"
+                                                    v-bind:name="'decimalMinValue' + F.ID" v-bind:data-min-value="F.MIN"
+                                                    v-bind:value="F.MIN_SELECTED" v-bind:placeholder="F.MIN_SELECTED"
+                                                    class="col col-12 withPlace" />
+                                            </div>
+                                            <div class="box col-4 col-xs-6 p-top p-left form-control large">
+                                                <input type="text" v-bind:id="'decimalMaxValue' + F.ID"
+                                                    v-bind:name="'decimalMaxValue' + F.ID" v-bind:data-max-value="F.MAX"
+                                                    v-bind:value="F.MAX_SELECTED" v-bind:placeholder="F.MAX_SELECTED"
+                                                    class="col col-12 withPlace" />
+                                            </div>
+                                            <div class="box col-4 col-xs-12 p-top p-left">
+                                                <button type="button"
+                                                    class="btn btn-default col-12 a-center text-semibold"
+                                                    @click.prevent="sliderFilter(F.ID)">
+                                                    {{translate.filter}}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb line-bottom" v-if="variants.TYPE1_LIST.length > 0">
+                        <span class="fl col-12 "></span>
+                        <div class="col col-12  text-custom-gray text-semibold col-title filter-title line-top"
+                            onclick="colToggle($(this));">
+                            <span v-if="LANGUAGE=='tr'"> Renk </span>
+                            <span v-if="LANGUAGE=='en'"> Color </span>
+                            <i class="fr icon-plus icon-pull-right icon-push-right text-custom-gray"></i>
+                            <i class="fr icon-minus icon-pull-right icon-push-right text-custom-gray"></i>
+                        </div>
+                        <div class="box p-bottom col-12 filter-wrap">
+                            <div class="pos-r row mb form-control medium" v-if="variants.TYPE1_LIST.length > 10">
+                                <input type="text" id="filterV1" name="filterV1"
+                                    class="col col-12 box-border withPlace filter-search"
+                                    @keyup="searchInList('filterV1', 'search-filter-v1')" />
+                                <i class="pos-a pos-top pos-right icon-cancel text-custom-gray icon-no-space mr filter-search-clear"
+                                    @click.prevent="searchClear('filterV1', 'search-filter-v1')"></i>
+                            </div>
+                            <div class="fl col-12 filter-item-list" data-filter-body="search-filter-v1">
+                                <div class="fl col-12 mb filter-item" v-for="(V1, index) in variants.TYPE1_LIST"
+                                    v-bind:data-title="V1.NAME">
+                                    <label v-bind:for="'type1_' + V1.ID" class="fl col-12 col-text form-item myType1"
+                                        v-on:click.prevent='select("variants.TYPE1_LIST",index)'>
+                                        <input type="checkbox" v-bind:id="'type1_' + V1.ID" v-bind:value="V1.ID"
+                                            v-bind:checked='V1.SELECTED == 1 ? "checked" : ""' />
+                                        <span class="fl icon-wrapper">
+                                            <i class="fl icon-square-unchecked icon-small"></i>
+                                            <i class="fl icon-square-checked icon-small"></i>
+                                        </span>
+                                        {{V1.NAME}}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb line-bottom" v-if="variants.TYPE2_LIST.length>0">
+                        <span class="fl col-12 "></span>
+                        <div class="col col-12  text-custom-gray text-semibold col-title filter-title"
+                            onclick="colToggle($(this));">
+                            <span v-if="LANGUAGE=='tr'"> Beden </span>
+                            <span v-if="LANGUAGE=='en'"> Size </span>
+                            <i class="fr icon-plus icon-pull-right icon-push-right text-custom-gray"></i>
+                            <i class="fr icon-minus icon-pull-right icon-push-right text-custom-gray"></i>
+                        </div>
+                        <div class="box p-bottom col-12 filter-wrap">
+                            <div class="pos-r row mb form-control medium filter-wrap"
+                                v-if="variants.TYPE2_LIST.length > 10">
+                                <input type="text" id="filterV2" name="filterV2"
+                                    class="col col-12 box-border withPlace filter-search"
+                                    @keyup="searchInList('filterV2', 'search-filter-v2')" />
+                                <i class="pos-a pos-top pos-right icon-cancel text-custom-gray icon-no-space mr filter-search-clear"
+                                    @click.prevent="searchClear('filterV2', 'search-filter-v2')"></i>
+                            </div>
+                            <div class="fl col-12 filter-item-list" data-filter-body="search-filter-v2">
+                                <div class="fl col-12 mb filter-item" v-for="(V2,index) in variants.TYPE2_LIST"
+                                    v-bind:data-title="V2.NAME">
+                                    <label v-bind:for="'type2_' + V2.ID" class="fl col-12 col-text form-item myType2"
+                                        v-on:click.prevent='select("variants.TYPE2_LIST",index)'>
+                                        <input type="checkbox" v-bind:id="'type2_' + V2.ID" v-bind:value="V2.ID"
+                                            v-bind:checked='V2.SELECTED == 1 ? "checked" : ""' />
+                                        <span class="fl icon-wrapper">
+                                            <i class="fl icon-square-unchecked icon-small"></i>
+                                            <i class="fl icon-square-checked icon-small"></i>
+                                        </span>
+                                        {{V2.NAME}}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb filter-wrap line-bottom" v-if="brands.length > 0">
+                        <span class="fl col-12 "></span>
+                        <div class="col col-12  text-custom-gray text-semibold col-title filter-title"
+                            onclick="colToggle($(this));">
+                            <span v-if="LANGUAGE=='tr'"> Markalar </span>
+                            <span v-if="LANGUAGE=='en'"> Brands</span>
+                            <i class="fr icon-plus icon-pull-right icon-push-right text-custom-gray"></i>
+                            <i class="fr icon-minus icon-pull-right icon-push-right text-custom-gray"></i>
+                        </div>
+                        <div class="box p-bottom col-12 filter-wrap">
+                            <div class="pos-r row mb form-control medium filter-wrap" v-if="brands.length > 10">
+                                <input v-on:keyup='filterBrand' v-model="filtered.brands_input" type="text"
+                                    id="filterBrand" name="filterBrand"
+                                    class="col col-12 box-border withPlace filter-search" />
+                                <i class="pos-a pos-top pos-right icon-cancel text-custom-gray icon-no-space mr filter-search-clear"
+                                    @click.prevent="searchClear('filterBrand', 'search-filter-brands')"></i>
+                            </div>
+                            <div class="fl col-12 filter-item-list" data-filter-body="search-filter-brands">
+                                <div class="fl col-12 mb filter-item" v-for="(B,index) in filtered.brands"
+                                    v-bind:data-title="B.NAME">
+                                    <label v-bind:for="'brand' + B.ID" class="fl col-12 col-text form-item myBrand"
+                                        v-on:click.prevent='select("brands",index)'>
+                                        <input type="checkbox" v-bind:id="'brand' + B.ID" v-bind:value="B.ID"
+                                            v-bind:checked='B.SELECTED == 1 ? "checked" : ""' />
+                                        <span class="fl icon-wrapper">
+                                            <i class="fl icon-square-unchecked icon-small"></i>
+                                            <i class="fl icon-square-checked icon-small"></i>
+                                        </span>
+                                        {{B.NAME}}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                  <!--  <div class="row mb filter-wrap line-bottom" v-if="models.length > 0">
+                        <span class="fl col-12 "></span>
+                        <div class="col col-12  text-custom-gray text-semibold col-title filter-title"
+                            onclick="colToggle($(this));">
+                            {{translate.models}}
+                            <i class="fr icon-plus icon-pull-right icon-push-right text-custom-gray"></i>
+                            <i class="fr icon-minus icon-pull-right icon-push-right text-custom-gray"></i>
+                        </div>
+                        <div class="box p-bottom col-12 filter-wrap">
+                            <div class="pos-r row mb form-control medium filter-wrap" v-if="models.length > 10">
+                                <input type="text" id="filterModel" name="filterModel"
+                                    class="col col-12 box-border withPlace filter-search"
+                                    @keyup="searchInList('filterModel', 'search-filter-models')" />
+                                <i class="pos-a pos-top pos-right icon-cancel text-custom-gray icon-no-space mr filter-search-clear"
+                                    @click.prevent="searchClear('filterModel', 'search-filter-models')"></i>
+                            </div>
+                            <div class="fl col-12 filter-item-list" data-filter-body="search-filter-models">
+                                <div class="fl col-12 mb filter-item" v-for="(M,index) in models"
+                                    v-bind:data-title="M.NAME">
+                                    <label v-bind:for="'model' + M.ID" class="fl col-12 col-text form-item myModel"
+                                        v-on:click.prevent='select("models",index)'>
+                                        <input type="checkbox" v-bind:id="'model' + M.ID" v-bind:value="M.ID"
+                                            v-bind:checked='M.SELECTED == 1 ? "checked" : ""' />
+                                        <span class="fl icon-wrapper">
+                                            <i class="fl icon-square-unchecked icon-small"></i>
+                                            <i class="fl icon-square-checked icon-small"></i>
+                                        </span>
+                                        {{M.NAME}}
+                                    </label>
+                                </div>
+                            </div>
+                            <a v-if="countList.models && models.length < countList.models" href="javascript:void(0)"
+                                v-on:click="getMore('models', models.length)">{{translate.daha_fazla_yukle}}</a>
+                        </div>
+                    </div>-->
+                    <div class="row mb filter-wrap line-bottom" v-if="suppliers.length>0">
+                        <span class="fl col-12 "></span>
+                        <div class="col col-12  text-custom-gray text-semibold col-title filter-title"
+                            onclick="colToggle($(this));">
+                            {{translate.suppliers}}
+                            <i class="fr icon-plus icon-pull-right icon-push-right text-custom-gray"></i>
+                            <i class="fr icon-minus icon-pull-right icon-push-right text-custom-gray"></i>
+                        </div>
+                        <div class="box p-bottom col-12 filter-wrap">
+                            <div class="pos-r row mb form-control medium filter-wrap" v-if="suppliers.length > 10">
+                                <input type="text" id="filterSuppliers" name="filterSuppliers"
+                                    class="col col-12 box-border withPlace filter-search"
+                                    @keyup="searchInList('filterSuppliers', 'search-filter-suppliers')" />
+                                <i class="pos-a pos-top pos-right icon-cancel text-custom-gray icon-no-space mr filter-search-clear"
+                                    @click.prevent="searchClear('filterSuppliers', 'search-filter-suppliers')"></i>
+                            </div>
+                            <div class="fl col-12 filter-item-list" data-filter-body="search-filter-suppliers">
+                                <div class="fl col-12 mb filter-item" v-for="(S,index) in suppliers"
+                                    v-bind:data-title="S.NAME">
+                                    <label v-bind:for="'brand' + S.ID" class="fl col-12 col-text form-item mySupplier"
+                                        v-on:click.prevent='select("suppliers",index)'>
+                                        <input type="checkbox" v-bind:id="'brand' + S.ID" v-bind:value="S.ID"
+                                            v-bind:checked='S.SELECTED == 1 ? "checked" : ""' />
+                                        <span class="fl icon-wrapper">
+                                            <i class="fl icon-square-unchecked icon-small"></i>
+                                            <i class="fl icon-square-checked icon-small"></i>
+                                        </span>
+                                        {{S.NAME}}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb filter-wrap line-bottom" v-if="price.MAX > 0">
+                        <span class="fl col-12 "></span>
+                        <div class="col col-12  text-custom-gray text-semibold col-title filter-title"
+                            onclick="colToggle($(this));">
+                            <span v-if="LANGUAGE=='tr'"> Fiyat </span>
+                            <span v-if="LANGUAGE=='en'"> Price </span>
+                            <i class="fr icon-plus icon-pull-right icon-push-right text-custom-gray"></i>
+                            <i class="fr icon-minus icon-pull-right icon-push-right text-custom-gray"></i>
+                        </div>
+                        <div class="box p-bottom col-12">
+                            <div class="row" v-if="isMobile">
+                                <div class="col col-12 p-right">
+                                    <div class="row">
+                                        <div class="col col-4 col-xs-6 p-left mb form-control large">
+                                            <input type="text" id="minMobilePrice" name="minMobilePrice"
+                                                v-bind:data-min-value="price.MIN" v-bind:value="price.MIN_SELECTED"
+                                                class="col col-12 withPlace" />
+                                        </div>
+                                        <div class="col col-4 col-xs-6 p-left mb form-control large">
+                                            <input type="text" id="maxMobilePrice" name="maxMobilePrice"
+                                                v-bind:data-min-value="price.MAX" v-bind:value="price.MAX_SELECTED"
+                                                class="col col-12 withPlace" />
+                                        </div>
+                                        <div class="col col-4 col-xs-12 p-left mb">
+                                            <button type="button" id="priceBtn"
+                                                class="btn btn-custom-pink col-12 text-center text-semibold"
+                                                v-on:click.prevent="priceNoSlider">
+                                                <i class="icon-check icon-no-space"></i>
+                                                {{translate.filter}}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="fl col-12 mb" v-if="!isMobile">
+                                <div id="priceSlider" class="col col-12 col-sm-12">
+                                    <div id="slider-range" class="col"></div>
+                                </div>
+                                <div class="col-12 priceWrap d-flex box mt">
+                                    <span id="min-price" class="col-6 flex-start"
+                                        v-bind:data-min="price.MIN">{{price.MIN_SELECTED}} {{target_currency}}</span>
+                                    <span id="max-price" class="col-6 flex-end"
+                                        v-bind:data-max="price.MAX">{{price.MAX_SELECTED}} {{target_currency}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb filter-wrap">
+                        <div class="col col-12">
+                            <div class="fl col-12">
+                                <div class="row">
+                                    <label for="stock" class="fl col-12 col-text text-upper form-item"
+                                        v-on:click.prevent='params.stock = !params.stock'>
+                                        <input type="checkbox" name="stock" id="stock" v-bind:checked='params.stock' />
+                                        <span class="fl icon-wrapper">
+                                            <i class="fl icon-square-unchecked icon-small"></i>
+                                            <i class="fl icon-square-checked icon-small"></i>
+                                        </span>
+                                        <span v-if="LANGUAGE=='tr'"> Stoktakiler </span>
+                                        <span v-if="LANGUAGE=='en'"> In Stock </span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb filter-wrap">
+                        <div class="col col-12">
+                            <div class="fl col-12">
+                                <div class="row">
+                                    <label for="discounted" class="fl col-12 col-text text-upper form-item"
+                                        v-on:click.prevent='params.discounted = !params.discounted'>
+                                        <input type="checkbox" name="discounted" id="discounted"
+                                            v-bind:checked='params.discounted' />
+                                        <span class="fl icon-wrapper">
+                                            <i class="fl icon-square-unchecked icon-small"></i>
+                                            <i class="fl icon-square-checked icon-small"></i>
+                                        </span>
+                                        <span v-if="LANGUAGE=='tr'"> İndirimdekiler </span>
+                                        <span v-if="LANGUAGE=='en'"> On Sale</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row filter-wrap ">
+                        <div class="col col-12">
+                            <div class="fl col-12">
+                                <div class="row">
+                                    <label for="new" class="fl col-12 col-text text-upper form-item"
+                                        v-on:click.prevent='params.new = !params.new'>
+                                        <input type="checkbox" name="new" id="new" v-bind:checked='params.new' />
+                                        <span class="fl icon-wrapper">
+                                            <i class="fl icon-square-unchecked icon-small"></i>
+                                            <i class="fl icon-square-checked icon-small"></i>
+                                        </span>
+                                        <span v-if="LANGUAGE=='tr'"> Yeni Ürünler </span>
+                                        <span v-if="LANGUAGE=='en'"> New Products</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb filter-wrap ">
+                        <div class="box col-12 p-left p-right">
+                            <div class="box col-8 col-sm-12 custom-filter btn text-center" @click="run">
+                            <span v-if="LANGUAGE=='tr'"> Filtrele</span>
+                            <span v-if="LANGUAGE=='en'"> filter</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="/srv/service/conf/load/Days-Tarih-block_filter-Blok_Urunler/1"></script>
+<script src="/theme/standart/js/vue-bundle.js?v=2"></script>
+<!--<script src="/theme/standart/js/vue/filter.js?v=2"></script>-->
+<script>
+    function bindFilter() {
+        window.VueComponent = window.VueComponent || {};
+        window.VueComponent.Filter = new Vue({
+            el: '#filterTpl',
+            name: 'FilterPanel',
+            data: {
+                translate: {},
+                brands: [],
+                filtered: {
+                    brands: [],
+                    brands_input: ''
+                },
+                categories: [],
+                filters: [],
+                models: [],
+                suppliers: [],
+                settings: {},
+                variants: {
+                    TYPE1_LIST: [],
+                    TYPE2_LIST: []
+                },
+                price: {},
+                params: {
+                    'stock': window.location.href.indexOf('stock=') > 0,
+                    'discounted': window.location.href.indexOf('discounted=') > 0,
+                    'new': window.location.href.indexOf('new=') > 0
+                },
+                cssClass: {
+                    checkbox: 'checkbox fl input-wrap',
+                    radio: 'radio fl input-wrap'
+                },
+                isMobile: (/Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent)) ? true :
+                    false,
+                linkParam: '',
+                link: '',
+                limit: 200,
+                countList: {}
+            },
+            methods: {
+                runDelt: function() {
+                    var Link = window.location.href;
+                    var n = Link.indexOf("?");
+                    var res = Link.substring(0, n);
+                    window.location.href = res;
+                },
+                select: function(type, index) {
+                    var tmp = type.split('.');
+                    if (typeof this.filtered[type] !== 'undefined' && this.filtered[type].length > 0) {
+                        this[tmp[0]].forEach((item, itemIndex) => {
+                            if (parseInt(item.ID) == this.filtered[type][index].ID) {
+                                this[tmp[0]][itemIndex]["SELECTED"] = this[tmp[0]][itemIndex][
+                                    "SELECTED"
+                                ] === 0 ? 1 : 0;
+                            }
+                        });
+                    } else {
+                        if (tmp.length === 1 && typeof this[type] !== 'undefined') {
+                            this[tmp[0]][index]['SELECTED'] = this[tmp[0]][index]['SELECTED'] === 0 ? 1 : 0;
+                        } else if (tmp.length === 2) {
+                            this[tmp[0]][tmp[1]][index]['SELECTED'] = this[tmp[0]][tmp[1]][index][
+                                'SELECTED'] === 0 ? 1 : 0;
+                        }
+                    }
+                    if($(window).width()>768){
+                      //  this.run();
+                    }
+                },
+                getSelected: function(arr, noJoin) {
+                    var el = arr.map(function(e) {
+                        if (e.SELECTED === 1) {
+                            return e.ID;
+                        }
+                    });
+                    el = el.filter(n => n);
+                    el = !noJoin ? el.join('-') : el;
+                    return el;
+                },
+                getSelectedFilters: function() {
+                    var result = {
+                        multi: [],
+                        single: [],
+                        decimal: '',
+                    }
+                    for (var i = 0; i < this.filters.length; i++) {
+                        var obj = this.filters[i];
+                        switch (obj.TYPE) {
+                            case '0': // multi
+                            case '1': // single
+                                var k = this.getSelected(obj.VALUES, true);
+                                var r = k.map(function(e) {
+                                    return obj.ID + '-' + e;
+                                });
+                                if (obj.TYPE === '0') {
+                                    result.multi = result.multi.concat(r);
+                                } else {
+                                    result.single = result.single.concat(r);
+                                }
+                                break;
+                        }
+                    }
+                    result.multi = result.multi.join('+');
+                    result.single = result.single.join('+');
+                    return result;
+                },
+                filter: function(index, subIndex) {
+                    if (this.filters[index] && this.filters[index].TYPE != 2 && this.filters[index].VALUES[
+                            subIndex] !== 'undefined') {
+                        this.filters[index].VALUES[subIndex]['SELECTED'] = this.filters[index].VALUES[
+                            subIndex]['SELECTED'] === 0 ? 1 : 0;
+                    }
+                    //this.run();
+                },
+                run: function() {
+                    var link = window.location.href;
+                    var filters = this.getSelectedFilters();
+                    link = getLink('multi', filters.multi, link);
+                    link = getLink('single', filters.single, link);
+                    //  link = getLink('decimal',  decimal.join('+'), link);
+                    link = getLink('brand', this.getSelected(this.brands), link);
+                    link = getLink('supplier', this.getSelected(this.suppliers), link);
+                    link = getLink('model', this.getSelected(this.models), link);
+                    link = getLink('type1', this.getSelected(this.variants.TYPE1_LIST), link);
+                    link = getLink('type2', this.getSelected(this.variants.TYPE2_LIST), link);
+                    link = getLink('stock', this.params.stock ? '1' : '', link);
+                    link = getLink('discounted', this.params.discounted ? '1' : '', link);
+                    link = getLink('new', this.params.new ? '1' : '', link);
+                    window.location.href = link;
+                },
+                // jquery plugin !
+                decimalSlider: function() {
+                    $('.mySlideFilter').each(function() {
+                        var min = parseFloat($(this).find('.minFilter').attr('data-min'));
+                        var max = parseFloat($(this).find('.maxFilter').attr('data-max'));
+                        var minSelected = parseFloat($(this).find('.minFilter').attr(
+                            'data-selected'));
+                        var maxSelected = parseFloat($(this).find('.maxFilter').attr(
+                            'data-selected'));
+                        var _this = this;
+                        var stepLength = parseFloat($(this).find('.incrementFilter').attr(
+                            'data-increment')) || 0.1;
+                        if (max - min > 50) {
+                            stepLength = 1;
+                        } else if (max - min > 500) {
+                            stepLength = 5;
+                        }
+                        $(this).find(".sliderRun").slider({
+                            range: true,
+                            step: stepLength,
+                            min: min,
+                            max: max,
+                            values: [minSelected, maxSelected],
+                            slide: function(event, ui) {
+                                $(_this).find('.minFilter').html(ui.values[0]);
+                                $(_this).find('.maxFilter').html(ui.values[1]);
+                            },
+                            stop: function(event, ui) {
+                                var values = [];
+                                $('.sliderRun').each(function() {
+                                    var v = $(this).slider("option", "values");
+                                    var sMin = parseFloat($(this).parent()
+                                        .parent().find('.minFilter').attr(
+                                            'data-min'));
+                                    var sMax = parseFloat($(this).parent()
+                                        .parent().find('.maxFilter').attr(
+                                            'data-max'));
+                                    if (sMin != v[0] || sMax != v[1]) {
+                                        values.push($(this).parents(
+                                                '.mySlideFilter').attr(
+                                                'data-id') + '-' + v[0] +
+                                            '-' + v[1]);
+                                    }
+                                });
+                                window.location.href = getLink('decimal', values.join(
+                                    '+'));
+                            }
+                        });
+                    });
+                },
+                // jquery plugin ! 
+                priceSlider: function() {
+                    var link = window.location.href;
+                    var stepLength = (this.price.MAX - this.price.MIN) > 100 ? 5 : 1;
+                    var pMax = this.price.MAX;
+                    if (pMax % 5 !== 0 && stepLength === 5) {
+                        pMax = parseInt(this.price.MAX / 5) * 5 + 5;
+                    }
+                    var append = stepLength - (this.price.MIN % stepLength);
+                    var _this = this;
+                    $("#slider-range").slider({
+                        range: true,
+                        step: stepLength,
+                        min: this.price.MIN,
+                        max: pMax,
+                        values: [this.price.MIN_SELECTED, this.price.MAX_SELECTED],
+                        slide: function(event, ui) {
+                            $("#min-price").html(ui.values[0] + " " + _this.target_currency);
+                            $("#max-price").html((ui.values[1] + append) + " " + _this
+                                .target_currency);
+                        },
+                        stop: function(event, ui) {
+                            link = getLink('price', ui.values[0] + '-' + (ui.values[1] +
+                                append), link);
+                            window.location.href = link;
+                        }
+                    });
+                },
+                sliderFilter: function(fid) {
+                    const minVal = document.getElementById('decimalMinValue' + fid).value,
+                        maxVal = document.getElementById('decimalMaxValue' + fid).value;
+                    if (maxVal <= minVal) {
+                        maxVal = minVal++;
+                    }
+                    window.location.href = getLink('decimal', [fid + '-' + minVal + '-' + maxVal].join(
+                    '+'));
+                },
+                priceNoSlider: function() {
+                    let minPrice = document.getElementById('minMobilePrice').value,
+                        maxPrice = document.getElementById('maxMobilePrice').value;
+                    if (maxPrice <= minPrice) {
+                        maxPrice = minPrice++;
+                        minPrice--;
+                    }
+                    const link = getLink('price', minPrice + '-' + maxPrice);
+                    window.location.href = link;
+                },
+                searchInList: function(input, wrapper) {
+                    if (document.getElementById(input) == null || document.querySelector(
+                            '[data-filter-body="' + wrapper + '"]') == null)
+                        return;
+                    const searchString = String(document.getElementById(input).value).toLowerCase();
+                    const items = document.querySelectorAll('[data-filter-body="' + wrapper +
+                        '"] > .filter-item');
+                    if (searchString != '') {
+                        items.forEach((input) => {
+                            if (String(input.dataset.title).toLowerCase().indexOf(searchString) > -
+                                1) {
+                                input.classList.remove('d-none');
+                            } else {
+                                input.classList.add('d-none');
+                            }
+                        });
+                    } else {
+                        items.forEach((input) => {
+                            input.classList.remove('d-none');
+                        });
+                    }
+                },
+                searchClear: function(input, wrapper) {
+                    document.getElementById(input).value = '';
+                    document.querySelectorAll('[data-filter-body="' + wrapper + '"] > .filter-item')
+                        .forEach((input) => {
+                            input.classList.remove('d-none');
+                        });
+                },
+                collapse: function(event, process) {
+                    if (this.isMobile)
+                        return;
+                    const el = event.target;
+                    const classname = el.className;
+                    const titleEl = el.closest('.filter-title');
+                    const container = titleEl.nextElementSibling;
+                    if (process == 'hide') {
+                        titleEl.classList.add('hidden');
+                        container.style.display = 'none';
+                    }
+                    if (process == 'show') {
+                        titleEl.classList.remove('hidden');
+                        container.style.display = 'block';
+                    }
+                },
+                getMore: function(type, start) {
+                    var srv = this.link;
+                    srv = srv.split("get/");
+                    srv = srv[0] + "get/" + type + this.linkParam + "&start=" + start + "&limit=" + this
+                        .limit;
+                    fetch(srv).then((response) => {
+                        return response.json();
+                    }).then((response) => {
+                        this.models = this.models.concat(response.MODELS);
+                    });
+                },
+                filterBrand: function() {
+                    let val = this.filtered.brands_input.toLowerCase();
+                    if (val === '') {
+                        this.filtered.brands = this.brands;
+                    }
+                    this.filtered.brands = [];
+                    for (var i = 0; i < this.brands.length; i++) {
+                        let q = this.brands[i];
+                        if (q.NAME.toLowerCase().indexOf(val) > -1) {
+                            this.filtered.brands.push(q);
+                        }
+                    }
+                }
+            },
+            watch: {
+                'params.stock': function() {
+                    this.run();
+                },
+                'params.discounted': function() {
+                    this.run();
+                },
+                'params.new': function() {
+                    this.run();
+                }
+            },
+            created() {
+                // var linkParam = window.location.href.replace(/^.*\//g, '').replace('?', '&');
+                this.linkParam = '?link=' + window.location.href.replace(location.origin + '/', '').replace('?',
+                    '&');
+                this.link = '/srv/service/filter/get/filters-variants-brands-categories-price-models-suppliers';
+                fetch(this.link + this.linkParam)
+                    .then((res) => {
+                        return res.json();
+                    })
+                    .then((res) => {
+                        this.brands = res.BRANDS;
+                        this.filtered.brands = this.brands;
+                        this.categories = res.CATEGORIES;
+                        this.price = res.PRICE;
+                        this.filters = res.FILTERS;
+                        this.variants = res.VARIANTS;
+                        this.suppliers = res.SUPPLIERS;
+                        this.models = res.MODELS;
+                        this.target_currency = res.TARGET_CURRENCY;
+                        this.settings = res.SETTINGS;
+                        this.countList.models = res.MODELS_TOTAL;
+                        var _this = this;
+                        setTimeout(function() {
+                            _this.decimalSlider();
+                            _this.priceSlider();
+                        });
+                    });
+                this.translate = LANG.lang;
+            }
+        });
+    }
+    window.addEventListener("load", function(event) {
+        bindFilter();
+        $('#filterMobileBtn').click(function() {
+            $(this).toggleClass('active').next().slideToggle();
+        });
+        $('#filterCats a').click(function(e) {
+            e.preventDefault();
+            window.location.href = $(this).attr('href');
+        });
+    });
+</script>
+<script>
+    function colToggle(col) {
+        col.toggleClass('active');
+        col.next('div').slideToggle();
+    }
+</script>
+                    </aside>
+                    <div id="mainColumn" class="fl">
+                        <script>var PRODUCTS_TOTAL = 0;</script>
+<div class="col col-12" id="category-list" data-cat-id="">
+<div id="katalog" class="row">
+<div class="col col-12">
+<div class="row mb whiteBg notClear">
+<!-- <div class="col col-12 text-semibold double forMobile" id="filterSortBtn">
+<i class="icon-sort-alt-down text-custom-gray"></i>
+Sıralama seçin
+</div> -->
+<div class="col col-12 p-right flex-end notClear" id="filterSort">
+<div class="fl col-sm-12 box grow">
+<div class="col col-sm-12 d-flex">
+<div class="col-sm-12 mr d-flex filter-list">
+<span class="shower">Filtre+</span>
+</div>
+<div class="col-sm-12 ml d-flex sort-list">
+<span class="shower">Sıralama seçin+</span>
+</div>
+</div>
+</div>
+<div class="sortFixed">
+<label for="sort" class="box col-12 col-sm-12">
+<div name="sort" id="sort" class="fl d-flex f-wrap sortFilter">
+<div class="fl col-12 d-flex">
+<span class="box col-12 sort--text">Varsayılan Sıralama</span>
+<div class="closer l100 b100" onclick="$('.sort-list').trigger('click')"></div>
+</div>
+<span class="box col-12 sort--textTwo">Varsayılan Sıralama</span>
+<div data-value="5" class="col-12 box">Fiyat Artan</div>
+<div data-value="6" class="col-12 box">Fiyat Azalan</div>
+<div data-value="3" class="col-12 box">Yeniden Eskiye</div>
+<div data-value="4" class="col-12 box">Eskiden Yeniye</div>
+<!--<div data-discount="1"class="box">Indirimli</div>-->
+<!--<div data-value="1" class=" box">Alfabetik A-Z</div>-->
+<!--<div data-value="2" class=" box">Alfabetik Z-A</div>-->
+<!--<div data-value="7" class=" box">Rastgele</div>-->
+<!--<div data-value="8" class=" box">Puana Göre</div>-->
+</div>
+</label>
+</div>
+<div class="fr d-flex">
+<div class="fr box col-xs-12 dn-xs p-left">
+<div class="col" id="pageLayout">
+<span class="col catalogBtn" data-id="0">
+<i class="katalog-active"></i>
+</span>
+<span class="col horizontalBtn" data-id="1">
+<i class="yatay-passive"></i>
+</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<input type="hidden" id="search_word" value="11049" />
+<input type="hidden" id="category_name" value="" />
+<div class="col col-12 p-left">
+<div class="row">
+<div class="fl col-12 catalogWrapper" id="list-slide1003">
+
+</div>
+</div>
+</div>
+<div class="fl col-12 mb">
+<div class="col col-12 mb">
+<div class="row">
+<div class="box col-12 col-sm-12 col-xs-12">
+<div class="fl col-12">
+<span class="d-flex j-center text-custom-pink">
+Aramanız için sonuç bulunamadı
+</span>
+</div>
+</div>
+<script type="text/javascript" src="/theme/standart/js/blok-v4/product-loader.js"></script>
+<script type="text/javascript">
+new ProductLoader({
+parentDiv: '.catalogWrapper',
+productDiv: '.productItem',
+loadMoreButton: '.LoadMoreButton',
+pageNo : parseInt('1') + 1
+}).run();
+</script>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+$('.optionBox a').click(function() {
+$('.optionBox a').removeClass('selected')
+});
+</script>
+<script type="text/javascript">
+$(document).ready(function() {
+$(".filter-list").click(function(e) {
+e.preventDefault();
+//$(this).find("span").toggleClass("d-none");
+$(".filterFixed").slideToggle();
+});
+$(".sort-list").click(function(e) {
+e.preventDefault();
+//$(this).find("span").toggleClass("d-none");
+$(".sortFixed").slideToggle();
+});
+$('#katalog').equalizer();
+$('#filterSortBtn').click(function() {
+$(this).toggleClass('active').next().slideToggle();
+});
+});
+$(document).on('click', '#sort >div[data-value]', function(e) {
+e.preventDefault();
+window.location.href = getLink('sort', $(this).attr("data-value"));
+});
+$(document).on('click', '#pageLayout span', function(e) {
+e.preventDefault();
+window.location.href = getLink('view', $(this).attr('data-id'));
+});
+$(document).on('change', '#sort', function(e) {
+e.preventDefault();
+window.location.href = getLink('sort', $(this).val());
+});
+</script>
+
+<!--Tracking Start-->
+<script>
+    function gtag_list() {
+
+        var products = PRODUCT_DATA;
+        var productData = [];
+
+        for (var i = 0; i < products.length; i++) {
+
+            if (i > 20) {
+                break;
+            }
+
+            if (GA4_TRACKING_ID !== '') {
+                productData.push({
+                    'item_id': GTAG_ID == 'id' ? products[i].id : products[i].code,
+                    'item_name': products[i].name,
+                    'item_brand': products[i].brand,
+                    'item_category': (products[i].category_path + products[i].category).replace(/ > /g, '/'),
+                    'currency': products[i].currency === 'TL' ? 'TRY' : products[i].currency,
+                    'price': products[i].price,
+                    'item_list_name': (products[i].category_path + products[i].category).replace(/ > /g, '/'),
+                    'item_list_id': products[i].category_id,
+                    'index': i,
+                    //'discount': '',
+                    //'coupon': '',
+                    //'item_variant': '',
+                    //'affiliation': ''
+                });
+            } else {
+                productData.push({
+                    'id': GTAG_ID == 'id' ? products[i].id : products[i].code,
+                    'name': products[i].name,
+                    'brand': products[i].brand,
+                    'category': (products[i].category_path + products[i].category).replace(/ > /g, '/'),
+                    'list': CATEGORY_DATA.name,
+                    'list_position': (i + 1)
+                });
+            }
+        }
+
+        gtag('event', 'view_item_list', {
+            'items': productData,
+            'item_list_name': CATEGORY_DATA.name,
+            'item_list_id': CATEGORY_DATA.id
+        });
+
+        gtag('event', 'page_view', {
+            ecomm_pagetype: 'category',
+            ecomm_category: CATEGORY_DATA.name
+        });
+
+        console.log('gtag -> view_item_list');
+    }
+
+    document.addEventListener('DOMContentLoaded', function (e) {
+        gtag_list();
+    });
+
+</script>
+<!--Tracking Finish-->
+
+                    </div>
+                    <aside class="col col-2 col-md-3 col-sm-12 p-right" id="rightColumn">
+                        
+                    </aside>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<footer id="footer" class="col col-12 fl">
+    <div class="row">
+        <script type="text/javascript">
+$(document).ready(function() {
+$('#footerMiddle h3').click(function() {
+if (/Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent)) {
+$(this).toggleClass('active').find('.icon-wrapper *').toggleClass('d-none');
+$(this).next('div').slideToggle();
+}
+});
+});
+</script>
+<div class="fl col-12 line-top line-bottom">
+<div class="col-12 d-flex mobile-wrap">
+<div class="footerLeft double box col-4 col-sm-12 line-right">
+<div class="box col-sm-12 footerLogo">
+<img src="/Data/EditorFiles/ziya/svg/logo.svg" alt="">
+</div>
+<div class="box col-12 mb" id="footerContact">
+<div class="contact--title col-fifty-five col-sm-12"><span class="text-footer">1982’de İstanbul
+Kadıköy’de kurulan Ziya
+Mağazacılık, klasik perakende mağazalarının
+yanında online alışveriş ile
+tüm ayakkabı tutkunlarına
+kaliteyi ve modayı sunmayı amaçlıyor.</span></div>
+<div class="fl col-12" id="contactInfo">
+<div class="text-footer pb">
+Müşteri Hizmetleri </div><span class="textContact"> 0216 376 42 26</span>
+</div>
+</div>
+<div id="footer-social mt">
+<div class="col-12 d-flex mobile-wrap">
+<div class="fl col-6 col-sm-12">
+<ul class="fl col-sm-12" id="social">
+<li>
+<a href="https://www.facebook.com/ZiyaAyakkabi" rel="nofollow" data-target="blank">
+<img src="/Data/EditorFiles/ziya/svg/facebook.svg" alt="Sosyal Medya - 2" />
+</a>
+</li>
+<li>
+<a href="https://www.instagram.com/ziyaayakkabi" rel="nofollow" data-target="blank">
+<img src="/Data/EditorFiles/ziya/svg/Shape.svg" alt="Sosyal Medya - 4" />
+</a>
+</li>
+<li>
+<a href="https://www.youtube.com/@ziyashoes" rel="nofollow" data-target="blank">
+<img src="/Data/EditorFiles/ziya/svg/youtube.svg" alt="Sosyal Medya - 5" />
+</a>
+</li>
+</ul>
+</div>
+<div class="col-sm-12 etbis">
+<span class="col"><div id="ETBIS"><div id="1994c94cc42b40fa9a456025f81c0dfc"><a href="https://etbis.eticaret.gov.tr/sitedogrulama/1994c94cc42b40fa9a456025f81c0dfc" target="_blank"><img style='width:100px; height:120px' src="data:image/jpeg;base64, iVBORw0KGgoAAAANSUhEUgAAAIIAAACWCAYAAAASRFBwAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAEYcSURBVHhe7Z0FnF3F9cchwYIEh+JQKFbcKV4oTnF3CC0USpEUd2+hBYp7cYq7BA0S2awmGyEJxD0b9wTmf773vd/L2btz33u7WaDy/30+P8KO3fvmnjtzzpkzcxcyhNbgo48+GtJ46qmnomVjrK+vT+p07ty5SV779u3DuHHjkvxSuOWWWwr1evbsmaR98cUXjdorxnfeeSep43HbbbcV8mtra5O0r776qlE9uNRSS4VRo0Yl+R4HH3xwkr/OOuuEOXPm5FPnY6uttkryd9xxx3zKfEyfPj2svvrqSf5RRx2VTw3ht7/9beG6C8hXjAlimc3mggpCXV1dUicmCHDu3LlJfinceuuthTrffvttkoZA+LaKEaFJ4y9/+Ushv7KyMknLus8RI0Yk+R4ShPXWWy+f0hgbbLBBkr/ZZpvlUxpjzTXXTPJ/FEFYf/31w8knn9ws/uY3vyk0WEoQ9tlnn6TOYYcdVkjbYostCm0NHz48qeM7eKeddkryTj/99PDYY48l7ZXi9ddfX2jz/vvvT9KuuuqqQpulePHFFzdp84Ybbii0OWTIkOQ++/fvX0gTO3ToECZNmpTke0gQVlpppfDEE080af8Pf/hDUv+8885rkke/Lr/88kn9mCAwCp144olN7qUYTzjhhLDkkkvqNzcWhN/97nf5S5QP3g7VLyUIXbt2TdLGjh0bFl544SSNtzcNLwjPPvtsPjWERRZZpJBejJdddlm+RkjewFiZ5vLPf/5zvsWWQYKQxQEDBiTlevXqFc0XY4Kw7rrr5lOah7XWWkvtNhaEU089NV+kfHzyySdqLCoIzz33XCH/3XffTdJ4kyQIN910U5Lm4QXh4YcfTtImT56cvE1KL8Zrr702qQO23HLLaJnm8oILLsi32DL4UTDGfv36JeXQP2L5YkwQ1l577TB79ux8anmYOXNmWGONNdRutiBceumlYb/99svk0KFDk3IxQZg2bVpyw5SjA99///2E48ePT/K9IDAdqc3Bgwcn+aUE4de//nWhzW233bZQVvz5z39eaHPppZdukn/++ecX6se4ww47JOV+9rOfJYojaV9//XVyH+Ccc84ptJ/moYceGiZMmJCU+/zzzwvpK6+8ctLmKqusUmjT86STTkrK8QyURlv+vmEpQXjllVcK14zxtddeS8qVLQhor0qPURp+TBAmTpxYGMb5gWl4QfDUW9GlS5dCGnM8YN5lLiSN+VDwOkq5fOGFF/K149h///2TcnRUDNLgs9jQ0JCU4zrpPOrGsPHGGyf56ExCx44dm9Q/5JBD8rlxQfCKcowovaBsQdh7770LlWPs27dvUi4mCDy0FVdcMUk7/PDDE80dzpgxI8n3grDccssl8zikLcq9/vrrhbTnn38+qTN16tSwzTbbJGl+mOaeSZNWnSY/lvzVVlutkMZ0pHsSx4wZk28xJIopdXbfffcwb968fOp8HHjggUl+jJtsskmiN9EmSmE6H+WX35++/qabbprcmzcf//jHPyZp9BXzOfVRKoWYIPz9738v/M4Y77rrrqTcjy4Ibdq0SUYH+OGHHyb5XhCuvPLKxCyEvA2U23PPPQtp3333XVIHKM0/HP6fNIbutm3bFu5FrK6uTvI/++yzQhrldE8iWrSgNmEMPj9NfjsdTJvHHHNMk/xvvvkmtGvXrsn11R8xQUC7x1Khvv/t//aCwNTgy4rdunVL8tEV9MO9YrfqqqsmaVm2dDEwYsQEoXfv3km+n25i9NPNgoAORvhpc999982nzsewYcMKvz1GLwiMTEqPOan+7QWBi/CAMbkYRpV/1llnhb/+9a/hkksuKXTG1VdfndQBd9xxR1JHekE5eOmll5I2MRn1ADzL9SxiXdBOOcT8zQIPBJ8Dv+Ppp5/Op84HCvGiiy4avQfoBYEpknauuOKKRFlO40cRhL322qtQOcZiguCBlurrpekFoSVgzo21K7bExVyK8iy2BAhCbOQSsVjKRUwQ/va3vzVp0/POO+9MypUtCChKSo+xT58+SblSgvDPf/6zUb00F1QQDjjggGi7otzWrSkINTU1SZstwaBBg6JtipjD5SImCLfffnuTNj0RFFC2IKB89ejRI5M0BEoJAvpArL6IO3i77bYryT322CPRPQCOKaWzGMW1+VHdu3dv0r4sFS8Il19+eZNynrvssktSDlMPvSadzyJQFrge9rq/d4hPAfDAGFFoB3+G7gkPKmlMdapTysyNCcLo0aMb3Wuaso6KCkKHDh2SQs0BHaX6MUEoBeZT1S9FPQDm3nQeizbF4AWBUaoY1ME4u5oLlNaYE+vtt9/Ol5iPu+++u5CPJQW8ZxGdqRh0ny11MTuTu7Eg4A+PSVExPvjgg2qsIAiYOAyf5GMjCxpl8KcLXhB++ctfJm/CRhttVEhj2Za0XXfdNTEBqX/fffcV3hqNCHgTZVqhYev+YiMC9wwoT8dTDrNOkIKL3Y7JBnybEkgeutL0puFVxSNJfRaKdJ+PP/54Ug6d5fvvv0/KonjqnjTd+BfrH//4R5KGCc0UR/2BAwcmaUCCwPVYx9G9lEOW0PFy5q/VWBAWlBIEbOllllkmSTv++OOTNIB/gDQerjrDC4LcuN7UowMBQ9myyy6bpPk2pSN4QbjxxhsL9WM6ggRhypQpiUOLtCOPPDJJAzFBuPnmmwv19dC+/PLLQhpvN/CCcOyxxyZpQPeJY0vxCOUKAoIn9zprFoIEoRXYuoJw7733Jjfo/Qg4VYRf/epXSRpvSkwQZCtXVVUV0u65554kjbdvhRVWSNLOOOOMJA1IqeWBShBwUqk+yhnwq3oSBEwymbG4lYWYIHjXrZah8VEoDS+isPjiiydpvk1GNNJ4QQRGNtWPCYJeAqA2cakL6E0qu4DMCYK3kReEMtVmzZqVPEDSZFND3irSHnnkkaQc8IKAA0V2s9rUG+0XnXDHqk3cxZRjcUrCRWeqPv4FyjGK6DoSBBQsHgbl3nzzzSQNxATBRyihVNMm3kilEWuhe6Isbb7xxhtJXcBiEGnkqZx/kDFBwJdTrM1XX301SWsF5gQh3+4PAr8MzfCcBg9S+WLMhGJ4VHCGJ8NzMbg19wK1opmFgw46KCnHdCN4QShFXoQsZHld9RJVVFRE86Xr/BCwF6i0IPCW8VakqbcvK1945plnCv50rTX4Otddd12TH81wLzDcU44VPeZe2vEOGZZ01VaMxAKm6zAKxMqKms/RxtFNSEMQ9DtE36bWVNBjYu5ggWlFaw3eE4pJyXXQj9S+8llriIW/lYL6ztOv3QhlCQLaNENkmtJeufF0HotHWpNnbtcKm6SaeZu3jbKxt9wLAjY/5bAoGD5pB++YyiIc/tppfvzxx0mdF198sVCHKSZWVlQIFw8DYSCN+9DvEF9++eVCm/hDSMNzKF0lBh4Gv5+yTFuqj03PdZiW1D5TEHktFQSUSf+7oNc7hLIEgQAUiqQphclrzuJiiy1WNOKYNyZdx9MLgjoD/zxCBRhl0nWyOHLkyKQOLvFYfrlkfSQNvKvKl1LbHHjTW9x+++3zuaEgKMRhYI00F7xs6fZjvomCILz33nshi8zxaL9p4gkjn/lWaXJQMDwqGglJTreJmSltHUeQ6ssR4wWBhSrSfDg73kzViXHDDTdM6kAWsLgmHaC0UkRHoR2UOd0nEVsCwk+bvF26ppRNRgNGIf97s3jmmWc2uTY+FOXLPMRiQPhJY1ldwLpS2Rh5ibi3nXfeudC+Fp08CoJgKBRME2UrBtya5GMSCmeffXaS5gWByGPfXpo+ZnHzzTdP0koJQimUWngpxU8//TRph1VGpgfSvCDgcSSNQJk0eHMVSfVDEEVWwFKJlREVRebN3BYLAg6QGBRR4+1aDeNQ8yQRRkqL0S864WgiDQVP8CYa82s58BtcWkLeaOBD7rwg6D7RW2JYYoklGrXXmvSOLznosii3NY46pTVbEPjhhKI/8MAD0bh4eflQ1pSG04U6DJk4fUhjblV8PgEn1CEA5cknn0zSsBpUX3sQPvjgg/wthsR1mm6TexKwg0ljL4I04pggMF3oPkSmNbmoiQNQ+oUXXpi0SZhdbGp46623knIMvwK/hzqnnXZa4ichnz0K/h6KEW+ori/G4jF98CpTZLqOf3FQPLkn+UWgBAHvJote5J900knZgoA9C5jjY/kxciOCTCsfAqbYfuL6BO8OLqUZ6+3kAQmKOEa/EGKCQORzDPJW+gil2JCLk6sY/Ggo6wjT1rdRjH6tQ0Ag0+W8IMTw0EMPNanjKUHgHjM3uHh+9NFHSQUii2P5Ito8nQnRgrH3MY/UwbiYSYMaytBm0SFIw7Oo+njVVDZNzDLFQR599NGFdEK+qUuEEToEaXgw1aYEkgAW1RGxiH7xi18k5XgzlB57E//0pz81qpsmbxftoDBrAYoII92HopLwDSjNUw4lD0Yh8jCx5VPwgoAVxbW1PA98hBKjHfU16kEJQtFlaM9yBWG33XZLfAbw97//fXLT+P01pGJKkgZ9ZygNHUH1ebuVnmZWm7hcqYsrGkEhjbdXbUqXYTRRHZGHxg4jyrG0rfRYKBnzvq+bJotOtMND0RSFC1v3QYwC7aB8o4QqXYz5HvCmksdIqYUsLwiMtlwbJVvxCF4QmDqoj86jtGYLgua/UoKAeSKw8SNWphjZkyiU2i8Qo7yVPvLHb3lDs/flPTHL6CjgHU4todYvssADpJx3WzcHskT8vgamO9L4HXJre0HQrm2WnZWGhxQUnRr8JliZHqUEgfleikqp1TBtgvUkyFX1EaR0PkN3rC2RHUGA4Zh5mjrXXHNNoU2tNbD2rjblZ2AlUMN4bDMKegcbdKgTEyh2L6lNpiOuh99FOgLTme5D297xasY2wTLEA6a3dB7lO3TokFyHTS9Kv+iii5I09nnIovKCgAAA9A/dpxTxospibBNsKUFoDtEB0vCrj3RcGqU0b29hCLHdPugnAvM9aQiCIpJjguAjlIgNSOd7f4d8KFBKbyySKosKiI2duQDlWWQqVFrst8cEoRSamI+x7WmtKQhEGKXhBSGmMGEy+jbSVCygR0wQiAcQ0GVIQ4lStJFfNxAxcwW/viH6VVI/LcqtjffVly9GRYVn7YbWkQHENCpN06KHXyWNvXgxFARBmy6RJm2W1Pq4FwQERWU15KKtK60U8RKqfZFhXPlaS0AglE9Urm8Dok3rnngYvj2IAqqyLLRQLiYIKJCE7VOHXUX+GhC9AR2I/LTbmnyGbF2TPYWk8XA0X7Om4tsrRvqWdvBn6DpsbyPPt+kFYeutt07qUFdTA6Oq2ozthcAHQx1MeXlqC4KQ/GXwizlys9Kw0vyChU748ENuKcjm9/SKncBbrnwf+SOU2ivh29TmUr+YI0HwxAxNg45Ml4Ma+mNRTy0Fq5z+GhAnVRqxKQyLplwgXKqXKQh+DwJCwVIoZqTSmFu1RIpiyNvmN7kSAwgwn1idJM3vCkIx8UuikFFIYPijjt8Ey6oeaQikTCwvsFqG9ptgWTIWeKPJx/cgSBDamBnLmgn5REfpd4gssSPw5GOPq30cReTjYSQPMnWk60sR9fDL0J4o0rTjLScUafIor99OKL+uKTKKaGOtlE4PRhNdR9vosDTw2ubTswUBRwxDp7x5kI5TGlYFPwpBUZrWugleZX4lDZerwI+hjqcPlGCaoQ6jjPJRYEnjQUiCvSAoMMVvgvWCoHa8nS5BQFnk7SafNRH9DhEhUGCK91aqb5hu1D5Kbbr+cccdl7/ifPjAFE8FpnhlUf2NLqNRyN7ewjVFHiamIGVxtaeB0qjr0KbaV5qxsSAQV6dCpchGCuBDq/wwjqODNB9oWgoaxv18TiSw2tfD9Da/QtUQPqVhFhWDrAY6WGAUUn2R0UKIRVLhrRROOeWUJvl+pVDAlEuXg7z1ICtuQgeTxIBFoXIsbafBaOHbijAnCApi9J2Oa1iBkzGimVMH+1lpWACk8a+cFdjfal8/FicOSiBpPuaQ1TzqeLMM5Yi2WbxCIaMO6xO6poJX0ZaVpiN6AMKp64vaL8nwyPBLmm9TAR0Mu7xxAC+d8nX6iV+CR29RvoizTNdURBe/HWU3XZYRh3L8m87zm2AZ+dSm6H+7D8LF10C+31GFE4pyrGO4jTg5QTAUCoqlbFC5PP2mzdhb4ckwDvyyKE4RQYKA/hGDhjU/3yM0pOFejqFcb6XfL6Aja1hujsX4oa2TT8BHMfBQ1D4Rx8Ug4fMLcjH4aVH0I5uHFHpPvxvNBfZmC4LWGrKg4Az/9pay+bXOz5ymNB+PoGXqmCD4cHa/UogpRFrW9jQ6VtcqRi9cKJikZQXlxE43iYGHr/b9knUM+u2lNsF681FEYGPAUkqXbfGiUxaIeiFUCpcqwz9k4YU0DsNSvALzJGkQe5dydDTKEWkEfaq+AjoYspSmN6mUIDDM86aqnshbyXVikVJMX9jo5GP+qQ5KM2l47tiuRpp2HQFiFclHV1Gdf/3rX0ke7mVWL0ljatG1EFTS6A9NN5iHqo+OQpv4bQSGdfKYgmR9xQSBRbjYb3drCQU2WxAwncqBX9BgThI0j3plUWsRmHpCqYMweYCAIRptmzS/lUx7ELKoKB06OZ3HVCN4ZVEeUO9HwHOYhvcj6JAqnGJKi5GHI/gt7DFlsEOHDoV8LY7FlNrm0Au0FHpjtiDgPeMhe8qEAZiPpOFG1UZPpI00nFEaEfAdCFrnZyEJMwgQzaP6ol9oYpEFk4ppBUEiH/OPNIjkU44laoZV8qW/QO2U8kf2IYiUY/s7HjjawV+h63NPpDGaoAOR5qOUWdUjn/ladRgdACMCoxRp3kmEDkAafYDDjPp+fULb4j357dRhRGCEJo3AE11T+zY9MduVHyMCSzv4EPBdkGb9li0IMfol43J1hFKCEAMmqdb5sfV5i3i4clixLkAaROAox9AoMEWpvs5Q4ocrjcUgwBo+D4t2vL+DuEDSsmIS0Q3IZ0taMbAVXtfUVIvbmXumPr+NvKxgVwkfU4lG2COOOCJJA7FDPBGeYpAFwWgoh1fBs2ho0mCMrAsIMavh3HPPbVLHa+PlCgL+AkX+EMmEI0lR0YAHSBpUOfwIAp40pcv3QGcqzZ+OPtXe4Mlmh89yDqcZVnaSpU21eTSGKdb+xOnTw9S8/z8LXEfXlF7A79a9K0ortr8BahhnlEEPII01AkH6kae3wmLwq7laLi8IAmsIEE+YColIovJxquC5gtiupGH3Kk2aL0ofvgTyvU1friD8GJhmgjPGrJdJNt1NHjkyTBo2LIwfNCjhlOHDw7SRI8I0y5tof8NJeU42zrT82cY5psC1xq+IrR9ACQJChLDQn/hN1N/4cEhjpJZXFf+AgNtbZUWUc+pA/AmkmfDkBCFfL+pZ9MOjXzKWvsCQ68tDhrwYJAis5P0UYKT43Dr9zqOOCh3N5Drf7O+Oyy0bLrOh+mrj9cu2Dzcb/2rpf2+/TPiH8X7jw/Z7Hltm6fCk8TmzaP619FLhlaWWDG9anU9ML+lrnTsnv3LaEmTFLUjD9/DxCFqGxgKQIOA1FTR9e+ocB4CllU9vLAixg694aEgkZGpQutbPUQydzzohzh1c0NTxPn4JAo4Ohk21+2PgYzNzz7cR6yi7/onGs2yOPNeG2wsWWzR0XHTRcLnx6kUXCdcbb7Hf8NdF2oa/G/9hvN86+eG2bcLjxmes3vNtFg4vGV9beKHwurUFv9xm6zAzH4fQXGCCp/sQ6rwJD/Qj5ePNpP+y1hpQBOlvFGnV0SiD8OB/yKeXFgQCObXK5bVUCQIN5lewCsSsYgGJOn7OkiD4NnHO+BXK1sZMmwf/csrJ4UC7LkJwur3JZxnPsY77o/GiJduFS8wsvdJ4bbslwo3G22xqu2OJxcNdxnuND9qb8+jii4V/Gp814XnBhOdl4+vGt+y3vGfC87a1XXXA/PjN5sBvFPaUW9mDdQXl40+hD7NWHyUIbEpOt8nUjMmaT28sCGz44M9yqJjGLKic13L9RgtPb5a2JqZbp3U0E2lvu8ax9qBPMu38hxKETjZafGDXGZ+P4/gxoP70kVQe7KMkn5etGArKYv7vZM7B61cO5QBBArXpUsTpQZwC5VBelC4fPeaS2sGqkLOkNcHUc6W1vaNd7xAbwg+3f482nmA8xXiG8ffG84wXGP9svMJ4jfFG463G2413Gu81Pmh81Pik8Rnji8ZGgmBEEPq6Q7PLBXEYsooIh/d9CfFwKkLJQ5tk/fF6HpiK9LFfjcUrqjYZzUETQWgJOnXqlNyMJ4qLbtyfmCIiqT80etibedLGG4fzdtg+XLDjDuFiM3MvNV5pvMZ4vfEm422Wf8f224e7jPdsv1243/iwDamPb7dteNL4rPEFUwhf2nab8JrxrW22Ce9amTdWXy28ar/TC8KH9tsq3YpkuWAkxrEFcDSl+wsqZtGjlCDE4KOz9DK3iiDErAZWwzRX4XZO52OS/tCYbYKodUNMvNYkGNW5c3jFFK23TBgkCB/Zb+u63rphXob/IQuYhrylwJ+hJKIIyub30F6J5giC9yM0EQS8f2lKByAiN5YvYq4ozl5rCXjONNR5QdCGWH1F5D8Z8+Z9F97bYP3whv2uRoKwxuphXjNNSWIVdNxOTBDQ7Hno6b5XeJ4XBAQqXc4TPwTPAJe2IrgLgmBocnG5REtFt/g1eX1fAEGQO9hPDSz8/LcAs/gdewBeEJgaupti9r0zmZuL2Ahbin4ZmrWEWBkx5psoKgi8tQzvLBcTLwjbmWadLkdYGeUgy8ykMTWwp5A0wqdVFoeVyoqxIa8cfGfmD/wpMMuEvMqU4JftN71lb6sEoZP93fPI+VZSuUCfktvb97fIegRrA+rHNBkZ8NvQn/6UOp5Dui1FW9vDTxTT/HPIFgRiArgBVvTQ6qE//Elk2NLCivzhODC0GOQXVNSmJ27SUuCmu375Zbjn9tvDeaeeEo7ac89w6E47hcPMfj5+t93CyXvsHk7dffdwhvEs4+933y2cazzf8i40dtxt13CpCewVxmt23SVcb7xpl13CbcY7jHca7zHev8uvwsPGx0zhe/JXO4dnjM8bX7JR79WddwpvGN+1cq//fL3wgv2e1+3hF5TFRdqG9y1txDPP5O+6fDBMa+kbB5H6W8S89iuqaSIk+HjoT/+yahOsp5R4/sWspI7VzRYE0W/a9GcZtBZLnTvw9BNPhL1Mu1/VOnx5K7+qce02C4f1TUnb0LiJdcJm9veWJnzbGXcy7mLm4h5G/Af7Gw82HmbEoXS8Uebj74znGmU+Xm682niD0ZuP9xgfMMp8fNaY9iO8a2ldNt+82Yoi4Lg/rIUsIBwuiKRsxrYQeuB/yJfNCQKbR9PUx7C8qecjebH/Y/Ugp5zKj42/W+mx+MGs7zWMHz8uHHXIIWEJK7OCPex1l1kmrG+jzIbLtg+bGDezYW9L47bGHdovE3a2/N2Mexn3WWbpsL/xYBuBDjMetfRS4TgbmX4oh9Jbdo+d7DoT8/sXmwsOImURD8+u4jo9UOrUd+gDvq/T9OFpBObSZozEXDAa5MvmBCF/vUbAEUGWXyDyglDsUEmgsLIO7uj/mGcxJgi4XH9tQ/oilr+mPfy1jesZ/90EgbUG68HQaa21wvjIHszmQME4hPSngR4lQfAn0MRQ6sSUDGYLAgdgkOVj+/3mUq01xEBsgE43iYWqefpgF6Fj/siYn9kDXt0e7JrGdYzrGTewB7yRcVN7wJsbtzZuZw96R3vIuxj3MP7aHvR+xoPsQR9qPNIeNi7mE42n2YPuYDzbHvZ5xgvtQf/ZHvQVxmvsQd9gvNUe9u32oO803mN8wN76R2z4f8L4tN0XnkWmh9es3SoT9Bkji78U5UB7OlijiUFTgz8oIwa/G7oZzAkCAQ5pytvFDiCl+WVNCQJhW8qXU8QLApKsfLXpibnDwodA8OZy9jDb28NY2R7mqvYgVzOuaVzbuJ51/gbGjeyhbmrcwri1Pdjt7KHuZNzVuIc93L2N+9nDPch4qD3cI629Y40n2YM9zdjBHu7ZxvPt4V5kCu+lxitN4bvWeJPpHre1bRPuMN5lvM+mpodMD3nM+LwNp++bAtnzhhvCJBdouiDAO4ueQH8wbKu/RELKNNV6QWDoJ99vgvWCQIRTur8zmBMEQ6GyqI0nfJ4uli9B4OErTUucXhA8+dROGtys9y9gBn1l167s0SNUVlQUWOVYnWeNsTbPujx7GnvlWW/snWcfY19jP+PXxv7GAcaBFd3DN3Zf3xoHGQcbhxiHGoflOQJ26xZG2z1NbeFSczEgBNreT4xlut88vSBgupOGkMga8ILgI6KLoeBHwDKA7oseBYdS1vkIEgQcIKqvkO4sQSB8my1fnkwNpVYy/9tBjIGshphn0dMLAvtC6XcEQn4ILwgEqaaBx5d+ZxTWKFIQBLxkkE2saqRcQcDGV33+H2QJAvYuC1KeRDOVUjz/20G/qe+aIwiE+KvvhVKCwGow/Y5/RwtZBUFI/jL4dQEd5cJDUppnbMu3h6JuSxEHyP+kIOQffBqlBKHUF2t9TIn//pPgvy6r43iaCAKKigox7LDTBktBGyz1GTzI39qEmabfBOvJtjLqYVIqDclsTUGotiH24sMOCzecckq4yXiLkQilO04+OfzdeLfxXuMDxoeMj518UnjClK2njc8aXzC+ZHz1pBPDG8a3je9Z539w4gnhI+OnZr59bvzK2NXY3Vh5wvGh2lhn7GXsffzxoa/xa+MA40Djt8bB8IgjwjC7nzkZL5IXBH3BhcOytGGVaKNYn4ucuqb6xCGQpvB9QMyjnie+i3y9bEEQcW0KpRY0SlFDFa5OpbX2iDDGlLm9l20ftrW29zLuYzzAeIiR4JRjjcQsnmo803iO8Y/Gi4yXGq80Xme82fgX49+MdxvvNz5sfML4lPF540vGV41vGvEsstbwsfFT4+fGLsbuxh7G6jx7GSc9/1z+bpsi65gBfxBIc4m1F4N7WUsLgvcs4vxJ5zeH+L4BiorSWJ/Q4VOthc/feTvsZvMgLuYfw7OoRadPjJ2NX5gp2sXM0O7GSmP1wguFKruXvvZApnXrmr/LOJiS1TdYEwBFsCUuZpHdYGlE9z7m80oKAg8MU6859CHwRC9zU3gttQmWQ7uk8bYmvnz77XDsuuuFPe26rDUcYw/3JHvwP5ogtG0Tutl1YaVx8GmnJvsgsoBbnr6hv9Vf7MYmjTMaY6fBohjSh7ilY/lMCeSz6ks7kLAAUFQQYhst/IbVliB2oumCtlkuJjY0hGduuSWct+024Wh76EwN6YUnxS1eaFTc4rVG4hZvM95hvMt4n/Eh4+NGpobnjMQtamp4x0jMoqaGL4w9VlghDDj22DA58lGzNPDgpvupFPWxNB5qLB8zEaA0Kq3oJljmbujXElhjIBzafx+A5VCVLUa+MiIb1Vsiot/phAOppTEJ5WKeXWtwnz7hS3sz3n/wwfCRadafGD8zfm78wviVsevDD4Xuxh4PPRSqjNXGWmNPY72xj7Gf8euHHgwDjN8Yv7X2BhuHGIcZhz/wQBhhbU0w83tW/nihUsC2Zysb/S1XcznkAyX0N55JQtqp74l/gnz8N6rDvgfS8P+UtQmW3cNplKsjoADGQtVELwhorToz+H8VbP1XPAJDebq/SjHr4yo69jdGfDplbYJFYtLAtx0rmyZOomKCgAdTQKr58T81hpiuMs6teWRhno10YyurwrRIVHFLgSNPfeA/GFYuMS1jwOsYKw+9kt5EEBgmtEGSI+q0cVJEEJQfI8MT7WQFr+KboBxmqNoktOqH3OlUCmyGvf/AAxPz8SpTHDvfcXs+pymmDBsW3rTfyArky8stFwY5+3xBQB/hMaQ/iAJL9yu+HMLO6EP8COl835/+S7Gc30C+TpHzZKNyE8+iIcns4GIH/JfBxKwgEkGneuIkigmCvJXkKc1vtf8p8NYN14ez7D6usDcEHwIRSiMiZ0KDz844PfElvGAmIaFqb9jIN6MVfCD+gKysMxnkR4h5FglcUX32LaRB/KjyRUIM5b8pCEJ+I2Sj2AG8WlTwGyjZUp0Gcz2KIUSQKMc6Q0wQWKmkHMMf7ZLGB71/Sjx4xOGJ1ZCYj0sukVgNNRlv+qubbxb+afmJ+WjCQPDqGHc8YEvhBSF2QJePUPJrDawx0J9YB4oX5e3X8+DZAO+kQjfgGTGdcPgn5cx8zwlCfiNkoyFagsA8o3z/yRjBfwkWBwjliJXTsXReEPBSUs57yfiBP+XU8LoJIrGLBKZc1WbhcJX9/7AMneXjE04Ij1g+I8K/7N/XbSppDV2hpYLAIef0J/4GvVhMy3oese9NM6rzjFhMJKyNcuuuu25OEJLSKRDwQFbWUCX4L8EqVNrDC0KMrKW3tmexOZg8bly4c489kgDWy9q2DR9ed20+pykmmj3+qvUHfoQX2y0RBkR+b0vgBYH1nBj08nhBUDxCFhX/4fdK4IQSGBny6TlBYMhOU6YHN6A05hqBQArSWO3ShlaiXdIoJQjoEzrO96cCQ2x/E+gR9b3yKdmYY2/nCPvtk/KntbUGvCDgWVR/i+wx0bK+FwT8PvQ7Z1cz5KsNEX8B4IBTPSM2KAN2RhHZlE9vrCyWoj/+XhLKiV/FUI4g6DsN/6vwB3OWohcEgU0q0hE8JQil0MRqKEWWLgVtuPAHU8dQ6kcyt3E+MDt7CW5luEPC+RvGPlfTHLANj3aIoKZtqCNnPHDX6poi3j7VwQundObYNBhyVZZ6lMOsKwbedMrHvtWQxZggsJk1Jgg6Y7IUigoCfgSGLE+dWQg4g5A0zuTBpMkiI4baZEShDratlBtPDqvGF+5PZ/PnGwqEdcWuJSpkDrAPgHYIlKFtSJQO5TjJXCeIxEYu5lD2ClJn3333LaTHHGB4BinnD9E84IAD8rnzwWlqnFnN9XmxqEMIuvoYy0z1Y4wJAtp/TBC4PteJmf0s9LEzOt9n2YJAgEQ5YPiJ1Y9Rp7liJcQEQQ4O1iqU5j//K7BO7+ul6Q+U0lnMXgljI4jKMqyC2OKYX8f333TSZ46yoD0d/mhBwQcDE3CSBiGAyo/Rn0Aj4A+ICYLoV5AF1neaKIvpjZIwttZA5fymyQJZAo3Vj1GfB2LIigmCglh541VHn7PBJtamTQTBt5sm2+h0fzjGSGNqEDjXiTTMLu6FcowIqq8lXUwr7GzAyKB8zogC5Ok6On0EU4+FI8oRFiawO5xymHS42MnHU5uGj1AicETXFNngomuKjNTFBIGTalRW90nUMxYhbS6//PI5QUhvlITqAA9Cm1i69GT4idWPUXEHpQSBa6uOwrTpSN5Qrskpqb7dNNlYq/vDdCJN2/QBD4s03k5iJCiHBq36OvTLCwIdqHwFi2Ke6TpsIQMILMG7lFNMIOAMS8pxFiUjIvmxVVcvCPS3rimyYVbXFPEdqE6MBKuqrEZYf5/GnCAkOWUgtvrI+kRzkTX8FQtrZy6Xv90flxuD35GltzcLvBGU88f0o+yR5gUhBn8otw4Pz4L8MjiGisG3ie6QBsf6Kr8ljO0+LyiLRCZBBToAtHXS/OkmsU2wzHOqLxIFozc5BvwGPEzq+6XSUoKguZfhXtfSiWy88UwjpKFwaVMobz1gyVV1RBxgEi5/4rv2aHpB4AGl6/uT5TmNhDQUvtibLuFCeY1FZKF8Ux/lUffOgpy/HkQZVb4+vIEJzvVJi32jgX5THVlhjGroRfl2GyuLPgiFN500v2TsBUFOoKzwa7TjcoAFoTqlBCG2V4IvrQG/sOL9HQL6ia+XphcEpjvSMOskCOUuwcOYp7SUICB05DN1CP7TfKL/NjTPizR/YgrCna4TM/ER1ibBq4YkAYkRtProv2LiBUF772OngDEnFRsRPHxMYzFBYD5zR8YWqIBY3niuS5r/ypvg/e0xekHAj0EaJqcEwd9nKXp9RCglCBoZ/VqDjiLy9B8Mky7D9KYzlNAr0nX4mnwa0ZhFQ5LgBQGzEJex3wTLW6GNkyg/pLHiqDSRYY7vIqlemmjTKCsgJgj+S7A61JsHwkNPX4sYB8qxe1sKqBcElmV1TdWJbc/3goCfgHK40XWfOJFUXwEfnDiiNJERijMmuSZDu7AggsALwHRL+z6aCzObNCw8LfLxgvr7gUyZ6k9N9UUFIfapOLxWyvfmDlMGaVnKourE6PdKeMVOO3P8KBM7j9hDb6+nFwR57fy3kvwHM8RS5w546JtOWV5V5mzy/TCOT5+0rFNSiTAm3x9OhuOLNNrzFkhz4TfWEhoouFXgxoKAs0KbU6Xw8P+8ARBBUD4PgDRfR+SNRsJVT2zXLne+Dw+Hh05Z/VjIAgtpjEJKY1ELIPF8LpB8v90OKVdZ0QsCwyJpuHIFYiC4H+ZlTScMubp/EY+dRgQPylKfB62y8lDywOR+Z+RRPoJGHR40i0BKFyVc9JvS9NU85nIpxbSvfMzgcoAg6Bmgk1GXmJAmR+cYkgSGVjoG6otsAA0ToiMony+jkMZmWaWJzFk8LNUT8dfrWirbxq2axdIkCHQ0N04+GrLQEkHQ5lEcVBrZ/G8X8THEzEf9HqwsldVmFC8Ivk2mS+owxRAmpnRR05qvozQvCEQmK582ywHCrHvG66r6tJ1nY0HwRLlKI2Y1ZClhOCrSUExjc4g5BRAEnQ7v/Qj67qOnFwQNf14b94htDBEZkmOCIHh/iO7TC4KnvlaHOasH3BzKDPaucCnKzYH/GKhjThC0KVJmE9QmWE8EQWWZ20nzX4IVcTzFhi3ebvJRMHUdTxS6dFta8/B+BFymuieGecoRraMO9oJAlDT5emMB+wCoy+ogp8H663nydRopYXgRdU3RL45Jl/GCgI9fbTEUA5S5YsLnqU2w/kuw/nN/vBDpe/KM7SlVICvrDOhKtN+xY8ecIOTLJFuj+DOLPtBUoVOx0KpSIJ4x9lYU2wxLzIIEwVNOMDoqJggxMF+rPsNlOYh5VT29IGi6YWUvjeYIgt8EK8QWx7IY25IgQUBfk8lZ8CwmfxnwMvFnFv3BV9qRQyxBc5G11lDsqBeU15gg6EAPFDullRIE/7X42BQWAyOf2o/RC4IcX5iRaTRHEPwoJrDEHisbYywwRYKAntJkg0vyl8ELAosT2NOe3mMmQaAztcFSZN7GAZQFLwgM6WofWzvdlshpY27ZtEBtrEVp5IfTDgeDqp4PrxMkCChM7BOgXMwb6YFOpPtkO2D6PiQITCVYTZSLBbBkCQJ+Aur47WnaBEtMhwJ8UXB1HzqljqmIKZQ0VlZVv5ggoJCjSOf7KVsQSm1Dk587Rh5YMc8icQcqy0MTdNZgS4hACt43EfsdMR2FiKJyEfveNB9MLQdMizFB0FFECFE6D8ZeLB2K4T974M++ln7lEfNWGrMFgWEJi8DTfzyC1ToWODx1XA4x84SDpeuLrKDxvUjqoHcoHTuX+jzUdNtIbmxE4O0kn0UwKXYoecqnYwFuX10H3wV1cDLpoXjPIna+ysbIkO/vDbIYRB6beGKeQ0ZB8tmJpN/Bm6z6XBPE1m4Yxon78PcAcQBSl9GQoB/ScDGrTSmoTFeqg3KsfMfm6QilNqNgacTqpYlDSYj58HFWpcEIEzuXyfs7hJgg+E8Ca3kXZUlOFS8I8uFnUV+X9dACEQ85tugU83fEpqOsRbwYeaEASrbSYlFPWDzK95/7E5roCKWshlKfm/VfBylGP5Rh3qXzs04fTTlBEqozPPixypcgYF0ojeAOQaYeXjyBdRKVjZG5OA3WaZQfmxZxaPk2oHfZC1mn2MWoHdSY6hrZYoecMxKoTtHvNWgDpfzhnjw03JJQZwF6oIypvr4E68nwq/qi37Tpg1uxacnnwA4Bc4lyCCG2cbot3M6AuZcylPWdHhMEPJyUY77UUiw2v+5JS8KeWEe6ZmxnFiMTeUwR/A7aUZgdYLGHfEZVCTTDsq4petO2FJkOqYPCrTbpb7WlT/WULQiGQsE06aBiYHUrVk9kukgDsyVWVm5UD98x0gFiYA72bYmaJ5lDY/nlMvb2ZkEPBYFLAzM4Zjr/EEQAACOY0uQB9SgIAsNKFktteSPgI1ZPF8apgvIE7YJJHW8+0mmqo7mXcqqDQkQ5IomKBbvIh087fgphqZZ2fGCKv2aMWuvgHpVW6rsSAooZFhV1OBdJwFXNfbDYxihEvr9PdAtdS/RrLiJp6XKevk0cSlzTvwRMxepbPY+CIGDbZtFbCjGwrp2uw3BMoCQXxl/PGjzUecNeEPB9qx43B1BuVEfnC5YSBDpa7aAZUwfiAaUd7//HOaSyMe61115JOR4oD460ch1PdC7rAtTxUwg7zbkPPLFqE8eX7om4C11fxIWsfJEVzXQ5T+8B5SQVrqlvb0AWBEnD2mqyLT75qxWBNh7zAiqszCtEsa32sb0SpQTBw28yiZETSopB9jnOqtaCLBEfvMp8rXuKRWfJ+ePprZsY2BCUrpNFRVIVBCG96bKl1AoZzg+5Wfnh+Y2WyTAN0AVY4CINP0K6HZRC6np6QaB+ug4atIY6bz7GqF3bjCIoedT3m1YUwcQoglVCvnd/swOctJgvn7WLWJuKUGIdgheCfCKY1DfECAA8h+RBzEvy2GUVO6afuZ9yTHvSn/xZzMXIPgiO36O+jUallcXmUDHzXhD84RsxlBsL6AUhttOJDtYCUrmCwEJVu3ywjPcsxkLZeDsFfbciZuaiIyhCyccXShA8Y+Z4VnSWwsq8ICi+g2lYC0jlCkKKrSsIjz76aHIzSLUUndgWLY/mBIVKh2BrdzrPD+N+yI3RCwIKFmk8fCEmCJiEggQhS5FGaSWft1mICQLL2Gn48yYYGQGWhlZ7vSBIl8ET26qCQACoNmOWS7Rp1Zcg8MBYNyc/5nvwKCUIWA20g9eTeAWsEH84uIhSialJvt8rwboD9b0SJUHgPon4Id/v6ZAg4EPBF0A+90nbkHUF0vxObe6PPBxTbHYhX8oxkCCgO6lNTZUejHrkQU1HOIxigsB0SDl8FMWmBlz3alMeTl4A9AnSbIpoLAgxm78U/NnBEoTmoNTyLvGLQiy/FKUZ+2iiUveph+Y3wfrpBu08DX38FCre00Nt8lCaC6Y8TQ3HHHNMPjUO/AS6D9EHGONoIo0RWyNsQVk0JJk+nB2N0m+0TFPzMeFSqq8ORmnD3IrVS9ObUOzhw7zx5O2jHPEGPJh0vqgwtjR506nPoo3SsKX9PaQZ2/voN8EyylFOUUOAqYM8QuN8cK0gQcAkZUk7fU31J9dL52HCy/xFl0nne8a+BEukk0B/k4ZJibMtXy9bEPC3a+NkjPgCQEwQ6CAkP1YvTc2nEMcHAuRJOBXl6EA063S+iIbunSkinUF95lGl4dDx95Cm9AYvCH4TLG5xyjHMCtpYi34U84BKENrYm6ivtnrKFc4Im86jfJu8zsW9pfM9pfxCng335DfcMFqRxkhJTAl1mnwJ1gtCLCjUU67bmCBgNfiOL5exVTs20ii/GBiufVutQS8IHjhkyCcEvVygNKfb99SLRb/G8ltC7ROJAWFVSJ0xWxB0vF4WFUiRJQixfYoMuVwji8RAoHRh2wo4f8hDaWTrOfleCRPw4qFMpttE4rk2P1ppijDi7cJBQ1rsm5ReEPwmWLR96uAVVZr6g/KEkyld9AqsyCKd7glTkXL4VZRPzIbyY4wFByGcykcZTN+HXuCyt7wtqCAwD/nyMBYx46Gj6um0GBTQwbRVLoh4po6PcZDHjmlDClNsuzlxE5q7fSi/3jSmI6WhdwD8CMUOrfDEkhFkknqqP7OABZGu49dEYpFUWFHgRxEE5snYhlWtn2cBu5xy2MdpoHfIbY2ZVi5w+lDHb3DxwatS7DCjSPP029P80TkKf/POH//Qyp0WGVGEWJiehCsLKI7pOpxDJcT2kcg38aMIAsMjbk/2D3iybs704MlwJUgQGM6Vj7YPmiMImJyqr0WrUoKAJp++X3whKIS04x9UTBBQvCiHDwK7Pt2WHgrCxdRHmvQCgLs6XUfxBFmICQL6i347Ix5phBKoTawvULYgxCJqPLVkHBOELGirvacPrYoNjwoKZQhXqFopQfAmlIjyKyCQpGFlaMdWDAhfuh2oedav83tqOvHQMN4SP0IWiJ1MXztGrJwYMjfBekHAQcJNZ1HzZClBwHTRpk0CXtPt4AkTcMmm81F4qMtGTil+MUFAUHQdfPi6JxGnivIZkmmbUHYdHs4GGuWLvPGMBOl74s0i3282YbQiD2WN1dN0W0Q4UY63EI8habo2YMGOtFLL/uggatPvJS1GfqfqiAhz5iZYLwiYF0h2FrXSV0oQWOHizYO4ZNPteJs7nQfxdqq+rhMTBH4cShrl2uRtbk/iH9QOi2NqX0DTV77ICEX8ob8fiAKqMmofjx55jCI8bN8O9FFJSvPzOSFmpGW9vYLfBOvbLEb/2z1dmcaCwNzZXPgzEWOC4DdsaFdSc4B5p/piTBAYodLlsuiDVwXveRSxYmLQDmtP7doG7k0rSm81yLrx5yPEQDh8up1WYGNBQCqJi28OfQh7TBD8iaYMqWkw/KqtWOAJkdW8OegS8ppljQgpKc8kc6v/DTAWNJrlUJIlwpvPvUECbGiHDTsxq4HzjiiHp1QjFr4LXV+LSvgGlKYPnTDt4WNR+7pmKcotjTs5nceag7vPxoKwoIwdMcfUoPzYiODXGuRmzYI8YegvaRDNXK4glEsEIeYuliDwIIVzzjmnSX1PrW4yx8uFXYp+GVrmeHN2ZEk5z5punEPqVWMCJSwQY7t32dOnfPSJNPzqo3b7xEBnyHz0B2UImFqtLQgofzHIS+iP9c3YSlagvKVEV5UrCNoEy4ggU6/U6qMH4fLUwUOZBvqMsxreMCbYxriBca0F4aGHHrqWKZGNaHN8Id+GtSb5ppAV8s3+bpIvmjZdKAfT+Z07d26U31o0AWxyLZ8fS4vxyiuvTMpVVFRE82PcbbfdkjoNDQ2N0nXNUixWJ9XmMsYcLPNg4yX/z/9JXmG8QYLQ9CMGPwaqqtmUkP/j//FTQoLwSv7vHw1Thw0LXy2+ZKjearuodv7jounpaf9r+MkE4TtTWIY+9HAY/drrZT+GdLnvm/EAyy3bnDZbC3wjaoyZ0tMj0U3FwDemxldUhPE1tWHe3Kau7eagIAiz7WYGXnddGHzrbWHwLbcW+M3V14YpffqGqYOHhIHXXB+G3HxLGAxvoRzkbyt35dWhoUvXMLOhIQy68aYw8MKLQt8zO4R+Z54VBl1xVRjz1jvBG2MzR48Jg+/6Rxjy2ONhjttBPHvy5DDsiSfDgPMvCP1+//sw6JrrwthOH5kpl/uhDd27W/rZYXj+pLJyweMd8tRTof+ll4eJ9nuEed9/Fwbfe1/of8llYeiLL/0kgtD7xFPCVwu1CUOefiafUh6m9Okduq+8Wuix+dZhlvXbgqAgCHPefDNUtFks1Cy/Sqhsv0KoXGZ543Khi5kYY159PYz7/IvkZnsstUyoXHrZULvCKqHOWGVlKpdaNik35K67w8RevULF4kuHulVXD3XbbBtqt94uVC6/cqhacpnQ9/Qzw9z8iWuTq+tCjyWWDpUbbRZmTM2FU001faFu971CZdslQtWKq4TqNdYO3eyaVTvvaiZPbvoYeHHH0NWuNa6Z33tCCGsPPMTaWyiMfH3+GYVDTBh7LLRIqFh9rTAxsuW9NTF91Kgw9P4HwjATOI8Bp54eqhdZPAx/9rl8SnmY1rdPqLP77rntDmG2C0lrCQqCMPf990N1O3tYRx4bptT1DFOraxJO7tEjzJ4wMcwxiZvYpVuYXNEjTPj0s1C/1bahZu2fh5EvvmJlKsPEr7okb/kEe2Orl18p1O9/YJg1e3aYO3tO0sG9d/xVqFy0XRj5r1wnTOlZH2rsR9TuuEuYOT13xGy/DmdZhywRBpxzXjIKTR8+Iozv9GEYYwS8q7333i/UmWDMndv0ZJJiQBDqjz0hEcjR7+TOeG748qtQvcrqxjXC+E+bfrUmjvSIUXoEUYlhTz2TvDD9Lmi8uaX/aWeEqsXaheHPzY/aLgfT+vULtWuuE+q227F1BaHKHtTXZ52dz8oGHrde2+8cKtdcN0xOhXc3fPllqFrOBOGgxl6wbzteEirt7R58d24Hz5ReCMLaiSDMmjUzzLWhv3bHnUONjTJT+sZPWJs2cGDoZqPR8Ifnu7NnmZCOtWlnlL1NE2y+zHosiRCZIFSaIIz9rLPNr9NC3fY7herFlwrDHs59gUWw/khGp7FvvpW0O84EkflYeeO6dQ+jP/woTBsxwtrNXZH/NtgLNLpTpzB16NAwZ9r0MNpemHEVleE7q4Me0P+Sy0Pt0suFPqecGcZa3qT87+x/2pmNBGHmhIYw+pNPw7jKykL7YJ79f0PnL8Ko514Ik2tqwrQBA0OdvYyJIOQ/m9hg6aM++iRMHzcuqcnXakd90CnMHD8+zJ0zO4x4+aUw2fpxfqs5NBaExZYM/c44KynkmQajQ6/tdgpVJgh+vgUNpvTkBOFQu/HcmzjRlJmeW2yTlJ+Sj2XICUJ+RJgx3a7zfag/+Lehdsn24esOZ4cZI5oGs456663Q84ijw9xpuRFk7LvvheqNNwvdl1sxVKy6Wuhu01S/P5wX5ppgpcHvQBCqTZBGf/ZZ+MammOollgoD7eGkMfTJp0PXpdqHChNKyBTGlDX163yQ6bl/zL3Zdi1h1qSJoWqLrUJXK9tQWZX8vu7tbOrbeZekD3p1+F3oYS9a341+GerWWCd8afXrTQBAWhDGm5B0s7JVds25+ZXemWPGht5HHReq7P67W143u6++Rx4Tem+4aSLQs/N90mv/g+zeFgkj8qPeyGeesWu1Cd/89Y7Q74STwhd23SGPzw8IEgqCMMcEocbm8np7YL3tIfJG11ujPe3f6UMav/WNBSEXqCEgCDU/WzP02mTzUL/fAaHXnvuE2jXWDbUb/zJR9AQ/IsyclpPmcfYWVK+1XqgxgazbdAt7SJeFSfmdwgjKd/kYQ8DUUWlDei+bJibZWzDDJP9be7g9Fmobht0zf9+gIEGo495OODn0Wm2tUGdCNHN87ktvHg3dK8LQ++4P07/5Jsy06WnIjTeHKpvD+9pcDibZg65Z6WehbottbUTKbZkfZw+v2gSxz6/3Ta41yabL2hVWtt//6zDHRjtehv7n/SnULrtC6HP8SaZ3vRYmWDugv+lOXhAmmD5Wu6y9TL85IBkFaK+vKd1VpsP1til37LvvhzEvvxrqTP+qX2W1ULfDzgVB6Hfo4aHa9LjR7+d0qHGvvBZqV1ot6f/aTbZIRnwsjTQKgsCIULPiqqHeKvTadsfQc5vtQ68tTdnbZodkSPYoSxA23TL0OfSI0PvAg5ObqFtr3TDgwgvD7Em5o+IaCYL7GuxE6xw6qma1tUNV28XsGuuE4Y82XdD65rLLQ4+2i4dRZn7yxjH8Thn4Tai1Nnvvs6+Zp419E3Rm/XEnmgCsacJgQrDBRtZBq4ZBt6Y/1Jl7A8H0UaNNL+oahj3ySPIW97QheO6MGUmJ3gcfFqratQ+j38ht9x90/Q029bUNQ/92Z/L3RJs+akzh7bnX3mHOnNy9jHj+hVC58KKh/1WNv8XY//TGOgKCULOcCdG+BybXmmrTCn1Vt/5GYaoJp8CUxVSaGxFyU1ffw46wUcPuKy8IY61/UOx7/nzDMLF2/rc75//KHBoJQtXiNjWY1M9DyZs5y2hzt/H71CpcWVPDwYcmD4gLTrMRpY/9XWlDFmYmaDQ1RD4LPMmsjwF/PD/0NPOoatU1wgS8kHnQZp/fHh7qeat/uUUyPcAaE7ia9suHHhttGmZMaWxOJQ/v2BND3TIrhP5nnxvGf2FvnQlnNdaCKcUe074dFPraMNrDrl1h16g2oalfh7l4h8Q8BiOe+GfoYW/oQHvL+Z31v9k/1JilNDW/eNZIEPIOs2GPPWEW0eKJqepRTBDAeBvmq9stm/xmj+mmI/AbEh0hQxDGmCBU23Tbx6bUYmgsCHYzX5uOUAqlRoREEMxU8+Iz9vXXQ41ZJb32+k3y91SrV0wQhH728LAkht87/1DLRBBMsOpsWBxkSuiwv9weht5yWxh6q/G2v4ahDz1i1kpuh7CQEwRTFu0exuSXxL+56ppQbaYqugkOLjBvxszQa78DQ5XpD4OuvzFMHTAgTOJef7Fx6Ln1tqbI5aaCGWPHhlqb7+ttWEZ5rDFTt++RRyXXAVFBePTxnCBc1vgonlKCMO7td5KHWX/IoYX2wTS7t4LVkJ8aooJgv7m3jbK+bhqNBQGr4XelrQYEob7YiLDsiqH3IY2/hIrTqcY09N55qZ5qSmOtDf9eENJOEW4chYj5eeRTT+cS8xjwpwtDZZvFw4inm0YcxZC8tTIf38t92X7WxImhFsvBFLxhD+TOX5zUq2fiw0D3UMdhBdRYhzNdzpw4/xidgRdeHGrM/KSTEf6RziE0yQShNi8Is/OCMPyxx226M0E4v/F5iKWmhslmJlavvmaoXW+DZKQURj73nOkSK4aejXSEDEGw367fY887jH7r7TDmnfcKafMF4b33Qo2ZNr133T0MtTdh6LXXh6HXXB8G2TA2+uWX88VzQBB6m+7AvNVkRDDzsdrmpPpd9wgNnT4K4+xi315xVai1DsNBNeqlXFtTevYKdavafG1m6KyZM5I3ss5GETRb3v5RDz6c/H+NvQk19gBmpCKOJ1VXhyrTRWh30HXXh/HvdzJ+EAbZ6DDJzLg0EkE4+vjEUpAfAYx+7Y1QY9NF3Xq/CDMGDzHtfEyoNpOs15rrhZFPPBkmmALL6NZz+ZVMEHYIM/IjApjQpUsytdRzH5tvHWa6KKtJXbuFOqtTt8dehRFhHC+bWSP1Zl0Mve0vYcJXuc8kpx1KEz7/PNS2XzHU77N/YnklL8RpZ4SaRdolAjriwUfCEBv9qm2UqjfdpZfd15wpuZfpa3sBq5dcuiDsKKU1iy8deh99XOGhj//iy9BjqeVChSmuDXnFsSAIs60iJkm1SX4F5phJeIX9EEyRPmb6eCAIVVttH7pYBzT0liDkLjPOBKG7KZ1o1T3sIfZYatlQuby9GbvsFkY6z9lkE4TuK68eKkwxnTVrttnBU0JPG6Kr7JoVNnJ0X2ypUGnKXP1vj7AHG/+Q51i757odfxUqrHO725teYdfqatcckfLcAe6u9qhjw1dmkQy3oVYgvY9p7d1tiqg7/uRE6Rx23wOh2pTKChOa7vY7vv7DuaGnmXLd1t8wTBs5/xjApK5p6bV2vwMvnn+YBpjQtWvoZh1dudueSXAJwLfQ2xRWRkzMz6//nNMVep9yavjK9I0hz+RGt/GdO4du9lJW7b3vfPNx9JjQ+5jjQ5VZIhU2VVZY3+Ol7LX3fqFiw03CrLz1Qx9+Zfcz0kxrMMqshi420tcefWxBECaYRdPD9JkeNp1NykeGFQRhng3POEQm1vd2rA8T6urCtGG585GE7+3tnWAC0FBXG+akzgPAsdHQtUsYZ/PwOHtDJ3z6qZl6fRJnhgfad0NtbZjQt08SMQP4d4oNg+M//jSM/+iTMKVv34KeoR8h6O/ZpsxOrOieCMWEzzqHaYMHh++iXsfvwyTTuMeb0jnTbH6PWaZYNtRUW15lQbeYbNceayOH/B6TB32b3O8856OYZcNx/S67hyoTFj9kgzmWx2LQRPs9338/X1tipXX851+GsTY6TB823O7KrJ1Bg8K4qqowY/z45G+8hA2mwE40xZNhXKCXJvaoMGuhU2Iug0mmJ0ywhzkv6d/vw+SBA8J4Gy1nmnVGW5i3/OZJ3zS2/CbYb51gv1koCEL+7x8U6Yf5n4zpQ4eZZXFyqFp4sTDgoo4L8Ntas1da3taPKgj/LZhiI0v15luEKps2e/3mwIJT6T8Z/y8ILcAcm/4qd98jDLQ5Xj7+/2yE8H+pggl+tdRjPAAAAABJRU5ErkJggg=="/></a></div></div></span>
+</div>
+</div>
+</div>
+</div>
+<div class="box col-8 col-sm-12">
+<div id="footerMiddle" class="col-12">
+<div class="col col-3 col-md-4 col-sm-12">
+<ul class="fl col-12">
+<li class="col-sm-12">
+<h3 class="ease">
+Kategoriler
+<span class="fr icon-wrapper forMobile">
+<i class="icon-plus"></i>
+<i class="icon-minus d-none"></i>
+</span>
+</h3>
+<div class="fl col-12">
+<ul class="fl col-12">
+<li class="col-sm-12">
+<a href="/kadin" >Kadın</a>
+</li>
+<li class="col-sm-12">
+<a href="/erkek" >Erkek</a>
+</li>
+<li class="col-sm-12">
+<a href="/aksesuar" >Aksesuar</a>
+</li>
+<li class="col-sm-12">
+<a href="/bakim-urunleri" >Bakım Ürünleri</a>
+</li>
+<li class="col-sm-12">
+<a href="/yeni-gelenler" >Yeni Gelenler</a>
+</li>
+<li class="col-sm-12">
+<a href="/outlet" >Outlet</a>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="col col-3 col-md-4 col-sm-12">
+<ul class="fl col-12">
+<li class="col-sm-12">
+<h3 class="ease">
+Gerekli Bilgiler
+<span class="fr icon-wrapper forMobile">
+<i class="icon-plus"></i>
+<i class="icon-minus d-none"></i>
+</span>
+</h3>
+<div class="fl col-12">
+<ul class="fl col-12">
+<li class="col-sm-12">
+<a href="/teslimat-kosullari" >Teslimat Koşulları</a>
+</li>
+<li class="col-sm-12">
+<a href="/uyelik-sozlesmesi" >Üyelik Sözleşmesi</a>
+</li>
+<li class="col-sm-12">
+<a href="/satis-sozlesmesi" >Satış Sözleşmesi</a>
+</li>
+<li class="col-sm-12">
+<a href="/garanti-ve-iade-kosullari" >Garanti ve İade Koşulları</a>
+</li>
+<li class="col-sm-12">
+<a href="/gizlilik-ve-guvenlik" >Gizlilik ve Güvenlik</a>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="col col-3 col-md-4 col-sm-12">
+<ul class="fl col-12">
+<li class="col-sm-12">
+<h3 class="ease">
+Yardım
+<span class="fr icon-wrapper forMobile">
+<i class="icon-plus"></i>
+<i class="icon-minus d-none"></i>
+</span>
+</h3>
+<div class="fl col-12">
+<ul class="fl col-12">
+<li class="col-sm-12">
+<a href="/musteri-hizmetleri" >Müşteri Hizmetleri</a>
+</li>
+<li class="col-sm-12">
+<a href="/sepet" >Sepetim</a>
+</li>
+<li class="col-sm-12">
+<a href="/siparis-takip" >Sipariş Takip</a>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="col col-3 col-md-4 col-sm-12">
+<ul class="fl col-12">
+<li class="col-sm-12">
+<h3 class="ease">
+Kurumsal
+<span class="fr icon-wrapper forMobile">
+<i class="icon-plus"></i>
+<i class="icon-minus d-none"></i>
+</span>
+</h3>
+<div class="fl col-12">
+<ul class="fl col-12">
+<li class="col-sm-12">
+<a href="/hakkimizda" >Hakkımızda</a>
+</li>
+<li class="col-sm-12">
+<a href="/uye-kayit" >Yeni Üyelik</a>
+</li>
+<li class="col-sm-12">
+<a href="/uye-girisi-sayfasi" >Üye Girişi</a>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="footerBottom" class="col col-12">
+<div class="row">
+<div class="inner">
+<div class="fl col-12 d-flex" id="footerIcons">
+<div id="footerSecurity" class="col col-5 col-sm-12 d-flex j-center">
+<img src="/Data/EditorFiles/ziya/svg/visa.svg" alt="Verified by Visa" />
+<img src="/Data/EditorFiles/ziya/svg/master.svg" alt="Master SecureCODE" />
+<img src="/Data/EditorFiles/ziya/svg/security.svg" alt="Rapid SSL" />
+</div>
+<div id="footerCards" class="col col-6 col-sm-12 d-flex">
+<img src="/Data/EditorFiles/ziya/svg/world.svg" alt="World" />
+<img src="/Data/EditorFiles/ziya/svg/bonus.svg" alt="Bonus" />
+<img src="/Data/EditorFiles/ziya/svg/maximum.svg" alt="Maximum" />
+<img src="/Data/EditorFiles/ziya/svg/visa2.svg" alt="Visa" />
+<img src="/Data/EditorFiles/ziya/svg/cardFinans.svg" alt="CardFinans" />
+<img src="/Data/EditorFiles/ziya/svg/masterCard.svg" alt="Master Card" />
+<img src="/Data/EditorFiles/ziya/svg/troy.svg" alt="Troy" />
+</div>
+</div>
+</div>
+</div>
+</div>
+    </div>
+</footer><script type="text/javascript">
+                var YONETICI_ADSOYAD = ' ';
+                if(typeof setCookie=='function'){
+                    setCookie('nocache', '1', -1);
+                }
+        </script><input type="hidden" id="link_type" value="page" /><input type="hidden" id="link_table_id" value="12" /><input type="hidden" id="link_language" value="tr" /><input type="hidden" id="sol_aktif" value="1" /><input type="hidden" id="sag_aktif" value="0" /><script>
+/**
+* @see https://ads.tiktok.com/marketing_api/docs?id=1727541103358977
+*/
+var TIKTOK_PIXEL = {
+pixel_id: "CN0DGCRC77UE6652J090",
+events: {
+product_detail: "ViewContent",
+add_to_cart: "AddToCart",
+add_to_wishlist: "AddToWishlist",
+begin_checkout: "InitiateCheckout",
+complete_payment: "CompletePayment",
+place_an_order: "PlaceAnOrder",
+},
+// You should lowercase all characters before hashing.
+// Do not perform any other types of normalization on emails prior to hashing.
+// Only SHA-256 is accepted.
+run: () => {
+let ttqIdentifyObject = {};
+ttqIdentifyObject['sha256_email'] = MEMBER_INFO?.MAIL != null && MEMBER_INFO.MAIL !== '' ? MEMBER_INFO.MAIL_HASH_SHA : null;
+ttqIdentifyObject['sha256_phone_number'] = MEMBER_INFO?.PHONE != null && MEMBER_INFO.PHONE !== '' ? MEMBER_INFO.PHONE_HASH_SHA : null;
+ttq.identify(ttqIdentifyObject);
+TIKTOK_PIXEL.productDetail();
+TIKTOK_PIXEL.addToCart();
+TIKTOK_PIXEL.addToWishlist();
+TIKTOK_PIXEL.pageCart();
+TIKTOK_PIXEL.orderAddress();
+TIKTOK_PIXEL.orderApprove();
+},
+productDetail: () => {
+TSOFT_APPS.product.detail.callback.push(function () {
+ttq.track(TIKTOK_PIXEL.events.product_detail, {
+content_name: PRODUCT_DATA[0].name,
+content_category: PRODUCT_DATA[0].category,
+content_id: PRODUCT_DATA[0]["id"],
+content_type: "product",
+value: PRODUCT_DATA[0].total_sale_price,
+currency: window.CURRENCY === "TL" ? "TRY" : window.CURRENCY,
+});
+});
+},
+addToCart: () => {
+TSOFT_APPS.cart.callback.add.push(function (r) {
+let results = Array.isArray(r) ? r : [r];
+results = results.filter((result) => {
+return !([-1, 0].includes(result.status))
+});
+results.forEach((result) => {
+ttq.track(TIKTOK_PIXEL.events.add_to_cart, {
+contents: [{
+content_name: result.addedProduct.name,
+content_category: result.addedProduct.category,
+content_id: result.addedProduct.id,
+content_type: "product",
+price: parseFloat(result.addedProduct.price).toFixed(2),
+currency: window.CURRENCY === "TL" ? "TRY" : window.CURRENCY,
+}],
+value: parseFloat(result.totalPrice).toFixed(2),
+});
+});
+})
+},
+addToWishlist: () => {
+TSOFT_APPS.product.wishList.callback.add.push(function (r) {
+let results = Array.isArray(r) ? r : [r];
+results = results.filter((result) => {
+return !([-1, 0].includes(result.status))
+});
+results.forEach((result) => {
+ttq.track(TIKTOK_PIXEL.events.add_to_wishlist, {
+contents: [{
+content_name: result.data.name,
+content_category: result.data.category,
+content_id: result.data.id,
+content_type: "product",
+}],
+});
+});
+})
+},
+cartLoad: async (event) => {
+const cartLoad = await TSOFT_APPS.get.result.cart.load;
+if (cartLoad.PRODUCTS.length === 0) {
+return false;
+}
+const categories = cartLoad.PRODUCTS.map((product) => {
+return product.CATEGORY_NAME;
+});
+const contents = cartLoad.PRODUCTS.map((product) => {
+return {
+content_id: product.ID,
+content_name: product.TITLE,
+content_category: product.CATEGORY_NAME,
+content_type: 'product',
+price: parseFloat(product.PRICE_TOTAL).toFixed(2),
+currency: window.CURRENCY === "TL" ? "TRY" : window.CURRENCY,
+};
+});
+ttq.track(event, {
+contents: contents,
+currency: (cartLoad.TARGET_CURRENCY === 'TL' ? 'TRY' : cartLoad.TARGET_CURRENCY),
+value: parseFloat(cartLoad.PRICE_GENERAL).toFixed(2),
+num_items: cartLoad.PRODUCTS.length,
+content_category: categories.toString(),
+content_type: 'product',
+})
+},
+pageCart: () => {
+TSOFT_APPS.page.cart.callback.push(async function (data) {
+TIKTOK_PIXEL.cartLoad(TIKTOK_PIXEL.events.begin_checkout);
+});
+},
+orderAddress: () => {
+TsoftAppsOrderAddressCallback(async function (data) {
+TIKTOK_PIXEL.cartLoad(TIKTOK_PIXEL.events.place_an_order);
+})
+},
+orderApprove: () => {
+TsoftAppsOrderApproveCallback(function (approveOrderData) {
+let productArr = [];
+approveOrderData.products.forEach((product) => {
+productArr.push({
+content_id: product.identifier,
+content_name: product.name,
+content_category: product.category_name,
+content_type: 'product',
+price: parseFloat(product.total_amount).toFixed(2),
+currency: product.currency === "TL" ? "TRY" : window.CURRENCY,
+});
+});
+ttq.track(TIKTOK_PIXEL.events.complete_payment, {
+contents: productArr,
+value: parseFloat(approveOrderData.amount).toFixed(2),
+currency: (approveOrderData.currency === 'TL' ? 'TRY' : approveOrderData.currency),
+})
+})
+}
+}
+TIKTOK_PIXEL.run();
+</script>
+<script>
+(function () {
+switch (PAGE_TYPE) {
+case 'approve':
+sendRequestGizliModa()
+break
+default:
+let url = new URL(window.location.href)
+let utm_source = url.searchParams.get("utm_source");
+let utm_campaign = url.searchParams.get("utm_campaign");
+let store_id = url.searchParams.get("storeId");
+if (utm_source === "GM" && utm_campaign && store_id) {
+let date = new Date();
+date.setDate(date.getDate() + 1);
+let expires = "; expires=" + date.toUTCString();
+document.cookie = "gm_event_code=" + utm_campaign + expires
+document.cookie = "store_id=" + store_id + expires
+}
+}
+function sendRequestGizliModa() {
+let store_id = getCookieGizliModa("store_id")
+console.log("store_id", store_id);
+let orderCode = ""
+if (typeof approveOrderData !== "undefined") {
+orderCode = approveOrderData.transaction ?? ""
+}
+if (store_id.length <= 0 || orderCode.length <= 0) {
+return
+}
+fetch("https://api.gizlimoda.net/mobile-app/analytic/add-event-order", {
+method: "POST",
+body: JSON.stringify({
+order_code: orderCode,
+store_id: store_id,
+}),
+headers: {
+"Content-type": "application/json; charset=UTF-8"
+}
+})
+}
+function getCookieGizliModa(cname) {
+let name = cname + "=";
+let decodedCookie = decodeURIComponent(document.cookie);
+let ca = decodedCookie.split(';');
+for (let i = 0; i < ca.length; i++) {
+let c = ca[i];
+while (c.charAt(0) === ' ') {
+c = c.substring(1);
+}
+if (c.indexOf(name) === 0) {
+return c.substring(name.length, c.length);
+}
+}
+return "";
+}
+})();
+</script><script>
+var FBConversion = {
+is_vat: 1,
+pixel_id: '504377593729180',
+location: 'product_id',
+key_mapping: {
+'product' : {
+'product_code' : 'code',
+'product_id' : 'id',
+},
+'cart' : {
+'product_code' : 'PRODUCT_CODE',
+'product_id' : 'ID',
+},
+'search': {
+'product_code' : 'code',
+'product_id' : 'id',
+},
+'order' : {
+'product_code' : 'code',
+'product_id' : 'identifier',
+},
+'category' : {
+'product_code' : 'code',
+'product_id' : 'id',
+}
+},
+request: function(data, type){
+if(!this.iosDetect()){
+return false;
+}
+data.event_id = type + '_' + FB_EVENT_ID;
+$.ajax({
+type: "POST",
+url: '/Diger/Apps/Facebook.php',
+data: {
+track_data: data
+},
+dataType: 'json',
+success: function(response){
+if(typeof response.error !== 'undefined'){
+console.log('FB Conversion API: Error!');
+}else{
+console.log('FB Conversion API: Worked For The ' + type + '.');
+}
+}
+});
+},
+run : function(){
+let data = {};
+switch(PAGE_TYPE){
+case 'product':
+this.request(this.product(), 'ViewContent');
+break;
+case 'category':
+this.request(this.category(), 'ViewCategory');
+break;
+case 'search':
+this.request(this.search(), 'Search');
+break;
+case 'cart':
+this.cart();
+break;
+case 'payment':
+this.payment();
+break;
+case 'address':
+// this.request(this.address(), 'Address');
+break;
+case 'approve':
+this.request(this.approve(), 'Purchase');
+break;
+case 'memberConfirmation':
+this.request(this.memberConfirmation(), 'CompleteRegistration');
+break;
+}
+if(PAGE_TYPE === 'other' && window.location.href.indexOf('&mail=') > -1){
+return;
+}
+this.request(this.page(), 'PageView');
+},
+page: function(){
+return {
+event_name: 'PageView',
+//event_time: Math.floor(Date.now() / 1000),
+event_source_url: document.URL,
+action_source: 'website',
+user_data: this.member_info()
+}
+},
+product: function(){
+let currency = PRODUCT_DATA[0].currency == "TL" ? "TRY" : PRODUCT_DATA[0].currency;
+return {
+event_name: 'ViewContent',
+//event_time: Math.floor(Date.now() / 1000),
+event_source_url: document.URL,
+action_source: 'website',
+custom_data: {
+content_name: PRODUCT_DATA[0].name,
+content_category: PRODUCT_DATA[0].category,
+currency: currency,
+contents: [
+{
+id: PRODUCT_DATA[0][this.key_mapping['product'][this.location]],
+item_price: (this.is_vat == 1 ? PRODUCT_DATA[0].total_sale_price : PRODUCT_DATA[0].sale_price),
+}
+]
+},
+user_data: this.member_info()
+}
+},
+category: function(){
+let key = this.key_mapping['category'][this.location];
+let content_ids = [];
+let counter = 0;
+for(var i = 0; i < PRODUCT_DATA.length; i++) {
+if(i > 20) break;
+content_ids.push(PRODUCT_DATA[i][key]);
+}
+return {
+event_name: 'ViewContent',
+//event_time: Math.floor(Date.now() / 1000),
+event_source_url: document.URL,
+action_source: 'website',
+custom_data: {
+content_type: 'product',
+content_name: CATEGORY_DATA.name,
+content_ids: content_ids,
+content_category: CATEGORY_DATA.path
+},
+user_data: this.member_info()
+}
+},
+search: function(){
+let key = this.key_mapping['category'][this.location];
+let content_ids = [];
+let counter = 0;
+for(var i = 0; i < PRODUCT_DATA.length; i++) {
+if(i > 20) break;
+content_ids.push(PRODUCT_DATA[i][key]);
+}
+return {
+event_name: 'Search',
+//event_time: Math.floor(Date.now() / 1000),
+event_source_url: document.URL,
+action_source: 'website',
+custom_data: {
+search_string: $('#search_word').val()
+},
+user_data: this.member_info()
+}
+},
+cart: function(){
+var _this = this;
+var cartCategories ='';
+window.Cart.callback.load.push(function(r){
+var pkey = _this.key_mapping['cart'][_this.location];
+if(r.PRODUCTS.length <= 0){
+return;
+}
+var cat_list = r.PRODUCTS.map(function(a) {return a.CATEGORY_NAME.toString();}) || [];
+$.each(cat_list, function(key, value){
+if(cartCategories.indexOf(value) == -1){
+cartCategories += value+', ';
+}
+});
+cartCategories = cartCategories.substring(0, cartCategories.length-2);
+var productArr = [];
+var productIds = [];
+for(var i=0;i < r.PRODUCTS.length; i++ ){
+var ckey = (pkey === 'PRODUCT_CODE' && typeof r.PRODUCTS[i].VARIANT_CODE != 'undefined' && r.PRODUCTS[i].VARIANT_CODE != '') ? 'VARIANT_CODE' : pkey;
+productArr[i] = {id : r.PRODUCTS[i][ckey] , quantity : r.PRODUCTS[i].COUNT};
+productIds.push(r.PRODUCTS[i][ckey]);
+}
+_this.request({
+event_name: 'InitiateCheckout',
+//event_time: Math.floor(Date.now() / 1000),
+event_source_url: document.URL,
+action_source: 'website',
+custom_data: {
+contents: productArr,
+content_ids: productIds,
+content_category: cartCategories,
+content_type: 'product',
+currency: (r.TARGET_CURRENCY === 'TL' ? 'TRY' : r.TARGET_CURRENCY),
+value: (_this.is_vat == 1 ? r.PRICE_GENERAL : r.PRICE_TOTAL_SELL).toFixed(2),
+num_items: r.PRODUCTS.length,
+},
+user_data: _this.member_info()
+}, "InitiateCheckout");
+});
+},
+payment: function(){
+var _this = this;
+var categories ='';
+var pkey = this.key_mapping['order'][this.location];
+pkey = pkey == "PRODUCT_CODE" ? "wsProductCode" : "id";
+window.summaryCallback = function(r){
+if(r.products.length <= 0){
+return;
+}
+var cat_list = r.products.map(function(a) {return a.categoryName.toString();}) || [];
+$.each(cat_list, function(key, value){
+if(categories.indexOf(value) == -1){
+categories += value+', ';
+}
+});
+categories = categories.substring(0, categories.length-2);
+var productArr = [];
+var productIds = [];
+for(
+var i=0;i < r.products.length; i++ ){
+var ckey = (pkey === 'wsProductCode' && typeof r.products[i].wsSubProductCode != 'undefined' && r.products[i].wsSubProductCode != '') ? 'wsSubProductCode' : pkey;
+productArr[i] = {id : r.products[i][ckey] , quantity : r.products[i].count};
+productIds.push(r.products[i][ckey]);
+}
+_this.request({
+event_name: 'AddPaymentInfo',
+//event_time: Math.floor(Date.now() / 1000),
+event_source_url: document.URL,
+action_source: 'website',
+custom_data: {
+num_items: r.products.length,
+contents: productArr,
+content_ids: productIds,
+content_category: categories,
+content_type: 'product',
+currency: (r.currency === 'TL' ? 'TRY' : r.currency),
+value: (_this.is_vat == 1 ? r.amounts.total : r.amounts.subtotal).toFixed(2),
+},
+user_data:_this.member_info()
+}, "AddPaymentInfo");
+};
+},
+approve: function(){
+var key = this.key_mapping['order'][this.location];
+var currency = approveOrderData.currency === 'TL' ? 'TRY' : approveOrderData.currency;
+var productArr = [];
+for(var i=0;i<approveOrderData.products.length; i++ ){
+var ckey = (key === 'code' && typeof approveOrderData.products[i].subproduct_code != 'undefined' && approveOrderData.products[i].subproduct_code != '') ? 'subproduct_code' : key;
+productArr[i] = approveOrderData.products[i][ckey];
+}
+return {
+event_name: 'Purchase',
+//event_time: Math.floor(Date.now() / 1000),
+event_source_url: document.URL,
+action_source: 'website',
+custom_data: {
+value: (this.is_vat == 1 ? approveOrderData.amount : approveOrderData.amount_without_vat ).toFixed(2),
+currency: currency || 'TRY',
+content_type :'product',
+content_ids : productArr,
+},
+user_data: this.member_info()
+}
+},
+memberConfirmation: function(){
+return {
+event_name: 'CompleteRegistration',
+//event_time: Math.floor(Date.now() / 1000),
+event_source_url: document.URL,
+action_source: 'website',
+custom_data: {
+status : true,
+currency: (window.CURRENCY === 'TL' ? 'TRY' : window.CURRENCY),
+value: '0.00'
+},
+user_data: this.member_info()
+}
+},
+addToWishList: function(){
+this.request({
+event_name: 'AddToWishlist',
+//event_time: Math.floor(Date.now() / 1000),
+event_source_url: document.URL,
+action_source: 'website',
+user_data: this.member_info()
+}, 'AddToWishlist')
+},
+member_info: function(){
+var member = {
+fn: "Guest"
+};
+if (MEMBER_INFO.MAIL !== '') {
+member = {
+em: MEMBER_INFO.MAIL_HASH_SHA,
+fn: MEMBER_INFO.FIRST_NAME,
+ln: MEMBER_INFO.LAST_NAME,
+external_id: MEMBER_INFO.ID,
+ge: MEMBER_INFO.GENDER,
+db: MEMBER_INFO.BIRTH_DATE,
+country: MEMBER_INFO.MEMBER_COUNTRY,
+ct: MEMBER_INFO.MEMBER_CITY
+}
+if(MEMBER_INFO.MEMBER_ZIP_CODE != "" && MEMBER_INFO.MEMBER_ZIP_CODE != 0){
+member.zp = MEMBER_INFO.MEMBER_ZIP_CODE;
+}
+}
+return member;
+},
+getCookie: function(name){
+const value = `; ${document.cookie}`;
+const parts = value.split(`; ${name}=`);
+if (parts.length === 2){
+return parts.pop().split(';').shift();
+}
+return '';
+},
+iosDetect: function() {
+return [
+'iPad Simulator',
+'iPhone Simulator',
+'iPod Simulator',
+'iPad',
+'iPhone',
+'iPod'
+].includes(navigator.platform)
+// iPad on iOS 13 detection
+|| (navigator.userAgent.includes("Mac") && "ontouchend" in document)
+}
+}
+FBConversion.run();
+if(typeof QuickViewObj != 'undefined'){
+QuickViewObj.callback.open.push(function(pr){
+FBConversion.request({
+event_name: 'ViewContent',
+//event_time: Math.floor(Date.now() / 1000),
+event_source_url: document.URL,
+action_source: 'website',
+custom_data: {
+content_name : $('#pageScripts #urun-ad').val(),
+content_category : $('#pageScripts #urun-kategori').val(),
+content_ids : [$('#pageScripts #urun-id').val()],
+content_type : 'product',
+value : $('#pageScripts #urun-fiyat-kdvli').val(),
+currency : (window.CURRENCY === 'TL' ? 'TRY' : window.CURRENCY)
+},
+user_data: FBConversion.member_info()
+}, 'ViewContent');
+});
+}
+AddToWishListCallback = function(){
+FBConversion.addToWishList();
+}
+Cart.callback.add.push(function(r){
+var pkey = FBConversion.key_mapping['cart'][FBConversion.location];
+var results = (Array.isArray(r) == false) ? [r] : r;
+for(var i = 0 ; i < results.length; i++){
+if (results[i].status === -1 || results[i].status === 0) {
+continue;
+}
+var addedProduct = results[i].addedProduct;
+var cartProducts = results[i].cartProducts;
+var cartProductIds = [];
+var totalPrice = results[i].totalPrice;
+var cartProductContent = [];
+$.each(results[i].cartProducts, function(key, item){
+if(pkey === 'PRODUCT_CODE'){
+let icode = item.code || item.id;
+cartProductIds.push(icode);
+cartProductContent.push({id: icode, quantity: item.quantity})
+}else{
+cartProductIds.push(item.id);
+cartProductContent.push({id: item.id, quantity: item.quantity})
+}
+});
+var value = (FBConversion.is_vat == 1 ? totalPrice : totalPrice);
+value = value.replace(/(\d+).(?=\d{3}(\D|$))/g, "$1");
+value = value.replace(",", ".");
+FBConversion.request({
+event_name: 'AddToCart',
+//event_time: Math.floor(Date.now() / 1000),
+event_source_url: document.URL,
+action_source: 'website',
+custom_data: {
+contents: cartProductContent,
+content_ids: cartProductIds,
+content_type: 'product',
+value: parseFloat(value).toFixed(2),
+currency: (window.CURRENCY === 'TL' ? 'TRY' : window.CURRENCY)
+},
+user_data: FBConversion.member_info()
+}, 'AddToCart');
+}
+});
+</script><script type="text/javascript" src="//www.googleadservices.com/pagead/conversion_async.js" charSet="utf-8"></script>
+<script>
+var GOOGLE_REMARKETING_APP = {
+params: {
+google_conversion_id: "706606626",
+google_remarketing_only: true,
+google_custom_params: {}
+},
+run: function () {
+if (MEMBER_INFO.ID > 0) {
+GOOGLE_REMARKETING_APP.params.google_user_id = MEMBER_INFO.ID;
+}
+GOOGLE_REMARKETING_APP.setPageType();
+GOOGLE_REMARKETING_APP.events();
+document.addEventListener("DOMContentLoaded", (event) => {
+window.google_trackConversion(GOOGLE_REMARKETING_APP.params);
+});
+},
+spCleaner: function (text = '') {
+return text.replace(/[^a-zA-ZğüşıöçĞÜŞİÖÇ1234567890 ]/g, '').trim();
+},
+setPageType: function () {
+const types = {
+'search': 'searchresults',
+'order': 'purchase',
+'approve': 'purchase',
+};
+GOOGLE_REMARKETING_APP.params.google_custom_params.ecomm_pagetype = types[PAGE_TYPE] || PAGE_TYPE;
+},
+getCartItems: async function () {
+await TSOFT_APPS.get.cart.load();
+const r = await TSOFT_APPS.get.result.cart.load;
+if (r === null) {
+return false;
+}
+GOOGLE_REMARKETING_APP.params.google_custom_params.ecomm_totalvalue = parseFloat(r.PRICE_CART);
+GOOGLE_REMARKETING_APP.params.google_custom_params.ecomm_prodid = r.PRODUCTS.map(function (a) {
+return a.ID.toString();
+}) || [];
+const categories = [];
+r.PRODUCTS.forEach(function (value) {
+if (categories.indexOf(value.CATEGORY_NAME) === -1) {
+categories.push(value.CATEGORY_NAME);
+}
+});
+GOOGLE_REMARKETING_APP.params.google_custom_params.ecomm_pcat = categories;
+window.google_trackConversion(GOOGLE_REMARKETING_APP.params);
+},
+events: function () {
+console.log("event setlendi");
+TSOFT_APPS.product.detail.callback.push(function (params) {
+GOOGLE_REMARKETING_APP.params.google_custom_params.ecomm_totalvalue = parseFloat(params[0].total_sale_price);
+GOOGLE_REMARKETING_APP.params.google_custom_params.ecomm_prodid = params[0].id;
+GOOGLE_REMARKETING_APP.params.google_custom_params.ecomm_category = GOOGLE_REMARKETING_APP.spCleaner(params[0].category);
+})
+TSOFT_APPS.page.category.callback.push(function (CATEGORY_DATA, PRODUCT_DATA) {
+console.log("CATEGORY_DATA", CATEGORY_DATA);
+GOOGLE_REMARKETING_APP.params.google_custom_params.ecomm_category = GOOGLE_REMARKETING_APP.spCleaner(CATEGORY_DATA.name);
+})
+TsoftAppsOrderApproveCallback(function (order) {
+GOOGLE_REMARKETING_APP.params.google_custom_params.ecomm_pagetype = 'purchase';
+GOOGLE_REMARKETING_APP.params.google_custom_params.ecomm_totalvalue = parseFloat((order.amount).toFixed(2));
+GOOGLE_REMARKETING_APP.params.google_custom_params.ecomm_prodid = order.products.map(function (a) {
+return (a?.id || a?.identifier).toString();
+}) || [];
+const categories = [];
+order.products.forEach(function (value) {
+if (categories.indexOf(value.category_name) === -1) {
+categories.push(value.category_name);
+}
+});
+GOOGLE_REMARKETING_APP.params.google_custom_params.ecomm_pcat = categories;
+window.google_trackConversion(GOOGLE_REMARKETING_APP.params);
+});
+TSOFT_APPS.page.cart.callback.push(function (basket, cartLoad) {
+GOOGLE_REMARKETING_APP.setPageType();
+GOOGLE_REMARKETING_APP.getCartItems();
+})
+TSOFT_APPS.order.address.callback.push(function (params) {
+GOOGLE_REMARKETING_APP.setPageType();
+GOOGLE_REMARKETING_APP.getCartItems();
+})
+TSOFT_APPS.order.payment.callback.push(function (params) {
+GOOGLE_REMARKETING_APP.setPageType();
+GOOGLE_REMARKETING_APP.getCartItems();
+})
+TSOFT_APPS.cart.callback.add.push(function (params) {
+GOOGLE_REMARKETING_APP.params.google_custom_params.ecomm_pagetype = 'addtocart';
+})
+TSOFT_APPS.cart.callback.delete.push(function (params) {
+GOOGLE_REMARKETING_APP.params.google_custom_params.ecomm_pagetype = 'removetocart';
+})
+}
+};
+GOOGLE_REMARKETING_APP.run();
+</script><script>
+var identifier_type = 'product_id';
+var GA_Enhanced_Ecommerce = true;
+(function(i, s, o, g, r, a, m) {
+i['GoogleAnalyticsObject'] = r;
+i[r] = i[r] || function() {
+(i[r].q = i[r].q || []).push(arguments)
+}, i[r].l = 1 * new Date();
+a = s.createElement(o),
+m = s.getElementsByTagName(o)[0];
+a.async = 1;
+a.src = g;
+m.parentNode.insertBefore(a, m)
+})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+ga('create', 'UA-148594268-1', 'auto');
+ga('require', 'ec');
+if (typeof MEMBER_INFO.ID !== 'undefined' && MEMBER_INFO.ID > 0) {
+ga('set', 'userId', MEMBER_INFO.ID);
+}
+var KEY_MAPPING = {
+'product' : {
+'product_code' : 'code',
+'product_id' : 'id',
+'product_supplier_code' : 'supplier_code',
+},
+'cart' : {
+'product_code' : 'sku',
+'product_id' : 'id',
+'product_supplier_code' : 'sku',
+},
+'order' : {
+'product_code' : 'code',
+'product_id' : 'identifier',
+'product_supplier_code' : 'code',
+},
+'category' : {
+'product_code' : 'code',
+'product_id' : 'id',
+'product_supplier_code' : 'supplier_code',
+},
+'cartProduct': {
+'product_code' : 'PRODUCT_CODE',
+'product_id' : 'ID',
+'product_supplier_code' : 'SUPPLIER_PRODUCT_CODE'
+}
+};
+switch (PAGE_TYPE) {
+case 'product':
+var key = KEY_MAPPING['product'][identifier_type];
+ga('ec:addProduct', {
+'id': PRODUCT_DATA[0][key],
+'name': PRODUCT_DATA[0]['name'],
+'category': PRODUCT_DATA[0]['category'],
+'brand': PRODUCT_DATA[0]['brand'],
+'list': PRODUCT_DATA[0]['category']
+});
+ga('ec:setAction', 'detail');
+ga('send', 'pageview');
+break;
+case 'category':
+var key = KEY_MAPPING['category'][identifier_type];
+for(var i = 0; i < PRODUCT_DATA.length; i++) {
+if(i > 20) break;
+ga('ec:addImpression', {
+'id': PRODUCT_DATA[i][key],
+'name': PRODUCT_DATA[i].name.substr(0, 35) || '',
+'list': $('#category_name').val() || '',
+'brand': PRODUCT_DATA[i]['brand'],
+'position': (i + 1),
+});
+}
+//ga('ec:setAction', 'detail');
+ga('send', 'pageview');
+break;
+case 'search':
+var key = KEY_MAPPING['category'][identifier_type];
+for(var i = 0; i < PRODUCT_DATA.length; i++) {
+if(i > 20) break;
+ga('ec:addImpression', {
+'id': PRODUCT_DATA[i][key],
+'name': PRODUCT_DATA[i].name.substr(0, 35) || '',
+'list': 'Arama Sonuçları',
+'position': (i + 1),
+'dimension1': $('#search_word').val() || ''
+});
+}
+//ga('ec:setAction', 'detail');
+ga('send', 'pageview');
+break;
+case 'cart':
+$.ajax({
+type: "get",
+url: '/srv/service/cart/load',
+dataType: 'json',
+success: function(response){
+$.each(response.PRODUCTS, function(index, item){
+var key = KEY_MAPPING['cartProduct'][identifier_type];
+ga('ec:addProduct', {
+'id': item[key],
+'name': item.TITLE,
+'category': item.CATEGORY_NAME,
+'brand': item.BRAND,
+'variant': item.VARIANT_ID,
+'price': item.PRICE_TOTAL,
+'quantity': item.COUNT
+});
+});
+}
+});
+ga('ec:setAction', 'checkout', {
+'step': 1
+});
+ga('send', 'pageview');
+break;
+default:
+if (PAGE_TYPE === 'payment') {
+ga('set', 'page', '/order/payment');
+ga('ec:setAction', 'checkout', {
+'step': 3
+});
+} else if (PAGE_TYPE === 'address') {
+ga('set', 'page', '/order/address');
+ga('ec:setAction', 'checkout', {
+'step': 2
+});
+}
+ga('send', 'pageview');
+break;
+}
+var orderPages = ['address', 'payment', 'approve'];
+if (orderPages.indexOf(PAGE_TYPE) === -1) {
+ApprovePageTracking.callbackArray.push(function(r) {
+ga('ec:setAction', 'checkout', {
+'step': 4
+});
+var key = KEY_MAPPING['order'][identifier_type];
+ga('set', 'page', '/order/approve');
+ga('set', 'currencyCode', r.currency === 'TL' ? 'TRY' : r.currency);
+for (var i = 0; i < r.products.length; i++) {
+ga('ec:addProduct', {
+'id': r.products[i][key],
+'name': r.products[i].name,
+'category': r.products[i].category,
+'brand': r.products[i].brand,
+'price': r.products[i].amount_order,
+'quantity': r.products[i].quantity,
+'list': r.products[i].category
+});
+}
+ga('ec:setAction', 'purchase', {
+'id': r.transaction,
+'affiliation': r.firm,
+'revenue': approveOrderData.amount.toFixed(2),
+'tax': r.total_vat,
+'shipping': r.cargo_price,
+});
+ga('send', 'pageview');
+});
+}
+if (typeof Add2Cart !== 'undefined') {
+Add2Cart.callBack = function(r) {
+var key = KEY_MAPPING['cart'][identifier_type];
+if (r.status === 3) {
+ga('ec:addProduct', {
+'id': r.addedProduct[key],
+'name': r.addedProduct.name,
+'category': r.addedProduct.category,
+'price': r.addedProduct.price,
+'brand': r.addedProduct.brand,
+'quantity': r.addedProduct.quantity,
+'list': r.addedProduct.category
+});
+ga('ec:setAction', 'add');
+ga('send', 'event', 'UX', 'click', 'add to cart');
+}
+}
+}
+console.log('Google Enchanced Ecommerce Analytics By Tsoft');
+</script><script>
+!function(f,b,e,v,n,t,s){ if(f.fbq)return;n=f.fbq=function(){ n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments) };if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.agent='pltsoft';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,'script','https://connect.facebook.net/en_US/fbevents.js');
+var identifier_type_FB = 'product_id';
+var FACEBOOK_WITH_VAT = '1';
+var FACEBOOK_MEMBER;
+var SEND_MEMBER = true;
+var KEY_MAPPING_FB = {
+'product' : {
+'product_code' : 'code',
+'product_id' : 'id',
+},
+'cart' : {
+'product_code' : 'PRODUCT_CODE',
+'product_id' : 'ID',
+},
+'order' : {
+'product_code' : 'code',
+'product_id' : 'identifier',
+},
+'category' : {
+'product_code' : 'code',
+'product_id' : 'id',
+}
+};
+if (MEMBER_INFO.MAIL !== '' && SEND_MEMBER == true) {
+FACEBOOK_MEMBER = {};
+if(MEMBER_INFO.FIRST_NAME !== ''){
+FACEBOOK_MEMBER.fn = MEMBER_INFO.FIRST_NAME;
+}
+if(MEMBER_INFO.LAST_NAME !== ''){
+FACEBOOK_MEMBER.ln = MEMBER_INFO.LAST_NAME;
+}
+if(MEMBER_INFO.MAIL_HASH_SHA !== ''){
+FACEBOOK_MEMBER.em = MEMBER_INFO.MAIL_HASH_SHA;
+}
+if(MEMBER_INFO.ID !== ''){
+FACEBOOK_MEMBER.external_id = MEMBER_INFO.ID;
+}
+if(MEMBER_INFO.GENDER !== ''){
+FACEBOOK_MEMBER.ge = MEMBER_INFO.GENDER;
+}
+if(MEMBER_INFO.BIRTH_DATE !== '' && MEMBER_INFO.BIRTH_DATE !== '--'){
+FACEBOOK_MEMBER.db = MEMBER_INFO.BIRTH_DATE;
+}
+if(MEMBER_INFO.MEMBER_COUNTRY !== ''){
+FACEBOOK_MEMBER.country = MEMBER_INFO.MEMBER_COUNTRY;
+}
+if(MEMBER_INFO.MEMBER_CITY !== ''){
+FACEBOOK_MEMBER.ct = MEMBER_INFO.MEMBER_CITY;
+}
+if(MEMBER_INFO.MEMBER_ZIP_CODE !== ''){
+FACEBOOK_MEMBER.zp = MEMBER_INFO.MEMBER_ZIP_CODE;
+}
+console.log("veri gönderildi");
+}
+if (PAGE_TYPE === 'other' && window.location.href.indexOf('&mail=') > 0){
+console.log('Facebook Piksel Çalışmadı');
+}
+else {
+fbq('init', '504377593729180',FACEBOOK_MEMBER);
+fbq('track', 'PageView', {}, {eventID: 'PageView_' + FB_EVENT_ID});
+}
+function trackFb(pageType,obj){
+fbq('track',pageType,obj, {eventID: pageType + '_' + FB_EVENT_ID});
+window.FB_EVENT_ID = "fb_" + new Date().getTime();
+}
+AddToWishListCallback = function(){
+trackFb('AddToWishlist',{});
+}
+if(PAGE_TYPE === 'product' ){
+var pkey = KEY_MAPPING_FB['product'][identifier_type_FB];
+var ckey = (pkey === 'code' && typeof PRODUCT_DATA[0].subproduct_code != 'undefined' && PRODUCT_DATA[0].subproduct_code != '') ? 'subproduct_code' : pkey;
+trackFb('ViewContent',{
+content_name : $('#urun-ad').val(),
+content_category : $('#urun-kategori').val(),
+content_ids : [PRODUCT_DATA[0][ckey]],
+content_type : 'product',
+value : (FACEBOOK_WITH_VAT == 1 ? PRODUCT_DATA[0].total_sale_price : PRODUCT_DATA[0].sale_price),
+currency : (window.CURRENCY === 'TL' ? 'TRY' : window.CURRENCY)
+}
+);
+}
+if(PAGE_TYPE === 'category' ){
+var pkey = KEY_MAPPING_FB['category'][identifier_type_FB];
+var products = [];
+var counter = 0;
+for(var i = 0; i < PRODUCT_DATA.length; i++) {
+if(i > 20) break;
+products.push(PRODUCT_DATA[i][pkey]);
+}
+trackFb('ViewCategory',{
+content_name : $('#category_name').val(),
+content_type : 'product',
+content_ids : products,
+}
+);
+}
+if(PAGE_TYPE === 'search' ){
+trackFb('Search', { search_string : $('#search_word').val()});
+}
+if(PAGE_TYPE === 'cart' ){
+var cartCategories ='';
+window.Cart.callback.load.push(function(r){
+var pkey = KEY_MAPPING_FB['cart'][identifier_type_FB];
+if(r.PRODUCTS.length <= 0){
+return;
+}
+var cat_list = r.PRODUCTS.map(function(a) {return a.CATEGORY_NAME.toString();}) || [];
+$.each(cat_list, function(key, value){
+if(cartCategories.indexOf(value) == -1){
+cartCategories += value+', ';
+}
+});
+cartCategories = cartCategories.substring(0, cartCategories.length-2);
+var productArr = [];
+var productIds = [];
+for(var i=0;i < r.PRODUCTS.length; i++ ){
+var ckey = (pkey === 'PRODUCT_CODE' && typeof r.PRODUCTS[i].VARIANT_CODE != 'undefined' && r.PRODUCTS[i].VARIANT_CODE != '') ? 'VARIANT_CODE' : pkey;
+productArr[i] = {id : r.PRODUCTS[i][ckey] , quantity : r.PRODUCTS[i].COUNT};
+productIds.push(r.PRODUCTS[i][ckey]);
+}
+trackFb('InitiateCheckout', {
+contents: productArr,
+content_ids: productIds,
+currency: (r.TARGET_CURRENCY === 'TL' ? 'TRY' : r.TARGET_CURRENCY),
+value: (FACEBOOK_WITH_VAT == 1 ? r.PRICE_GENERAL : r.PRICE_TOTAL_SELL).toFixed(2),
+num_items: r.PRODUCTS.length,
+content_category: cartCategories,
+content_type: 'product',
+});
+});
+}
+if(PAGE_TYPE === 'payment'){
+var categories ='';
+var pkey = KEY_MAPPING_FB['cart'][identifier_type_FB];
+pkey = pkey == "PRODUCT_CODE" ? "wsProductCode" : "id";
+window.summaryCallback = function(r){
+if(r.products.length <= 0){
+return;
+}
+var cat_list = r.products.map(function(a) {return a.categoryName.toString();}) || [];
+$.each(cat_list, function(key, value){
+if(categories.indexOf(value) == -1){
+categories += value+', ';
+}
+});
+categories = categories.substring(0, categories.length-2);
+var productArr = [];
+for(
+var i=0;i < r.products.length; i++ ){
+var ckey = (pkey === 'wsProductCode' && typeof r.products[i].wsSubProductCode != 'undefined' && r.products[i].wsSubProductCode != '') ? 'wsSubProductCode' : pkey;
+productArr[i] = {id : r.products[i][ckey] , quantity : r.products[i].count};
+}
+trackFb('AddPaymentInfo', {
+contents: productArr,
+currency: (r.currency === 'TL' ? 'TRY' : r.currency),
+value: (FACEBOOK_WITH_VAT == 1 ? r.amounts.total : r.amounts.subtotal).toFixed(2),
+content_category: categories,
+content_type: 'product',
+});
+};
+}
+if(PAGE_TYPE === 'address'){
+console.log("address");
+}
+if(PAGE_TYPE === 'approve'){
+var pkey = KEY_MAPPING_FB['order'][identifier_type_FB];
+var currency = approveOrderData.currency === 'TL' ? 'TRY' : approveOrderData.currency;
+var productArr = [];
+var contentArr = [];
+for(var i=0;i<approveOrderData.products.length; i++ ){
+var ckey = (pkey === 'code' && typeof approveOrderData.products[i].subproduct_code != 'undefined' && approveOrderData.products[i].subproduct_code != '') ? 'subproduct_code' : pkey;
+productArr[i] = approveOrderData.products[i][ckey];
+contentArr.push({
+id: approveOrderData.products[i][ckey],
+quantity: approveOrderData.products[i].quantity
+});
+}
+var purchaseData = {
+value: (FACEBOOK_WITH_VAT == 1 ? approveOrderData.amount : approveOrderData.amount_without_vat ).toFixed(2),
+currency: currency || 'TL',
+content_type :'product',
+content_ids : productArr,
+contents : contentArr
+};
+trackFb('Purchase',purchaseData);
+}
+if(PAGE_TYPE === 'memberConfirmation' ){
+trackFb('CompleteRegistration', {
+status : true,
+currency: (window.CURRENCY === 'TL' ? 'TRY' : window.CURRENCY),
+value: '0.00'
+});
+}
+if(typeof QuickViewObj != 'undefined'){
+QuickViewObj.callback.open.push(function(pr){
+trackFb('ViewContent',{
+content_name : $('#pageScripts #urun-ad').val(),
+content_category : $('#pageScripts #urun-kategori').val(),
+content_ids : [$('#pageScripts #urun-id').val()],
+content_type : 'product',
+value : $('#pageScripts #urun-fiyat-kdvli').val(),
+currency : (window.CURRENCY === 'TL' ? 'TRY' : window.CURRENCY)
+});
+});
+}
+Cart.callback.add.push(function(r){
+var pkey = KEY_MAPPING_FB['cart'][identifier_type_FB];
+var results = (Array.isArray(r) == false) ? [r] : r;
+for(var i = 0 ; i < results.length; i++){
+if (results[i].status === -1 || results[i].status === 0) {
+continue;
+}
+var addedProduct = results[i].addedProduct;
+var cartProducts = results[i].cartProducts;
+var cartProductIds = [];
+var totalPrice = results[i].totalPrice;
+$.each(results[i].cartProducts, function(key, item){
+if(pkey === 'PRODUCT_CODE'){
+let icode = item.code || item.id;
+cartProductIds.push(icode);
+cartProducts[key].id = icode;
+}else{
+cartProductIds.push(item.id);
+}
+});
+var value = (FACEBOOK_WITH_VAT == 1 ? totalPrice : totalPrice);
+value = value.replace(/(\d+).(?=\d{3}(\D|$))/g, "$1");
+value = value.replace(",", ".");
+trackFb('AddToCart', {
+contents: cartProducts,
+content_ids: cartProductIds,
+content_type: 'product',
+value: parseFloat(value).toFixed(2),
+currency: (window.CURRENCY === 'TL' ? 'TRY' : window.CURRENCY)
+});
+}
+})
+</script><script>
+// if (typeof gtag == 'undefined') {
+window.dataLayer = window.dataLayer || [];
+// Global configs
+function gtag() {
+dataLayer.push(arguments);
+}
+gtag('js', new Date());
+if (OPTIMIZE_ID !== '{' + '{OPTIMIZE_ID}}' && OPTIMIZE_ID !== '') {
+gtag('config', GTAG_TRACKING_ID, {'send_page_view': false, 'optimize_id': OPTIMIZE_ID});
+} else {
+gtag('config', GTAG_TRACKING_ID, {'send_page_view': false});
+}
+if (GA4_TRACKING_ID !== '') {
+gtag('config', GA4_TRACKING_ID);
+}
+if (GTAG_ADWORDS_ID !== '{' + '{GTAG_ADWORDS_ID}}' && GTAG_ADWORDS_ID !== '' && MEMBER_INFO.ID != 0){
+gtag('config', GTAG_ADWORDS_ID, {'allow_enhanced_conversions':true});
+var enhanced_conversion_data = {
+"email": String(MEMBER_INFO.MAIL_HASH_SHA)
+};
+}else if(GTAG_ADWORDS_ID !== '{' + '{GTAG_ADWORDS_ID}}' && GTAG_ADWORDS_ID !== ''){
+gtag('config', GTAG_ADWORDS_ID)
+}
+if (GA4ID !== '' && GA4ID !== '{{' + 'GA4_TRACKING_ID' + '}}' && MEMBER_INFO.ID != 0) {
+gtag('config', GA4ID, { 'user_id': String(MEMBER_INFO.ID) });
+} else if (MEMBER_INFO.ID != 0) {
+gtag('config', GA4_TRACKING_ID, { 'user_id': String(MEMBER_INFO.ID) });
+}
+switch (PAGE_TYPE) {
+case 'home':
+gtag('event', 'page_view', {
+ecomm_pagetype: 'home',
+});
+break;
+case 'search' :
+gtag('event', 'page_view', {
+ecomm_pagetype: 'searchresults',
+});
+break;
+case 'other':
+gtag('event', 'page_view', {
+ecomm_pagetype: 'other',
+});
+break;
+}
+function gtag_getCartItems() {
+var cart = {products: [], total: 0};
+$.ajax({
+'url': '/srv/service/cart/load',
+'type': 'GET',
+'async': false,
+'dataType': 'json',
+'success': function (r) {
+for (var i = 0; i < r.PRODUCTS.length; i++) {
+if (GA4_TRACKING_ID !== '') {
+cart.products.push({
+'item_id': GTAG_ID == 'id' ? r.PRODUCTS[i].ID : r.PRODUCTS[i].PRODUCT_CODE,
+'item_name': r.PRODUCTS[i].TITLE,
+'item_brand': r.PRODUCTS[i].BRAND,
+'item_category': r.PRODUCTS[i].CATEGORY_NAME,
+'price': ((r.PRODUCTS[i].PRICE_TOTAL / r.PRODUCTS[i].COUNT).toFixed(2)), // Kullanım Tutarı
+'currency': r.PRODUCTS[i].TARGET_CURRENCY === 'TL' ? 'TRY' : r.PRODUCTS[i].TARGET_CURRENCY,
+'dimension1' : r.PRODUCTS[i].STOCK, // custom dimension stok bilgisi
+//'coupon': '',
+//'discount': '',
+//'affiliation': '',
+//'item_variant': ''
+});
+} else {
+cart.products.push({
+'id': GTAG_ID == 'id' ? r.PRODUCTS[i].ID : r.PRODUCTS[i].PRODUCT_CODE,
+'name': r.PRODUCTS[i].TITLE,
+'brand': r.PRODUCTS[i].BRAND,
+'category': r.PRODUCTS[i].CATEGORY_NAME,
+'price': ((r.PRODUCTS[i].PRICE_TOTAL / r.PRODUCTS[i].COUNT).toFixed(2)), // Kullanım Tutarı
+'list': r.PRODUCTS[i].CATEGORY_NAME,
+'dimension1' : r.PRODUCTS[i].STOCK // custom dimension stok bilgisi
+});
+}
+}
+cart.total = r.PRICE_CART;
+cart.coupon = r.COUPON_CODE;
+cart.currency = r.TARGET_CURRENCY === 'TL' ? 'TRY' : r.TARGET_CURRENCY;
+}
+});
+return cart;
+}
+Cart.callback.add.push(function (r) {
+r = Array.isArray(r) ? r[0] : r;
+var items = {};
+if (GA4_TRACKING_ID !== '') {
+items = {
+item_id: GTAG_ID == 'id' ? r.addedProduct.id : r.addedProduct.sku,
+item_name: r.addedProduct.name,
+item_brand: r.addedProduct.brand,
+item_category: r.addedProduct.category,
+price: parseFloat(r.addedProduct.price.toFixed(2)),
+currency: window.CURRENCY === 'TL' ? 'TRY' : window.CURRENCY,
+quantity: r.addedProduct.quantity,
+variant : r.addedProduct.variant,
+//coupon: 'SUMMER_FUN',
+//discount: 2.22,
+//affiliation: '',
+//item_variant: '',
+}
+} else {
+items = {
+'id': GTAG_ID == 'id' ? r.addedProduct.id : r.addedProduct.sku,
+'name': r.addedProduct.name,
+'brand': r.addedProduct.brand,
+'quantity': r.addedProduct.quantity,
+'price': parseFloat(r.addedProduct.price.toFixed(2)),
+'list': r.addedProduct.category,
+'variant' : r.addedProduct.variant,
+}
+}
+gtag('event', 'add_to_cart', {
+'currency': window.CURRENCY === 'TL' ? 'TRY' : window.CURRENCY,
+'items': [items],
+'value': parseFloat(r.addedProduct.price.toFixed(2))
+});
+console.log('gtag -> add to cart');
+});
+</script><div class="box col-12" id="tsoft-ecommerce-systems">
+<div class="fl col-12">
+<a href="https://www.tsoft.com.tr" target="_blank" title="T-Soft E-ticaret Sistemleri">
+<span>T</span>-Soft
+</a> <a href="https://www.tsoft.com.tr" target="_blank" title="E-ticaret">E-Ticaret</a> Sistemleriyle Hazırlanmıştır.
+</div>
+</div>
+<style type="text/css">
+#tsoft-ecommerce-systems{
+line-height:30px;
+font-size:12px;
+color:#3b3734;
+text-align:center;
+background:#f0f0f0;
+display: block!important;
+visibility: visible!important;
+opacity: 1!important;
+}
+#tsoft-ecommerce-systems a{
+color: inherit !important;
+}
+#tsoft-ecommerce-systems a:first-child{
+font-weight:700 !important;
+}
+#tsoft-ecommerce-systems a:first-child span{
+color:#ec6408 !important;
+}
+</style><input type="hidden" id="facebook_app_id" value=""/>
+<script type="text/javascript">
+if (document.getElementById('cart-soft-count')) {
+$('#cart-soft-count').find('span.cart-soft-count').html(SEPET_MIKTAR);
+$('#cart-soft-count').find('label').html(SEPET_TOPLAM);
+}
+</script>
+</div>
+<script type="text/javascript">
+if ($('.cart-soft-count').length > 0) {
+$('.cart-soft-count').text(SEPET_MIKTAR);
+$('.cart-soft-price').text(SEPET_TOPLAM);
+}
+if (navigator.appVersion.indexOf('Edge') > -1) {
+$('body').addClass('edge');
+}
+if (navigator.appVersion.indexOf('Trident') > -1 && navigator.appVersion.indexOf('Edge') == -1) {
+$('body').addClass('ie');
+}
+</script>
+<script src="/js/tsoftapps/v4/footer.js?v=1"></script>
+</body>
+</html>
