@@ -153,11 +153,11 @@ def report(cap, P, res, prev, when):
 | … photos refreshed (Capone uploaded new ones) | {len(newfoto)} |
 | Hidden, but in stock at Capone again | {len(back)} |
 
-The shop and agent page use the new photo links automatically. Nothing is hidden or shown automatically:
-hide styles you can't buy, or show ones that are back, in your book.
+The shop and agent page use the new photo links automatically, and sizes Capone has sold out can't be ordered
+(a style with nothing left shows "Sold out"). Hiding or showing styles is still up to you, in your book.
 
 ### Sold out in every size at Capone, still in your shop ({len(sold)})
-Agents can still take orders for these.
+These show "Sold out" and can't be ordered until Capone restocks. Hide them in your book if they won't come back.
 {lines(sold)}
 
 ### No longer on Capone's site, still in your shop ({len(gone)})
