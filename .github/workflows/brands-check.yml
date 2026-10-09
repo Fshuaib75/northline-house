@@ -1,0 +1,53 @@
+# Northline: every Monday, after the Capone check, check the other brands' own websites for sizes in stock
+# (Slazenger, Ziya, Tergan, Sivarro, Aldo). Writes brands.json (the shop and agent page use it to block sold-out sizes)
+# and updates the "Other brands weekly check" issue, with a comment (so an email) when something changed.
+name: Other brands weekly check
+
+on:
+  schedule:
+    - cron: "17 5 * * 1"        # Mondays 06:17 in Lagos, half an hour after the Capone check
+  workflow_dispatch:              # runs started from any branch but main only print the report
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: capone-check             # shares the queue with the Capone check: they never push at the same time
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: site
+      - uses: actions/checkout@v4
+        with:
+          path: code
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Check the brands' sites
+        working-directory: site
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DRY: ${{ github.ref != 'refs/heads/main' && '--dry' || '' }}
+        run: python ../code/tools/brands/check.py $DRY
+
+      - name: Put the stock online
+        if: github.ref == 'refs/heads/main'
+        working-directory: site
+        run: |
+          git config user.name "Northline brands check"
+          git config user.email "actions@users.noreply.github.com"
+          git add brands.json
+          git commit -m "Other brands weekly check" || exit 0
+          git pull --rebase origin gh-pages
+          git push origin HEAD:gh-pages
+          git push origin HEAD:main || true

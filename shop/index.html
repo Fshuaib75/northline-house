@@ -931,7 +931,10 @@ function capPhotos(c){ const st=c&&c.styles; if(!st) return;
   Object.entries(st).forEach(([ref,r])=>{ if(!r.on) STOCK[ref]=[]; else if(Array.isArray(r.stock)) STOCK[ref]=r.stock; if(r.back&&r.back>=fresh14) BACK[ref]=r.back; });
   ALL=ALL.map(i=>{ const r=st[i.ref], im=r&&r.img; if(!im||!im.length) return i; const at=w=>im[0].replace(/\?.*$/,"")+"?width="+w;
     return {...i, img:at(700), full:at(2000), imgs:im}; }); }
-Promise.all([fresh("products.json"), fresh("prices.json"), fresh("drop.json"), fresh("capone.json")]).then(([added,j,drop,cap])=>{
+// other brands' stock (tools/brands, weekly): same shape as capone.json, used for sizes, sold out and "Back in stock" only
+function brandStock(c){ const st=c&&c.styles; if(!st) return; const fresh14=new Date(Date.now()-14*864e5).toISOString().slice(0,10);
+  Object.entries(st).forEach(([ref,r])=>{ if(!r.on) STOCK[ref]=[]; else if(Array.isArray(r.stock)) STOCK[ref]=r.stock; if(r.back&&r.back>=fresh14) BACK[ref]=r.back; }); }
+Promise.all([fresh("products.json"), fresh("prices.json"), fresh("drop.json"), fresh("capone.json"), fresh("brands.json")]).then(([added,j,drop,cap,brs])=>{
   const weekAgo=new Date(Date.now()-7*864e5).toISOString().slice(0,10);
   if(drop&&Array.isArray(drop.refs)&&drop.refs.length&&drop.week>=weekAgo) DROP={label:"This week",refs:drop.refs};
   else if(Array.isArray(added)){ const nw=added.filter(a=>a&&a.added&&a.added>=weekAgo).map(a=>a.ref); if(nw.length) DROP={label:"New this week",refs:nw}; }
@@ -939,7 +942,7 @@ Promise.all([fresh("products.json"), fresh("prices.json"), fresh("drop.json"), f
     const known=new Set(ALL.map(i=>i.ref));
     ALL = ALL.concat(added.filter(a=>a&&a.ref&&!known.has(a.ref)).map(a=>({...a, desc:a.desc||"", colour:a.colour||"", fam:a.fam||"", heel:a.heel||"", img:IMG(a.img), full:IMG(a.img), imgs:(a.imgs||[]).map(IMG)})));
   }
-  capPhotos(cap);
+  capPhotos(cap); brandStock(brs);
   if(j&&j.prices){
     SWITCH=j.switchAt||"";
     const P = (commText() && j.next) ? Object.assign({}, j.prices, j.next) : j.prices;
