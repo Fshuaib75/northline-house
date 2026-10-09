@@ -1,19 +1,19 @@
-# Development probe for the other-brands stock check: fetches sample pages and commits what it saw to this branch.
+# Development run of the other-brands check (dry): commits its report to this branch only.
 name: Stock probe (development)
 on:
   push:
     branches: [probe-stock]
-    paths: [tools/probe_urls.txt]
 permissions:
   contents: write
 jobs:
   probe:
     runs-on: ubuntu-latest
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: {python-version: "3.12"}
-      - run: python tools/probe.py
+      - run: python tools/brands/check.py --dry > probe-out/log.txt 2>&1 || true
       - run: |
           git config user.name "Northline probe"; git config user.email "actions@users.noreply.github.com"
-          git add probe-out; git commit -m "probe results" || exit 0; git push origin HEAD:probe-stock
+          git add probe-out; git commit -m "probe results [skip ci]" || exit 0; git push origin HEAD:probe-stock
