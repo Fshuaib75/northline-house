@@ -38,7 +38,7 @@ def get(url, tries=3):
     global FETCHES
     for n in range(tries):
         try:
-            FETCHES += 1; time.sleep(1.2)
+            FETCHES += 1; time.sleep(1.0)
             req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "text/html,application/json,*/*",
                                                        "Accept-Language": "tr-TR,tr;q=0.9,en;q=0.8", "Accept-Encoding": "gzip"})
             with urllib.request.urlopen(req, timeout=40) as r:
@@ -150,17 +150,41 @@ def quka_stock(page):
 
 
 QUKA_CACHE = {}
+def quka_stems(i):
+    """Photo file stems, e.g. 69df70a6dda3e-52694249 or boston-unisex-mantar-taban-terlik-haki-82197959."""
+    return list(dict.fromkeys(m.group(1) for u in photos(i) for m in [re.search(r"/p/(.+?)-sw\d+sh\d+\.\w+$", u.split("?")[0])] if m))
+
+
+def quka_is(page, stems):
+    """The page is this style's own page when one of its photos is the page's main photo or fills its gallery.
+    (Other colours of the model also appear on a page, once each, as links: those don't count.)"""
+    og = re.search(r'property="og:image" content="([^"]+)"', page)
+    if og and any(s in og.group(1) for s in stems): return True
+    return any(page.count(s) >= 3 for s in stems)
+
+
 def quka_find(i, base):
-    """Search the model name, then open results until one shows this style's photo."""
-    toks = [re.search(r"/p/([0-9a-f]{8,})-", u) for u in photos(i)]
-    toks = [t.group(1) for t in toks if t]
-    q = i["model"].split()[0]
-    if q not in QUKA_CACHE:
-        st, page = get(f"{base}/arama?q={urllib.parse.quote(q)}")
-        QUKA_CACHE[q] = list(dict.fromkeys(re.findall(r'href="(' + re.escape(base) + r'/[a-z0-9-]+)" class="c-p-i-link"', page)))
-    for url in QUKA_CACHE[q][:24]:
-        st, page = get(url)
-        if st == 200 and any(t in page for t in toks): return url, page
+    """Guess the page from a named photo, else search the model; follow links to sibling colours that show our photo."""
+    stems = quka_stems(i)
+    if not stems: return None, None
+    tried, todo = set(), []
+    for s in stems:
+        if re.search(r"[a-z]{3,}-", s):                     # named photo: the page address is the name minus the id
+            todo.append(f"{base}/{re.sub(r'-\d+$', '', s)}")
+    words = [i["model"].split()[0]] + [s.split("-")[0] for s in stems if re.search(r"[a-z]{3,}-", s)]
+    for q in dict.fromkeys(w.lower() for w in words):
+        if q not in QUKA_CACHE:
+            st, page = get(f"{base}/arama?q={urllib.parse.quote(q)}")
+            QUKA_CACHE[q] = list(dict.fromkeys(re.findall(r'href="(' + re.escape(base) + r'/[a-z0-9-]+)" class="c-p-i-link"', page)))
+        todo += QUKA_CACHE[q][:24]
+    while todo and len(tried) < 30:
+        url = todo.pop(0)
+        if url in tried: continue
+        tried.add(url); st, page = get(url)
+        if st != 200: continue
+        if quka_is(page, stems): return url, page
+        for href in re.findall(r'<a href="(' + re.escape(base) + r'/[a-z0-9-]+)"[^>]*>\s*<img src="[^"]*(?:' + "|".join(re.escape(s) for s in stems) + r')', page):
+            if href not in tried: todo.insert(0, href)            # a sibling-colour link showing our photo
     return None, None
 
 
