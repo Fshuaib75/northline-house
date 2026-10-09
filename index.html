@@ -89,6 +89,8 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .sheet{position:fixed;inset:0;z-index:9;background:rgba(0,0,0,.45);display:flex;justify-content:flex-end}
 .sheet .in{background:var(--bg);width:min(520px,100%);height:100%;overflow:auto;padding:20px 16px calc(24px + env(safe-area-inset-bottom,0px));display:grid;gap:14px;align-content:start}
 .sheet h3{font-family:var(--display);font-size:26px;margin:0}
+.soldout{font-weight:600;color:var(--muted);padding:10px 0}
+.card.out .ph img{opacity:.5}
 .line{display:grid;grid-template-columns:56px minmax(0,1fr) auto;gap:10px;align-items:center;border-bottom:1px solid var(--line);padding-bottom:10px}
 .line img{width:56px;height:56px;object-fit:cover;border-radius:6px;background:var(--surface)}
 .line small{color:var(--muted);display:block}
@@ -279,6 +281,10 @@ let ITEMS = ALL.filter(i=>i.price).map(i=>({...i, band:band(i.price)}));
 const WA = "2348101073068";
 const SIZES = {W:["36","37","38","39","40","41"], M:["40","41","42","43","44","45"], B:["0-3m","3-6m","6-9m","9-12m","12-18m","18-24m","2-3y","3-4y"], BG:["One size"], CL:["S","M","L","XL"]};
 const sizesOf = i => (i.sizes&&i.sizes.length) ? i.sizes : SIZES[i.g]||["One size"];
+// sizes in stock at Capone (same weekly check): a size Capone has sold out can't be ordered; no data = assume available
+const STOCK={};
+const inStock=(i,s)=>{ const z=STOCK[i.ref]; return !z||((sizesOf(i).length===1&&sizesOf(i)[0]==="One size")?z.length>0:z.includes(s)); };
+const soldOut=i=>!!STOCK[i.ref]&&!sizesOf(i).some(s=>inStock(i,s));
 const unit = (n,g) => (g==="B"||g==="BG"||g==="CL") ? `${n} piece${n===1?"":"s"}` : `${n} pair${n===1?"":"s"}`;
 const S = {g:"M", sec:"", q:"", f:new Set(), sort:"rec", more:false};
 // Who for (Men / Women / Kids) → section (Shoes / Clothing / Bags) → type. Items keep their own line (i.g) for sizes.
@@ -398,7 +404,8 @@ function list(){
 // Recommended: styles in the price range customers buy most (₦20k–50k) and with several photos come first; then brands and
 // models are spread evenly through the list, so the first screen isn't one brand or one shoe in six colours.
 // Recommended groups styles by type (slides, sandals…); price and newest sorts run across the whole list
-function sortItems(l){ const r=sortItems0(l); if(S.sort!=="rec") return r; const pos=new Map(r.map((x,n)=>[x,n])); return r.slice().sort((a,b)=>typeKey(a)-typeKey(b)||pos.get(a)-pos.get(b)); }
+function sortItems(l){ const r=sortItems0(l), pos=new Map(r.map((x,n)=>[x,n])), out=x=>soldOut(x)?1:0;   // sold out: last in its group
+  return r.slice().sort((a,b)=>(S.sort==="rec"?typeKey(a)-typeKey(b):0)||(S.sort==="brand"?a.brand.localeCompare(b.brand):0)||out(a)-out(b)||pos.get(a)-pos.get(b)); }
 function sortItems0(l){
   if(S.sort==="low") return l.sort((a,b)=>a.price-b.price);
   if(S.sort==="high") return l.sort((a,b)=>b.price-a.price);
@@ -422,15 +429,16 @@ function recOrder(l){
 function cardHtml(i){
   const chain=photoChain(i.img, i.imgs||[], i.full);
   const img = chain.length ? imgTag(chain, `loading="lazy" alt="${esc(i.model+" "+i.colour)}"`, "miss") : `<div class="miss">Photo coming soon</div>`;
-  return `<article class="card" data-ref="${esc(i.ref)}">
+  const gone=soldOut(i);
+  return `<article class="card${gone?" out":""}" data-ref="${esc(i.ref)}">
     <div class="ph">${img}${(i.imgs||[]).length>1?`<span class="pcount">More photos ›</span>`:""}</div>
     <div><div class="mname">${esc(i.model)}</div><div class="mcol">${esc([i.colour,i.desc].filter(Boolean).join(" · "))}</div></div>
     <div class="price">${N(i.price)} <span class="earn">you earn ${N(i.comm)}</span></div>
-    <div class="picker">
-      <select aria-label="Size">${sizesOf(i).map(s=>`<option>${s}</option>`).join("")}</select>
+    ${gone?`<div class="soldout">Sold out for now</div>`:`<div class="picker">
+      <select aria-label="Size">${sizesOf(i).map(s=>inStock(i,s)?`<option>${s}</option>`:`<option value="${s}" disabled>${s} · sold out</option>`).join("")}</select>
       <input type="number" min="1" value="1" aria-label="Quantity">
       <button class="add">Add</button>
-    </div>
+    </div>`}
     ${i.g!=="BG"&&i.g!=="CL"?`<button class="sgb">Size guide</button>`:""}
     <div class="acts"><button class="mini cap" title="Copy caption">Caption</button><button class="mini shr" title="Copy your shop link for this style">Link</button><button class="mini st" title="Make a status or Instagram image">Status</button>${i.full?`<a class="mini" href="${esc(i.full)}" target="_blank" rel="noopener" title="Save photo">Photo</a>`:""}</div>
   </article>`;
@@ -574,6 +582,7 @@ $("grid").addEventListener("click",e=>{
   const card=e.target.closest(".card"); if(!card) return; const i=ITEMS.find(x=>x.ref===card.dataset.ref);
   if(e.target.closest(".add")){
     const size=card.querySelector("select").value, qty=Math.max(1,parseInt(card.querySelector("input").value)||1);
+    if(!inStock(i,size)){ toast(`Size ${size} is sold out`); return; }
     const ex=cart.find(c=>c.ref===i.ref&&c.size===size); if(ex) ex.qty+=qty; else cart.push({ref:i.ref,model:i.model,colour:i.colour,price:i.price,comm:i.comm,g:i.g,img:i.img,size,qty});
     store.set("nl-cart",cart); render(); track("add/"+i.ref, i.brand+" "+i.model+" · "+(i.colour||"")); toast(`Added ${i.model}${size!=="One size"?", size "+size:""}`);
   }
@@ -726,6 +735,7 @@ fresh("build.json").then(j=>{ if(j&&j.build&&j.build!==BUILD) $("stale").hidden=
 // Capone's current photo links, from the weekly check (tools/capone): Capone re-uploads photos under new file names,
 // which breaks the links saved in the catalogue
 function capPhotos(c){ const st=c&&c.styles; if(!st) return;
+  Object.entries(st).forEach(([ref,r])=>{ if(!r.on) STOCK[ref]=[]; else if(Array.isArray(r.stock)) STOCK[ref]=r.stock; });
   ALL=ALL.map(i=>{ const r=st[i.ref], im=r&&r.img; if(!im||!im.length) return i; const at=w=>im[0].replace(/\?.*$/,"")+"?width="+w;
     return {...i, img:at(700), full:at(2000), imgs:im}; }); }
 Promise.all([fresh("products.json"), fresh("prices.json"), fresh("drop.json"), fresh("capone.json")]).then(([added,j,drop,cap])=>{

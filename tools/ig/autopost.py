@@ -46,7 +46,9 @@ def catalogue():
     fresh = load(os.path.join(ROOT, "capone.json"), {}).get("styles", {})   # Capone's current photo links (weekly check)
     out = []
     for i in items:
-        f = (fresh.get(i["ref"]) or {}).get("img")
+        c = fresh.get(i["ref"]) or {}
+        if c and (not c.get("on") or c.get("stock") == []): continue   # sold out at Capone
+        f = c.get("img")
         if f: i["imgs"] = f + [u for u in (i.get("imgs") or []) if u not in f]
         p = (prices.get("next", {}) if use_next else {}).get(i["ref"]) or prices.get("prices", {}).get(i["ref"])
         if not p or i["ref"] in hidden or not (i.get("img") or i.get("imgs")): continue

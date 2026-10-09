@@ -101,6 +101,10 @@ svg{display:block}
 .ph.nophoto::after{content:"Photo coming soon";position:absolute;inset:0;display:grid;place-items:center;font-size:12px;color:var(--muted)}
 .tag{position:absolute;top:10px;left:10px;background:var(--surface);color:var(--ink);font:700 10px/1 var(--ui);letter-spacing:.14em;text-transform:uppercase;padding:6px 8px;border-radius:2px}
 .tag.pick{color:var(--gold)}
+.tag.out{color:var(--muted)}
+.card.out .ph img{opacity:.5}
+.sz:disabled{color:var(--muted);background:transparent;text-decoration:line-through;cursor:not-allowed}
+#pdAdd:disabled{opacity:.45;cursor:not-allowed}
 .info{display:grid;gap:3px;padding-inline:2px}
 .info .b{font:600 10.5px/1.3 var(--ui);letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
 .info .m{font:500 17px/1.2 var(--display);letter-spacing:-.005em;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
@@ -411,6 +415,10 @@ const WA = "2348101073068";
 const SIZES = {W:["36","37","38","39","40","41"], M:["40","41","42","43","44","45"], B:["0-3m","3-6m","6-9m","9-12m","12-18m","18-24m","2-3y","3-4y"], BG:["One size"], CL:["S","M","L","XL"]};
 const sizesOf = i => (i.sizes&&i.sizes.length) ? i.sizes : SIZES[i.g]||["One size"];
 const oneSize = i => { const z=sizesOf(i); return z.length===1 && z[0]==="One size"; };
+// sizes in stock at Capone (same weekly check): a size Capone has sold out can't be ordered; no data = assume available
+const STOCK={};
+const inStock=(i,s)=>{ const z=STOCK[i.ref]; return !z||(oneSize(i)?z.length>0:z.includes(s)); };
+const soldOut=i=>!!STOCK[i.ref]&&!sizesOf(i).some(s=>inStock(i,s));
 const $ = id=>document.getElementById(id);
 const N = n=>"₦"+Math.round(n).toLocaleString("en-NG");
 const esc = s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -538,8 +546,8 @@ const qOk=i=>{ const q=S.q.trim().toLowerCase(); return !q || q.split(/\s+/).eve
 const baseOk=i=>audOf(i)===S.g&&typeOk(i)&&qOk(i);
 // cards for the current view: a design shows when any of its colours passes; that colour leads the card
 function cards(){
-  const out=[]; GROUPS.forEach(g=>{ const pass=g.items.filter(i=>baseOk(i)&&filtersOk(i)); if(pass.length) out.push({g, rep:pass[0], pass}); });
-  return sortCards(out);
+  const out=[]; GROUPS.forEach(g=>{ const pass=g.items.filter(i=>baseOk(i)&&filtersOk(i)); if(pass.length) out.push({g, rep:pass.find(i=>!soldOut(i))||pass[0], pass, out:pass.every(soldOut)}); });
+  const r=sortCards(out); return r.filter(c=>!c.out).concat(r.filter(c=>c.out));   // sold out everywhere: last
 }
 
 // ---------- sorting ----------
@@ -590,10 +598,10 @@ function dotsHtml(items, max){ const fams=[]; items.forEach(i=>{ const f=FAM_HEX
   return `<span class="dots">${fams.slice(0,max).map(f=>`<i class="dot" style="background:${FAM_HEX[f]}"></i>`).join("")}</span>`; }
 function cardHtml(c){
   const i=c.rep, n=c.g.items.length, alt=(i.imgs||[]).find(u=>u&&u!==i.img&&u!==i.full&&u!==(i.imgs||[])[0]) || ((i.imgs||[]).length>1?i.imgs[1]:"");
-  const tag=inDrop(i)?`<span class="tag pick">This week</span>`:isFresh(i)?`<span class="tag">New</span>`:"";
+  const tag=c.out?`<span class="tag out">Sold out</span>`:inDrop(i)?`<span class="tag pick">This week</span>`:isFresh(i)?`<span class="tag">New</span>`:"";
   const main=imgTag(photoChain(i.img, i.imgs||[], i.full), `class="main" loading="lazy" alt="${esc(i.model+" "+(i.colour||""))}"`, "card");
   const ph=main?main+(alt?`<img class="alt" alt="" data-lazy="1" data-alts="${esc(JSON.stringify(photoChain(alt)))}" data-gone="alt" referrerpolicy="no-referrer" onload="imgOk(this)" onerror="imgNext(this)">`:""):"";
-  return `<article class="card" data-ref="${esc(i.ref)}" tabindex="0" role="link" aria-label="${esc(i.brand+" "+i.model+", "+(i.colour||"")+", "+N(i.price))}">
+  return `<article class="card${c.out?" out":""}" data-ref="${esc(i.ref)}" tabindex="0" role="link" aria-label="${esc(i.brand+" "+i.model+", "+(i.colour||"")+", "+N(i.price))}">
     <div class="ph${ph?"":" nophoto"}">${ph}${tag}</div>
     <div class="info"><span class="b">${esc(i.brand)}</span><span class="m">${esc(i.model)}</span>
       <span class="c">${n>1?`${dotsHtml(c.g.items,5)}${n} colours`:esc(i.colour||"")}</span>
@@ -754,9 +762,10 @@ function drawPD(newGallery){
   const d=(i.desc||"").replace(/,?\s*confirm size before payment/i,"").trim(); $("pdDesc").textContent=d?d[0].toUpperCase()+d.slice(1)+".":""; $("pdDesc").hidden=!d;
   $("pdColour").textContent=i.colour||""; $("pdColours").hidden=PD.items.length<2&&!i.colour;
   $("pdSw").innerHTML=PD.items.length>1?PD.items.map(x=>`<button class="sw" data-ref="${esc(x.ref)}" aria-pressed="${x===i}" aria-label="${esc(x.colour||x.ref)}" title="${esc(x.colour||"")}">${x.img?imgTag(photoChain(x.img, x.imgs||[], x.full), 'alt="" loading="lazy"'):""}</button>`).join(""):"";
-  if(PD.size&&!sz.includes(PD.size)) PD.size=null; if(one) PD.size="One size";
+  if(PD.size&&(!sz.includes(PD.size)||!inStock(i,PD.size))) PD.size=null; if(one) PD.size="One size";
+  const gone=soldOut(i); $("pdAdd").disabled=gone; $("pdAdd").textContent=gone?"Sold out":"Add to bag";
   $("pdSizes").hidden=one; $("pdSG").hidden=i.g==="BG"||i.g==="CL";
-  $("pdSz").innerHTML=one?"":sz.map(s=>`<button class="sz" data-s="${esc(s)}" aria-pressed="${PD.size===s}">${esc(s)}</button>`).join("");
+  $("pdSz").innerHTML=one?"":sz.map(s=>inStock(i,s)?`<button class="sz" data-s="${esc(s)}" aria-pressed="${PD.size===s}">${esc(s)}</button>`:`<button class="sz" disabled aria-label="${esc(s)}, sold out" title="Sold out">${esc(s)}</button>`).join("");
   $("pdFew").hidden=!fewSizes(i); $("qN").textContent=PD.qty; $("pdErr").hidden=true;
   $("pdRef").textContent=`Ref ${i.ref}`;
   $("pdAsk").href="https://wa.me/"+WA+"?text="+encodeURIComponent(`Hello Northline, I have a question about ${i.brand} ${i.model}${i.colour?" ("+i.colour+")":""}, ref ${i.ref}.`);
@@ -774,7 +783,7 @@ $("pdSz").addEventListener("click",e=>{ const b=e.target.closest(".sz"); if(!b) 
 $("qMinus").onclick=()=>{ PD.qty=Math.max(1,PD.qty-1); $("qN").textContent=PD.qty; };
 $("qPlus").onclick=()=>{ PD.qty=Math.min(20,PD.qty+1); $("qN").textContent=PD.qty; };
 $("pdSG").onclick=()=>{ openSG(PD.i); track("sizeguide/"+PD.i.ref, PD.i.model); };
-$("pdAdd").onclick=()=>{ const i=PD.i;
+$("pdAdd").onclick=()=>{ const i=PD.i; if(soldOut(i)) return;
   if(!PD.size){ $("pdErr").textContent="Choose your size first. Not sure? Open the size guide."; $("pdErr").hidden=false; $("pdSz").scrollIntoView({block:"center",behavior:"smooth"}); return; }
   const ex=cart.find(c=>c.ref===i.ref&&c.size===PD.size); if(ex) ex.qty+=PD.qty; else cart.push({ref:i.ref,model:i.model,colour:i.colour,price:i.price,comm:i.comm,g:i.g,img:i.img,size:PD.size,qty:PD.qty});
   store.set("nl-shop-cart",cart); bagUI(); track("add/"+i.ref, i.brand+" "+i.model+" · "+(i.colour||""));
@@ -888,6 +897,7 @@ fresh("build.json").then(j=>{ if(j&&j.build&&j.build!==BUILD) $("stale").hidden=
 // Capone's current photo links, from the weekly check (tools/capone): Capone re-uploads photos under new file names,
 // which breaks the links saved in the catalogue
 function capPhotos(c){ const st=c&&c.styles; if(!st) return;
+  Object.entries(st).forEach(([ref,r])=>{ if(!r.on) STOCK[ref]=[]; else if(Array.isArray(r.stock)) STOCK[ref]=r.stock; });
   ALL=ALL.map(i=>{ const r=st[i.ref], im=r&&r.img; if(!im||!im.length) return i; const at=w=>im[0].replace(/\?.*$/,"")+"?width="+w;
     return {...i, img:at(700), full:at(2000), imgs:im}; }); }
 Promise.all([fresh("products.json"), fresh("prices.json"), fresh("drop.json"), fresh("capone.json")]).then(([added,j,drop,cap])=>{
