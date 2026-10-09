@@ -1,43 +1,891 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-    <sitemap>
-        <loc>https://www.slazenger.com.tr/xml/sitemap/blog.xml</loc>
-            <lastmod>2026-09-28T14:24:47+03:00</lastmod>
-    </sitemap>
-    <sitemap>
-        <loc>https://www.slazenger.com.tr/xml/sitemap/blog_category.xml</loc>
-            <lastmod>2022-05-26T14:45:33+03:00</lastmod>
-    </sitemap>
-    <sitemap>
-        <loc>https://www.slazenger.com.tr/xml/sitemap/page.xml</loc>
-            <lastmod>2015-05-20T14:00:24+03:00</lastmod>
-    </sitemap>
-    <sitemap>
-        <loc>https://www.slazenger.com.tr/xml/sitemap/tag.xml</loc>
-            <lastmod>2022-06-27T17:47:09+03:00</lastmod>
-    </sitemap>
-    <sitemap>
-        <loc>https://www.slazenger.com.tr/xml/sitemap/brand.xml</loc>
-            <lastmod>2021-12-01T11:19:26+03:00</lastmod>
-    </sitemap>
-    <sitemap>
-        <loc>https://www.slazenger.com.tr/xml/sitemap/category.xml</loc>
-            <lastmod>2026-10-05T16:50:30+03:00</lastmod>
-    </sitemap>
-    <sitemap>
-        <loc>https://www.slazenger.com.tr/xml/sitemap/product.xml</loc>
-            <lastmod>2026-10-08T05:25:02+03:00</lastmod>
-    </sitemap>
-    <sitemap>
-        <loc>https://www.slazenger.com.tr/xml/sitemap/content.xml</loc>
-            <lastmod>2026-10-01T12:55:22+03:00</lastmod>
-    </sitemap>
-    <sitemap>
-        <loc>https://www.slazenger.com.tr/xml/sitemap/combination.xml</loc>
-            <lastmod>2022-08-09T17:29:54+03:00</lastmod>
-    </sitemap>
-    <sitemap>
-        <loc>https://www.slazenger.com.tr/xml/sitemap/combination_category.xml</loc>
-            <lastmod>2022-08-09T17:28:25+03:00</lastmod>
-    </sitemap>
-</sitemapindex>
+<!DOCTYPE html><html lang="tr"><head><meta http-equiv="X-UA-Compatible" content="IE=edge" /><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><meta name='viewport' content='width=device-width, user-scalable=yes'><link rel="preconnect" href="https://cdn.qukasoft.com/"/><link rel="dns-prefetch" href="https://cdn.qukasoft.com/"/><link rel="icon" href="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tmk4Z1RvTTZKYms9/l/favicon-57965570-sw1024sh1024.png" /><link rel="stylesheet" type="text/css" href="https://www.sivarro.com/template/smart/default/assets/plugins/bootstrap.soft.min.css?v=1661412851" /><link rel="stylesheet" type="text/css" href="https://www.sivarro.com/template/smart/default/assets/style.min.css?v=1790058138" /><title>Şık Boston Unisex Mantar Taban Terlik - Haki Sivarro Terlik</title><meta name="description" content="Şık ve konforlu Sivarro Boston unisex mantar taban terlik, gardırobunuzun vazgeçilmezi olmaya aday. Trend renk seçeneğiyle her adımda tarzınızı yansıtın!" /><link rel="canonical" href="https://www.sivarro.com/boston-unisex-mantar-taban-terlik-haki" /><meta property="og:title" content="Şık Boston Unisex Mantar Taban Terlik - Haki Sivarro Terlik" /><meta property="og:site_name" content="sivarro.com" /><meta property="og:type" content="product" /><meta property="og:url" content="https://www.sivarro.com/boston-unisex-mantar-taban-terlik-haki" /><meta property="og:keywords" content="" /><meta property="og:description" content="Şık ve konforlu Sivarro Boston unisex mantar taban terlik, gardırobunuzun vazgeçilmezi olmaya aday. Trend renk seçeneğiyle her adımda tarzınızı yansıtın!" /><meta property="og:image" content="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tmk4Z0Y4OXJKYmtQSWNEeFJBPT0/p/boston-unisex-mantar-taban-terlik-haki-82197959-sw1024sh1536.png" /><meta property="og:image:width" content="800" /><meta property="og:image:height" content="1000" /><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><style type="text/css">
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        :root{
+            --body-bg:#ffffff;
+            --menu-bg-color: #ffffff;
+            --menu-color: #000000;
+            --menu-color-hover: #000000;
+            --main-color: #b15959;
+            --main-color2: #d94132;
+            --header-top-color: #666666;
+            --header-top-color-hover: #000000;
+            --add-cart-list: #ffffff;
+            --add-cart-list-hover: #05ad21;
+            --add-cart-list-bg: #000000;
+            --add-cart-list-bg-hover: #404040;
+            --buy-now: #ffffff;
+            --buy-now-bg: #ff6a00;
+            --buy-now-hover: #ffffff;
+            --buy-now-bg-hover: #21a210;
+            --add-cart-detail:#ffffff;
+            --add-cart-detail-bg:#000000;
+            --add-cart-detail-hover:#ff5900;
+            --add-cart-detail-bg-hover:#ff7300;
+            --complete-payment:#ffffff;
+            --complete-payment-bg:#4dc761;
+            --complete-payment-hover:#ffffff;
+            --complete-payment-bg-hover:#ffffff;
+            --transition-time: .4s ease-out;
+        }
+        };
+    </style><link rel="stylesheet" type="text/css" href="https://www.sivarro.com/theme/___sivarro/assets/style.css?v=1787926100" /><link rel="stylesheet" type="text/css" href="https://www.sivarro.com/theme/___sivarro/assets/default.css?v=1755528364" /><link rel="stylesheet" type="text/css" href="https://www.sivarro.com/theme/___sivarro/assets/custom.css?v=1755692974" /><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><style type="text/css">
+                            @media(min-width:1240px){
+                .container,
+                .container-sm,
+                .container-md,
+                .container-lg,
+                .container-xl {
+                    max-width: 1380px !important;
+                }
+            }
+            </style><script type="application/ld+json">{"@context":"https:\/\/schema.org","@type":"Website","url":"https:\/\/www.sivarro.com","name":"Sivarro","potentialAction":{"@type":"SearchAction","target":"https:\/\/www.sivarro.com\/arama?k={search_term_string}","query-input":"required name=search_term_string"}}</script><script type="application/ld+json">{"@context":"https:\/\/schema.org","@type":"Store","name":"Sivarro","url":"https:\/\/www.sivarro.com","logo":"https:\/\/cdn.qukasoft.com\/f\/727448\/b3NXVUpHVTArYkI4Tmk4Z1RvTTZKYms9\/l\/logo-52121518-sw1563sh654.png","image":"https:\/\/cdn.qukasoft.com\/f\/727448\/b3NXVUpHVTArYkI4Tmk4Z1RvTTZKYms9\/l\/logo-52121518-sw1563sh654.png","address":"İSMETPAŞA MAH. 136. SK. NO: 67 İSTANBUL\/SULTANGAZİ"}</script><script type="application/ld+json">{"@context":"https:\/\/schema.org\/","@type":"Product","name":"Boston Unisex Mantar Taban Terlik - Haki","image":["https:\/\/cdn.qukasoft.com\/f\/727448\/b3NXVUpHVTArYkI4Tml3Z0Y4OXJKYmtQSWNEeFJBPT0\/p\/boston-unisex-mantar-taban-terlik-haki-82197959-sw1024sh1536.png","https:\/\/cdn.qukasoft.com\/f\/727448\/b3NXVUpHVTArYkI4Tml3Z0Y4OXJKYmtQSWNEeFJBPT0\/p\/boston-unisex-mantar-taban-terlik-haki-6785831-sw1024sh1536.png","https:\/\/cdn.qukasoft.com\/f\/727448\/b3NXVUpHVTArYkI4Tml3Z0Y4OXJKYmtQSWNEeFJBPT0\/p\/boston-unisex-mantar-taban-terlik-haki-30910161-sw1024sh1536.png","https:\/\/cdn.qukasoft.com\/f\/727448\/b3NXVUpHVTArYkI4Tml3Z0Y4OXJKYmtQSWNEeFJBPT0\/p\/boston-unisex-mantar-taban-terlik-haki-5903054-sw1024sh1536.png","https:\/\/cdn.qukasoft.com\/f\/727448\/b3NXVUpHVTArYkI4Tml3Z0Y4OXJKYmtQSWNEeFJBPT0\/p\/boston-unisex-mantar-taban-terlik-haki-68379042-sw1024sh1536.png"],"description":"Şık ve konforlu Sivarro Boston unisex mantar taban terlik, gardırobunuzun vazgeçilmezi olmaya aday. Trend renk seçeneğiyle her adımda tarzınızı yansıtın!","productId":"587","mpn":"","gtin":"8073995648146","sku":"7D5I5UP2ZA","brand":{"@type":"Brand","name":"Sivarro"},"offers":{"@type":"Offer","priceCurrency":"TRY","price":"789.00","itemCondition":"https:\/\/schema.org\/NewCondition","availability":"https:\/\/schema.org\/InStock","priceValidUntil":"","seller":{"@type":"Organization","name":"Sivarro"},"url":"https:\/\/www.sivarro.com\/boston-unisex-mantar-taban-terlik-haki"}}</script><meta name="google-site-verification" content="G-GZ2DSPC1L1" /><meta name="facebook-domain-verification" content="wqxht1tue37c0jrm4o8p3byfpmrsk8" /><!-- Global site tag (gtag.js) --><script async src="https://www.googletagmanager.com/gtag/js?id=AW-17040125662"></script><script>
+                var google_tag_defined = true;
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                                                gtag('config', 'AW-17040125662');
+                                                                                gtag('config', 'AW-17160314077');
+                            </script><!-- Google Tag Manager --><script>const gtm_account_defined = 1;</script><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+                })(window,document,'script','dataLayer',' GTM-N7X28CBL');</script><!-- End Google Tag Manager --><!-- Facebook Pixel Code --><script>
+                    !function(f,b,e,v,n,t,s)
+                    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+                        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+                        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+                        n.queue=[];t=b.createElement(e);t.async=!0;
+                        t.src=v;s=b.getElementsByTagName(e)[0];
+                        s.parentNode.insertBefore(t,s)}(window, document,'script',
+                        'https://connect.facebook.net/en_US/fbevents.js');
+                    fbq('init', '1019007796780151');
+                    fbq('track', 'PageView',{});
+                </script><!-- End Facebook Pixel Code --><!-- Google tag (gtag.js) --><script async src="https://www.googletagmanager.com/gtag/js?id=AW-17040125662"></script><script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}gtag('js', new Date());
+gtag('config', 'AW-17040125662');
+</script><!-- TikTok Pixel Code Start --><script>
+!function (w, d, t) {
+  w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie","holdConsent","revokeConsent","grantConsent"],ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(
+var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e},ttq.load=function(e,n){var r="https://analytics.tiktok.com/i18n/pixel/events.js",o=n&&n.partner;ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=r,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};n=document.createElement("script")
+;n.type="text/javascript",n.async=!0,n.src=r+"?sdkid="+e+"&lib="+t;e=document.getElementsByTagName("script")[0];e.parentNode.insertBefore(n,e)};
+
+
+  ttq.load('D2QP59JC77UBOEFA1BL0');
+  ttq.page();
+}(window, document, 'ttq');
+</script><!-- TikTok Pixel Code End --><!-- Meta Pixel Code --><script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1019007796780151');
+fbq('track', 'PageView');
+</script><noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1019007796780151&ev=PageView&noscript=1"
+/></noscript><!-- End Meta Pixel Code --><!-- TikTok Pixel Code Start --><script>
+!function (w, d, t) {
+  w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie","holdConsent","revokeConsent","grantConsent"],ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(
+var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e},ttq.load=function(e,n){var r="https://analytics.tiktok.com/i18n/pixel/events.js",o=n&&n.partner;ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=r,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};n=document.createElement("script")
+;n.type="text/javascript",n.async=!0,n.src=r+"?sdkid="+e+"&lib="+t;e=document.getElementsByTagName("script")[0];e.parentNode.insertBefore(n,e)};
+
+
+  ttq.load('D2QP59JC77UBOEFA1BL0');
+  ttq.page();
+}(window, document, 'ttq');
+</script><!-- TikTok Pixel Code End --><script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "w4grexcr5i");
+</script></head><body class="product-body "><div class="addons-marquee-bar amb-desktop-1 amb-mobile-1 amb-direction-0"
+     style="background-color: #000000;  background-repeat: no-repeat; background-position: center;"><a href="javascript:;" class="item" style="color: #ffffff">
+            ⭐ ÜCRETSİZ KARGO
+        </a><a href="javascript:;" class="item" style="color: #ffc343">
+            14 GÜN İADE GARANTİSİ
+        </a><a href="javascript:;" class="item" style="color: #ffffff">
+            ⭐ ÜCRETSİZ KARGO
+        </a><a href="javascript:;" class="item" style="color: #ffc343">
+            14 GÜN İADE GARANTİSİ
+        </a><a href="javascript:;" class="item" style="color: #ffffff">
+            ⭐ ÜCRETSİZ KARGO
+        </a><a href="javascript:;" class="item" style="color: #ffc343">
+            14 GÜN İADE GARANTİSİ
+        </a><a href="javascript:;" class="item" style="color: #ffffff">
+            ⭐ ÜCRETSİZ KARGO
+        </a><a href="javascript:;" class="item" style="color: #ffc343">
+            14 GÜN İADE GARANTİSİ
+        </a></div><style type="text/css">
+    @media (min-width: 992px) {
+            .addons-marquee-bar {
+            height: 40px !important;
+        }
+                    .addons-marquee-bar .item {
+            font-size: 17px !important;
+        }
+                .addons-marquee-bar .item {
+            margin-right: 45px !important;
+        }
+        }
+    @media (max-width: 991px) {
+            .addons-marquee-bar {
+            height: 30px !important;
+        }
+                .addons-marquee-bar {
+            margin-top: 47px;
+            margin-bottom: -47px;
+        }
+                .addons-marquee-bar .item {
+            font-size: 13px !important;
+        }
+                .addons-marquee-bar .item {
+            margin-right: 25px !important;
+        }
+        }
+</style><section class="pattern-group pattern-group-t-0 pattern-group-p-product "><div class="no-container"><div class="pattern-group-body"><div class="p-g-b-c-wrapper"><div class="p-g-b-c-inner"><div class="p-g-mod p-g-mod-t-28 p-g-mod-header  p-g-mod-trans   "><div class="p-g-mod-body  p-g-mod-body-p-0  "><header class="desktop"><section class="h-center"><div class="container"><div class="row"><div class="col-md-3"><div class="logo header-area"><a href="https://www.sivarro.com" ><img src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tmk4Z1RvTTZKYms9/l/logo-52121518-sw1563sh654.png" alt="Sivarro" /></a></div></div><div class="col-md-6"><div class="header-area"><section class="menu"><section class="menu"><div class="no-container"><div class="row"><div class="col-md-12"><div class="mega-menu"><ul class="navbar-nav"><li class="nav-item  f-0"><a class="nav-link dropdown-toggle" href="https://www.sivarro.com/terlik" id="mega-menu-11" data-parent-id="11" role="button"><span class="under-category">TERLİK</span></a></li><li class="nav-item  f-1"><a class="nav-link dropdown-toggle" href="https://www.sivarro.com/sneaker" id="mega-menu-12" data-parent-id="12" role="button"><span class="under-category">SPOR</span></a></li><li class="nav-item  f-2"><a class="nav-link dropdown-toggle" href="https://www.sivarro.com/bot" id="mega-menu-24" data-parent-id="24" role="button"><span class="under-category">BOT</span></a></li><li class="nav-item  f-3"><a class="nav-link dropdown-toggle" href="https://www.sivarro.com/babet" id="mega-menu-55" data-parent-id="55" role="button"><span class="under-category">BABET</span></a></li><li class="nav-item  f-4"><a class="nav-link dropdown-toggle" href="https://www.sivarro.com/topuklu-ayakkabi" id="mega-menu-51" data-parent-id="51" role="button"><span class="under-category">TOPUKLU</span></a></li><li class="nav-item  f-5"><a class="nav-link dropdown-toggle" href="https://www.sivarro.com/sandalet" id="mega-menu-49" data-parent-id="49" role="button"><span class="under-category">SANDALET</span></a></li><li class="nav-item  f-6"><a class="nav-link dropdown-toggle" href="https://www.sivarro.com/outlet" id="mega-menu-76" data-parent-id="76" role="button"><span class="under-category">OUTLET</span></a></li></div></div></div></section></section></div></div><div class="col-md-3"><div class="header-area last"><div class="header-bar"><button type="button" class="btn-search" data-toggle="modal" data-target="#searchModal"><img src="https://www.sivarro.com/theme/___sivarro/assets/icons/search.svg?v=1755528128"></button><div class="bar-link bar-user"><div class="link"><a class="bar-link" href="/uye-giris"><span class="icon"><img src="https://www.sivarro.com/theme/___sivarro/assets/icons/user.svg?v=1755528128"></span></a></div></div><a class="bar-link bar-favorite" href="https://www.sivarro.com/hesabim/favori-listem" ><span class="icon"><img src="https://www.sivarro.com/theme/___sivarro/assets/icons/h-header.svg?v=1755528128"></span></a><div class="dropdown header-cart-hover"><a class="bar-link bar-cart" href="https://www.sivarro.com/sepet" id="console-menu-3" role="button"><span class="icon"><img src="https://www.sivarro.com/theme/___sivarro/assets/icons/basket.svg?v=1755528128"><span class="count" data-cart-quantity>0</span></span></a><div class="dropdown-menu" aria-labelledby="console-menu-3"><div class="top-header"><span class="title">
+                                                Sepetim 
+                                                <span class="count2" data-cart-quantity>0 </span><span class="count2-description">Ürün</span></span></div><div class="products" data-cart-products></div><div class="summary" data-cart-summary></div></div></div></div></div></div></div></div></section><div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><img src="https://www.sivarro.com/theme/___sivarro/assets/icons/x-circle.svg?v=1755528128"></button></div><div class="modal-body"><div class="search"><form action="https://www.sivarro.com/arama" method="get" data-choose-action="redirect" data-advanced-product-search><button type="submit" class="btn btn-orange btn-send"><img src="https://www.sivarro.com/theme/___sivarro/assets/icons/search.svg?v=1755528128"></button><div class="input-box"><input type="text" name="k" class="form-control" placeholder="Aramak istediğin ürünü yaz, kolayca bul!"/></div></form></div></div></div></div></div></header><header class="mobile"><div class="op-black"></div><div class="left"><a href="javascript:;" class="icon-group ml-2 btn-sidebar-menu"><img src="https://www.sivarro.com/theme/___sivarro/assets/icons/menu2.svg?v=1755700657"></a></div><div class="center"><div class="logo"><a href="https://www.sivarro.com"><img src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tmk4Z1RvTTZKYms9/l/mobil-logo-77013713-sw1265sh329.png" alt="Sivarro" /></a></div></div><div class="right"><a href="javascript:;" class="icon-group btn-sidebar-menu"><img src="https://www.sivarro.com/theme/___sivarro/assets/icons/search.svg?v=1755528128"></a><a href="https://www.sivarro.com/hesabim/favori-listem" class="icon-group"><img src="https://www.sivarro.com/theme/___sivarro/assets/icons/h-header.svg?v=1755528128"></a><a href="/uye-giris" class="icon-group  btn-sidebar-user"><img src="https://www.sivarro.com/theme/___sivarro/assets/icons/user.svg?v=1755528128"></a><a href="https://www.sivarro.com/sepet" class="icon-group"><img src="https://www.sivarro.com/theme/___sivarro/assets/icons/basket.svg?v=1755528128"><span class="badge" data-cart-quantity>0</span></a></div><div class="clearfix"></div><nav class="sidebar-menu-type-2"><div class="logo-area"><a href="https://www.sivarro.com" ><img src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tmk4Z1RvTTZKYms9/l/logo-52121518-sw1563sh654.png" alt="Sivarro" /></a><div class="mobile-menu-close"><img src="https://www.sivarro.com/theme/___sivarro/assets/icons/x.svg?v=1755528128"></div></div><div class="scrollbar"><section class="mobile-search"><form action="https://www.sivarro.com/arama" method="get"  data-choose-action="redirect" data-smart-mobile-product-search-image ><div class="input-box"><input type="text" name="k" class="form-control" placeholder="Ne aramıştınız? Sivarro’da arayın." /></div><button type="submit" class="btn btn-orange btn-send"><img src="https://www.sivarro.com/theme/___sivarro/assets/icons/search.svg?v=1755528128"></button></form><div class="clearfix"></div></section><div class="categories"><ul><li class="sc-11"><a href="https://www.sivarro.com/terlik" data-id="11"><span class="name ">TERLİK</span><div class="clearfix"></div></a></li><li class="sc-12"><a href="https://www.sivarro.com/sneaker" data-id="12"><span class="name ">SPOR</span><div class="clearfix"></div></a></li><li class="sc-24"><a href="https://www.sivarro.com/bot" data-id="24"><span class="name ">BOT</span><div class="clearfix"></div></a></li><li class="sc-55"><a href="https://www.sivarro.com/babet" data-id="55"><span class="name ">BABET</span><div class="clearfix"></div></a></li><li class="sc-51"><a href="https://www.sivarro.com/topuklu-ayakkabi" data-id="51"><span class="name ">TOPUKLU</span><div class="clearfix"></div></a></li><li class="sc-49"><a href="https://www.sivarro.com/sandalet" data-id="49"><span class="name ">SANDALET</span><div class="clearfix"></div></a></li><li class="sc-76"><a href="https://www.sivarro.com/outlet" data-id="76"><span class="name ">OUTLET</span><div class="clearfix"></div></a></li></ul></div><div class="mobil-area-title">
+                    YARDIM MERKEZİ
+                </div><div class="mobil-area-2"><div class="short-link"><a href="https://www.sivarro.com/uye-giris"><i class="coreicon-user-3"></i>
+                                    Giriş Yap
+                                </a></div><div class="short-link"><a href="https://www.sivarro.com/hesabim/favori-listem"><img src="https://www.sivarro.com/theme/___sivarro/assets/icons/h-header.svg?v=1755528128">
+                                    Favorilerim
+                                </a></div><div class="short-link"><a href="https://www.sivarro.com/siparis-takip"><img src="https://www.sivarro.com/theme/___sivarro/assets/icons/barcode.svg?v=1755528128">
+                                Sipariş Takip
+                            </a></div><div class="short-link"><a href="https://www.sivarro.com/sikca-sorulan-sorular"><img src="https://www.sivarro.com/theme/___sivarro/assets/icons/question-mark.svg?v=1755528128">
+                                S.S.S
+                            </a></div><div class="mm-app"><div class="ma-title">Mobil Uygulamaya Özel %5 Ek İndirim</div><div class="ma-description">Hemen Mobil uygulamayı indirerek ek indirim ve avantajlardan yararlanın.</div><div class="d-flex"><a href="https://apps.apple.com/tr/app/sivarro/id6749766034?l=tr" target="_blank"><img src="https://www.sivarro.com/theme/___sivarro/assets/images/appstore.png?v=1755528126" alt="App Store"></a><a href="https://play.google.com/store/apps/details?id=com.qukasoft.sivarro" target="_blank"><img src="https://www.sivarro.com/theme/___sivarro/assets/images/gplay.png?v=1755528126" alt="Google Plays"></a></div></div></div></div></div></nav></header><div class="mobile-header-space"></div></div></div></div></div></div></div></section><section class="pattern-group pattern-group-t-0 pattern-group-p-product "><div class="container"><div class="pattern-group-body"><div class="row"><div class="col-list col-0 d-none col-sm-0 d-sm-none col-md-12 d-md-block col-lg-12 d-lg-block col-xl-12 d-xl-block p-g-b-c-0"><div class="p-g-b-c-wrapper"><div class="p-g-b-c-inner"><div class="p-g-mod p-g-mod-t-27 p-g-mod-breadcrumb  p-g-mod-trans   "><div class="p-g-mod-body  p-g-mod-body-p-0  "><nav aria-label="breadcrumb" class="breadcrumb-wrapper"><ol class="breadcrumb" itemscope itemtype="http://schema.org/BreadcrumbList"><li class="breadcrumb-item" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem"><a itemprop="item" href="https://www.sivarro.com"><span itemprop='name'>Ana Sayfa</span><meta itemprop="position" content="1" /></a></li><li class="breadcrumb-item" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem"><a itemprop="item" href="https://www.sivarro.com/terlik"><span itemprop='name'>TERLİK</span><meta itemprop="position" content="2" /></a></li></ol></nav></div></div></div></div></div></div></div></div></section><section class="pattern-group pattern-group-t-0 pattern-group-p-product sticky-sidebar-992-2"><div class="container"><div class="pattern-group-body"><div class="row"><div class="col-list col-12 d-block col-sm-12 d-sm-block col-md-12 d-md-block col-lg-12 d-lg-block col-xl-12 d-xl-block p-g-b-c-0"><div class="p-g-b-c-wrapper"><div class="p-g-b-c-inner"><div class="p-g-mod p-g-mod-t-13 p-g-mod-base-content  p-g-mod-trans   "><div class="p-g-mod-body  p-g-mod-body-p-0  "><div class="product-profile-1 pdetail-block" data-product-id="587"><div class="row"><div class="col-lg-6 col-pd-left"><div id="product-profile-carousel-587" class="carousel slide" data-ride="carousel"><div class="carousel-outer"><div class="carousel-inner"><div class="carousel-item active"><a href="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tmk4Z1RvTTZKYms9/p/boston-unisex-mantar-taban-terlik-haki-82197959-sw1024sh1536.png" data-fancybox="images" data-caption="Boston Unisex Mantar Taban Terlik - Haki"><img class="xzoom" id="xzoom-default" src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tml3Z0Y4OXJKYmtQSWNEeFJBPT0/p/boston-unisex-mantar-taban-terlik-haki-82197959-sw1024sh1536.png" alt="Boston Unisex Mantar Taban Terlik - Haki" xoriginal="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tmk4Z1RvTTZKYms9/p/boston-unisex-mantar-taban-terlik-haki-82197959-sw1024sh1536.png"></a></div><div class="carousel-item "><a href="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tmk4Z1RvTTZKYms9/p/boston-unisex-mantar-taban-terlik-haki-6785831-sw1024sh1536.png" data-fancybox="images" data-caption="Boston Unisex Mantar Taban Terlik - Haki"><img class="xzoom" id="xzoom-default" src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tml3Z0Y4OXJKYmtQSWNEeFJBPT0/p/boston-unisex-mantar-taban-terlik-haki-6785831-sw1024sh1536.png" alt="Boston Unisex Mantar Taban Terlik - Haki" xoriginal="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tmk4Z1RvTTZKYms9/p/boston-unisex-mantar-taban-terlik-haki-6785831-sw1024sh1536.png"></a></div><div class="carousel-item "><a href="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tmk4Z1RvTTZKYms9/p/boston-unisex-mantar-taban-terlik-haki-30910161-sw1024sh1536.png" data-fancybox="images" data-caption="Boston Unisex Mantar Taban Terlik - Haki"><img class="xzoom" id="xzoom-default" src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tml3Z0Y4OXJKYmtQSWNEeFJBPT0/p/boston-unisex-mantar-taban-terlik-haki-30910161-sw1024sh1536.png" alt="Boston Unisex Mantar Taban Terlik - Haki" xoriginal="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tmk4Z1RvTTZKYms9/p/boston-unisex-mantar-taban-terlik-haki-30910161-sw1024sh1536.png"></a></div><div class="carousel-item "><a href="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tmk4Z1RvTTZKYms9/p/boston-unisex-mantar-taban-terlik-haki-5903054-sw1024sh1536.png" data-fancybox="images" data-caption="Boston Unisex Mantar Taban Terlik - Haki"><img class="xzoom" id="xzoom-default" src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tml3Z0Y4OXJKYmtQSWNEeFJBPT0/p/boston-unisex-mantar-taban-terlik-haki-5903054-sw1024sh1536.png" alt="Boston Unisex Mantar Taban Terlik - Haki" xoriginal="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tmk4Z1RvTTZKYms9/p/boston-unisex-mantar-taban-terlik-haki-5903054-sw1024sh1536.png"></a></div><div class="carousel-item "><a href="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tmk4Z1RvTTZKYms9/p/boston-unisex-mantar-taban-terlik-haki-68379042-sw1024sh1536.png" data-fancybox="images" data-caption="Boston Unisex Mantar Taban Terlik - Haki"><img class="xzoom" id="xzoom-default" src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tml3Z0Y4OXJKYmtQSWNEeFJBPT0/p/boston-unisex-mantar-taban-terlik-haki-68379042-sw1024sh1536.png" alt="Boston Unisex Mantar Taban Terlik - Haki" xoriginal="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tmk4Z1RvTTZKYms9/p/boston-unisex-mantar-taban-terlik-haki-68379042-sw1024sh1536.png"></a></div></div><a class="carousel-control-prev" href="#product-profile-carousel-587" role="button" data-slide="prev"><i class="fa fa-chevron-left"></i></a><a class="carousel-control-next" href="#product-profile-carousel-587" role="button" data-slide="next"><i class="fa fa-chevron-right"></i></a></div><ol class="carousel-indicators mt-3"><li data-target="#product-profile-carousel-587" 
+                    data-slide-to="0" class="active"><img class="d-block w-100 xzoom-gallery" src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tml3Z0hjOXJKYm9QSVl5OA/p/boston-unisex-mantar-taban-terlik-haki-82197959-sw1024sh1536.png" xpreview="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tml3Z0Y4OXJKYmtQSWNEeFJBPT0/p/boston-unisex-mantar-taban-terlik-haki-82197959-sw1024sh1536.png" alt="Boston Unisex Mantar Taban Terlik - Haki"></li><li data-target="#product-profile-carousel-587" 
+                    data-slide-to="1" class=""><img class="d-block w-100 xzoom-gallery" src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tml3Z0hjOXJKYm9QSVl5OA/p/boston-unisex-mantar-taban-terlik-haki-6785831-sw1024sh1536.png" xpreview="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tml3Z0Y4OXJKYmtQSWNEeFJBPT0/p/boston-unisex-mantar-taban-terlik-haki-6785831-sw1024sh1536.png" alt="Boston Unisex Mantar Taban Terlik - Haki"></li><li data-target="#product-profile-carousel-587" 
+                    data-slide-to="2" class=""><img class="d-block w-100 xzoom-gallery" src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tml3Z0hjOXJKYm9QSVl5OA/p/boston-unisex-mantar-taban-terlik-haki-30910161-sw1024sh1536.png" xpreview="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tml3Z0Y4OXJKYmtQSWNEeFJBPT0/p/boston-unisex-mantar-taban-terlik-haki-30910161-sw1024sh1536.png" alt="Boston Unisex Mantar Taban Terlik - Haki"></li><li data-target="#product-profile-carousel-587" 
+                    data-slide-to="3" class=""><img class="d-block w-100 xzoom-gallery" src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tml3Z0hjOXJKYm9QSVl5OA/p/boston-unisex-mantar-taban-terlik-haki-5903054-sw1024sh1536.png" xpreview="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tml3Z0Y4OXJKYmtQSWNEeFJBPT0/p/boston-unisex-mantar-taban-terlik-haki-5903054-sw1024sh1536.png" alt="Boston Unisex Mantar Taban Terlik - Haki"></li><li data-target="#product-profile-carousel-587" 
+                    data-slide-to="4" class=""><img class="d-block w-100 xzoom-gallery" src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tml3Z0hjOXJKYm9QSVl5OA/p/boston-unisex-mantar-taban-terlik-haki-68379042-sw1024sh1536.png" xpreview="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tml3Z0Y4OXJKYmtQSWNEeFJBPT0/p/boston-unisex-mantar-taban-terlik-haki-68379042-sw1024sh1536.png" alt="Boston Unisex Mantar Taban Terlik - Haki"></li></ol></div></div><div class="col-lg-6 col-pd-right"><div class="sticky-top"><div class="product-title-container"><div class="left"><a href="https://www.sivarro.com/sivarro" class="pd-brand">
+                                    Sivarro
+                                </a><h1 class="title">Boston Unisex Mantar Taban Terlik - Haki</h1></div><div class="right"><div class="product-favourite" data-favourite-product-id="587"><a href="javascript:;" class="d-block add-favorite" 
+        onclick="userProductFavourite('add', 587)"><img src="https://www.sivarro.com/theme/___sivarro/assets/icons/profil-favorite.svg?v=1755528128"></a><a href="javascript:;" class="d-none remove-favorite" 
+        onclick="userProductFavourite('remove', 587)"><img src="https://www.sivarro.com/theme/___sivarro/assets/icons/profil-favoritefill.svg?v=1755528128"></a></div><div class="shareArea" id="shareArea"><img src="https://www.sivarro.com/theme/___sivarro/assets/icons/new-share.svg?v=1755528128" alt="" /></div><div class="modal-box" id="shareModal"><div class="modal-inside"><div class="close"><img src="https://www.sivarro.com/theme/___sivarro/assets/icons/x.svg?v=1755528128" /></div><div class="social-sh"><a href="https://facebook.com/sharer/sharer.php?u=https://www.sivarro.com/boston-unisex-mantar-taban-terlik-haki" target="_blank"><img src="https://www.sivarro.com/theme/___sivarro/assets/icons/fb-share-icon.svg?v=1755528128" alt="" /></a><a href="https://www.twitter.com/share?url=https://www.sivarro.com/boston-unisex-mantar-taban-terlik-haki" target="_blank"><img src="https://www.sivarro.com/theme/___sivarro/assets/icons/tw-share-icon.svg?v=1755528128" alt="" /></a><a href="whatsapp://send?text=https://www.sivarro.com/boston-unisex-mantar-taban-terlik-haki" target="_blank"><img src="https://www.sivarro.com/theme/___sivarro/assets/icons/wp-share-icon.svg?v=1755528128" alt="" /></a><div class="tooltip" onclick="copyLink()"><span class="tooltiptext"><img src="https://www.sivarro.com/theme/___sivarro/assets/icons/copy-share-icon.svg?v=1755528128" /></span><span class="copy-status"></span></div></div></div></div></div></div><ul class="product-profile-info"><div class="product-reviews"><div class="stars"><div id="myButton"><span class="star "><i class="fa fa-star"></i></span><span class="star "><i class="fa fa-star"></i></span><span class="star "><i class="fa fa-star"></i></span><span class="star "><i class="fa fa-star"></i></span><span class="star "><i class="fa fa-star"></i></span></div></div><div id="myButton2">(0) Yorum</div><div id="myButton3">Yorum Yap</div></div><script defer>
+    function scrollToTab() {
+        var tabElement = document.getElementById("p-g-nav-14516-5-tab");
+        var secondTabElement = document.getElementById("p-g-nav-14516-5-tab");
+        var secondTabContentElement = document.getElementById("p-g-nav-14516-5");
+        $("#p-g-nav-14516-5-tab").click();
+        $(secondTabElement).tab("show");
+        $(secondTabContentElement).addClass("active");
+        tabElement.scrollIntoView({ behavior: "smooth" });
+    }
+    document.getElementById('myButton').addEventListener('click', scrollToTab);
+    document.getElementById('myButton2').addEventListener('click', scrollToTab);
+    document.getElementById('myButton3').addEventListener('click', scrollToTab);
+</script><li>
+                                Kategori: 
+                                <a href="https://www.sivarro.com/terlik" title="TERLİK"><span class="value">TERLİK</span></a></li><li></li><li><a href="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tmk4Z1RvTTZKYms9/i/6a198364d4be4-19752119-sw1024sh1536.png" data-fancybox="product-sizes" data-caption="" class="product-size-box">
+                                    Beden - Ölçü Tablosu
+                                </a></li><li><div class="product-short-desc">
+                                    Topuk boyu 2 cm ve tam kalıptır.
+                                </div></li></ul><div class="pd-price-block"><div class="product-price-group"><div class="prices"><div class="sale-price sale-variant-price">
+                                        789,00 TL
+                                    </div><div class="list-price sale-list-price">
+                                            1.999,00 TL
+                                        </div><div class="pd-discount">
+                                            %61
+                                        </div></div></div><div class="product-rate"><div class="left"><img src="https://www.sivarro.com/theme/___sivarro/assets/icons/profil-tax.svg?v=1755528128"></div><div class="right"><span>90,08 TL &#039;den başlayan taksitlerle</span></div></div></div><ul class="attiributies"><li class="mt-2 iliskili-urunler"><span class="value">
+                                Renk
+                              </span><div class="iu-carousel"><button class="iu-btn prev" type="button" aria-label="Önceki"><i class="coreicon-left-arrow"></i></button><div class="iu-viewport"><div class="iu-track"><a href="https://www.sivarro.com/doston-siyah-terlik-ortopedik-rahat-taban-sehir-stili" class="iu-item " title="Boston Unisex Mantar Taban Terlik - Siyah"><img src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tmk4Z1RvTTZKYms9/p/69df70a6dda3e-52694249-sw1696sh2528.png" alt="Boston Unisex Mantar Taban Terlik - Siyah" /></a><a href="https://www.sivarro.com/doston-bej-terlik-ortopedik-rahat-taban-sehir-stili" class="iu-item " title="Boston Unisex Mantar Taban Terlik - Krem"><img src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tmk4Z1RvTTZKYms9/p/69df6ef94d0bf-65339476-sw1696sh2528.png" alt="Boston Unisex Mantar Taban Terlik - Krem" /></a><a href="https://www.sivarro.com/boston-terlik-rahat-taban-sehir-stili-deri-krem" class="iu-item " title="Boston Kadın Mantar Taban Terlik - Deri Bej"><img src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tmk4Z1RvTTZKYms9/p/69e8ac591f9c7-28839650-sw1696sh2528.png" alt="Boston Kadın Mantar Taban Terlik - Deri Bej" /></a><a href="https://www.sivarro.com/doston-vizon-terlik-ortopedik-rahat-taban-sehir-stili" class="iu-item " title="Boston Unisex Mantar Taban Terlik - Vizon"><img src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tmk4Z1RvTTZKYms9/p/69df70971c571-68026645-sw1696sh2528.png" alt="Boston Unisex Mantar Taban Terlik - Vizon" /></a><a href="https://www.sivarro.com/doston-kahve-terlik-ortopedik-rahat-taban-sehir-stili" class="iu-item " title="Boston Unisex Mantar Taban Terlik - Kahve"><img src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tmk4Z1RvTTZKYms9/p/69df70801cb12-46186655-sw1696sh2528.png" alt="Boston Unisex Mantar Taban Terlik - Kahve" /></a><a href="https://www.sivarro.com/doston-leopar-gri-terlik-ortopedik-rahat-taban-sehir-stili" class="iu-item " title="Boston Kadın Mantar Taban Terlik - Leopar Gri"><img src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tmk4Z1RvTTZKYms9/p/69e8b0a4ecb8e-97487020-sw1696sh2528.png" alt="Boston Kadın Mantar Taban Terlik - Leopar Gri" /></a><a href="https://www.sivarro.com/doston-taba-terlik-ortopedik-rahat-taban-sehir-stili" class="iu-item " title="Boston Unisex Mantar Taban Terlik - Taba"><img src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tmk4Z1RvTTZKYms9/p/69ea1ae9bffe7-472999-sw1696sh2528.png" alt="Boston Unisex Mantar Taban Terlik - Taba" /></a><a href="https://www.sivarro.com/boston-unisex-mantar-taban-terlik-haki" class="iu-item active" title="Boston Unisex Mantar Taban Terlik - Haki"><img src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tmk4Z1RvTTZKYms9/p/boston-unisex-mantar-taban-terlik-haki-82197959-sw1024sh1536.png" alt="Boston Unisex Mantar Taban Terlik - Haki" /></a><a href="https://www.sivarro.com/boston-kadin-terlik-rahat-taban-sehir-stili-leopar" class="iu-item " title="Boston Kadın Mantar Taban Terlik - Leopar"><img src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tmk4Z1RvTTZKYms9/p/boston-kadin-terlik-rahat-taban-sehir-stili-leopar-21532721-sw1024sh1536.png" alt="Boston Kadın Mantar Taban Terlik - Leopar" /></a><a href="https://www.sivarro.com/boston-unisex-mantar-taban-terlik-lacivert" class="iu-item " title="Boston Unisex Mantar Taban Terlik - Lacivert"><img src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tmk4Z1RvTTZKYms9/p/boston-unisex-mantar-taban-terlik-lacivert-68147883-sw1024sh1536.png" alt="Boston Unisex Mantar Taban Terlik - Lacivert" /></a></div></div><button class="iu-btn next" type="button" aria-label="Sonraki"><i class="coreicon-right-arrow"></i></button></div></li></ul><div class="variant-box"><ul><li class="variant"><div class="name"><span>Beden:</span></div><select class="form-control" data-variant="0" data-variant-name="Beden"><option value="">Lütfen seçin</option><option value="36" data-variant-value="36" >36</option><option value="37" data-variant-value="37" >37</option><option value="38" data-variant-value="38" >38</option><option value="39" data-variant-value="39" >39</option><option value="40" data-variant-value="40" >40</option><option value="41" data-variant-value="41" >41</option><option value="42" data-variant-value="42" >42</option><option value="43" data-variant-value="43" >43</option><option value="44" data-variant-value="44" >44</option></select><div class="options"><a href="javascript:;"
+                                                       data-variant="0"
+                                                       data-variant-value="36"
+                                                       onclick="changeVariant(
+                                                               PRODUCT_PAGE_DATA,
+                                                               'div[data-product-id=\'587\'] .variant-box',
+                                                               'div[data-product-id=\'587\'] .sale-variant-price',
+                                                               '36',
+                                                               true,
+                                                               0)"
+                                                       class="">
+                                                        36
+                                                    </a><a href="javascript:;"
+                                                       data-variant="0"
+                                                       data-variant-value="37"
+                                                       onclick="changeVariant(
+                                                               PRODUCT_PAGE_DATA,
+                                                               'div[data-product-id=\'587\'] .variant-box',
+                                                               'div[data-product-id=\'587\'] .sale-variant-price',
+                                                               '37',
+                                                               true,
+                                                               0)"
+                                                       class="">
+                                                        37
+                                                    </a><a href="javascript:;"
+                                                       data-variant="0"
+                                                       data-variant-value="38"
+                                                       onclick="changeVariant(
+                                                               PRODUCT_PAGE_DATA,
+                                                               'div[data-product-id=\'587\'] .variant-box',
+                                                               'div[data-product-id=\'587\'] .sale-variant-price',
+                                                               '38',
+                                                               true,
+                                                               0)"
+                                                       class="">
+                                                        38
+                                                    </a><a href="javascript:;"
+                                                       data-variant="0"
+                                                       data-variant-value="39"
+                                                       onclick="changeVariant(
+                                                               PRODUCT_PAGE_DATA,
+                                                               'div[data-product-id=\'587\'] .variant-box',
+                                                               'div[data-product-id=\'587\'] .sale-variant-price',
+                                                               '39',
+                                                               true,
+                                                               0)"
+                                                       class="">
+                                                        39
+                                                    </a><a href="javascript:;"
+                                                       data-variant="0"
+                                                       data-variant-value="40"
+                                                       onclick="changeVariant(
+                                                               PRODUCT_PAGE_DATA,
+                                                               'div[data-product-id=\'587\'] .variant-box',
+                                                               'div[data-product-id=\'587\'] .sale-variant-price',
+                                                               '40',
+                                                               true,
+                                                               0)"
+                                                       class="">
+                                                        40
+                                                    </a><a href="javascript:;"
+                                                       data-variant="0"
+                                                       data-variant-value="41"
+                                                       onclick="changeVariant(
+                                                               PRODUCT_PAGE_DATA,
+                                                               'div[data-product-id=\'587\'] .variant-box',
+                                                               'div[data-product-id=\'587\'] .sale-variant-price',
+                                                               '41',
+                                                               true,
+                                                               0)"
+                                                       class="">
+                                                        41
+                                                    </a><a href="javascript:;"
+                                                       data-variant="0"
+                                                       data-variant-value="42"
+                                                       onclick="changeVariant(
+                                                               PRODUCT_PAGE_DATA,
+                                                               'div[data-product-id=\'587\'] .variant-box',
+                                                               'div[data-product-id=\'587\'] .sale-variant-price',
+                                                               '42',
+                                                               true,
+                                                               0)"
+                                                       class="">
+                                                        42
+                                                    </a><a href="javascript:;"
+                                                       data-variant="0"
+                                                       data-variant-value="43"
+                                                       onclick="changeVariant(
+                                                               PRODUCT_PAGE_DATA,
+                                                               'div[data-product-id=\'587\'] .variant-box',
+                                                               'div[data-product-id=\'587\'] .sale-variant-price',
+                                                               '43',
+                                                               true,
+                                                               0)"
+                                                       class="">
+                                                        43
+                                                    </a><a href="javascript:;"
+                                                       data-variant="0"
+                                                       data-variant-value="44"
+                                                       onclick="changeVariant(
+                                                               PRODUCT_PAGE_DATA,
+                                                               'div[data-product-id=\'587\'] .variant-box',
+                                                               'div[data-product-id=\'587\'] .sale-variant-price',
+                                                               '44',
+                                                               true,
+                                                               0)"
+                                                       class="">
+                                                        44
+                                                    </a></div></li></ul></div><div class="product-buttons"><div class="product-quantity"><a href="javascript:;" class="btn btn-minus"
+                                        onclick="productQuantityBox(
+                                            'decrement',
+                                            'div[data-product-id=\'587\'] .product-quantity'
+                                        )"><i class="fas fa-minus"></i></a><input class="form-control" name="quantity"  data-quantity-type="1" value="1"
+                                        onkeypress="return productQuantityBox(
+                                            'change',
+                                            'div[data-product-id=\'587\'] .product-quantity',
+                                            event
+                                        )"/><a href="javascript:;" class="btn btn-plus"
+                                        onclick="productQuantityBox(
+                                            'increment',
+                                            'div[data-product-id=\'587\'] .product-quantity'
+                                        )"><i class="fas fa-plus"></i></a></div><button class="btn btn-cart btn-color-1" 
+                                onclick="addCart(
+                                        587, 
+                                        'product', 
+                                        {
+                                                                                            checkVariant: true,
+                                                variantCount: 1,
+                                                variantDiv: 'div[data-product-id=\'587\'] .variant-box',
+                                                                                        quantity: $('div[data-product-id=\'587\'] input[name=quantity]').val(),
+                                        }
+                                    )"><i class="coreicon-cart-2"></i>
+                                Sepete Ekle
+                            </button><button class="btn btn-fast-buy btn-color-2" 
+                                    onclick="addCart(
+                                        587, 
+                                        'product', 
+                                        {
+                                            redirectPayment: true,
+                                                                                            checkVariant: true,
+                                                variantCount: 1,
+                                                variantDiv: 'div[data-product-id=\'587\'] .variant-box',
+                                                                                        quantity: $('div[data-product-id=\'587\'] input[name=quantity]').val(),
+                                        }
+                                    )"><i class="fas fa-lira-sign"></i>
+                                    Hemen Al
+                                </button></div><div class="product-cargo-count"><div class="left"><div class="icon"><img src="https://www.sivarro.com/theme/___sivarro/assets/icons/profil-cargoinf.svg?v=1755528128"></div><div class="write"><h4>Tahmini Kargo Teslimi:</h4><span>
+                                                                                            En Geç <b>10 Ekim Cumartesi</b> kargoda!
+                                                                                    </span></div></div><a href="https://www.sivarro.com/siparis-takip" target="_blank">
+                                    Sipariş Takip
+                                </a></div><div class="product-badges-overflow"><div class="product-badges"><a href="javascript:;" class="p-badge-item cargo" id="p-badge-cargo"><div class="icon"><img src="https://www.sivarro.com/theme/___sivarro/assets/icons/profil-cargoandpay.svg?v=1755528128"></div><div class="write"><div class="title">Hızlı Kargo</div><div class="description">Güvenli Ödeme</div></div></a><a href="javascript:;" class="p-badge-item return" id="p-badge-return"><div class="icon"><img src="https://www.sivarro.com/theme/___sivarro/assets/icons/profil-returnandpay.svg?v=1755528128"></div><div class="write"><div class="title">İade &amp; Değişim</div><div class="description">Kolay Değişim ve Cüzdan İade</div></div></a><a href="javascript:;" class="p-badge-item orginal" id="p-badge-orginal"><div class="icon"><img src="https://www.sivarro.com/theme/___sivarro/assets/icons/profil-orginal.svg?v=1755528128"></div><div class="write"><div class="title">Sivarro</div><div class="description">Premium Quality</div></div></a></div></div></div></div></div></div></div></div></div></div></div></div></div></div></section><section class="pattern-group pattern-group-t-1 pattern-group-p-product product-details-tab-product-details-tab-colorful"><div class="container"><div class="pattern-group-body"><div class="p-g-tab-wrapper p-g-tab-direction-0"><div class="p-g-t-nav"><ul class="nav" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link  active "                                                 id="p-g-nav-2573-0-tab" data-toggle="pill" href="#p-g-nav-2573-0"
+                                                role="tab" aria-controls="p-g-nav-2573-0" aria-selected="true"><span>Ürün Açıklaması</span></a></li><li class="nav-item" role="presentation"><a class="nav-link " onclick="loadPatternGroupCol('p-g-nav-2573-1', '2573', '1')"                                                id="p-g-nav-2573-1-tab" data-toggle="pill" href="#p-g-nav-2573-1"
+                                                role="tab" aria-controls="p-g-nav-2573-1" aria-selected="true"><span>Taksit Seçenekleri</span></a></li><li class="nav-item" role="presentation"><a class="nav-link "                                                 id="p-g-nav-2573-2-tab" data-toggle="pill" href="#p-g-nav-2573-2"
+                                                role="tab" aria-controls="p-g-nav-2573-2" aria-selected="true"><span>Teslimat &amp; İade</span></a></li><li class="nav-item" role="presentation"><a class="nav-link " onclick="loadPatternGroupCol('p-g-nav-2573-3', '2573', '3')"                                                id="p-g-nav-2573-3-tab" data-toggle="pill" href="#p-g-nav-2573-3"
+                                                role="tab" aria-controls="p-g-nav-2573-3" aria-selected="true"><span>Değerlendirmeler</span></a></li></ul></div><div class="tab-content"><div class="tab-pane show active  p-g-b-c-0" id="p-g-nav-2573-0" role="tabpanel" aria-labelledby="p-g-nav-2573-0-tab"><div class="p-g-b-c-wrapper"><div class="p-g-b-c-inner" ><div class="p-g-mod p-g-mod-t-48 p-g-mod-product-det   "><div class="p-g-mod-body  p-g-mod-body-p-0  "><div class="raw-content"><p>Boston unisex mantar taban terlik, şık ve rahat tasarımıyla her mevsim tercih edebileceğiniz bir &uuml;r&uuml;nd&uuml;r. Hem bayanlar hem de erkekler i&ccedil;in uygundur.</p><p>&Uuml;r&uuml;n &Ouml;zellikleri:</p><ul><li>Haki renkte şık tasarım</li><li>Mantar taban sayesinde ayak sağlığını destekler</li><li>Kaymayı &ouml;nleyici taban yapısı</li><li>Rahat ve esnek malzeme</li><li>Her t&uuml;rl&uuml; kombinle uyumlu bir terlik se&ccedil;eneği</li></ul></div></div></div></div></div></div><div class="tab-pane p-g-b-c-1" id="p-g-nav-2573-1" role="tabpanel" aria-labelledby="p-g-nav-2573-1-tab"><div class="p-g-b-c-wrapper"><div class="p-g-b-c-inner" data-pattern-key="p-g-nav-2573-1" data-pattern-loaded="false"></div></div></div><div class="tab-pane p-g-b-c-2" id="p-g-nav-2573-2" role="tabpanel" aria-labelledby="p-g-nav-2573-2-tab"><div class="p-g-b-c-wrapper"><div class="p-g-b-c-inner" ><div class="p-g-mod p-g-mod-t-49 p-g-mod-product-det   "><div class="p-g-mod-body  p-g-mod-body-p-0  "><div class="raw-content"><p><strong>Hızlı Teslimat:</strong><br />
+Siparişiniz kargoya verildikten sonra,&nbsp;<strong>1-2 iş g&uuml;n&uuml;</strong>&nbsp;i&ccedil;inde adresinize teslim edilir. Teslimat s&uuml;resi, kargo firmasının dağıtım yoğunluğuna g&ouml;re değişiklik g&ouml;sterebilir.</p><p><strong>İade politikası:</strong><br />
+&Uuml;r&uuml;nlerinizi,&nbsp;<strong>14 g&uuml;n i&ccedil;inde</strong>&nbsp;iade edebilirsiniz. &Uuml;r&uuml;n&uuml;n&nbsp;kullanılmamış etiketleri ve kutusuyla birlikte hasarsız olması yeterlidir.</p><p><strong>Neden Sivarro?</strong></p><ul><li><p>T&uuml;m &uuml;r&uuml;nler&nbsp;<strong>kalite garantili</strong>&nbsp;ve g&uuml;vencedir.</p></li><li><p>Kolay&nbsp;iade s&uuml;reci&nbsp;</p></li><li><p>Herg&uuml;n m&uuml;şteri desteği!</p></li></ul></div></div></div></div></div></div><div class="tab-pane p-g-b-c-3" id="p-g-nav-2573-3" role="tabpanel" aria-labelledby="p-g-nav-2573-3-tab"><div class="p-g-b-c-wrapper"><div class="p-g-b-c-inner" data-pattern-key="p-g-nav-2573-3" data-pattern-loaded="false"></div></div></div></div></div></div></div></section><section class="pattern-group pattern-group-t-0 pattern-group-p-product "><div class="container"><div class="pattern-group-body"><div class="row"><div class="col-list col-12 d-block col-sm-12 d-sm-block col-md-12 d-md-block col-lg-12 d-lg-block col-xl-12 d-xl-block p-g-b-c-0"><div class="p-g-b-c-wrapper"><div class="p-g-b-c-inner"><div class="p-g-mod p-g-mod-t-57 p-g-mod-showcase   "><div class="p-g-mod-header  p-g-mod-header-p-0 "><div class="p-g-m-h-info"><div class="p-g-m-h-i-title">
+                            Benzer Ürünler
+                        </div></div></div><div class="p-g-mod-body  p-g-mod-body-p-0  "><div class="owl-wrapper"><div class="owl-carousel custom-module-code-3693"><div class="owl-carousel-item"><div class="card-product mb-2"><div class="card-product-inner"><div class="renkSecenek"><img src="https://www.sivarro.com/theme/___sivarro/assets/images/colorfuls.png?v=1755528126"><span>11</span></div><div class="image-wrapper"><div class="discount">%61</div><a href="https://www.sivarro.com/boston-unisex-mantar-taban-terlik-lacivert" class="c-p-i-link" title="Boston Unisex Mantar Taban Terlik - Lacivert"><div class="image"><img class="img-auto " src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tml3Z0Y4OXJKYmtOSWNEeFJBPT0/p/boston-unisex-mantar-taban-terlik-lacivert-68147883-sw1024sh1536.png" alt="Boston Unisex Mantar Taban Terlik - Lacivert" ></div></a></div><a href="https://www.sivarro.com/boston-unisex-mantar-taban-terlik-lacivert" class="c-p-i-link" title="Boston Unisex Mantar Taban Terlik - Lacivert"><div class="brand">Sivarro</div><div class="title">Boston Unisex Mantar Taban Terlik - Lacivert</div><div class="price-group"><div class="prices"><div class="prices-area"><div class="list-price">1.999,00 TL</div><div style="color:#000; text-decoration:auto;" class="sale-price">789,00 TL</div></div></div></div></div></a></div></div><div class="owl-carousel-item"><div class="card-product mb-2"><div class="card-product-inner"><div class="renkSecenek"><img src="https://www.sivarro.com/theme/___sivarro/assets/images/colorfuls.png?v=1755528126"><span>4</span></div><div class="image-wrapper"><div class="discount">%36</div><a href="https://www.sivarro.com/platform-boston-sehir-stili-siyah" class="c-p-i-link" title="Platform Boston Yüksek Taban Terlik - Siyah"><div class="image"><img class="img-auto " src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tml3Z0Y4OXJKYmtOSWNEeFJBPT0/p/platform-boston-sehir-stili-siyah-42019512-sw1024sh1536.png" alt="Platform Boston Yüksek Taban Terlik - Siyah" ></div></a></div><a href="https://www.sivarro.com/platform-boston-sehir-stili-siyah" class="c-p-i-link" title="Platform Boston Yüksek Taban Terlik - Siyah"><div class="brand">Sivarro</div><div class="title">Platform Boston Yüksek Taban Terlik - Siyah</div><div class="price-group"><div class="prices"><div class="prices-area"><div class="list-price">1.799,00 TL</div><div style="color:#000; text-decoration:auto;" class="sale-price">1.149,00 TL</div></div></div></div></div></a></div></div><div class="owl-carousel-item"><div class="card-product mb-2"><div class="card-product-inner"><div class="renkSecenek"><img src="https://www.sivarro.com/theme/___sivarro/assets/images/colorfuls.png?v=1755528126"><span>4</span></div><div class="image-wrapper"><div class="discount">%36</div><a href="https://www.sivarro.com/platform-boston-sehir-stili-kahverengi" class="c-p-i-link" title="Platform Boston Yüksek Taban Terlik - Kahve"><div class="image"><img class="img-auto " src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tml3Z0Y4OXJKYmtOSWNEeFJBPT0/p/platform-boston-sehir-stili-kahverengi-82417836-sw1024sh1536.png" alt="Platform Boston Yüksek Taban Terlik - Kahve" ></div></a></div><a href="https://www.sivarro.com/platform-boston-sehir-stili-kahverengi" class="c-p-i-link" title="Platform Boston Yüksek Taban Terlik - Kahve"><div class="brand">Sivarro</div><div class="title">Platform Boston Yüksek Taban Terlik - Kahve</div><div class="price-group"><div class="prices"><div class="prices-area"><div class="list-price">1.799,00 TL</div><div style="color:#000; text-decoration:auto;" class="sale-price">1.149,00 TL</div></div></div></div></div></a></div></div><div class="owl-carousel-item"><div class="card-product mb-2"><div class="card-product-inner"><div class="renkSecenek"><img src="https://www.sivarro.com/theme/___sivarro/assets/images/colorfuls.png?v=1755528126"><span>4</span></div><div class="image-wrapper"><div class="discount">%36</div><a href="https://www.sivarro.com/platform-boston-sehir-stili-vizon" class="c-p-i-link" title="Platform Boston Yüksek Taban Terlik - Vizon"><div class="image"><img class="img-auto " src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tml3Z0Y4OXJKYmtOSWNEeFJBPT0/p/platform-boston-sehir-stili-vizon-94849673-sw1024sh1536.png" alt="Platform Boston Yüksek Taban Terlik - Vizon" ></div></a></div><a href="https://www.sivarro.com/platform-boston-sehir-stili-vizon" class="c-p-i-link" title="Platform Boston Yüksek Taban Terlik - Vizon"><div class="brand">Sivarro</div><div class="title">Platform Boston Yüksek Taban Terlik - Vizon</div><div class="price-group"><div class="prices"><div class="prices-area"><div class="list-price">1.799,00 TL</div><div style="color:#000; text-decoration:auto;" class="sale-price">1.149,00 TL</div></div></div></div></div></a></div></div><div class="owl-carousel-item"><div class="card-product mb-2"><div class="card-product-inner"><div class="renkSecenek"><img src="https://www.sivarro.com/theme/___sivarro/assets/images/colorfuls.png?v=1755528126"><span>4</span></div><div class="image-wrapper"><div class="discount">%39</div><a href="https://www.sivarro.com/platform-boston-tokali-sehir-stili-krem" class="c-p-i-link" title="Platform Boston Yüksek Taban Terlik - Krem"><div class="image"><img class="img-auto " src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tml3Z0Y4OXJKYmtOSWNEeFJBPT0/p/platform-boston-tokali-sehir-stili-krem-24891087-sw1024sh1536.png" alt="Platform Boston Yüksek Taban Terlik - Krem" ></div></a></div><a href="https://www.sivarro.com/platform-boston-tokali-sehir-stili-krem" class="c-p-i-link" title="Platform Boston Yüksek Taban Terlik - Krem"><div class="brand">Sivarro</div><div class="title">Platform Boston Yüksek Taban Terlik - Krem</div><div class="price-group"><div class="prices"><div class="prices-area"><div class="list-price">1.899,00 TL</div><div style="color:#000; text-decoration:auto;" class="sale-price">1.149,00 TL</div></div></div></div></div></a></div></div><div class="owl-carousel-item"><div class="card-product mb-2"><div class="card-product-inner"><div class="renkSecenek"><img src="https://www.sivarro.com/theme/___sivarro/assets/images/colorfuls.png?v=1755528126"><span>9</span></div><div class="image-wrapper"><div class="discount">%38</div><a href="https://www.sivarro.com/parmak-arasi-freistep-unisex-terlik-vizon" class="c-p-i-link" title="Parmak Arası Freistep Unisex Terlik – Vizon"><div class="image"><img class="img-auto " src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tml3Z0Y4OXJKYmtOSWNEeFJBPT0/p/parmak-arasi-freistep-unisex-terlik-vizon-5036918-sw1024sh1536.png" alt="Parmak Arası Freistep Unisex Terlik – Vizon" ></div></a></div><a href="https://www.sivarro.com/parmak-arasi-freistep-unisex-terlik-vizon" class="c-p-i-link" title="Parmak Arası Freistep Unisex Terlik – Vizon"><div class="brand">Sivarro</div><div class="title">Parmak Arası Freistep Unisex Terlik – Vizon</div><div class="price-group"><div class="prices"><div class="prices-area"><div class="list-price">1.200,00 TL</div><div style="color:#000; text-decoration:auto;" class="sale-price">739,00 TL</div></div></div></div></div></a></div></div><div class="owl-carousel-item"><div class="card-product mb-2"><div class="card-product-inner"><div class="renkSecenek"><img src="https://www.sivarro.com/theme/___sivarro/assets/images/colorfuls.png?v=1755528126"><span>11</span></div><div class="image-wrapper"><div class="discount">%61</div><a href="https://www.sivarro.com/boston-kadin-terlik-rahat-taban-sehir-stili-leopar" class="c-p-i-link" title="Boston Kadın Mantar Taban Terlik - Leopar"><div class="image"><img class="img-auto " src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tml3Z0Y4OXJKYmtOSWNEeFJBPT0/p/boston-kadin-terlik-rahat-taban-sehir-stili-leopar-21532721-sw1024sh1536.png" alt="Boston Kadın Mantar Taban Terlik - Leopar" ></div></a></div><a href="https://www.sivarro.com/boston-kadin-terlik-rahat-taban-sehir-stili-leopar" class="c-p-i-link" title="Boston Kadın Mantar Taban Terlik - Leopar"><div class="brand">Sivarro</div><div class="title">Boston Kadın Mantar Taban Terlik - Leopar</div><div class="price-group"><div class="prices"><div class="prices-area"><div class="list-price">1.999,00 TL</div><div style="color:#000; text-decoration:auto;" class="sale-price">789,00 TL</div></div></div></div></div></a></div></div><div class="owl-carousel-item"><div class="card-product mb-2"><div class="card-product-inner"><div class="renkSecenek"><img src="https://www.sivarro.com/theme/___sivarro/assets/images/colorfuls.png?v=1755528126"><span>9</span></div><div class="image-wrapper"><div class="discount">%38</div><a href="https://www.sivarro.com/parmak-arasi-freistep-unisex-terlik-krem" class="c-p-i-link" title="Parmak Arası Freistep Unisex Terlik – Krem"><div class="image"><img class="img-auto " src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tml3Z0Y4OXJKYmtOSWNEeFJBPT0/p/parmak-arasi-freistep-unisex-terlik-krem-24067211-sw1024sh1536.png" alt="Parmak Arası Freistep Unisex Terlik – Krem" ></div></a></div><a href="https://www.sivarro.com/parmak-arasi-freistep-unisex-terlik-krem" class="c-p-i-link" title="Parmak Arası Freistep Unisex Terlik – Krem"><div class="brand">Sivarro</div><div class="title">Parmak Arası Freistep Unisex Terlik – Krem</div><div class="price-group"><div class="prices"><div class="prices-area"><div class="list-price">1.200,00 TL</div><div style="color:#000; text-decoration:auto;" class="sale-price">739,00 TL</div></div></div></div></div></a></div></div><div class="owl-carousel-item"><div class="card-product mb-2"><div class="card-product-inner"><div class="renkSecenek"><img src="https://www.sivarro.com/theme/___sivarro/assets/images/colorfuls.png?v=1755528126"><span>8</span></div><div class="image-wrapper"><div class="discount">%38</div><a href="https://www.sivarro.com/fuga-comfort-unisex-cift-tokali-terlik-krem" class="c-p-i-link" title="Çift Tokalı Fuga Comfort Unisex Terlik – Krem"><div class="image"><img class="img-auto " src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tml3Z0Y4OXJKYmtOSWNEeFJBPT0/p/6a0efd309c735-6288165-sw1024sh1536.png" alt="Çift Tokalı Fuga Comfort Unisex Terlik – Krem" ></div></a></div><a href="https://www.sivarro.com/fuga-comfort-unisex-cift-tokali-terlik-krem" class="c-p-i-link" title="Çift Tokalı Fuga Comfort Unisex Terlik – Krem"><div class="brand">Sivarro</div><div class="title">Çift Tokalı Fuga Comfort Unisex Terlik – Krem</div><div class="price-group"><div class="prices"><div class="prices-area"><div class="list-price">1.199,00 TL</div><div style="color:#000; text-decoration:auto;" class="sale-price">739,00 TL</div></div></div></div></div></a></div></div><div class="owl-carousel-item"><div class="card-product mb-2"><div class="card-product-inner"><div class="renkSecenek"><img src="https://www.sivarro.com/theme/___sivarro/assets/images/colorfuls.png?v=1755528126"><span>9</span></div><div class="image-wrapper"><div class="discount">%40</div><a href="https://www.sivarro.com/vento-kadin-2-tokali-anatomik-taban-terlik-leopar-gri" class="c-p-i-link" title="Vento Kadın 2 Tokalı Terlik - Leopar Gri"><div class="image"><img class="img-auto " src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tml3Z0Y4OXJKYmtOSWNEeFJBPT0/p/6a01c1b70e7ea-71296979-sw1200sh1800.png" alt="Vento Kadın 2 Tokalı Terlik - Leopar Gri" ></div></a></div><a href="https://www.sivarro.com/vento-kadin-2-tokali-anatomik-taban-terlik-leopar-gri" class="c-p-i-link" title="Vento Kadın 2 Tokalı Terlik - Leopar Gri"><div class="brand">Sivarro</div><div class="title">Vento Kadın 2 Tokalı Terlik - Leopar Gri</div><div class="price-group"><div class="prices"><div class="prices-area"><div class="list-price">1.289,00 TL</div><div style="color:#000; text-decoration:auto;" class="sale-price">779,00 TL</div></div></div></div></div></a></div></div><div class="owl-carousel-item"><div class="card-product mb-2"><div class="card-product-inner"><div class="renkSecenek"><img src="https://www.sivarro.com/theme/___sivarro/assets/images/colorfuls.png?v=1755528126"><span>9</span></div><div class="image-wrapper"><div class="discount">%40</div><a href="https://www.sivarro.com/vento-kadin-2-tokali-anatomik-taban-terlik-leopar-taba" class="c-p-i-link" title="Vento Kadın 2 Tokalı Terlik - Leopar Taba"><div class="image"><img class="img-auto " src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tml3Z0Y4OXJKYmtOSWNEeFJBPT0/p/6a01c0c1b61f6-10318713-sw1200sh1800.png" alt="Vento Kadın 2 Tokalı Terlik - Leopar Taba" ></div></a></div><a href="https://www.sivarro.com/vento-kadin-2-tokali-anatomik-taban-terlik-leopar-taba" class="c-p-i-link" title="Vento Kadın 2 Tokalı Terlik - Leopar Taba"><div class="brand">Sivarro</div><div class="title">Vento Kadın 2 Tokalı Terlik - Leopar Taba</div><div class="price-group"><div class="prices"><div class="prices-area"><div class="list-price">1.289,00 TL</div><div style="color:#000; text-decoration:auto;" class="sale-price">779,00 TL</div></div></div></div></div></a></div></div><div class="owl-carousel-item"><div class="card-product mb-2"><div class="card-product-inner"><div class="renkSecenek"><img src="https://www.sivarro.com/theme/___sivarro/assets/images/colorfuls.png?v=1755528126"><span>11</span></div><div class="image-wrapper"><div class="discount">%61</div><a href="https://www.sivarro.com/boston-terlik-rahat-taban-sehir-stili-deri-krem" class="c-p-i-link" title="Boston Kadın Mantar Taban Terlik - Deri Bej"><div class="image"><img class="img-auto " src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tml3Z0Y4OXJKYmtOSWNEeFJBPT0/p/69e8ac591f9c7-28839650-sw1696sh2528.png" alt="Boston Kadın Mantar Taban Terlik - Deri Bej" ></div></a></div><a href="https://www.sivarro.com/boston-terlik-rahat-taban-sehir-stili-deri-krem" class="c-p-i-link" title="Boston Kadın Mantar Taban Terlik - Deri Bej"><div class="brand">Sivarro</div><div class="title">Boston Kadın Mantar Taban Terlik - Deri Bej</div><div class="price-group"><div class="prices"><div class="prices-area"><div class="list-price">1.999,00 TL</div><div style="color:#000; text-decoration:auto;" class="sale-price">789,00 TL</div></div></div></div></div></a></div></div><div class="owl-carousel-item"><div class="card-product mb-2"><div class="card-product-inner"><div class="renkSecenek"><img src="https://www.sivarro.com/theme/___sivarro/assets/images/colorfuls.png?v=1755528126"><span>3</span></div><div class="image-wrapper"><div class="discount">%51</div><a href="https://www.sivarro.com/kadin-pudra-cift-tokali-terlik-ortopedik-taban-gunluk-rahat-yazlik-terlik" class="c-p-i-link" title="Çift Tokalı Yazlık Kadın Terlik - Pudra"><div class="image"><img class="img-auto " src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tml3Z0Y4OXJKYmtOSWNEeFJBPT0/p/69e5fc117f362-76948141-sw832sh1248.png" alt="Çift Tokalı Yazlık Kadın Terlik - Pudra" ></div></a></div><a href="https://www.sivarro.com/kadin-pudra-cift-tokali-terlik-ortopedik-taban-gunluk-rahat-yazlik-terlik" class="c-p-i-link" title="Çift Tokalı Yazlık Kadın Terlik - Pudra"><div class="brand">Sivarro</div><div class="title">Çift Tokalı Yazlık Kadın Terlik - Pudra</div><div class="price-group"><div class="prices"><div class="prices-area"><div class="list-price">1.299,00 TL</div><div style="color:#000; text-decoration:auto;" class="sale-price">639,00 TL</div></div></div></div></div></a></div></div><div class="owl-carousel-item"><div class="card-product mb-2"><div class="card-product-inner"><div class="renkSecenek"><img src="https://www.sivarro.com/theme/___sivarro/assets/images/colorfuls.png?v=1755528126"><span>3</span></div><div class="image-wrapper"><div class="discount">%51</div><a href="https://www.sivarro.com/kadin-bordo-cift-tokali-terlik-ortopedik-taban-gunluk-rahat-yazlik-terlik" class="c-p-i-link" title="Çift Tokalı Yazlık Kadın Terlik - Kırmızı"><div class="image"><img class="img-auto " src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tml3Z0Y4OXJKYmtOSWNEeFJBPT0/p/69e5fb923e902-47402984-sw832sh1248.png" alt="Çift Tokalı Yazlık Kadın Terlik - Kırmızı" ></div></a></div><a href="https://www.sivarro.com/kadin-bordo-cift-tokali-terlik-ortopedik-taban-gunluk-rahat-yazlik-terlik" class="c-p-i-link" title="Çift Tokalı Yazlık Kadın Terlik - Kırmızı"><div class="brand">Sivarro</div><div class="title">Çift Tokalı Yazlık Kadın Terlik - Kırmızı</div><div class="price-group"><div class="prices"><div class="prices-area"><div class="list-price">1.299,00 TL</div><div style="color:#000; text-decoration:auto;" class="sale-price">639,00 TL</div></div></div></div></div></a></div></div><div class="owl-carousel-item"><div class="card-product mb-2"><div class="card-product-inner"><div class="renkSecenek"><img src="https://www.sivarro.com/theme/___sivarro/assets/images/colorfuls.png?v=1755528126"><span>3</span></div><div class="image-wrapper"><div class="discount">%51</div><a href="https://www.sivarro.com/kadin-gumus-cift-tokali-terlik-ortopedik-taban-gunluk-rahat-yazlik-terlik" class="c-p-i-link" title="Çift Tokalı Yazlık Kadın Terlik - Gümüş"><div class="image"><img class="img-auto " src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tml3Z0Y4OXJKYmtOSWNEeFJBPT0/p/69e5fb1379e2e-59968493-sw832sh1248.png" alt="Çift Tokalı Yazlık Kadın Terlik - Gümüş" ></div></a></div><a href="https://www.sivarro.com/kadin-gumus-cift-tokali-terlik-ortopedik-taban-gunluk-rahat-yazlik-terlik" class="c-p-i-link" title="Çift Tokalı Yazlık Kadın Terlik - Gümüş"><div class="brand">Sivarro</div><div class="title">Çift Tokalı Yazlık Kadın Terlik - Gümüş</div><div class="price-group"><div class="prices"><div class="prices-area"><div class="list-price">1.299,00 TL</div><div style="color:#000; text-decoration:auto;" class="sale-price">639,00 TL</div></div></div></div></div></a></div></div><div class="owl-carousel-item"><div class="card-product mb-2"><div class="card-product-inner"><div class="renkSecenek"><img src="https://www.sivarro.com/theme/___sivarro/assets/images/colorfuls.png?v=1755528126"><span>9</span></div><div class="image-wrapper"><div class="discount">%40</div><a href="https://www.sivarro.com/vento-kadin-3-tokali-anatomik-taban-terlik-leopar-kahve" class="c-p-i-link" title="Vento Kadın 3 Tokalı Terlik - Leopar Kahve"><div class="image"><img class="img-auto " src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tml3Z0Y4OXJKYmtOSWNEeFJBPT0/p/69e220dc7058f-25140577-sw1200sh1800.png" alt="Vento Kadın 3 Tokalı Terlik - Leopar Kahve" ></div></a></div><a href="https://www.sivarro.com/vento-kadin-3-tokali-anatomik-taban-terlik-leopar-kahve" class="c-p-i-link" title="Vento Kadın 3 Tokalı Terlik - Leopar Kahve"><div class="brand">Sivarro</div><div class="title">Vento Kadın 3 Tokalı Terlik - Leopar Kahve</div><div class="price-group"><div class="prices"><div class="prices-area"><div class="list-price">1.289,00 TL</div><div style="color:#000; text-decoration:auto;" class="sale-price">779,00 TL</div></div></div></div></div></a></div></div><div class="owl-carousel-item"><div class="card-product mb-2"><div class="card-product-inner"><div class="renkSecenek"><img src="https://www.sivarro.com/theme/___sivarro/assets/images/colorfuls.png?v=1755528126"><span>6</span></div><div class="image-wrapper"><div class="discount">%54</div><a href="https://www.sivarro.com/kadin-3-tokali-anatomik-taban-terlik-rahat-gunluk-yazlik-siyah" class="c-p-i-link" title="3 Tokalı Terlik Rahat Günlük Yazlık - Siyah"><div class="image"><img class="img-auto " src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tml3Z0Y4OXJKYmtOSWNEeFJBPT0/p/kadin-3-tokali-anatomik-taban-terlik-rahat-gunluk-yazlik-siyah-98867490-sw1024sh1536.png" alt="3 Tokalı Terlik Rahat Günlük Yazlık - Siyah" ></div></a></div><a href="https://www.sivarro.com/kadin-3-tokali-anatomik-taban-terlik-rahat-gunluk-yazlik-siyah" class="c-p-i-link" title="3 Tokalı Terlik Rahat Günlük Yazlık - Siyah"><div class="brand">Sivarro</div><div class="title">3 Tokalı Terlik Rahat Günlük Yazlık - Siyah</div><div class="price-group"><div class="prices"><div class="prices-area"><div class="list-price">1.599,00 TL</div><div style="color:#000; text-decoration:auto;" class="sale-price">739,00 TL</div></div></div></div></div></a></div></div><div class="owl-carousel-item"><div class="card-product mb-2"><div class="card-product-inner"><div class="renkSecenek"><img src="https://www.sivarro.com/theme/___sivarro/assets/images/colorfuls.png?v=1755528126"><span>6</span></div><div class="image-wrapper"><div class="discount">%54</div><a href="https://www.sivarro.com/kadin-3-tokali-anatomik-taban-terlik-rahat-gunluk-yazlik-haki" class="c-p-i-link" title="3 Tokalı Terlik Rahat Günlük Yazlık - Haki"><div class="image"><img class="img-auto " src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tml3Z0Y4OXJKYmtOSWNEeFJBPT0/p/kadin-3-tokali-anatomik-taban-terlik-rahat-gunluk-yazlik-haki-10405434-sw1024sh1536.png" alt="3 Tokalı Terlik Rahat Günlük Yazlık - Haki" ></div></a></div><a href="https://www.sivarro.com/kadin-3-tokali-anatomik-taban-terlik-rahat-gunluk-yazlik-haki" class="c-p-i-link" title="3 Tokalı Terlik Rahat Günlük Yazlık - Haki"><div class="brand">Sivarro</div><div class="title">3 Tokalı Terlik Rahat Günlük Yazlık - Haki</div><div class="price-group"><div class="prices"><div class="prices-area"><div class="list-price">1.599,00 TL</div><div style="color:#000; text-decoration:auto;" class="sale-price">739,00 TL</div></div></div></div></div></a></div></div><div class="owl-carousel-item"><div class="card-product mb-2"><div class="card-product-inner"><div class="renkSecenek"><img src="https://www.sivarro.com/theme/___sivarro/assets/images/colorfuls.png?v=1755528126"><span>6</span></div><div class="image-wrapper"><div class="discount">%54</div><a href="https://www.sivarro.com/kadin-3-tokali-anatomik-taban-terlik-rahat-gunluk-yazlik-bej" class="c-p-i-link" title="3 Tokalı Terlik Rahat Günlük Yazlık - Bej"><div class="image"><img class="img-auto " src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tml3Z0Y4OXJKYmtOSWNEeFJBPT0/p/kadin-3-tokali-anatomik-taban-terlik-rahat-gunluk-yazlik-bej-7726370-sw1024sh1536.png" alt="3 Tokalı Terlik Rahat Günlük Yazlık - Bej" ></div></a></div><a href="https://www.sivarro.com/kadin-3-tokali-anatomik-taban-terlik-rahat-gunluk-yazlik-bej" class="c-p-i-link" title="3 Tokalı Terlik Rahat Günlük Yazlık - Bej"><div class="brand">Sivarro</div><div class="title">3 Tokalı Terlik Rahat Günlük Yazlık - Bej</div><div class="price-group"><div class="prices"><div class="prices-area"><div class="list-price">1.599,00 TL</div><div style="color:#000; text-decoration:auto;" class="sale-price">739,00 TL</div></div></div></div></div></a></div></div><div class="owl-carousel-item"><div class="card-product mb-2"><div class="card-product-inner"><div class="renkSecenek"><img src="https://www.sivarro.com/theme/___sivarro/assets/images/colorfuls.png?v=1755528126"><span>6</span></div><div class="image-wrapper"><div class="discount">%54</div><a href="https://www.sivarro.com/kadin-3-tokali-anatomik-taban-terlik-rahat-gunluk-yazlik-vizon" class="c-p-i-link" title="3 Tokalı Terlik Rahat Günlük Yazlık - Vizon"><div class="image"><img class="img-auto " src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tml3Z0Y4OXJKYmtOSWNEeFJBPT0/p/kadin-3-tokali-anatomik-taban-terlik-rahat-gunluk-yazlik-vizon-73259529-sw1024sh1536.png" alt="3 Tokalı Terlik Rahat Günlük Yazlık - Vizon" ></div></a></div><a href="https://www.sivarro.com/kadin-3-tokali-anatomik-taban-terlik-rahat-gunluk-yazlik-vizon" class="c-p-i-link" title="3 Tokalı Terlik Rahat Günlük Yazlık - Vizon"><div class="brand">Sivarro</div><div class="title">3 Tokalı Terlik Rahat Günlük Yazlık - Vizon</div><div class="price-group"><div class="prices"><div class="prices-area"><div class="list-price">1.599,00 TL</div><div style="color:#000; text-decoration:auto;" class="sale-price">739,00 TL</div></div></div></div></div></a></div></div></div><div class="owl-single-button owl-single-button-prev custom-module-code-3693-prev"><button type="button" class="btn btn-owl" aria-label="left"><i class="fas fa-angle-left"></i></button></div><div class="owl-single-button owl-single-button-next custom-module-code-3693-next"><button type="button" class="btn btn-owl" aria-label="right"><i class="fas fa-angle-right"></i></button></div></div></div></div><div class="p-g-mod p-g-mod-t-55 p-g-mod-showcase  p-g-mod-trans   "><div class="p-g-mod-header  p-g-mod-header-p-0 "><div class="p-g-m-h-info"><div class="p-g-m-h-i-title">
+                            En Son Bu Ürünleri İnceledin
+                        </div></div></div><div class="p-g-mod-body  p-g-mod-body-p-0  "><div class="owl-wrapper"><div class="owl-carousel custom-module-code-3694"><div class="owl-carousel-item"><div class="card-product mb-2"><div class="card-product-inner"><div class="renkSecenek"><img src="https://www.sivarro.com/theme/___sivarro/assets/images/colorfuls.png?v=1755528126"><span>11</span></div><div class="image-wrapper"><div class="discount">%61</div><a href="https://www.sivarro.com/boston-unisex-mantar-taban-terlik-haki" class="c-p-i-link" title="Boston Unisex Mantar Taban Terlik - Haki"><div class="image"><img class="img-auto " src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tml3Z0Y4OXJKYmtOSWNEeFJBPT0/p/boston-unisex-mantar-taban-terlik-haki-82197959-sw1024sh1536.png" alt="Boston Unisex Mantar Taban Terlik - Haki" ></div></a></div><a href="https://www.sivarro.com/boston-unisex-mantar-taban-terlik-haki" class="c-p-i-link" title="Boston Unisex Mantar Taban Terlik - Haki"><div class="brand">Sivarro</div><div class="title">Boston Unisex Mantar Taban Terlik - Haki</div><div class="price-group"><div class="prices"><div class="prices-area"><div class="list-price">1.999,00 TL</div><div style="color:#000; text-decoration:auto;" class="sale-price">789,00 TL</div></div></div></div></div></a></div></div></div><div class="owl-single-button owl-single-button-prev custom-module-code-3694-prev"><button type="button" class="btn btn-owl" aria-label="left"><i class="fas fa-angle-left"></i></button></div><div class="owl-single-button owl-single-button-next custom-module-code-3694-next"><button type="button" class="btn btn-owl" aria-label="right"><i class="fas fa-angle-right"></i></button></div></div></div></div></div></div></div></div></div></div></section><section class="pattern-group pattern-group-t-0 pattern-group-p-product "><div class="container"><div class="pattern-group-body"><div class="row"><div class="col-list col-12 d-block col-sm-12 d-sm-block col-md-12 d-md-block col-lg-12 d-lg-block col-xl-12 d-xl-block p-g-b-c-0"><div class="p-g-b-c-wrapper"><div class="p-g-b-c-inner"><div class="p-g-mod p-g-mod-t-93 p-g-mod-showcase  p-g-mod-trans   "><div class="p-g-mod-header  p-g-mod-header-p-0 "><div class="p-g-m-h-info"><div class="p-g-m-h-i-title">
+                            Sizden Gelenler
+                        </div><div class="p-g-m-h-i-description">Sivarro’dan satın almış onaylı kullanıcı yorumları</div></div></div><div class="p-g-mod-body  p-g-mod-body-p-0  "><div class="owl-wrapper"><div class="owl-carousel custom-module-code-3750"><div class="owl-carousel-item"><div class="card-comment"><div class="info"><div class="stars"><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i></div><span class="date">12.07.2026</span></div><a class="product" href="https://www.sivarro.com/boston-kadin-terlik-rahat-taban-sehir-stili-leopar"><div class="image"><img class="img-auto " src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tml3Z0Y4OXJKYmtOSWNEeFJBPT0/p/boston-kadin-terlik-rahat-taban-sehir-stili-leopar-21532721-sw1024sh1536.png" alt="" ></div><div class="customer"><div class="name">F** K**</div><div class="comment">hem fiyatı hem desenleri harika</div></div></a></div></div><div class="owl-carousel-item"><div class="card-comment"><div class="info"><div class="stars"><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i></div><span class="date">28.06.2026</span></div><a class="product" href="https://www.sivarro.com/luxe-kadin-terlik-2-bantli-anatomik-taban-rahat-sik-terlik-gold"><div class="image"><img class="img-auto " src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tml3Z0Y4OXJKYmtOSWNEeFJBPT0/p/luxe-kadin-2-bantli-terlik-altin-68534093-sw1024sh1536.png" alt="" ></div><div class="customer"><div class="name">B** B**</div><div class="comment">Ürünü çok beğendim çok güzel ışıl ışıl parlıyor ve rahat</div></div></a></div></div><div class="owl-carousel-item"><div class="card-comment"><div class="info"><div class="stars"><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i></div><span class="date">06.06.2026</span></div><a class="product" href="https://www.sivarro.com/kadin-3-tokali-anatomik-taban-terlik-rahat-gunluk-yazlik-taba"><div class="image"><img class="img-auto " src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tml3Z0Y4OXJKYmtOSWNEeFJBPT0/p/kadin-3-tokali-anatomik-taban-terlik-rahat-gunluk-yazlik-taba-93038167-sw1024sh1536.png" alt="" ></div><div class="customer"><div class="name">N** T**</div><div class="comment">Göründüğünden çok daha güzel..</div></div></a></div></div><div class="owl-carousel-item"><div class="card-comment"><div class="info"><div class="stars"><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i></div><span class="date">04.06.2026</span></div><a class="product" href="https://www.sivarro.com/roselle-suet-minimal-kadin-gunluk-babet-altin"><div class="image"><img class="img-auto " src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tml3Z0Y4OXJKYmtOSWNEeFJBPT0/p/6998c51b0fd7d-70121517-sw1200sh1800.png" alt="" ></div><div class="customer"><div class="name">FATMA U.</div><div class="comment">ürün kaliteli hzlı kargo beğendim</div></div></a></div></div><div class="owl-carousel-item"><div class="card-comment"><div class="info"><div class="stars"><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i></div><span class="date">05.04.2026</span></div><a class="product" href="https://www.sivarro.com/monte-kadin-sneaker-hafif-premium-tasarim-siyah"><div class="image"><img class="img-auto " src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tml3Z0Y4OXJKYmtOSWNEeFJBPT0/p/monte-kadin-sneaker-hafif-premium-tasarim-siyah-2803376-sw1200sh1800.png" alt="" ></div><div class="customer"><div class="name">BURAK G.</div><div class="comment">ürün çok güzel kalıbı rahat</div></div></a></div></div><div class="owl-carousel-item"><div class="card-comment"><div class="info"><div class="stars"><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i></div><span class="date">30.03.2026</span></div><a class="product" href="https://www.sivarro.com/yuksek-mini-classic-suet-ici-kurklu-kadin-bot-siyah"><div class="image"><img class="img-auto " src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tml3Z0Y4OXJKYmtOSWNEeFJBPT0/p/yuksek-mini-classic-suet-ici-kurklu-kadin-bot-siyah-29209879-sw1024sh1536.png" alt="" ></div><div class="customer"><div class="name">F** K**</div><div class="comment">Harika hızlı kargo oldukça kaliteli</div></div></a></div></div><div class="owl-carousel-item"><div class="card-comment"><div class="info"><div class="stars"><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i></div><span class="date">28.03.2026</span></div><a class="product" href="https://www.sivarro.com/monte-kadin-sneaker-hafif-premium-tasarim-bej"><div class="image"><img class="img-auto " src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tml3Z0Y4OXJKYmtOSWNEeFJBPT0/p/monte-kadin-sneaker-hafif-premium-tasarim-bej-21307312-sw1200sh1800.png" alt="" ></div><div class="customer"><div class="name">M** D**</div><div class="comment">Gerçekten muhteşem bır ürün</div></div></a></div></div><div class="owl-carousel-item"><div class="card-comment"><div class="info"><div class="stars"><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i></div><span class="date">28.03.2026</span></div><a class="product" href="https://www.sivarro.com/monte-kadin-sneaker-hafif-premium-tasarim-vizon"><div class="image"><img class="img-auto " src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tml3Z0Y4OXJKYmtOSWNEeFJBPT0/p/monte-kadin-sneaker-hafif-premium-tasarim-vizon-6473574-sw1200sh1800.png" alt="" ></div><div class="customer"><div class="name">Z** Ö**</div><div class="comment">Harika ve çok rahat</div></div></a></div></div><div class="owl-carousel-item"><div class="card-comment"><div class="info"><div class="stars"><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i></div><span class="date">05.03.2026</span></div><a class="product" href="https://www.sivarro.com/monte-kadin-sneaker-hafif-premium-tasarim-bej"><div class="image"><img class="img-auto " src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tml3Z0Y4OXJKYmtOSWNEeFJBPT0/p/monte-kadin-sneaker-hafif-premium-tasarim-bej-21307312-sw1200sh1800.png" alt="" ></div><div class="customer"><div class="name">BUKET Ş.</div><div class="comment">Harika bayıldım, duruşu ve rengi tam beklediğim gibi çok tatlı 🤍 ayrıca güzel notunuz içinde teşekkür ederim 🙏🏻</div></div></a></div></div><div class="owl-carousel-item"><div class="card-comment"><div class="info"><div class="stars"><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i></div><span class="date">28.02.2026</span></div><a class="product" href="https://www.sivarro.com/monte-kadin-sneaker-hafif-premium-tasarim-siyah"><div class="image"><img class="img-auto " src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tml3Z0Y4OXJKYmtOSWNEeFJBPT0/p/monte-kadin-sneaker-hafif-premium-tasarim-siyah-2803376-sw1200sh1800.png" alt="" ></div><div class="customer"><div class="name">S** K**</div><div class="comment">Harika ürün farklı olmak gerek bazen teşekkürler sivarro</div></div></a></div></div><div class="owl-carousel-item"><div class="card-comment"><div class="info"><div class="stars"><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i></div><span class="date">21.02.2026</span></div><a class="product" href="https://www.sivarro.com/monte-kadin-sneaker-hafif-premium-tasarim-siyah"><div class="image"><img class="img-auto " src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tml3Z0Y4OXJKYmtOSWNEeFJBPT0/p/monte-kadin-sneaker-hafif-premium-tasarim-siyah-2803376-sw1200sh1800.png" alt="" ></div><div class="customer"><div class="name">S** Ö**</div><div class="comment">normalde kolay kolay yorum atmam üşenirim ama bu firmaya çok içimden geldi,kutusu;kutusunun içindeki paketlemesine kadar o kadar özenli hazırlamışlar ki emek diye buna denir kazandığınız para sonuna kadar size helal olsun **SİVARRO AİLESİ** ayakkabının kalitesini de beğendim</div></div></a></div></div><div class="owl-carousel-item"><div class="card-comment"><div class="info"><div class="stars"><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i></div><span class="date">23.02.2026</span></div><a class="product" href="https://www.sivarro.com/monte-kadin-sneaker-hafif-premium-tasarim-vizon"><div class="image"><img class="img-auto " src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tml3Z0Y4OXJKYmtOSWNEeFJBPT0/p/monte-kadin-sneaker-hafif-premium-tasarim-vizon-6473574-sw1200sh1800.png" alt="" ></div><div class="customer"><div class="name">S** T**</div><div class="comment">Güzel ayakta minnoş duruyor artık her ayakkabılar aynı biraz farklı olmak tercihimdir kargolama hızı da iyiyidi taytlarla vs güzel kombinle iyi duracaktır</div></div></a></div></div><div class="owl-carousel-item"><div class="card-comment"><div class="info"><div class="stars"><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star "></i></div><span class="date">21.02.2026</span></div><a class="product" href="https://www.sivarro.com/monte-kadin-sneaker-hafif-premium-tasarim-siyah"><div class="image"><img class="img-auto " src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tml3Z0Y4OXJKYmtOSWNEeFJBPT0/p/monte-kadin-sneaker-hafif-premium-tasarim-siyah-2803376-sw1200sh1800.png" alt="" ></div><div class="customer"><div class="name">GİZEM V. D.</div><div class="comment">Ürünün görünüşü hoş farklı görünüyor, çok ağır da değil kaba bir ayakkabı olmasına rağmen ama biraz ince</div></div></a></div></div><div class="owl-carousel-item"><div class="card-comment"><div class="info"><div class="stars"><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i></div><span class="date">03.02.2026</span></div><a class="product" href="https://www.sivarro.com/monte-kadin-sneaker-hafif-premium-tasarim-siyah"><div class="image"><img class="img-auto " src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tml3Z0Y4OXJKYmtOSWNEeFJBPT0/p/monte-kadin-sneaker-hafif-premium-tasarim-siyah-2803376-sw1200sh1800.png" alt="" ></div><div class="customer"><div class="name">A** B**</div><div class="comment">Mükemmel bi ayakkabı şiddetle tavsiye ediyorum güvenilir satıcı iş için aldım çokta rahat düşünmeden alın derim hemencikte kargoladılar teşekkürler sivarro ailesi 🫶</div></div></a></div></div><div class="owl-carousel-item"><div class="card-comment"><div class="info"><div class="stars"><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i></div><span class="date">17.01.2026</span></div><a class="product" href="https://www.sivarro.com/mini-bot-classic-suet-tuylu-kadin-bot-vizon-kislik-rahat-model"><div class="image"><img class="img-auto " src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tml3Z0Y4OXJKYmtOSWNEeFJBPT0/p/yuksek-mini-classic-suet-ici-kurklu-kadin-bot-vizon-39389634-sw1200sh1800.png" alt="" ></div><div class="customer"><div class="name">AYŞE N. F.</div><div class="comment">Ürün video ve fotoğraflarda göründüğü gibi geldi. O kadar kaliteli o kadar güzel özenli dikilmiş ki içinde ki o tüylerin gerçekliği ayakkabının ayakta ağırlık yapmaması baa yıllll dımmm 😍❤️🥰 hiç tereddüt etmeden alın aldırın @odym.aysenuruldgfkr hesabımdan paylaştım
+Fiyatının hakkını sonuna kadar veren bir ürün siz harikasınız . Bol kazançlar ❤️</div></div></a></div></div><div class="owl-carousel-item"><div class="card-comment"><div class="info"><div class="stars"><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i></div><span class="date">02.01.2026</span></div><a class="product" href="https://www.sivarro.com/unisex-tokali-terlik-taba"><div class="image"><img class="img-auto " src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tml3Z0Y4OXJKYmtOSWNEeFJBPT0/p/69ef7a27da168-21724153-sw1024sh1536.png" alt="" ></div><div class="customer"><div class="name">F** Ç**</div><div class="comment">günlük kullanım için çok güzel bir terlik yazın her gün giyilir her yerde giyilir</div></div></a></div></div><div class="owl-carousel-item"><div class="card-comment"><div class="info"><div class="stars"><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i></div><span class="date">02.01.2026</span></div><a class="product" href="https://www.sivarro.com/ultra-mini-classic-suet-tuylu-kadin-bot-gri"><div class="image"><img class="img-auto " src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tml3Z0Y4OXJKYmtOSWNEeFJBPT0/p/ultra-mini-classic-suet-ici-kurklu-kadin-bot-gri-79782792-sw1024sh1536.png" alt="" ></div><div class="customer"><div class="name">E** B**</div><div class="comment">Kürkü harika sıcak tutuyor kendi numaranızı alın</div></div></a></div></div><div class="owl-carousel-item"><div class="card-comment"><div class="info"><div class="stars"><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i></div><span class="date">02.01.2026</span></div><a class="product" href="https://www.sivarro.com/bagcikli-suet-tuylu-kadin-bot-bej"><div class="image"><img class="img-auto " src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tml3Z0Y4OXJKYmtOSWNEeFJBPT0/p/bagcikli-kislik-suet-ici-kurklu-kadin-bot-bej-44402899-sw1024sh1536.png" alt="" ></div><div class="customer"><div class="name">G** P**</div><div class="comment">Bu modeli 2021 yılında başka bir yerden almıştım. O zamanda severek kullanmıştım şimdi de sorunsuz geldi.</div></div></a></div></div><div class="owl-carousel-item"><div class="card-comment"><div class="info"><div class="stars"><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i></div><span class="date">02.01.2026</span></div><a class="product" href="#"><div class="image"><img class="img-auto " src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tml3Z0Y4OXJKYmtOSWNEeFJBPT0/p/6a0edf76431e9-83514316-sw1696sh2528.png" alt="" ></div><div class="customer"><div class="name">E** Ö**</div><div class="comment">çok şık bayıldımm tabanı rahat</div></div></a></div></div><div class="owl-carousel-item"><div class="card-comment"><div class="info"><div class="stars"><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i><i class="fa fa-star active"></i></div><span class="date">02.01.2026</span></div><a class="product" href="https://www.sivarro.com/mini-bot-classic-suet-tuylu-kadin-bot-vizon-kislik-rahat-model"><div class="image"><img class="img-auto " src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tml3Z0Y4OXJKYmtOSWNEeFJBPT0/p/yuksek-mini-classic-suet-ici-kurklu-kadin-bot-vizon-39389634-sw1200sh1800.png" alt="" ></div><div class="customer"><div class="name">TÜLİN S.</div><div class="comment">içindeki tüy kopmuyor,ayak içinde kalmıyor,içi sert değil giymesi rahat. Gayet memnun kaldım.Tesekkurler</div></div></a></div></div></div><div class="owl-single-button owl-single-button-prev custom-module-code-3750-prev"><button type="button" class="btn btn-owl" aria-label="left"><i class="fas fa-angle-left"></i></button></div><div class="owl-single-button owl-single-button-next custom-module-code-3750-next"><button type="button" class="btn btn-owl" aria-label="right"><i class="fas fa-angle-right"></i></button></div></div></div></div></div></div></div></div></div></div></section><section class="pattern-group pattern-group-t-0 pattern-group-p-product "><div class="no-container"><div class="pattern-group-body"><div class="p-g-b-c-wrapper"><div class="p-g-b-c-inner"><div class="p-g-mod p-g-mod-t-29 p-g-mod-footer  p-g-mod-trans   "><div class="p-g-mod-body  p-g-mod-body-p-0  "><div class="guvenli-footer"><div class="container"><div class="guvenli-side"><div class="items"><img src="https://www.sivarro.com/theme/___sivarro/assets/icons/store-icon.svg?v=1755528128" alt="footer Teslim & Değişim ikonu"><div class="g-text-block"><div class="title">Geniş Ürün Seçeneği</div><div class="text">Dünya markalarının en sevilen modelleri seninle.</div></div></div><div class="items"><img src="https://www.sivarro.com/theme/___sivarro/assets/icons/hizli-icon.svg?v=1755528128" alt="footer Hızlı Teslimat ikonu"><div class="g-text-block"><div class="title">Hızlı Teslimat</div><div class="text">Siparişleriniz için aynı gün kargo fırsatı!</div></div></div><div class="items"><img src="https://www.sivarro.com/theme/___sivarro/assets/icons/secure-icon.svg?v=1755528128" alt="footer Güvenli Alışveriş ikonu"><div class="g-text-block"><div class="title">Güvenli Alışveriş</div><div class="text">Güvenli ve kolay alışveriş imkanı!</div></div></div><div class="items"><img src="https://www.sivarro.com/theme/___sivarro/assets/icons/destek-icon.svg?v=1755528128" alt="footer 7 / 24 DESTEK ikonu"><div class="g-text-block"><div class="title">Müşteri Hizmetleri</div><div class="text">Soru ve sorunlarınız için hızlı destek imkanı.</div></div></div></div></div></div></div><footer><div class="bb"><div class="container"><div class="row"><div class="col-md-4"><div class="logo-area"><a href="https://www.sivarro.com" class="logo"><img src="https://cdn.qukasoft.com/f/727448/b3NXVUpHVTArYkI4Tmk4Z1RvTTZKYms9/l/footer-logo-19031295-sw1265sh329.png" alt="" /></a></div><div class="f-title">Bize Ulaşın</div><div class="contact-block"><div class="contact-item"><a href="tel:0 530 154 59 84"><img src="https://www.sivarro.com/theme/___sivarro/assets/icons/headset-light.svg?v=1755528128">
+                                            0 530 154 59 84
+                                        </a></div><div class="contact-item"><a href="/cdn-cgi/l/email-protection#563f38303916253f20372424397835393b"><img src="https://www.sivarro.com/theme/___sivarro/assets/icons/envelope-light.svg?v=1755528128" width="24px">
+                                            <span class="__cf_email__" data-cfemail="553c3b333a15263c233427273a7b363a38">[email&#160;protected]</span>
+                                        </a></div></div><div class="f-title">Bizi Takip Edin</div><div class="social-side"><a href="https://www.facebook.com/profile.php?id=61570822032940" class="fb" target="_blank"><img src="https://www.sivarro.com/theme/___sivarro/assets/icons/facebook-logo-light.svg?v=1755528128"></a><a href="https://www.instagram.com/sivarroshoe/" class="ins" target="_blank"><img src="https://www.sivarro.com/theme/___sivarro/assets/icons/instagram-logo-light.svg?v=1755528128"
+                                </a><a href="https://www.youtube.com" class="yt" target="_blank"><img src="https://www.sivarro.com/theme/___sivarro/assets/icons/youtube-logo-light.svg?v=1755528128"></a></div><div class="f-title">Mobil Uygulamalarımız</div><div class="app-side"><a href="https://apps.apple.com/tr/app/sivarro/id6749766034?l=tr" target="_blank"><img src="https://www.sivarro.com/theme/___sivarro/assets/images/appstore.png?v=1755528126 alt=" Mobil uygulamamızın logosu""></a><a href="https://play.google.com/store/apps/details?id=com.qukasoft.sivarro" target="_blank"><img src="https://www.sivarro.com/theme/___sivarro/assets/images/gplay.png?v=1755528126" alt="Mobil uygulamamızın logosu"></a></div></div><div class="col-md-8"><div class="info"><div class="row"><div class="col-md-4"><div class="title text-left" onclick="mobileFooterToggle(1)">Kurumsal</div><div class="fs f1"><ul><li><a href="https://www.sivarro.com/hakkimizda">
+                                                        Hakkımızda
+                                                    </a></li><li><a href="https://www.sivarro.com/satis-sozlesmesi">
+                                                        Mesafeli Satış Sözleşmesi
+                                                    </a></li><li><a href="https://www.sivarro.com/gizlilik-sozlesmesi">
+                                                        Gizlilik Politikası
+                                                    </a></li><li><a href="https://www.sivarro.com/mobil-uygulama">
+                                                        Mobil Uygulama
+                                                    </a></li><li><a href="https://www.sivarro.com/havale-bildirimleri">
+                                                        Havale Bildirimleri
+                                                    </a></li><li><a href="https://www.sivarro.com/siparis-takip">
+                                                        Sipariş Takip
+                                                    </a></li><li><a href="https://www.sivarro.com/sikca-sorulan-sorular">
+                                                        Sıkça Sorulan Sorular
+                                                    </a></li></ul></div></div><div class="col-md-4"><div class="title text-left" onclick="mobileFooterToggle(2)">Kategoriler</div><div class="fs f2"><ul><li><a href="https://www.sivarro.com/terlik">
+                                                        TERLİK
+                                                    </a></li><li><a href="https://www.sivarro.com/sneaker">
+                                                        SPOR
+                                                    </a></li><li><a href="https://www.sivarro.com/bot">
+                                                        BOT
+                                                    </a></li><li><a href="https://www.sivarro.com/babet">
+                                                        BABET
+                                                    </a></li><li><a href="https://www.sivarro.com/topuklu-ayakkabi">
+                                                        TOPUKLU
+                                                    </a></li><li><a href="https://www.sivarro.com/sandalet">
+                                                        SANDALET
+                                                    </a></li><li><a href="https://www.sivarro.com/outlet">
+                                                        OUTLET
+                                                    </a></li></ul></div></div><div class="col-md-4"><div class="title text-left" onclick="mobileFooterToggle(3)">Bize Ulaşın</div><div class="fs f3"><div><span style="color:#27ae60;"><strong>WhatsApp:</strong></span>&nbsp;<a href="https://wa.me/905301545984?text=Merhaba%2C%20bilgi%20almak%20istiyorum.">0530 154 59 84</a></div><div>&nbsp;</div><div class="contact-info"><div class="contact-item"><i class="fab fa-instagram"></i><div>İSMETPAŞA MAH. 136. SK. NO: 67 İSTANBUL/SULTANGAZİ</div></div></div></div></div></div></div></div></div></div></div><div class="bar"><div class="container"><div class="row"><div class="col-md-9"><p>Bilgileriniz&nbsp;<span style="color:#27ae60;"><strong>256bit</strong>&nbsp;</span><span style="color:#27ae60;"><strong>SSL </strong></span><span style="color:#000000;">sertifikası</span> ile korunmaktadır.<br /><img alt="" src="https://cdn.qukasoft.com/f/727448/bzR6WWFuWTM5SzQ4TmkwZ0g0TnI/images/uploads/iyzico-pay-horizontal-color-eng.png" style="width: 71px; height: 25px;" /></p></div><div class="col-md-3"><div class="right-image"><img class="img-auto cards" src="https://www.sivarro.com/theme/___sivarro/assets/images/cards.png?v=1755528126" alt="" ></div></div></div></div></div></footer></div></div></div></div></div></div></section><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="text/javascript">
+        var SITE_CONFIG = {
+            mode: 'production',
+            page: 'product',
+            url: 'https://www.sivarro.com',
+            baseUrl: 'https://www.sivarro.com',
+            cartUrl: 'https://www.sivarro.com/sepet',
+            cartShippingType: 'in_order',
+            paymentUrl: 'https://www.sivarro.com/odeme',
+            defaultCountry: 'TR',
+            preferredCountries: ["TR"],
+            onlyCountries: ["TR"],
+            userIsLogin: false,
+            userId: 0,
+            lazyLoadEffectTime: '0',
+            token: 'Cjq68uPvol0YHOGGBgJc3d99c56059050e63f81393f2096473d6HAcSerWqptOwwvfR1kCrLIdDG3askE2KMFqi2qmVR/SnM/JjWw4k1f4GNccfVsZ+2MIesicQq0qZGJBaEcf6ynvQcosyohCKvKqyR0p8nqWPlZFh+v0fCMYwMdzrlNID+TvHA67S+jHwhyV4P2MOo79XH/De+iYH06VW9tqfoTiscm21VEjkQ81+159213Jj3j0w8qk7llwOLrZPBKfsgmP11lCfE8Uw3MQb7lo5GR5hVA==7WmCJMcyyM',
+            accept: 'text/html,application/json,*/*',
+            pageKey: '88120065e507ca1292d54f421a24ab9b9QxNBxxrr1xnICP/iXytEvxldzzsP0VAtA5t3LxPb7oBzTQOv/e5JfDbU1vZE8rMOOGSL1/B3oEpzBPcTxCqDYuP5pYOZhOYBHT32pv++IwP8/azjyMg+M98A+l15GJjhMUEcy0vJczLxhX+gEk0B849gxY0qhrCC+kESncwrF4dy7lOXVqzf+jcNoIk0rO1CgEvEyar5aht7u1P/FVgxllwcpXTjvtSgjjl+y8OP5o+92fNulh5RBn2PiGMO1SEhWQsGn7HGgjkC2Ev51iR4wLoPp4NrNDWsRdVh4hbRzG8JGg=',
+            paymentStep: '0',
+            orderCode: '',
+            contentId: '587',
+            contentTitle: 'Boston Unisex Mantar Taban Terlik - Haki',
+            contentType: '',
+            priceRounding: {
+                active: false,
+                type: '1',
+                direction: '0'
+            },
+            currency: {
+                name: 'Türk Lirası',
+                symbol: 'TL',
+                code: 'TRY',
+                decimal: '2',
+                displayType: '0'
+            },
+            listPriceRule: {
+                active: false,
+                limit: '15'
+            },
+            analytics: {
+                mode: 'production',
+                sessionInterval: '1800',
+                liveVisitInterval: '600',
+                cookieSettings: 'Secure; SameSite=None; path=/;',
+                apiUrl: 'https://analytics.qs-apps.com/',
+                trackingId: '4332997257052',
+                visitorDetails: 'eyJkb21haW4iOiJzaXZhcnJvLmNvbSIsImlzX2JvdCI6ZmFsc2UsInVzZXJfYWdlbnQiOiJNb3ppbGxhXC81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXRcLzUzNy4zNiAoS0hUTUwsIGxpa2UgR2Vja28pIENocm9tZVwvMTI0LjAgU2FmYXJpXC81MzcuMzYiLCJ1dG1fc291cmNlIjpmYWxzZSwidXRtX21lZGl1bSI6ZmFsc2UsInV0bV9jYW1wYWlnbiI6ZmFsc2UsInV0bV90ZXJtIjpmYWxzZSwidXRtX2NvbnRlbnQiOmZhbHNlLCJjaGFubmVsIjowLCJ0cmFmZmljX3NvdXJjZSI6ZmFsc2UsInNlYXJjaF9rZXl3b3JkIjpmYWxzZSwibm90aWZpY2F0aW9uX2NhbXBhaWduX2NvZGUiOmZhbHNlLCJhZmZpbGlhdGVfaW5mbHVlbmNlcl9jb2RlIjpmYWxzZSwidXNlcl9jb2xsZWN0aW9uX2NvZGUiOmZhbHNlfQ==',
+                namespace: {
+                    localCurrentSession: 'qanalytcs_session_',
+                    localDailyVisit: 'qanalytcs_uniquev',
+                    localLiveVisits: 'qanalytcs_activities',
+                    localTimeSpent: 'qanalytcs_lstra',
+                    cookieTest: 'qanalytcs_test',
+                    cookieTimeSpent: 'qanalytcs_tts',
+                    cookieScreenWidth: 'qanalytcs_scrnwdth'
+                }
+            },
+            datepicker: {
+                load: false,
+                css: 'https://www.sivarro.com/template/smart/default/assets/plugins/datepicker/datepicker.css?v=1673397887',
+                js: 'https://www.sivarro.com/template/smart/default/assets/plugins/datepicker/datepicker.js?v=1673398008',
+            },
+            simplebar: {
+                load: false,
+                js: 'https://www.sivarro.com/template/smart/default/assets/plugins/simplebar/simplebar.js?v=1673398960',
+            },
+            fancybox: {
+                load: false,
+                js: 'https://www.sivarro.com/template/smart/default/assets/plugins/fancybox/fancybox.js?v=1673399778',
+            },
+            imageupload: {
+                load: false,
+                js: 'https://www.sivarro.com/template/smart/default/assets/plugins/imageupload/upload.js?v=1687644019',
+            },
+            croppie: {
+                load: false,
+                css: 'https://www.sivarro.com/template/smart/default/assets/plugins/croppie/croppie.css?v=1684160415',
+                js: 'https://www.sivarro.com/template/smart/default/assets/plugins/croppie/croppie.js?v=1684193487',
+                js2: 'https://www.sivarro.com/template/smart/default/assets/plugins/croppie/exif.js?v=1684160405',
+            },
+            tweenmax: {
+                load: false,
+                js: 'https://www.sivarro.com/template/smart/default/assets/plugins/tweenmax/TweenMax.min.js?v=1690415568',
+            },
+            form: {
+                load: false,
+                js: 'https://www.sivarro.com/template/smart/default/assets/form.js?v=1790058138',
+            },
+            mask: {
+                load: false,
+                js: 'https://www.sivarro.com/template/smart/default/assets/plugins/inputmask/jquery.inputmask.min.js?v=1771941751',
+            },
+            print: {
+                load: false,
+                js: 'https://www.sivarro.com/template/smart/default/assets/print.js?v=1790058138',
+            },
+        };
+        var LANG_HELPER = {"success":"Ba\u015far\u0131l\u0131!","alert":"Uyar\u0131!","error":"Hata!","ok":"Tamam","errorMsg":"\u0130\u015flem ger\u00e7ekle\u015ftirilirken bir hata olu\u015ftu!","login":"Giri\u015f Yap","variantMsg":"Sepete eklemek i\u00e7in l\u00fctfen \"{%x%}\" se\u00e7in.","specialFieldMsg":"Sepete eklemek i\u00e7in l\u00fctfen \"{%x%}\" alan\u0131n\u0131 doldurun.","keepShopping":"Al\u0131\u015fveri\u015fe Devam Et","goCart":"Sepete Git","select":"Se\u00e7in","priceAlertVariantMsg":"Fiyat alarm\u0131 olu\u015fturmak i\u00e7in l\u00fctfen \"{%x%}\" se\u00e7in.","selectProduct":"L\u00fctfen bir \u00fcr\u00fcn se\u00e7in.","copySuccess":"Kopyaland\u0131!","fillInRequiredFields":"L\u00fctfen zorunlu alanlar\u0131 doldurun.","areYouSureToDelete":"Silmek istedi\u011finize emin misin?","cancel":"Vazge\u00e7","deleteIt":"Eminim, Sil!"};
+    </script><script type="text/javascript" src="https://www.sivarro.com/template/smart/default/assets/plugins/bootstrap.js?v=1774571286" /></script><script type="text/javascript" src="https://www.sivarro.com/template/smart/default/assets/scripts.min.js?v=1790058138" /></script><link type="text/css" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet"><link rel="stylesheet" type="text/css" href="https://www.sivarro.com/template/smart/default/assets/plugins/bootstrap.helper.min.css?v=1721165315" /><link rel="stylesheet" type="text/css" href="https://www.sivarro.com/template/smart/default/assets/plugins/fontawesome/css/all.min.css?v=1665957357" /><link rel="stylesheet" type="text/css" href="https://www.sivarro.com/template/smart/default/assets/plugins/flagicon/all.min.css?v=1577975374"><script type="text/javascript">
+    browserAlert("Nereye Gittin? ");
+</script><div class="qk-app-campaign-bell" tabindex="-1"
+     data-auto-count="true"
+     data-notification-count="1"
+     data-position-type="fixed"
+     data-position-element=""
+     data-position-element-location="inside_bottom"
+     data-desktop="true"
+     data-mobile="true"><div class="campaign-icon"><i class="far fa-bell bell-icon"></i><span class="count">1</span></div><div class="campaign-gifts" style="display: none"><div class="title">
+            Fırsatlar
+        </div><div class="items"><div class="item clickable unread"
+                     data-id="164"
+                     data-read="false"
+                     data-target="https://www.sivarro.com/mobil-uygulama"><span style="color: #333333">Mobil uygulamaya özel %5 indirim!</span><span class="notify"></span></div></div></div></div><style type="text/css">
+    .qk-app-campaign-bell {
+        display: none;
+                    position: fixed;
+            z-index: 9;
+            }
+    .qk-app-campaign-bell.active {
+        z-index: 9999
+    }
+    .qk-app-campaign-bell .campaign-icon {
+        cursor: pointer;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #ffffff;
+        border: 1px solid #dddddd;
+        border-radius: 5px;
+        width: 45px;
+        height: 45px;
+                    -webkit-box-shadow: 0px 0px 20px 2px rgba(0,0,0,0.15);
+            -moz-box-shadow: 0px 0px 20px 2px rgba(0,0,0,0.15);
+            box-shadow: 0px 0px 20px 2px rgba(0,0,0,0.15);
+            }
+    .qk-app-campaign-bell .campaign-icon .bell-icon {
+        font-size: 22px;
+        color: #333333;
+        animation: qk_app_wiggle 5s linear infinite;
+    }
+    @keyframes qk_app_wiggle {
+        0%, 1% {
+            transform: rotateZ(0);
+        }
+        3% {
+            transform: rotateZ(-15deg);
+        }
+        5% {
+            transform: rotateZ(10deg);
+        }
+        7% {
+            transform: rotateZ(-10deg);
+        }
+        8% {
+            transform: rotateZ(6deg);
+        }
+        12% {
+            transform: rotateZ(-4deg);
+        }
+        16%, 30% {
+            transform: rotateZ(0);
+        }
+        30%, 100% {
+            transform: rotateZ(0);
+        }
+    }
+    .qk-app-campaign-bell .campaign-icon .count {
+        border-radius: 50%;
+        background: #f00000;
+        color: #ffffff;
+        position: absolute;
+        right: -5px;
+        top: -5px;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        font-size: 12px;
+        font-weight: 600;
+    }
+    .qk-app-campaign-bell .campaign-gifts {
+        display: flex;
+        flex-direction: column;
+        -webkit-box-shadow: 0px 0px 20px 2px rgba(0,0,0,0.35);
+        -moz-box-shadow: 0px 0px 20px 2px rgba(0,0,0,0.35);
+        box-shadow: 0px 0px 20px 2px rgba(0,0,0,0.35);
+        background: #fff;
+        border-radius: 15px;
+        width: 280px;
+        position: absolute;
+        outline: 0 !important;
+        z-index: 9999;
+    }
+            .qk-app-campaign-bell .campaign-gifts {
+            bottom: calc(45px + 8px);
+            left: 0
+        }
+        .qk-app-campaign-bell .campaign-gifts .title {
+        font-size: 15px;
+        font-weight: 600;
+        color: #c70a0a;
+        padding: 15px;
+        border-bottom: 1px solid #dedede;
+    }
+    .qk-app-campaign-bell .campaign-gifts .items {
+        max-height: 210px;
+        width: 100%;
+        overflow-y: auto;
+    }
+    .qk-app-campaign-bell .campaign-gifts .items .item {
+        width: 100%;
+        padding: 15px 20px 15px 15px;
+        color: #111;
+        border-bottom: 1px solid #dedede;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        font-size: 13px;
+        cursor: pointer;
+        position: relative;
+    }
+    .qk-app-campaign-bell .campaign-gifts .items .item:last-child {
+        border-bottom: 0
+    }
+    .qk-app-campaign-bell .campaign-gifts .items .item:hover {
+        background: rgba(0, 0, 0, .05);
+    }
+    .qk-app-campaign-bell .campaign-gifts .items .item.unread {
+        font-weight: 500;
+    }
+    .qk-app-campaign-bell .campaign-gifts .items .item .notify {
+        background: red;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        position: absolute;
+        right: 10px;
+        display: none;
+    }
+    .qk-app-campaign-bell .campaign-gifts .items .item.unread .notify {
+        display: block;
+    }
+    .qk-app-campaign-bell .campaign-gifts .items .item .copy-text {
+        position: absolute;
+        background: rgba(255,255,255, .7);
+        left: 0;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        display: none;
+        justify-content: center;
+        align-items: center;
+    }
+    .qk-app-campaign-bell .campaign-gifts .items .item .copy-text span {
+        background: #eee;
+        padding: 6px 8px;
+        border-radius: 10px;
+        color: #333;
+        font-size: 13px;
+        font-weight: 500;
+    }
+    .qk-app-campaign-bell .campaign-gifts .items .item .copy-text span i {
+        margin-right: 10px
+    }
+    .qk-app-campaign-bell .campaign-gifts .items .item:hover .copy-text {
+        display: flex;
+    }
+    @media (min-width: 992px){
+        .qk-app-campaign-bell {
+            left: 15px;right: auto;top: auto;bottom: 15px;transform: scale(1);transform-origin: left bottom;margin: 0px;
+                    }
+    }
+    @media (max-width: 992px){
+        .qk-app-campaign-bell {
+            left: 15px;right: auto;top: auto;bottom: 65px;transform: scale(0.9);transform-origin: left bottom;margin: 0px;
+                    }
+    }
+</style><script type="text/javascript">
+    $( window ).on("load", function() {
+        customAppEffects({"trigger_click_button_label":"","trigger_custom_event_value":"","trigger_scroll_type":"percentage","trigger_scroll_value":"5","trigger_status":"0","trigger_time_on_page_value":"1","trigger_type":"page_load"}, function () {
+            let element = '.qk-app-campaign-bell';
+
+            // check current screen sizes
+            let screen_width = (window.innerWidth || document.documentElement.clientWidth);
+            if ((screen_width >= 992 && !$(element).data('desktop')) ||
+                (screen_width < 992 && !$(element).data('mobile'))){
+                return
+            }
+
+            customAppScreenPosition(element);
+
+            // click campaign icon to show gifts
+            $(element).find('.campaign-icon').on('click', function (){
+                $(element).find('.campaign-gifts').fadeToggle(250);
+                $(element).toggleClass('active');
+            })
+
+            // click outside gifts box to hide
+            $(element).on('focusout', function () {
+                $(element).find('.campaign-gifts').fadeOut(250);
+                $(element).removeClass('active');
+            });
+
+            // copy text
+            let changeCopyIcon = function (e, removeIcon, addIcon){
+                $(e).find('i').removeClass(removeIcon).addClass(addIcon);
+            }
+            $(element).find('.copy-text').on('click', function (){
+                copyElement($(this).data('target'), false)
+                changeCopyIcon(this, 'fa-copy', 'fa-check');
+                setTimeout(changeCopyIcon.bind(null, this, 'fa-check', 'fa-copy'), 1000)
+            })
+
+            // click item
+            $(element).find('.campaign-gifts').find('.clickable').on('click', function (){
+                let goToLink = function (elem){
+                    if ($(elem).data('target').length > 0){
+                        window.location = $(elem).data('target');
+                    }else if ($(elem).hasClass('unread')){
+                        $(elem).find('.notify').remove()
+                        $(elem).removeClass('unread')
+                        let count = $(element).data('notification-count');
+                        if ($(element).data('auto-count') && count > 0){
+                            $(element).data('notification-count', count - 1);
+                            $(element).find('.campaign-icon').find('.count').html(count - 1)
+                            if (count === 1){
+                                $(element).find('.campaign-icon').find('.count').remove();
+                            }
+                        }
+                    }
+                }
+                let item = this;
+                // bu linke tıklandı
+                if ($(item).data('read')){
+                    goToLink(item);
+                }else{
+                    cookieProcess('set', {
+                        'name': "campaign_bell_"+($(this).data('id').toString()),
+                        'value': 1,
+                        "minutes": 60 * 24 * 365
+                    }, function (a){
+                        goToLink(item);
+                    })
+                }
+
+            })
+        });
+    });
+</script><div class="overlay d-none"><div class="spinner-border spin" role="status"><span class="sr-only">Yükleniyor...</span></div></div><div class="op-black-2"></div><script type="text/javascript">
+        var swal_alert_timer = 10;
+    </script><script type="text/javascript" src="https://www.sivarro.com/theme/___sivarro/assets/xzoom.js?v=1755528128" defer/></script><script type="text/javascript" src="https://www.sivarro.com/theme/___sivarro/assets/scripts.js?v=1755702195" defer/></script><script type="text/javascript" src="https://www.sivarro.com/theme/___sivarro/assets/custom.js?v=1755693094" defer/></script><script type="text/javascript" src="https://www.sivarro.com/theme/___sivarro/assets/default.js?v=1755528371" defer></script><script type="text/javascript">
+            $(function () {
+                $('.addons-marquee-bar').marquee({
+                    pauseOnHover: true,
+                    direction: 'left',
+                    duration: 15000,
+                    duplicated: true,
+                    startVisible: true,
+                    delayBeforeStart: 0
+                });
+            });
+        </script><script type="text/javascript">
+        const PRODUCT_PAGE_DATA = {
+             price: '789,00 TL',
+                            listPrice: '1.999,00 TL',
+                                                                variants: {"count":1,"summary":{"36":{"in_stock":true,"quantity":"1898","price_dif":false,"price_list":0,"barcode":"8073995983346"},"37":{"in_stock":true,"quantity":"1896","price_dif":false,"price_list":0,"barcode":"8073995175673"},"38":{"in_stock":true,"quantity":"1893","price_dif":false,"price_list":0,"barcode":"8073995704514"},"39":{"in_stock":true,"quantity":"1896","price_dif":false,"price_list":0,"barcode":"8073995924042"},"40":{"in_stock":true,"quantity":"1894","price_dif":false,"price_list":0,"barcode":"8073995936212"},"41":{"in_stock":true,"quantity":"1894","price_dif":false,"price_list":0,"barcode":"8073995502240"},"42":{"in_stock":true,"quantity":"1895","price_dif":false,"price_list":0,"barcode":"8073995783854"},"43":{"in_stock":true,"quantity":"1894","price_dif":false,"price_list":0,"barcode":"8073995495009"},"44":{"in_stock":true,"quantity":"1897","price_dif":false,"price_list":0,"barcode":"8073995918904"}}}
+                    }
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('dom Yüklendi');
+            console.log(PRODUCT_PAGE_DATA);
+                    changeProductPageVariant(var4,var5,var6);
+        });
+
+        
+        function changeVariant(var1,var2,var3,var4,var5,var6){
+            
+            changeProductPageVariant(var1,var2,var3,var4,var5,var6);
+            console.log(var2,var3,var4,var5,var6);
+               console.log(var4);
+        }
+        
+        
+        $(".social-share-special").jsSocials({
+            showLabel: false,
+            showCount: false,
+            shares: ["twitter", "facebook", "googleplus", "linkedin", "pinterest", "whatsapp"]
+        });
+        var urunKodu = document.querySelector('.value.product-code').textContent;
+        
+        console.log(urunKodu);
+        
+        
+
+    fetch(url)
+        .then(response => response.json()) 
+        .then(data => {
+            console.log(data); 
+        })
+        .catch(error => {
+            console.error('Hata:', error);
+        });
+    </script><script type="text/javascript">
+        $(function(){ 
+            createOwlCarousel('custom-module-code-3693', {"0":{"items":2},"576":{"items":2},"768":{"items":5},"992":{"items":5},"1200":{"items":5}});
+        });
+        </script><script type="text/javascript">
+        $(function(){
+            createOwlCarousel('custom-module-code-3694', {"0":{"items":2},"576":{"items":2},"768":{"items":5},"992":{"items":5},"1200":{"items":5}});
+        });
+        </script><script type="text/javascript">
+            $(function(){
+                createOwlCarousel('custom-module-code-3750', {"0":{"items":1},"576":{"items":1},"768":{"items":2},"992":{"items":3},"1200":{"items":4}});
+            });
+        </script><style type="text/css">
+            .swal-modal {
+                background: #fff !important;
+                border-radius: 10px !important;
+                padding: 0 !important;
+            }
+            .swal-footer {
+                background: #F1F1F1 !important;
+                border-radius: 0 0 10px 10px;
+                padding: 10px;
+                text-align: center;
+            }
+            .swal-footer .swal-button:focus {
+                box-shadow: none;
+            }
+            .swal-title {
+                font-size: 20px!important;
+                margin-top: 15px!important;
+                margin-bottom: 10px!important;
+            }
+            .swal-text {
+                font-size: 15px!important;
+                font-weight: 500!important;
+                color: #555!important;
+                padding: 0 10px!important;
+            }
+            .swal-icon {
+                margin: 5px auto
+            }
+            .swal-icon--success {
+                color: #fff !important;
+            }
+            .swal-icon--success__ring {
+                background: #a5dc86;
+                z-index: 1
+            }
+            .swal-icon--success__hide-corners {
+                background: transparent;
+            }
+            .swal-icon--success__line {
+                background: #fff;
+            }
+            .swal-icon--error {
+                background: #f27474;
+            }
+            .swal-icon--error__line {
+                background: #fff;
+            }
+        </style><script type="text/javascript">
+
+        $(function(){
+
+                                                    <!-- Tiktok Pixel Code -->
+                !function (w, d, t) {
+                    w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie"],ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++
+                    )ttq.setAndDefer(e,ttq.methods[n]);return e},ttq.load=function(e,n){var i="https://analytics.tiktok.com/i18n/pixel/events.js";ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=i,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};n=document.createElement("script");n.type="text/javascript",n.async=!0,n.src=i+"?sdkid="+e+"&lib="+t;e=document.getElementsByTagName("script")[0];e.parentNode.insertBefore(n,e)};
+
+                    ttq.load('D2QP59JC77UBOEFA1BL0');
+                    ttq.page();
+                }(window, document, 'ttq');
+                <!-- End Tiktok Pixel Code -->
+            
+                                        submitMarketingEvents([{"platform":"google","event_name":"view_item","event_id":"","encrypted_data":"","params":{"value":789,"currency":"TRY","items":[{"item_id":"587","item_name":"Boston Unisex Mantar Taban Terlik - Haki","item_brand":"Sivarro","price":789,"index":0,"item_category":"TERL\u0130K"}]}},{"platform":"facebook","event_name":"ViewContent","event_id":"","encrypted_data":"","params":{"content_name":"Boston Unisex Mantar Taban Terlik - Haki","content_category":"TERL\u0130K","content_ids":["587"],"content_type":"product","value":789,"currency":"TRY"}},{"platform":"tiktok","event_name":"ViewContent","event_id":"","encrypted_data":"","params":{"content_name":"Boston Unisex Mantar Taban Terlik - Haki","content_category":"TERL\u0130K","content_id":"587","content_type":"product","value":789,"currency":"TRY"}}]);
+            
+                                });
+    </script><style type="text/css">
+                .copyright-100-sec-466 {
+                    display: flex !important;
+                    flex-direction: column !important;
+                    justify-content: center !important;
+                    align-items: center !important;
+                    text-align: center !important;
+                    color: #000 !important;
+                    height: 45px !important;
+                    width: 100% !important;
+                    font-weight: 400 !important;
+                    font-size: 13px !important;
+                                            border-top: 1px solid #eee;
+                                    }
+            </style><section class="copyright-100-sec-466"><a href="https://www.qukasoft.com?utm_source=sivarro.com&utm_medium=referral&utm_campaign=client_footer" title="Qukasoft E-Ticaret Altyapısı" aria-label="Qukasoft E-Ticaret Altyapısı" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 1546 364" width="106px" height="25px"><g transform="matrix(.1 0 0 -.1 0 364)" fill="#0e85fb"><path d="M13621 3624c-92-25-205-90-271-158-68-69-1196-1584-1216-1633-17-39-18-104-3-158 16-60 92-129 159-145 71-17 148 0 196 43 20 16 281 357 582 756 300 399 566 747 590 773 54 58 115 84 157 68 16-6 49-27 73-47 27-22 270-337 613-794 635-846 595-803 719-803s207 72 225 194c13 92 14 90-611 927-324 433-612 811-641 840-57 56-163 114-253 138-70 19-248 18-319-1M694 3565c-254-55-495-275-609-557-69-169-80-232-80-443 0-176 2-197 28-289 83-300 261-537 486-651 132-66 146-68 571-73 424-4 463-1 523 49 57 47 81 101 81 181 0 56-5 74-30 114-18 30-48 60-78 79l-49 30-366 6c-400 6-403 6-502 70-150 96-229 264-229 488 0 308 160 516 423 551 49 6 428 10 1022 10s973-4 1022-10c149-20 289-113 356-237 88-164 92-450 7-618-61-120-140-191-265-238-96-37-130-59-162-108-20-31-28-57-31-104-5-78 10-126 56-177 55-61 104-83 189-82 67 0 80 4 169 49 131 66 199 120 275 215 165 209 242 393 269 642 27 247-47 536-191 749-89 132-245 266-372 317-131 53-106 52-1322 51-903 0-1142-3-1191-14m3482-29c-76-29-126-83-147-159-7-27-9-193-6-516 5-521 6-538 72-721 110-304 330-525 595-597 61-17 144-18 1220-18h1155l78 23c134 39 240 103 353 216 111 112 193 247 247 408s57 200 57 728v487l-23 44c-28 54-101 105-162 115-100 15-205-41-246-131-17-37-19-77-19-490-1-506-6-559-64-682-41-85-113-162-192-205-108-59-87-58-1181-58-705 0-1018 3-1055 11-165 35-304 170-355 345-14 51-18 126-22 554-6 539-5 523-65 588-53 59-165 86-240 58m4054-2c-45-20-86-59-113-109l-22-40V1694l25-49c83-161 317-161 400 0 25 49 25 50 28 357l4 308h581c333 0 621-5 672-10 454-52 895-254 1495-684 113-81 167-102 234-90 175 29 254 225 144 358-31 38-279 229-421 325-123 82-276 172-431 252l-149 77 110 55c231 117 440 247 684 428 222 165 268 224 256 330-10 82-56 145-132 180-44 20-129 25-170 9-15-6-99-61-188-123-420-294-677-432-1012-543-304-100-285-98-1027-102l-646-3-4 308c-3 292-4 310-25 348-44 83-114 125-205 125-29-1-69-8-88-16m5434-985c-74-28-137-88-175-165-28-56-33-77-33-142 0-48 7-97 18-130 24-69 100-153 174-189 50-24 69-28 147-28s97 4 147 28c74 36 150 120 174 189 12 34 18 80 17 131-2 192-143 328-341 326-52 0-94-7-128-20M1933 2285c-76-38-105-87-111-183-3-67-1-83 20-119 24-45 588-790 648-857 47-53 100-76 178-76 96 0 163 41 197 122 19 47 20 148 1 191-8 18-162 226-343 462-309 405-331 432-382 458-72 36-138 36-208 2"/><path fill="#5b5b5b" d="M8564 889c-214-67-260-313-78-411 59-31 121-44 279-58 148-14 188-24 226-58 42-38 48-86 17-132-37-54-98-83-189-88-121-7-228 26-347 107l-60 40-42-65c-49-75-54-65 60-134 115-69 182-85 355-85 133 0 157 3 206 23 71 28 146 93 170 147 12 26 19 64 19 109 0 84-24 142-78 186-76 63-119 74-371 100-115 11-185 36-196 70-12 39 3 68 53 97 41 25 57 28 132 28 105 0 181-23 269-82 35-24 67-43 72-43s26 27 49 59l40 60-32 24c-147 110-393 157-554 106m2283 10c-100-23-220-116-270-207-37-68-57-153-57-242 0-185 90-335 247-412 67-32 70-33 204-33h135l75 37c201 100 293 332 224 566-37 124-156 243-282 282-70 21-204 26-276 9m251-159c66-28 124-93 153-169 29-78 24-194-14-267-99-194-368-220-499-49-111 146-76 370 71 464 86 56 191 63 289 21m1712-285V20h150v390h330v140h-330v200h550v140h-700zm1810 365v-70h350V20h140v730h350v140h-840z"/></g></svg></a></section><script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4bc70e2c01a94c73b74392e4234840661791215815920" integrity="sha512-L0ha0OXavK/8okipN9F8BtP84dg9DUhPERbBXzwI6dgTA55d2+yweo3pn5CSFYs45/r8md2+xvUPtTdvTNRfjA==" data-cf-beacon='{"version":"2024.11.0","token":"f291770d84b341c7820f1beb2879a92c","r":1,"spa":2}' crossorigin="anonymous"></script>
+</body></html>

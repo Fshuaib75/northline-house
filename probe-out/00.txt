@@ -2,37 +2,40 @@
 <html lang="tr-TR" >
 <head>
 <meta charset="utf-8">
-<title>SA16SE030 - </title>
+<title>Slazenger TEQILA I Erkek Bej Terlik | Slazenger</title>
+<meta name="description" content="Slazenger TEQILA I Erkek Bej Terlik ürününü Slazenger kalitesi ve en uygun fiyat avantajıyla satın alabilirsiniz. İndirimli fiyat avantajlarını kaçırmayın." />
 <meta name="copyright" content="T-Soft E-Ticaret Sistemleri" />
-<meta name="robots" content="noindex,nofollow,max-image-preview:large" />
-            <meta property="og:image" content="https:logo-1779282301.svg"/>
-            <meta property="og:image:secure_url" content="https:logo-1779282301.svg" />
-            <meta name="twitter:image" content="https:logo-1779282301.svg" />
-            <meta property="og:type" content="website" />
-            <meta property="og:title" content="SA16SE030 - " />
-            <meta property="og:description" content="" />
-            <meta property="og:url" content="https://www.slazenger.com.tr/arama" />
-            <meta property="og:site_name" content="slazenger.com.tr" />
-            <meta name="twitter:card" content="summary" />
-            <meta name="twitter:title" content="SA16SE030 - " />
-            <meta name="twitter:description" content="" /><script src="https://accounts.google.com/gsi/client" async defer></script>
+<meta name="robots" content="index,follow,max-image-preview:large" /><link rel="canonical" href="https://www.slazenger.com.tr/slazenger-teqila-i-erkek-bej-terlik" /><meta property="og:image" content="https://www.slazenger.com.tr/slazenger-teqila-i-erkek-bej-terlik-terlik-444717-24-O.jpg"/>
+                <meta property="og:image:secure_url" content="https://www.slazenger.com.tr/slazenger-teqila-i-erkek-bej-terlik-terlik-444717-24-O.jpg" />
+                <meta property="og:image:width" content="300" />
+                <meta property="og:image:height" content="300" />
+                <meta property="og:type" content="product" />
+                <meta property="og:title" content="Slazenger TEQILA I Erkek Bej Terlik | Slazenger" />
+                <meta property="og:description" content="Slazenger TEQILA I Erkek Bej Terlik ürününü Slazenger kalitesi ve en uygun fiyat avantajıyla satın alabilirsiniz. İndirimli fiyat avantajlarını kaçırmayın." />
+                <meta property="product:availability" content="in stock" />
+                <meta property="og:url" content="https://www.slazenger.com.tr/slazenger-teqila-i-erkek-bej-terlik" />
+                <meta property="og:site_name" content="slazenger.com.tr" />
+                <meta name="twitter:card" content="summary" />
+                <meta name="twitter:title" content="Slazenger TEQILA I Erkek Bej Terlik | Slazenger" />
+                <meta name="twitter:description" content="Slazenger TEQILA I Erkek Bej Terlik ürününü Slazenger kalitesi ve en uygun fiyat avantajıyla satın alabilirsiniz. İndirimli fiyat avantajlarını kaçırmayın." />
+                <meta name="twitter:image" content="https://www.slazenger.com.tr/slazenger-teqila-i-erkek-bej-terlik-terlik-444717-24-O.jpg" /><script src="https://accounts.google.com/gsi/client" async defer></script>
 <script>const GOOGLE_CLIENT_ID = "264648908992-brcj4c7dmg0jr8gnib4t42gim0sd94t8.apps.googleusercontent.com";</script>
             <script type="text/javascript">
                 try {
-                    var PAGE_TYPE = 'search';
+                    var PAGE_TYPE = 'product';
                     var MEMBER_INFO = {"ID":0,"CODE":"","FIRST_NAME":"","BIRTH_DATE":"","GENDER":"","LAST_NAME":"","MAIL":"","MAIL_HASH":"","PHONE":"","PHONE_HASH":"","PHONE_HASH_SHA":"","GROUP":0,"TRANSACTION_COUNT":0,"REPRESENTATIVE":"","KVKK":-1,"COUNTRY":"+90","E_COUNTRY":""};
                     var IS_VENDOR = 0;
                     var MOBILE_ACTIVE = false;
                     var SEPET_MIKTAR = '0';
                     var SEPET_TOPLAM = '0,00';
-                    var SESS_ID = 'aa53c7b3937ee6234422f1672dfb0025';
+                    var SESS_ID = '3b449b06cde5d999aa138de69d7a98c9';
                     var LANGUAGE = 'tr';
                     var CURRENCY = 'TL';
                     var SEP_DEC = ',';
                     var SEP_THO = '.';
                     var SERVICE_INFO = null;
-                    var CART_CSRF_TOKEN = '6196923300b50ee9bc08f13fb2a9250bc9b8d7d250d5bd807465219718548f07';
-                    var CSRF_TOKEN = '29a65c783680c62c324d6262a81ca07b21da110e6347';
+                    var CART_CSRF_TOKEN = '8e739da76501145a64c79dfe78e9827c98568caf6a7d6bfb650fe869978f82e2';
+                    var CSRF_TOKEN = '5208bca43720045574587ac2adfca8e3aa41a446966c';
                     var KVKK_REQUIRED = 0;
                     var GOOGLE_RECAPTCHA_ACTIVE = 0;
                     var GOOGLE_RECAPTCHA_SITE_KEY = '';
@@ -2036,7 +2039,7 @@ function searchCallback(data) {
 </div>
 </div>
 <script type="text/javascript">
-var sayfalar = 12;
+var sayfalar = 3;
 document.querySelector('.ust-ara-after #live-search').addEventListener('keyup', function(){
 var araLive = this.value;
 if(araLive.length < 1){
@@ -2398,11 +2401,32 @@ return unescape(dc.substring(begin + prefix.length, end));
 <meta itemprop="position" content="1">
 </li>
 <li class="fl" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
-<a href="https://www.slazenger.com.tr/arama" title="Arama" itemprop="item">
+<a href="https://www.slazenger.com.tr/erkek-giyim" title="ERKEK" itemprop="item">
 <span class="forDesktop navi-icon"> > </span>
-<span itemprop="name">Arama</span>
+<span itemprop="name">ERKEK</span>
 </a>
 <meta itemprop="position" content="2"/>
+</li>
+<li class="fl" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a href="https://www.slazenger.com.tr/erkek-spor-ayakkabi-modelleri" title="SPOR AYAKKABI" itemprop="item">
+<span class="forDesktop navi-icon"> > </span>
+<span itemprop="name">SPOR AYAKKABI</span>
+</a>
+<meta itemprop="position" content="3"/>
+</li>
+<li class="fl" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a href="https://www.slazenger.com.tr/erkek-terlik-modelleri" title="TERLİK" itemprop="item">
+<span class="forDesktop navi-icon"> > </span>
+<span itemprop="name">TERLİK</span>
+</a>
+<meta itemprop="position" content="4"/>
+</li>
+<li class="fl" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a href="https://www.slazenger.com.tr/slazenger-teqila-i-erkek-bej-terlik" title="Slazenger TEQILA I Erkek Bej Terlik" itemprop="item">
+<span class="forDesktop navi-icon"> > </span>
+<span itemprop="name">Slazenger TEQILA I Erkek Bej Terlik</span>
+</a>
+<meta itemprop="position" content="5"/>
 </li>
 </ul>
 </div>
@@ -2411,7 +2435,7 @@ return unescape(dc.substring(begin + prefix.length, end));
 </div>
 </div>
 <script>
-var navSayfa = 12;
+var navSayfa = 3;
 if(window.innerWidth < 769){
 if(navSayfa == 3){
 document.querySelector('.yol-harita').style.display = 'none';
@@ -2427,666 +2451,13 @@ document.querySelector('.yol-harita').style.display = 'none';
                         
                     </aside>
                     <div id="mainColumn" class="fl">
-                        
-<style>
-    .filterOpen314 {
-        display: none;
-    }
-    
-    .filterOpen312 {
-        display: none;
-    }
-    
-    .filterOpen315 {
-        display: none;
-    }
-    
-    .filterOpen308 {
-        display: none;
-    }
-    @media only screen and (max-width: 768px) {
-    
-        .m-block{
-            display:block!important;
-        }
-        .yeni-fiyat{
-            display:flex;
-            flex-direction:column;
-        }
-    }
-    @media only screen and (min-width: 769px) {
-        .left-filter{
-            width:100%!important;
-        }
-        .filter-div > div > div:last-child {
-            overflow-y: scroll;
-            height: 200px!important;
-        }
-    }
-</style>
-<link rel="stylesheet" property="stylesheet" type="text/css" href="/theme/v4/sub_theme/blok_kategori/v4/v4/StandartMenu.css"/>
-<div class="col col-12 pos-r">
-    <div class="filter-overly" style="display:none;"></div>
-    <div class="row">
-        <div class="col col-12 liste-filter-alan">
-            <div class="row">
-                <div class="p-left p-right col col-4 col-sm-6">
-                    <div class="col filtre-btn">+ Filtrele</div>
-                </div>
-                <div class="p-left p-right col col-4 mbl-isim-al col-sm-12 forDesktop">
-                    <div class="col col-12 filter-isim2"></div>
-                    <div class="col col-12 d-flex">
-                    <div class="col col-12 text-center fw600 appendFilterPiece"></div>
-                    </div>
-                </div>
-                <div class="p-left p-right col col-4 pos-r col-sm-6">
-                    <div class="fr col liste-sirala">Sıralama<c style="display:none;">:</c> <span></span><i></i></div>
-                    <div class="col liste-yeni" style="display:none;">
-                        <span class="forMobile">Sıralama</span>
-                        <div data-id="">Popüler</div>
-                        <div data-id="6">Fiyat: En Yüksek</div>
-                        <div data-id="5">Fiyat: En Düşük</div>
-                        <div data-id="3">En Yeniler</div>
-                        <div data-id="">Varsayılan Sıralama</div>
-                        <span class="col col-12 vazgec-sira-yeni" style="display: none;">
-                            <i>Vazgeç</i>
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="p-left p-right col col-12 left-filter" id="leftFilter" style="display:none;">
-            <div class="fl col-12" id="filterWrapper">
-                <div style="visibility:hidden;" id="filterPanel" class="fl col-12 angularTemplate filtre-all" data-callback="filtreReady" data-url="/srv/service/filter/get/filters-variants-brands-categories-price-models-suppliers">
-                    <div class="fl col-12 d-flex m-block">
-                        <div class="fl filter-div" ng-if="VARIANTS.TYPE1_LIST.length>0">
-                            <div class="box col-12">
-                                <div class="col col-12 btn-upper col-title-filtre">Renk</div>
-                                <div class="forMobile col pos-r ara-filter">
-                                    <input placeholder="Renk ara" class="size-ara">
-                                    <div class="kpt-val"></div>
-                                </div>
-                                <div class="box p-bottom col-12 size-liste">
-                                    <div class="row mb" ng-repeat="V1 in VARIANTS.TYPE1_LIST">
-                                        <label for="type1_{{V1.ID}}" class="fl col-12 col-text form-control myType1 filtertik filterOpen{{V1.ID}}" data-type="{{V1.TYPE}}" data-filter-id="{{V1.ID}}">
-                                            <div class="fl input-wrap" ng-if="V1.SELECTED == 0">
-                                                <input type="checkbox" id="type1_{{V1.ID}}" value="{{V1.ID}}" />
-                                            </div>
-                                            <div class="fl input-wrap secildi" ng-if="V1.SELECTED == 1" data-filter-isim="{{V1.NAME}}">
-                                                <input type="checkbox" id="type1_{{V1.ID}}" value="{{V1.ID}}" checked="checked" />
-                                                <span style="display:none;">{{V1.NAME}}</span>
-                                            </div>
-                                            {{V1.NAME}}
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="fl filter-div" ng-if="VARIANTS.TYPE2_LIST.length>0">
-                            <div class="box col-12">
-                                <div class="col col-12 btn-upper col-title-filtre">Beden</div>
-                                <div class="forMobile col pos-r ara-filter">
-                                    <input placeholder="Beden ara" class="color-ara">
-                                    <div class="kpt-val"></div>
-                                </div>
-                                <div class="box p-bottom col-12 size-liste">
-                                    <div class="row mb" ng-repeat="V2 in VARIANTS.TYPE2_LIST">
-                                        <label for="type2_{{V2.ID}}" class="fl col-12 col-text form-control myType2 filtertik filterOpen{{V2.ID}}" data-type="{{V2.TYPE}}" data-filter-id="{{V2.ID}}">
-                                            <div class="fl input-wrap" ng-if="V2.SELECTED == 0">
-                                                <input type="checkbox" id="type2_{{V2.ID}}" value="{{V2.ID}}" />
-                                            </div>
-                                            <div class="fl input-wrap secildi" ng-if="V2.SELECTED == 1" data-filter-isim="{{V2.NAME}}">
-                                                <input type="checkbox" id="type2_{{V2.ID}}" value="{{V2.ID}}" checked="checked" />
-                                                <span style="display:none;">{{V2.NAME}}</span>
-                                            </div>
-                                            {{V2.NAME}}
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="fl filter-div" ng-repeat="F in FILTERS">
-                            <div class="box col-12 p-right">
-                                <div class="col col-12 btn-upper col-title-filtre">{{F.NAME}}</div>
-                                <div class="forMobile col pos-r ara-filter">
-                                    <input placeholder="{{F.NAME}} ara" class="size-ara">
-                                    <div class="kpt-val"></div>
-                                </div>
-                                <div class="box p-bottom col-12 size-liste" ng-if="F.TYPE!=2">
-                                    <div class="row mb" ng-repeat="ROW in F.VALUES">
-                                        <label for="{{F.TYPE}}{{ROW.ID}}" class="fl col-12 col-text form-control myFilter filtertik filterOpen" data-type="{{F.TYPE}}" data-filter-id="{{F.ID}}">
-                                            <div class="fl input-wrap" ng-if="ROW.SELECTED == 0">
-                                                <input type="checkbox" id="{{F.TYPE}}{{ROW.ID}}" value="{{ROW.ID}}" />
-                                            </div>
-                                            <div class="fl input-wrap secildi" ng-if="ROW.SELECTED == 1" data-filter-isim="{{ROW.NAME}}">
-                                                <input type="checkbox" id="{{F.TYPE}}{{ROW.ID}}" value="{{ROW.ID}}" checked="checked" />
-                                            </div>
-                                            {{ROW.NAME}}
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="mySlideFilter" ng-if="F.TYPE==2" title="Decimal Filtre ise" data-id="{{F.ID}}">
-                                    <div class="row mb" data-type="{{F.TYPE}}" data-filter-id="{{F.ID}}">
-                                        <div class="priceWrap row" style="text-align:center;">
-                                            <span class="incrementFilter" data-increment="1"></span>
-                                            <span class="minFilter" data-min="{{F.MIN}}" data-selected="{{F.MIN_SELECTED}}">{{F.MIN_SELECTED}}</span>
-                                            <span>-</span>
-                                            <span class="maxFilter" data-max="{{F.MAX}}" data-selected="{{F.MAX_SELECTED}}">{{F.MAX_SELECTED}}</span>
-                                        </div>
-                                        <div class="col col-9 col-ml-1" style="position:relative;">
-                                            <div class="sliderRun"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                        <div class="fl col-4 col-ml-4 col-mr-4 yeni-fiyat d-flex">
-                            <div class="box col-title-filtre fiyat-border">Fiyat Aralığı</div>
-                            <br>
-                            <div class="col d-flex">
-                                <div class="box pos-r filter-fiyat-alan">
-                                    <input class="min-fiyat" value="0"  type="number" placeholder="En Az">
-                                </div>
-                                <br>
-                                <div class="box pos-r filter-fiyat-alan">
-                                    <input class="max-fiyat" type="number" placeholder="En Çok">
-                                </div>
-                            </div>
-                        </div>
-                    <div class="col col-12 filter-bilgiler">
-                        <div class="col col-12 filter-liste-page" style="display: none;">
-                            <div class="col filter-say-aktif" style="display:none;">Seçiminize ait <span></span> ürün bulundu</div>
-                        </div>
-                        <div class="col col-12 filter-run forDesktop2">
-                            <div class="col col-12 filterTemizle" style="display: none;">Filtreyi temizle</div>
-                            <div class="col col-sm-6">Seçimimi Uygula</div>
-                            <div class="col col-sm-4 filter-vazgec forMobile">Vazgec</div>
-                        </div>
-                        <div class="col col-12 filter-secim" style="display: none;">
-                            <div class="col">Seçim yaptığınız kriterler</div>
-                        </div>
-                        <div class="col col-12 filter-secilen" style="display: none;"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<script type="text/javascript">
-    $(function(){
-        $('.liste-sirala').click(function(){
-            $(this).toggleClass('acildi');
-            if ($('.liste-sirala').hasClass('acildi')){
-                $('.liste-yeni').show();
-                $('.filter-overly').show();
-            }else{
-                $('.liste-yeni').hide();
-                $('.filter-overly').hide();
-            }
-        });
-        $('.filter-overly').click(function(){
-            $(this).hide();
-            if($(window).width() < 769){
-                $('body').removeAttr('style');
-            }
-            $('.filtre-btn').removeClass('aktif-filter');
-            $('.liste-sirala').removeClass('acildi');
-            $('.left-filter').hide();
-            $('.filtre-btn').text('+ Filtrele');
-            $('.filtre-btn').removeAttr('style');
-            $('.liste-yeni').hide();
-        });
-        $('.filtre-btn').click(function(){
-            if(window.innerWidth > 769){
-                $(this).toggleClass('aktif-filter');
-                if ($('.filtre-btn').hasClass('aktif-filter')){
-                    $('.filtre-btn').text('Vazgeç');
-                    $('.filtre-btn').attr('style','background: #000; color: #fff; z-index: 99;');
-                    $('.left-filter').show();
-                    $('.filter-overly').show();
-                }else{
-                    $('.filtre-btn').text('+ Filtrele');
-                    $('.filtre-btn').removeAttr('style');
-                    $('.left-filter').hide();
-                    $('.filter-overly').hide();
-                    $('.filter-overly').hide();
-                }
-            }
-        });
-    });
-    function filtreReady(result) {
-        if(window.location.href.indexOf('type') > -1){
-            document.querySelector('.filterTemizle').style.display = 'block';
-        }
-        document.querySelector('.filterTemizle').addEventListener('click', function(){
-            window.location.href=window.location.pathname;
-        });
-        if(window.innerWidth < 769){
-            document.querySelector('.vazgec-sira-yeni').style.display = 'flex';
-            document.querySelector('.vazgec-sira-yeni > i').addEventListener('click', function(){
-                document.querySelector('.liste-yeni').style.display = 'none';
-                document.querySelector('.filter-overly').style.display = 'none';
-            });
-        }
-        if(window.innerWidth > 769){
-            document.querySelector('.filter-secim').style.display = 'flex';
-            document.querySelector('.filter-liste-page').style.display = 'flex';
-            document.querySelector('.filter-secilen').style.display = 'flex';
-        }
-        if(window.innerWidth < 769){
-            document.querySelector('.filtre-btn').addEventListener('click', function(){
-                document.querySelector('.left-filter').style.display = 'block';
-            });
-            document.querySelector('.filter-vazgec').addEventListener('click', function(){
-                document.querySelector('.filtre-btn').classList.remove('aktif-filter');
-                document.querySelector('.filtre-btn').innerText = '+ Filtrele';
-                document.querySelector('.left-filter').style.display = 'none';
-                document.querySelector('.filter-overly').style.display = 'none';
-            });
-            var filterSec = document.querySelector('.filter-secim');
-            var filterKrk = document.querySelector('.filter-secilen');
-            document.querySelector('.filter-liste-page').style.display = "none";
-            document.querySelector("#filterWrapper").style.display = "block";
-            
-        }
-        var valDel = document.querySelectorAll('.kpt-val');
-        for(let i = 0; i < valDel.length; i++){
-            valDel[i].addEventListener('click', function(event){
-                event.stopPropagation();
-                var tt = valDel[i].previousElementSibling.value = "";
-                var y = valDel[i].parentElement.parentElement.querySelectorAll('.size-liste > div');
-                for(let x = 0; x < y.length; x++){
-                    if(y[x].style.display == "none"){
-                        y[x].style.display = "block";
-                    }
-                }
-                valDel[i].nextElementSibling.classList.remove('focus');
-            });
-        }
-        var FilterAra = document.querySelectorAll(".ara-filter");
-        for(let i = 0; i < FilterAra.length; i++){
-            FilterAra[i].addEventListener("click", function(event){
-                FilterAra[i].querySelector(".placeholder").classList.add("focus");
-                FilterAra[i].querySelector("input").focus();
-                event.stopPropagation();
-                var filterVal = this.value;
-                setTimeout(function(){
-                    this.value = "";
-                },100);
-                FilterAra[i].value = "";
-                document.querySelector("body").addEventListener("click", function(){
-                    FilterAra[i].value = ''+filterVal+'';
-                });
-            });
-        }
-        var FilterAraAlt = document.querySelectorAll(".size-liste .filtertik");
-        for(let i = 0; i < FilterAraAlt.length; i++){
-           FilterAraAlt[i].parentElement.parentElement.previousElementSibling.querySelector("input").addEventListener("keyup", function(){
-            var fltText = FilterAraAlt[i].innerText.toLowerCase().trim();
-            var araflt = this.value.toLowerCase();
-            if(araflt < 1){
-                FilterAraAlt[i].parentElement.parentElement.previousElementSibling.querySelector(".placeholder").classList.remove("focus");
-            }else{
-                FilterAraAlt[i].parentElement.parentElement.previousElementSibling.querySelector(".placeholder").classList.add("focus");
-            }
-            if (fltText.indexOf(araflt) > -1){
-                FilterAraAlt[i].parentElement.style.display = "block";
-            }else{
-                FilterAraAlt[i].parentElement.style.display = "none";
-            }
-           });
-        }
-        $('.filter-fiyat-alan').click(function(event){
-            event.stopPropagation();
-            $(this).children().next().addClass('focus');
-            $(this).children('input').focus();
-        });
-        $('.filter-fiyat-alan input').keyup(function(){
-            var inputVal = $(this).val();
-            if (inputVal > 0){
-                $(this).next().addClass('focus');
-            }else if (inputVal < 1){
-                $(this).next().removeClass('focus');  
-            }
-        });
-        $('body').click(function(){
-            var bodyVal = $('.filter-fiyat-alan input').val();
-            if (bodyVal < 1){
-                $('.filter-fiyat-alan .placeholder').removeClass('focus');
-            }
-        });
-        $('.filtertik .secildi').each(function(){
-            let filterGel = $(this).attr('data-filter-isim');
-            $('.filter-secilen').append('<div class="col">'+filterGel+'</div>');
-        });
-        $('.liste-yeni > div').click(function(){
-            var listeK = $(this).attr('data-id');
-            window.location.href = getLink('sort', +listeK);
-        });
-        if (window.location.href.indexOf('sort=6') > -1){
-            if(window.innerWidth > 769){
-                $('.liste-sirala > span').text('Fiyat En Yüksek');
-            }
-        }
-        if (window.location.href.indexOf('sort=5') > -1){
-            if(window.innerWidth > 769){
-                $('.liste-sirala > span').text('Fiyat En Düşük');
-            }
-        }
-        if (window.location.href.indexOf('sort=3') > -1){
-            if(window.innerWidth > 769){
-                $('.liste-sirala > span').text('En Yeniler');
-            }
-        }
-        var filtreText = $('.liste-sirala > span').text();
-        var textUuznluk = filtreText.length;
-        if (textUuznluk > 0){
-            $('.liste-sirala > c').show();
-            $('.liste-sirala').attr('style','width:253px;');
-        }
-        var ListeName = $('.liste-filter').attr('data-ktg');
-        var ListeSayi = $('.liste-filter').attr('data-sy');
-        $('.filter-sayi span:first-child').text(ListeSayi);
-        $('.filter-isim').text(ListeName);
-        $('.filter-say-aktif span').text(ListeSayi);
-        if ($('.filter-div label .input-wrap.checkbox').hasClass('active')){
-            $('.filter-say-aktif').show();
-        }else{
-            $('.filter-say-aktif').hide();
-        }
-        inputControl();
-        if (window.location.href.indexOf('stock=') > 0) {
-            $('#stock').prop('checked', true);
-            $('#stock').parent().addClass('active');
-        }
-        if (window.location.href.indexOf('discounted=') > 0) {
-            $('#discounted').prop('checked', true);
-            $('#discounted').parent().addClass('active');
-        }
-        if (window.location.href.indexOf('new=') > 0) {
-            $('#new').prop('checked', true);
-            $('#new').parent().addClass('active');
-        }
-        $('#filterMobileBtn').click(function () {
-            $(this).toggleClass('active').next().slideToggle();
-        });
-
-        $('#filterCats a').click(function (e) {
-            e.preventDefault();
-            window.location.href = $(this).attr('href');
-        });
-
-        $('.mySlideFilter').each(function () {
-            var fId = $(this).attr('data-id');
-            var min = parseFloat($(this).find('.minFilter').attr('data-min'));
-            var max = parseFloat($(this).find('.maxFilter').attr('data-max'));
-
-            var minSelected = parseFloat($(this).find('.minFilter').attr('data-selected'));
-            var maxSelected = parseFloat($(this).find('.maxFilter').attr('data-selected'));
-            var _this = this;
-            var stepLength = parseFloat($(this).find('.incrementFilter').attr('data-increment')) || 0.1;
-            if (max - min > 50) {
-                stepLength = 1;
-            } else if (max - min > 500) {
-                stepLength = 5;
-            }
-            $(this).find(".sliderRun").slider({
-                range: true,
-                step: stepLength,
-                min: min,
-                max: max,
-                values: [minSelected, maxSelected],
-                slide: function (event, ui) {
-                    $(_this).find('.minFilter').html(ui.values[0]);
-                    $(_this).find('.maxFilter').html(ui.values[1]);
-                },
-                stop: function (event, ui) {
-                    var values = [];
-                    $('.sliderRun').each(function () {
-                        var v = $(this).slider("option", "values");
-                        values.push($(this).parents('.mySlideFilter').attr('data-id') + '-' + v[0] + '-' + v[1]);
-                    });
-                    window.location.href = getLink('decimal', values.join('+'));
-                }
-            });
-        });
-
-        var priceActive = false;
-        var priceValues = '';
-        var link = window.location.href;
-
-        if (PRICE.MIN != PRICE.MIN_SELECTED || PRICE.MAX != PRICE.MAX_SELECTED) {
-            priceActive = true;
-        }
-
-        var stepLength = (PRICE.MAX - PRICE.MIN) > 100 ? 5 : 1;
-
-        var pMax = PRICE.MAX;
-        if (pMax % 5 !== 0 && stepLength === 5) {
-            pMax = parseInt(PRICE.MAX / 5) * 5 + 5;
-        }
-        var append = stepLength - (PRICE.MIN % stepLength);
-        $("#slider-range").slider({
-            range: true,
-            step: stepLength,
-            min: PRICE.MIN,
-            max: pMax,
-            values: [PRICE.MIN_SELECTED, PRICE.MAX_SELECTED],
-            slide: function (event, ui) {
-                $("#min-price").html(ui.values[0] + " " + TARGET_CURRENCY);
-                $("#max-price").html((ui.values[1] + append) + " " + TARGET_CURRENCY);
-            },
-            stop: function (event, ui) {
-                if (PRICE.MIN != ui.values[0] || PRICE.MAX != ui.values[1]) {
-                    priceActive = true;
-                    priceValues = ui.values[0] + '-' + ui.values[1];
-                } else if (PRICE.MIN == ui.values[0] && PRICE.MAX == ui.values[1]) {
-                    priceActive = false;
-                }
-                
-                link = getLink('price', ui.values[0] + '-' + (ui.values[1] + append), link);
-                window.location.href = link;
-            }
-        });
-
-
-        function runFilter() {
-            var multi = [], single = [], decimal = [], supplier = [], brand = [],model = [], type1 = [], type2 = [];
-            $('.myFilter').each(function () {
-                var filter = $(this).attr('data-filter-id');
-                if ($(this).attr('data-type') === '2') {
-                    if(window.location.href.indexOf('decimal')>0){
-                        decimal.push(filter + '-' + $(this).find('.minFilter').text() + '-' + $(this).find('.maxFilter').text());
-                    }
-                    return true;
-                }
-                var checked = $(this).find('input').prop('checked');
-                if (!checked) {
-                    return true;
-                }
-                var val = $(this).find('input').val();
-                if ($(this).attr('data-type') === '1') {
-                    single.push(filter + '-' + val);
-                } else if ($(this).attr('data-type') === '0') {
-                    multi.push(filter + '-' + val);
-                }
-            });
-            $('.myBrand').each(function () {
-                var checked = $(this).find('input').prop('checked');
-                var val = $(this).find('input').val();
-                if (checked) {
-                    brand.push(val);
-                }
-            });
-            $('.mySupplier').each(function () {
-                var checked = $(this).find('input').prop('checked');
-                var val = $(this).find('input').val();
-                if (checked) {
-                    supplier.push(val);
-                }
-            });
-            $('.myModel').each(function () {
-                var checked = $(this).find('input').prop('checked');
-                var val = $(this).find('input').val();
-                if (checked) {
-                    model.push(val);
-                }
-            });
-            $('.myType1').each(function () {
-                var checked = $(this).find('input').prop('checked');
-                var val = $(this).find('input').val();
-                if (checked) {
-                    type1.push(val);
-                }
-            });
-            $('.myType2').each(function () {
-                var checked = $(this).find('input').prop('checked');
-                var val = $(this).find('input').val();
-                if (checked) {
-                    type2.push(val);
-                }
-            });
-            
-            link = getLink('multi', multi.join('+'), link);
-            link = getLink('single', single.join('+'), link);
-            link = getLink('decimal', decimal.join('+'), link);
-            link = getLink('brand', brand.join('-'), link);
-            link = getLink('supplier', model.join('-'), link);
-            link = getLink('model', model.join('-'), link);
-            link = getLink('type1', type1.join('-'), link);
-            link = getLink('type2', type2.join('-'), link);
-            window.location.href = link;
-        }
-        $('.myFilter,.myBrand,.mySupplier,.myType1,.myType2').click(function () {
-            var checked = $(this).find('input').prop('checked');
-            $(this).find('input').prop('checked', !checked);
-        });
-        $('.filter-run > div:nth-child(2)').click(function(){
-            runFilter();
-            let min = $('.min-fiyat').val();
-            let max = $('.max-fiyat').val();
-            if (min > 0 || max > 0){
-                window.location.href=window.location.pathname = '?price='+min +'-' +max; 
-            }
-        });
-        $('#stock').change(function (e) {
-            e.preventDefault();
-            var val = $(this).is(':checked') ? '1' : '';
-            $(this).parent().prop('checked', $(this).is(':checked'));
-            link = getLink('stock', val, link);
-            runFilter();
-        });
-        $('#discounted').change(function (e) {
-            e.preventDefault();
-            var val = $(this).is(':checked') ? '1' : '';
-            $(this).parent().prop('checked', $(this).is(':checked'));
-            link = getLink('discounted', val, link);
-            runFilter();
-        });
-        $('#new').change(function (e) {
-            e.preventDefault();
-            var val = $(this).is(':checked') ? '1' : '';
-            $(this).parent().prop('checked', $(this).is(':checked'));
-            link = getLink('new', val, link);
-            runFilter();
-        });
-        $('.categor').appendTo('.filter-isim2');
-        $('.appendFilter2').appendTo('.appendFilterPiece');
-    }
-    
-    $(document).ready(function() {
-          $(".min-fiyat, .max-fiyat").focus(function() {
-            if (this.value == "0" || this.value == "En Çok") {
-              this.value = "";
-            }
-          }).blur(function() {
-            if (this.value == "") {
-              this.value = this.className === "min-fiyat" ? "0" : "En Çok";
-            }
-          });
-        });
-
-</script>
-
-<script>var PRODUCTS_TOTAL = 6;</script>
-<style>
-@media only screen and (min-width:768px){
-.pa{
-position:absolute!important;
-}
-}
-#mainColumn {
-display: flex;
-flex-wrap: wrap;
-}
-.otherProductsRow{
-display:flex;
-justify-content:center;
-position: absolute;
-z-index: 3;
-@media only screen and (min-width:769px){
-left: 10px;
-bottom: 10px;
-}
-@media only screen and (max-width:768px){
-left: 20px;
-bottom: 15px;
-}
-}
-span.imgInner.d-none {
-display: none;
--webkit-transition-timing-function: cubic-bezier(0.200, 0.020, 0.200, 1.000);
--moz-transition-timing-function: cubic-bezier(0.200, 0.020, 0.200, 1.000);
--ms-transition-timing-function: cubic-bezier(0.200, 0.020, 0.200, 1.000);
--o-transition-timing-function: cubic-bezier(0.200, 0.020, 0.200, 1.000);
-transition-timing-function: cubic-bezier(0.200, 0.020, 0.200, 1.000);
--webkit-transition-duration: .5s;
--moz-transition-duration: .5s;
--ms-transition-duration: .5s;
--o-transition-duration: .5s;
-transition-duration: .5s;
-}
-.s8-active:hover > span.imgInner.d-none {
-display:block;
--webkit-transition-timing-function: cubic-bezier(0.200, 0.020, 0.200, 1.000);
--moz-transition-timing-function: cubic-bezier(0.200, 0.020, 0.200, 1.000);
--ms-transition-timing-function: cubic-bezier(0.200, 0.020, 0.200, 1.000);
--o-transition-timing-function: cubic-bezier(0.200, 0.020, 0.200, 1.000);
-transition-timing-function: cubic-bezier(0.200, 0.020, 0.200, 1.000);
--webkit-transition-duration: .5s;
--moz-transition-duration: .5s;
--ms-transition-duration: .5s;
--o-transition-duration: .5s;
-transition-duration: .5s;
-}
+                        <script type="text/javascript">setCookie("last_products", "24507", 10)</script><!--cache--><style>
 @media only screen and (min-width:769px){
 .forMobile{
 display:none!important;
 }
-.otherProducts{
-color: #555;
-font-size: 12px;
-padding: 5px 8px;
-border-radius: 5px;
-background-color: #f4f4f4;
-display: inline-block;
-font-weight: bold;
-}
 }
 @media only screen and (max-width:768px){
-.otherProducts{
-color: #555;
-font-size: 12px;
-padding: 5px 8px;
-border-radius: 5px;
-background-color: #f4f4f4;
-display: inline-block;
-margin-top:5px;
-margin-left: -10px;
-margin-right: -10px;
-clear: both;
-}
 .forDesktop{
 display:none!important;
 }
@@ -3106,715 +2477,868 @@ right: 5px;
 flex-direction: column;
 position: absolute;
 }
-.detailLink {
-position: relative;
-box-sizing: border-box;
-}
-}
-.panelButton {
-position: absolute;
-z-index: 6;
-top: 20%;
-left: 3%;
-line-height: initial;
-}
-.editButton {
-background: blue;
-color: white;
-width: fit-content;
-padding: 8px;
-margin-bottom: 11px;
-border-radius: 5px;
-}
-.stockInfo{
-background: black;
-color: white;
-width: 35%;
-padding: 8px;
-margin-bottom: 11px;
-border-radius: 5px;
 }
 </style>
-<div class="categor"></div>
-
-<input type="hidden" class="myProductList" value="24988"/>
-<div class=" col col-3 col-md-3 col-sm-6 col-xs-6 p-right p-left mb productItem ease" id="1003-product-detail-slazenger-teqila-i-2-li-set-erkek-beyaz-siyah-terlik" itemscope="itemscope" itemtype="http://schema.org/Product">
-<span itemprop="url" content="slazenger-teqila-i-2-li-set-erkek-beyaz-siyah-terlik"></span>
-<span itemprop="name" content="Slazenger TEQILA I 2 Lİ SET Erkek Beyaz - Siyah Terlik"></span>
-<span itemprop="description" content=""></span>
-<span itemprop="image" content="https://www.slazenger.com.tr/slazenger-teqila-i-2-li-set-erkek-beyaz-siyah-terlik-terlik-484687-24-K.jpg"></span>
-<div class="mt col col-12 p-right p-left mb">
-<div class="col col-12">
-<div class="row pos-r">
-<a href="/slazenger-teqila-i-2-li-set-erkek-beyaz-siyah-terlik" class="liste-wrap image-wrapper fl imgGallery detailLink">
-<!-- <span class="pos-a col passive d-flex productDiscount-liste" lang="tr">
-<span>%33</span>
-</span>
-<span class="pos-a col passive icon-new-liste" lang="tr">Yeni</span>
--->
+<div class="col col-12" id="product-detail">
+<div id="productDetail" class="row mb">
+<div class="fl col-12" id="pageContent">
+<!-- #pageContent = Sayfa içinde belirli bir div i popup olarak açmak istediğimizde bu div içerisinden yükleniyor. Hızlı görünüm için gerekli. -->
+<div class="box col-12 detay-border">
+<div class="row">
+<div class="col col-8 col-sm-12 p-left p-right" id="productLeft">
+<div class="col-sm-12 pos-r box col-12 ana-gorsel p-left p-right p-top p-bottom pos-r">
+<div class="fl forMobile DetayGeri">
+<div></div>
+<div>Geri</div>
+</div>
 <!--<span class="pos-a col passive kasimCampBack d-none" lang="tr"><img src="resimgelcek"></span>-->
 <div class="symbol-left">
-<span class="col passive d-flex symbolThree forMobile hideThis p-left p-right" title="" lang="tr">
+<span class="col passive d-flex symbolThree hideThis d-none forMobile" title="24 Saatte Kargo" lang="tr">
 <span><div class="forMobile"><img src="https://img.slazenger.com.tr/Data/EditorFiles/2026/24-saatte-kargo.svg" width="38" height="38" /></div>
 <div class="forDesktop"><img src="https://img.slazenger.com.tr/Data/EditorFiles/2026/24-saatte-kargo.svg" width="55" height="48" /></div></span>
 </span>
 </div>
 <div class="symbol-right">
-</div>
-<span class="imgInner">
-<img src="https://img.slazenger.com.tr/slazenger-teqila-i-2-li-set-erkek-beyaz-siyah-terlik-terlik-484687-24-B.jpg?width=600&v2" class="active stImage" alt="Slazenger TEQILA I 2 Lİ SET Erkek Beyaz - Siyah Terlik" title="Slazenger TEQILA I 2 Lİ SET Erkek Beyaz - Siyah Terlik" />
-</span>
-<span class="imgInner">
-<img src="https://img.slazenger.com.tr/slazenger-teqila-i-2-li-set-erkek-beyaz-siyah-terlik-terlik-484688-24-B.jpg?width=600&v2" class="ease ndImage" alt="Slazenger TEQILA I 2 Lİ SET Erkek Beyaz - Siyah Terlik" title="Slazenger TEQILA I 2 Lİ SET Erkek Beyaz - Siyah Terlik" />
-</span>
-</a>
-</div>
-<div class="row">
-<div class="col col-12 productDetails loaderWrapper">
-<div class="row drop-down-title">
-<div class="box col-12">
-<div class="row">
-<div class="col col-12">
-<a href="/slazenger-teqila-i-2-li-set-erkek-beyaz-siyah-terlik" title="Slazenger TEQILA I 2 Lİ SET Erkek Beyaz - Siyah Terlik" class="fl col-12 detailLink listProductName-liste text-center">
-Slazenger TEQILA I 2 Lİ SET Erkek Beyaz - Siyah Terlik
-</a>
-</div>
-</div>
-</div>
-<div class="fv-overly" style="display:none;"></div>
-<input type="hidden" name="subPro249881003" id="subPro249881003" value="0" />
-<div class="box col-12 proRowAct" id="1003-product-price-slazenger-teqila-i-2-li-set-erkek-beyaz-siyah-terlik" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-<span itemprop="priceCurrency" content="TRY"></span>
-<span itemprop="price" content="759.90002"></span>
-<span itemprop="availability" content="https://schema.org/InStock"></span>
-<span itemprop="itemCondition" content="NewCondition"></span>
-<div class="fl col-12 tooltipWrapper forMobile">
-<div class="col col-12 text-center"> </div>
-<div class="col d-flex productPrice col-12 fiyat-liste ">
-<div class="col col-12 priceWrapper">
-<div class="text-custom-dark-gray text-line discountedPrice">
-1.139,90
-TL
-</div>
-<div class="text-custom-pink text-bold currentPrice">
-759,90
-TL
-<span class="discountArrow color5">%33</span>
-</div>
-</div>
-</div>
-</div>
-<div class="fl col-12 tooltipWrapper forDesktop">
-<div class="col d-flex productPrice col-12 fiyat-liste">
-<div class="col col-12 priceWrapper">
-<div class="text-custom-dark-gray text-line discountedPrice">
-1.139,90
-TL
-</div>
-<div class="text-custom-pink text-bold currentPrice">
-759,90
-TL
-<span class="discountArrow color5">%33</span>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<script>PRODUCT_DATA.push(JSON.parse('{\"id\":\"24988\",\"name\":\"Slazenger TEQILA I 2 L\\u0130 SET Erkek Beyaz - Siyah Terlik\",\"code\":\"SA16SE030P2-PBS\",\"supplier_code\":\"SA16SE030P2-PBS\",\"sale_price\":\"690.8182\",\"total_base_price\":1139.9,\"total_sale_price\":759.9,\"vat\":10,\"subproduct_code\":\"\",\"subproduct_id\":\"117230\",\"image\":\"https:\\/\\/www.slazenger.com.tr\\/slazenger-teqila-i-2-li-set-erkek-beyaz-siyah-terlik-terlik-484687-24-O.jpg\",\"quantity\":377,\"url\":\"slazenger-teqila-i-2-li-set-erkek-beyaz-siyah-terlik\",\"currency\":\"TL\",\"currency_target\":\"TL\",\"brand\":\"Slazenger\",\"category\":\"TERL\\u0130K\",\"category_id\":\"256\",\"category_path\":\"ERKEK > SPOR AYAKKABI > \",\"model\":\"SA16SE030P2\",\"personalization_id\":null,\"variant1\":null,\"variant2\":null,\"additional_field_7\":\"\"}'));</script>
-<input type="hidden" class="myProductList" value="24987"/>
-<div class=" col col-3 col-md-3 col-sm-6 col-xs-6 p-right p-left mb productItem ease" id="1003-product-detail-slazenger-teqila-i-2-li-set-erkek-siyah-terlik" itemscope="itemscope" itemtype="http://schema.org/Product">
-<span itemprop="url" content="slazenger-teqila-i-2-li-set-erkek-siyah-terlik"></span>
-<span itemprop="name" content="Slazenger TEQILA I 2 Lİ SET Erkek Siyah Terlik"></span>
-<span itemprop="description" content=""></span>
-<span itemprop="image" content="https://www.slazenger.com.tr/slazenger-teqila-i-2-li-set-erkek-siyah-terlik-terlik-484680-24-K.jpg"></span>
-<div class="mt col col-12 p-right p-left mb">
-<div class="col col-12">
-<div class="row pos-r">
-<a href="/slazenger-teqila-i-2-li-set-erkek-siyah-terlik" class="liste-wrap image-wrapper fl imgGallery detailLink">
-<!-- <span class="pos-a col passive d-flex productDiscount-liste" lang="tr">
-<span>%33</span>
-</span>
-<span class="pos-a col passive icon-new-liste" lang="tr">Yeni</span>
--->
-<!--<span class="pos-a col passive kasimCampBack d-none" lang="tr"><img src="resimgelcek"></span>-->
-<div class="symbol-left">
-<span class="col passive d-flex symbolThree forMobile hideThis p-left p-right" title="" lang="tr">
-<span><div class="forMobile"><img src="https://img.slazenger.com.tr/Data/EditorFiles/2026/24-saatte-kargo.svg" width="38" height="38" /></div>
-<div class="forDesktop"><img src="https://img.slazenger.com.tr/Data/EditorFiles/2026/24-saatte-kargo.svg" width="55" height="48" /></div></span>
-</span>
-</div>
-<div class="symbol-right">
-</div>
-<span class="imgInner">
-<img src="https://img.slazenger.com.tr/slazenger-teqila-i-2-li-set-erkek-siyah-terlik-terlik-484680-24-B.jpg?width=600&v2" class="active stImage" alt="Slazenger TEQILA I 2 Lİ SET Erkek Siyah Terlik" title="Slazenger TEQILA I 2 Lİ SET Erkek Siyah Terlik" />
-</span>
-<span class="imgInner">
-<img src="https://img.slazenger.com.tr/slazenger-teqila-i-2-li-set-erkek-siyah-terlik-terlik-484681-24-B.jpg?width=600&v2" class="ease ndImage" alt="Slazenger TEQILA I 2 Lİ SET Erkek Siyah Terlik" title="Slazenger TEQILA I 2 Lİ SET Erkek Siyah Terlik" />
-</span>
-</a>
-</div>
-<div class="row">
-<div class="col col-12 productDetails loaderWrapper">
-<div class="row drop-down-title">
-<div class="box col-12">
-<div class="row">
-<div class="col col-12">
-<a href="/slazenger-teqila-i-2-li-set-erkek-siyah-terlik" title="Slazenger TEQILA I 2 Lİ SET Erkek Siyah Terlik" class="fl col-12 detailLink listProductName-liste text-center">
-Slazenger TEQILA I 2 Lİ SET Erkek Siyah Terlik
-</a>
-</div>
-</div>
-</div>
-<div class="fv-overly" style="display:none;"></div>
-<input type="hidden" name="subPro249871003" id="subPro249871003" value="0" />
-<div class="box col-12 proRowAct" id="1003-product-price-slazenger-teqila-i-2-li-set-erkek-siyah-terlik" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-<span itemprop="priceCurrency" content="TRY"></span>
-<span itemprop="price" content="759.90002"></span>
-<span itemprop="availability" content="https://schema.org/InStock"></span>
-<span itemprop="itemCondition" content="NewCondition"></span>
-<div class="fl col-12 tooltipWrapper forMobile">
-<div class="col col-12 text-center"> </div>
-<div class="col d-flex productPrice col-12 fiyat-liste ">
-<div class="col col-12 priceWrapper">
-<div class="text-custom-dark-gray text-line discountedPrice">
-1.139,90
-TL
-</div>
-<div class="text-custom-pink text-bold currentPrice">
-759,90
-TL
-<span class="discountArrow color5">%33</span>
-</div>
-</div>
-</div>
-</div>
-<div class="fl col-12 tooltipWrapper forDesktop">
-<div class="col d-flex productPrice col-12 fiyat-liste">
-<div class="col col-12 priceWrapper">
-<div class="text-custom-dark-gray text-line discountedPrice">
-1.139,90
-TL
-</div>
-<div class="text-custom-pink text-bold currentPrice">
-759,90
-TL
-<span class="discountArrow color5">%33</span>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<script>PRODUCT_DATA.push(JSON.parse('{\"id\":\"24987\",\"name\":\"Slazenger TEQILA I 2 L\\u0130 SET Erkek Siyah Terlik\",\"code\":\"SA16SE030P2-500\",\"supplier_code\":\"SA16SE030P2-500\",\"sale_price\":\"690.8182\",\"total_base_price\":1139.9,\"total_sale_price\":759.9,\"vat\":10,\"subproduct_code\":\"\",\"subproduct_id\":\"117224\",\"image\":\"https:\\/\\/www.slazenger.com.tr\\/slazenger-teqila-i-2-li-set-erkek-siyah-terlik-terlik-484680-24-O.jpg\",\"quantity\":13090,\"url\":\"slazenger-teqila-i-2-li-set-erkek-siyah-terlik\",\"currency\":\"TL\",\"currency_target\":\"TL\",\"brand\":\"Slazenger\",\"category\":\"TERL\\u0130K\",\"category_id\":\"256\",\"category_path\":\"ERKEK > SPOR AYAKKABI > \",\"model\":\"SA16SE030P2\",\"personalization_id\":null,\"variant1\":null,\"variant2\":null,\"additional_field_7\":\"\"}'));</script>
-<input type="hidden" class="myProductList" value="24507"/>
-<div class=" col col-3 col-md-3 col-sm-6 col-xs-6 p-right p-left mb productItem ease" id="1003-product-detail-slazenger-teqila-i-erkek-bej-terlik" itemscope="itemscope" itemtype="http://schema.org/Product">
-<span itemprop="url" content="slazenger-teqila-i-erkek-bej-terlik"></span>
-<span itemprop="name" content="Slazenger TEQILA I Erkek Bej Terlik"></span>
-<span itemprop="description" content=""></span>
-<span itemprop="image" content="https://www.slazenger.com.tr/slazenger-teqila-i-erkek-bej-terlik-terlik-444717-24-K.jpg"></span>
-<div class="mt col col-12 p-right p-left mb">
-<div class="col col-12">
-<div class="row pos-r">
-<a href="/slazenger-teqila-i-erkek-bej-terlik" class="liste-wrap image-wrapper fl imgGallery detailLink">
-<!-- <span class="pos-a col passive d-flex productDiscount-liste" lang="tr">
-<span>%46</span>
-</span>
-<span class="pos-a col passive icon-new-liste" lang="tr">Yeni</span>
--->
-<!--<span class="pos-a col passive kasimCampBack d-none" lang="tr"><img src="resimgelcek"></span>-->
-<div class="symbol-left">
-<span class="col passive d-flex symbolThree forMobile hideThis p-left p-right" title="" lang="tr">
-<span><div class="forMobile"><img src="https://img.slazenger.com.tr/Data/EditorFiles/2026/24-saatte-kargo.svg" width="38" height="38" /></div>
-<div class="forDesktop"><img src="https://img.slazenger.com.tr/Data/EditorFiles/2026/24-saatte-kargo.svg" width="55" height="48" /></div></span>
-</span>
-</div>
-<div class="symbol-right">
-<span class="col passive d-flex symbolOne hideThis p-left p-right forMobile- pa" title="" lang="tr">
+<span class="col passive d-flex symbolOne hideThis d-none forMobile" title="Etiketin Yarısı" lang="tr">
 <span><img src="https://img.slazenger.com.tr/Data/EditorFiles/symbol/etiket-yari.svg" alt="etiket-yari.svg (8 KB)" width="50" height="96" /></span>
 </span>
 </div>
+<div class="col col-12 pos-r">
+<div class="row mb" id="lightgallery">
+<ul id="productImage" class="fl col-12 product-detail-img-slider" data-auto-slide="false" data-change-mouse="false" data-magnifier="0">
+<li class="col-sm-12 col-6 fl li-detay" data-type="175">
+<a href="https://img.slazenger.com.tr/slazenger-teqila-i-erkek-bej-terlik-terlik-444717-24-B.jpg" class="lg-item image-wrapper fl">
 <span class="imgInner">
-<img src="https://img.slazenger.com.tr/slazenger-teqila-i-erkek-bej-terlik-terlik-444717-24-B.jpg?width=600&v2" class="active stImage" alt="Slazenger TEQILA I Erkek Bej Terlik" title="Slazenger TEQILA I Erkek Bej Terlik" />
-</span>
-<span class="imgInner">
-<img src="https://img.slazenger.com.tr/slazenger-teqila-i-erkek-bej-terlik-terlik-444718-24-B.jpg?width=600&v2" class="ease ndImage" alt="Slazenger TEQILA I Erkek Bej Terlik" title="Slazenger TEQILA I Erkek Bej Terlik" />
+<img src="https://img.slazenger.com.tr/slazenger-teqila-i-erkek-bej-terlik-terlik-444717-24-B.jpg?height=750" alt="Slazenger TEQILA I Erkek Bej Terlik" title="Slazenger TEQILA I Erkek Bej Terlik" />
 </span>
 </a>
-</div>
-<div class="row">
-<div class="col col-12 productDetails loaderWrapper">
-<div class="row drop-down-title">
-<div class="box col-12">
-<div class="row">
-<div class="col col-12">
-<a href="/slazenger-teqila-i-erkek-bej-terlik" title="Slazenger TEQILA I Erkek Bej Terlik" class="fl col-12 detailLink listProductName-liste text-center">
-Slazenger TEQILA I Erkek Bej Terlik
-</a>
-</div>
-</div>
-</div>
-<div class="fv-overly" style="display:none;"></div>
-<input type="hidden" name="subPro245071003" id="subPro245071003" value="0" />
-<div class="box col-12 proRowAct" id="1003-product-price-slazenger-teqila-i-erkek-bej-terlik" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-<span itemprop="priceCurrency" content="TRY"></span>
-<span itemprop="price" content="399.90005"></span>
-<span itemprop="availability" content="https://schema.org/InStock"></span>
-<span itemprop="itemCondition" content="NewCondition"></span>
-<div class="fl col-12 tooltipWrapper forMobile">
-<div class="col col-12 symbolTitleTwo text-center"> Etiketin Yarısı</div>
-<div class="col d-flex productPrice col-12 fiyat-liste symbolTwoPrice ">
-<div class="col col-12 priceWrapper">
-<div class="text-custom-dark-gray text-line discountedPrice">
-739,90
-TL
-</div>
-<div class="text-custom-pink text-bold currentPrice">
-399,90
-TL
-<span class="discountArrow color5 forDesktop">%46</span>
-</div>
-</div>
-</div>
-</div>
-<div class="fl col-12 tooltipWrapper forDesktop">
-<div class="col d-flex productPrice col-12 fiyat-liste">
-<div class="col col-12 priceWrapper">
-<div class="text-custom-dark-gray text-line discountedPrice">
-739,90
-TL
-</div>
-<div class="text-custom-pink text-bold currentPrice">
-399,90
-TL
-<span class="discountArrow color5 forDesktop">%46</span>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<script>PRODUCT_DATA.push(JSON.parse('{\"id\":\"24507\",\"name\":\"Slazenger TEQILA I Erkek Bej Terlik\",\"code\":\"SA16SE030-120\",\"supplier_code\":\"SA16SE030-120\",\"sale_price\":\"363.5455\",\"total_base_price\":739.9,\"total_sale_price\":399.9,\"vat\":10,\"subproduct_code\":\"\",\"subproduct_id\":\"114910\",\"image\":\"https:\\/\\/www.slazenger.com.tr\\/slazenger-teqila-i-erkek-bej-terlik-terlik-444717-24-O.jpg\",\"quantity\":3166,\"url\":\"slazenger-teqila-i-erkek-bej-terlik\",\"currency\":\"TL\",\"currency_target\":\"TL\",\"brand\":\"Slazenger\",\"category\":\"TERL\\u0130K\",\"category_id\":\"256\",\"category_path\":\"ERKEK > SPOR AYAKKABI > \",\"model\":\"SA16SE030\",\"personalization_id\":null,\"variant1\":null,\"variant2\":null,\"additional_field_7\":\"\"}'));</script>
-<input type="hidden" class="myProductList" value="24414"/>
-<div class=" col col-3 col-md-3 col-sm-6 col-xs-6 p-right p-left mb productItem ease" id="1003-product-detail-slazenger-teqila-i-erkek-sutlu-kahve-terlik" itemscope="itemscope" itemtype="http://schema.org/Product">
-<span itemprop="url" content="slazenger-teqila-i-erkek-sutlu-kahve-terlik"></span>
-<span itemprop="name" content="Slazenger TEQILA I Erkek Sütlü Kahve Terlik"></span>
-<span itemprop="description" content=""></span>
-<span itemprop="image" content="https://www.slazenger.com.tr/slazenger-teqila-i-erkek-sutlu-kahve-terlik-terlik-447497-24-K.jpg"></span>
-<div class="mt col col-12 p-right p-left mb">
-<div class="col col-12">
-<div class="row pos-r">
-<a href="/slazenger-teqila-i-erkek-sutlu-kahve-terlik" class="liste-wrap image-wrapper fl imgGallery detailLink">
-<!-- <span class="pos-a col passive d-flex productDiscount-liste" lang="tr">
-<span>%46</span>
-</span>
-<span class="pos-a col passive icon-new-liste" lang="tr">Yeni</span>
--->
-<!--<span class="pos-a col passive kasimCampBack d-none" lang="tr"><img src="resimgelcek"></span>-->
-<div class="symbol-left">
-<span class="col passive d-flex symbolThree forMobile hideThis p-left p-right" title="" lang="tr">
-<span><div class="forMobile"><img src="https://img.slazenger.com.tr/Data/EditorFiles/2026/24-saatte-kargo.svg" width="38" height="38" /></div>
-<div class="forDesktop"><img src="https://img.slazenger.com.tr/Data/EditorFiles/2026/24-saatte-kargo.svg" width="55" height="48" /></div></span>
-</span>
-</div>
-<div class="symbol-right">
-<span class="col passive d-flex symbolOne hideThis p-left p-right forMobile- pa" title="" lang="tr">
-<span><img src="https://img.slazenger.com.tr/Data/EditorFiles/symbol/etiket-yari.svg" alt="etiket-yari.svg (8 KB)" width="50" height="96" /></span>
-</span>
-</div>
+</li>
+<li class="col-sm-12 col-6 fl li-detay" data-type="175">
+<a href="https://img.slazenger.com.tr/slazenger-teqila-i-erkek-bej-terlik-terlik-444718-24-B.jpg" class="lg-item image-wrapper fl">
 <span class="imgInner">
-<img src="https://img.slazenger.com.tr/slazenger-teqila-i-erkek-sutlu-kahve-terlik-terlik-447497-24-B.jpg?width=600&v2" class="active stImage" alt="Slazenger TEQILA I Erkek Sütlü Kahve Terlik" title="Slazenger TEQILA I Erkek Sütlü Kahve Terlik" />
+<img src="https://img.slazenger.com.tr/slazenger-teqila-i-erkek-bej-terlik-terlik-444718-24-B.jpg?height=750" alt="Slazenger TEQILA I Erkek Bej Terlik" title="Slazenger TEQILA I Erkek Bej Terlik" />
 </span>
+</a>
+</li>
+<li class="col-sm-12 col-6 fl li-detay" data-type="175">
+<a href="https://img.slazenger.com.tr/slazenger-teqila-i-erkek-bej-terlik-terlik-444719-24-B.jpg" class="lg-item image-wrapper fl">
 <span class="imgInner">
-<img src="https://img.slazenger.com.tr/slazenger-teqila-i-erkek-sutlu-kahve-terlik-terlik-447498-24-B.jpg?width=600&v2" class="ease ndImage" alt="Slazenger TEQILA I Erkek Sütlü Kahve Terlik" title="Slazenger TEQILA I Erkek Sütlü Kahve Terlik" />
+<img src="https://img.slazenger.com.tr/slazenger-teqila-i-erkek-bej-terlik-terlik-444719-24-B.jpg?height=750" alt="Slazenger TEQILA I Erkek Bej Terlik" title="Slazenger TEQILA I Erkek Bej Terlik" />
 </span>
 </a>
-</div>
-<div class="row">
-<div class="col col-12 productDetails loaderWrapper">
-<div class="row drop-down-title">
-<div class="box col-12">
-<div class="row">
-<div class="col col-12">
-<a href="/slazenger-teqila-i-erkek-sutlu-kahve-terlik" title="Slazenger TEQILA I Erkek Sütlü Kahve Terlik" class="fl col-12 detailLink listProductName-liste text-center">
-Slazenger TEQILA I Erkek Sütlü Kahve Terlik
-</a>
-</div>
-</div>
-</div>
-<div class="fv-overly" style="display:none;"></div>
-<input type="hidden" name="subPro244141003" id="subPro244141003" value="0" />
-<div class="box col-12 proRowAct" id="1003-product-price-slazenger-teqila-i-erkek-sutlu-kahve-terlik" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-<span itemprop="priceCurrency" content="TRY"></span>
-<span itemprop="price" content="399.90005"></span>
-<span itemprop="availability" content="https://schema.org/InStock"></span>
-<span itemprop="itemCondition" content="NewCondition"></span>
-<div class="fl col-12 tooltipWrapper forMobile">
-<div class="col col-12 symbolTitleTwo text-center"> Etiketin Yarısı</div>
-<div class="col d-flex productPrice col-12 fiyat-liste symbolTwoPrice ">
-<div class="col col-12 priceWrapper">
-<div class="text-custom-dark-gray text-line discountedPrice">
-739,90
-TL
-</div>
-<div class="text-custom-pink text-bold currentPrice">
-399,90
-TL
-<span class="discountArrow color5 forDesktop">%46</span>
-</div>
-</div>
-</div>
-</div>
-<div class="fl col-12 tooltipWrapper forDesktop">
-<div class="col d-flex productPrice col-12 fiyat-liste">
-<div class="col col-12 priceWrapper">
-<div class="text-custom-dark-gray text-line discountedPrice">
-739,90
-TL
-</div>
-<div class="text-custom-pink text-bold currentPrice">
-399,90
-TL
-<span class="discountArrow color5 forDesktop">%46</span>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<script>PRODUCT_DATA.push(JSON.parse('{\"id\":\"24414\",\"name\":\"Slazenger TEQILA I Erkek S\\u00fctl\\u00fc Kahve Terlik\",\"code\":\"SA16SE030-302\",\"supplier_code\":\"SA16SE030-302\",\"sale_price\":\"363.5455\",\"total_base_price\":739.9,\"total_sale_price\":399.9,\"vat\":10,\"subproduct_code\":\"\",\"subproduct_id\":\"114451\",\"image\":\"https:\\/\\/www.slazenger.com.tr\\/slazenger-teqila-i-erkek-sutlu-kahve-terlik-terlik-447497-24-O.jpg\",\"quantity\":193,\"url\":\"slazenger-teqila-i-erkek-sutlu-kahve-terlik\",\"currency\":\"TL\",\"currency_target\":\"TL\",\"brand\":\"Slazenger\",\"category\":\"TERL\\u0130K\",\"category_id\":\"256\",\"category_path\":\"ERKEK > SPOR AYAKKABI > \",\"model\":\"SA16SE030\",\"personalization_id\":null,\"variant1\":null,\"variant2\":null,\"additional_field_7\":\"\"}'));</script>
-<input type="hidden" class="myProductList" value="24377"/>
-<div class=" col col-3 col-md-3 col-sm-6 col-xs-6 p-right p-left mb productItem ease" id="1003-product-detail-slazenger-teqila-i-erkek-beyaz-terlik" itemscope="itemscope" itemtype="http://schema.org/Product">
-<span itemprop="url" content="slazenger-teqila-i-erkek-beyaz-terlik"></span>
-<span itemprop="name" content="Slazenger TEQILA I Erkek Beyaz Terlik"></span>
-<span itemprop="description" content=""></span>
-<span itemprop="image" content="https://www.slazenger.com.tr/slazenger-teqila-i-erkek-beyaz-terlik-terlik-443862-24-K.jpg"></span>
-<div class="mt col col-12 p-right p-left mb">
-<div class="col col-12">
-<div class="row pos-r">
-<a href="/slazenger-teqila-i-erkek-beyaz-terlik" class="liste-wrap image-wrapper fl imgGallery detailLink">
-<!-- <span class="pos-a col passive d-flex productDiscount-liste" lang="tr">
-<span>%46</span>
-</span>
-<span class="pos-a col passive icon-new-liste" lang="tr">Yeni</span>
--->
-<!--<span class="pos-a col passive kasimCampBack d-none" lang="tr"><img src="resimgelcek"></span>-->
-<div class="symbol-left">
-<span class="col passive d-flex symbolThree forMobile hideThis p-left p-right" title="" lang="tr">
-<span><div class="forMobile"><img src="https://img.slazenger.com.tr/Data/EditorFiles/2026/24-saatte-kargo.svg" width="38" height="38" /></div>
-<div class="forDesktop"><img src="https://img.slazenger.com.tr/Data/EditorFiles/2026/24-saatte-kargo.svg" width="55" height="48" /></div></span>
-</span>
-</div>
-<div class="symbol-right">
-<span class="col passive d-flex symbolOne hideThis p-left p-right forMobile- pa" title="" lang="tr">
-<span><img src="https://img.slazenger.com.tr/Data/EditorFiles/symbol/etiket-yari.svg" alt="etiket-yari.svg (8 KB)" width="50" height="96" /></span>
-</span>
-</div>
+</li>
+<li class="col-sm-12 col-6 fl li-detay" data-type="175">
+<a href="https://img.slazenger.com.tr/slazenger-teqila-i-erkek-bej-terlik-terlik-444720-24-B.jpg" class="lg-item image-wrapper fl">
 <span class="imgInner">
-<img src="https://img.slazenger.com.tr/slazenger-teqila-i-erkek-beyaz-terlik-terlik-443862-24-B.jpg?width=600&v2" class="active stImage" alt="Slazenger TEQILA I Erkek Beyaz Terlik" title="Slazenger TEQILA I Erkek Beyaz Terlik" />
+<img src="https://img.slazenger.com.tr/slazenger-teqila-i-erkek-bej-terlik-terlik-444720-24-B.jpg?height=750" alt="Slazenger TEQILA I Erkek Bej Terlik" title="Slazenger TEQILA I Erkek Bej Terlik" />
 </span>
+</a>
+</li>
+<li class="col-sm-12 col-6 fl li-detay" data-type="175">
+<a href="https://img.slazenger.com.tr/slazenger-teqila-i-erkek-bej-terlik-terlik-444721-24-B.jpg" class="lg-item image-wrapper fl">
 <span class="imgInner">
-<img src="https://img.slazenger.com.tr/slazenger-teqila-i-erkek-beyaz-terlik-terlik-443866-24-B.jpg?width=600&v2" class="ease ndImage" alt="Slazenger TEQILA I Erkek Beyaz Terlik" title="Slazenger TEQILA I Erkek Beyaz Terlik" />
+<img src="https://img.slazenger.com.tr/slazenger-teqila-i-erkek-bej-terlik-terlik-444721-24-B.jpg?height=750" alt="Slazenger TEQILA I Erkek Bej Terlik" title="Slazenger TEQILA I Erkek Bej Terlik" />
 </span>
 </a>
-</div>
-<div class="row">
-<div class="col col-12 productDetails loaderWrapper">
-<div class="row drop-down-title">
-<div class="box col-12">
-<div class="row">
-<div class="col col-12">
-<a href="/slazenger-teqila-i-erkek-beyaz-terlik" title="Slazenger TEQILA I Erkek Beyaz Terlik" class="fl col-12 detailLink listProductName-liste text-center">
-Slazenger TEQILA I Erkek Beyaz Terlik
-</a>
-</div>
-</div>
-</div>
-<div class="fv-overly" style="display:none;"></div>
-<input type="hidden" name="subPro243771003" id="subPro243771003" value="0" />
-<div class="box col-12 proRowAct" id="1003-product-price-slazenger-teqila-i-erkek-beyaz-terlik" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-<span itemprop="priceCurrency" content="TRY"></span>
-<span itemprop="price" content="399.90005"></span>
-<span itemprop="availability" content="https://schema.org/InStock"></span>
-<span itemprop="itemCondition" content="NewCondition"></span>
-<div class="fl col-12 tooltipWrapper forMobile">
-<div class="col col-12 symbolTitleTwo text-center"> Etiketin Yarısı</div>
-<div class="col d-flex productPrice col-12 fiyat-liste symbolTwoPrice ">
-<div class="col col-12 priceWrapper">
-<div class="text-custom-dark-gray text-line discountedPrice">
-739,90
-TL
-</div>
-<div class="text-custom-pink text-bold currentPrice">
-399,90
-TL
-<span class="discountArrow color5 forDesktop">%46</span>
-</div>
-</div>
-</div>
-</div>
-<div class="fl col-12 tooltipWrapper forDesktop">
-<div class="col d-flex productPrice col-12 fiyat-liste">
-<div class="col col-12 priceWrapper">
-<div class="text-custom-dark-gray text-line discountedPrice">
-739,90
-TL
-</div>
-<div class="text-custom-pink text-bold currentPrice">
-399,90
-TL
-<span class="discountArrow color5 forDesktop">%46</span>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<script>PRODUCT_DATA.push(JSON.parse('{\"id\":\"24377\",\"name\":\"Slazenger TEQILA I Erkek Beyaz Terlik\",\"code\":\"SA16SE030-000\",\"supplier_code\":\"SA16SE030-000\",\"sale_price\":\"363.5455\",\"total_base_price\":739.9,\"total_sale_price\":399.9,\"vat\":10,\"subproduct_code\":\"\",\"subproduct_id\":\"114338\",\"image\":\"https:\\/\\/www.slazenger.com.tr\\/slazenger-teqila-i-erkek-beyaz-terlik-terlik-443862-24-O.jpg\",\"quantity\":382,\"url\":\"slazenger-teqila-i-erkek-beyaz-terlik\",\"currency\":\"TL\",\"currency_target\":\"TL\",\"brand\":\"Slazenger\",\"category\":\"TERL\\u0130K\",\"category_id\":\"256\",\"category_path\":\"ERKEK > SPOR AYAKKABI > \",\"model\":\"SA16SE030\",\"personalization_id\":null,\"variant1\":null,\"variant2\":null,\"additional_field_7\":\"\"}'));</script>
-<input type="hidden" class="myProductList" value="24344"/>
-<div class=" col col-3 col-md-3 col-sm-6 col-xs-6 p-right p-left mb productItem ease" id="1003-product-detail-slazenger-teqila-i-erkek-siyah-terlik" itemscope="itemscope" itemtype="http://schema.org/Product">
-<span itemprop="url" content="slazenger-teqila-i-erkek-siyah-terlik"></span>
-<span itemprop="name" content="Slazenger TEQILA I Erkek Siyah Terlik"></span>
-<span itemprop="description" content=""></span>
-<span itemprop="image" content="https://www.slazenger.com.tr/slazenger-teqila-i-erkek-siyah-terlik-terlik-448891-24-K.jpg"></span>
-<div class="mt col col-12 p-right p-left mb">
-<div class="col col-12">
-<div class="row pos-r">
-<a href="/slazenger-teqila-i-erkek-siyah-terlik" class="liste-wrap image-wrapper fl imgGallery detailLink">
-<!-- <span class="pos-a col passive d-flex productDiscount-liste" lang="tr">
-<span>%46</span>
-</span>
-<span class="pos-a col passive icon-new-liste" lang="tr">Yeni</span>
--->
-<!--<span class="pos-a col passive kasimCampBack d-none" lang="tr"><img src="resimgelcek"></span>-->
-<div class="symbol-left">
-<span class="col passive d-flex symbolThree forMobile hideThis p-left p-right" title="" lang="tr">
-<span><div class="forMobile"><img src="https://img.slazenger.com.tr/Data/EditorFiles/2026/24-saatte-kargo.svg" width="38" height="38" /></div>
-<div class="forDesktop"><img src="https://img.slazenger.com.tr/Data/EditorFiles/2026/24-saatte-kargo.svg" width="55" height="48" /></div></span>
-</span>
-</div>
-<div class="symbol-right">
-<span class="col passive d-flex symbolOne hideThis p-left p-right forMobile- pa" title="" lang="tr">
-<span><img src="https://img.slazenger.com.tr/Data/EditorFiles/symbol/etiket-yari.svg" alt="etiket-yari.svg (8 KB)" width="50" height="96" /></span>
-</span>
-</div>
+</li>
+<li class="col-sm-12 col-6 fl li-detay" data-type="175">
+<a href="https://img.slazenger.com.tr/slazenger-teqila-i-erkek-bej-terlik-terlik-444722-24-B.jpg" class="lg-item image-wrapper fl">
 <span class="imgInner">
-<img src="https://img.slazenger.com.tr/slazenger-teqila-i-erkek-siyah-terlik-terlik-448891-24-B.jpg?width=600&v2" class="active stImage" alt="Slazenger TEQILA I Erkek Siyah Terlik" title="Slazenger TEQILA I Erkek Siyah Terlik" />
+<img src="https://img.slazenger.com.tr/slazenger-teqila-i-erkek-bej-terlik-terlik-444722-24-B.jpg?height=750" alt="Slazenger TEQILA I Erkek Bej Terlik" title="Slazenger TEQILA I Erkek Bej Terlik" />
 </span>
+</a>
+</li>
+<li class="col-sm-12 col-6 fl li-detay" data-type="175">
+<a href="https://img.slazenger.com.tr/slazenger-teqila-i-erkek-bej-terlik-terlik-444723-24-B.jpg" class="lg-item image-wrapper fl">
 <span class="imgInner">
-<img src="https://img.slazenger.com.tr/slazenger-teqila-i-erkek-siyah-terlik-terlik-448892-24-B.jpg?width=600&v2" class="ease ndImage" alt="Slazenger TEQILA I Erkek Siyah Terlik" title="Slazenger TEQILA I Erkek Siyah Terlik" />
+<img src="https://img.slazenger.com.tr/slazenger-teqila-i-erkek-bej-terlik-terlik-444723-24-B.jpg?height=750" alt="Slazenger TEQILA I Erkek Bej Terlik" title="Slazenger TEQILA I Erkek Bej Terlik" />
 </span>
 </a>
+</li>
+</ul>
 </div>
-<div class="row">
-<div class="col col-12 productDetails loaderWrapper">
-<div class="row drop-down-title">
-<div class="box col-12">
-<div class="row">
-<div class="col col-12">
-<a href="/slazenger-teqila-i-erkek-siyah-terlik" title="Slazenger TEQILA I Erkek Siyah Terlik" class="fl col-12 detailLink listProductName-liste text-center">
-Slazenger TEQILA I Erkek Siyah Terlik
-</a>
-</div>
-</div>
-</div>
-<div class="fv-overly" style="display:none;"></div>
-<input type="hidden" name="subPro243441003" id="subPro243441003" value="0" />
-<div class="box col-12 proRowAct" id="1003-product-price-slazenger-teqila-i-erkek-siyah-terlik" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-<span itemprop="priceCurrency" content="TRY"></span>
-<span itemprop="price" content="399.90005"></span>
-<span itemprop="availability" content="https://schema.org/InStock"></span>
-<span itemprop="itemCondition" content="NewCondition"></span>
-<div class="fl col-12 tooltipWrapper forMobile">
-<div class="col col-12 symbolTitleTwo text-center"> Etiketin Yarısı</div>
-<div class="col d-flex productPrice col-12 fiyat-liste symbolTwoPrice ">
-<div class="col col-12 priceWrapper">
-<div class="text-custom-dark-gray text-line discountedPrice">
-739,90
-TL
-</div>
-<div class="text-custom-pink text-bold currentPrice">
-399,90
-TL
-<span class="discountArrow color5 forDesktop">%46</span>
-</div>
-</div>
-</div>
-</div>
-<div class="fl col-12 tooltipWrapper forDesktop">
-<div class="col d-flex productPrice col-12 fiyat-liste">
-<div class="col col-12 priceWrapper">
-<div class="text-custom-dark-gray text-line discountedPrice">
-739,90
-TL
-</div>
-<div class="text-custom-pink text-bold currentPrice">
-399,90
-TL
-<span class="discountArrow color5 forDesktop">%46</span>
+<link type="text/css" rel="stylesheet" href="https://img.slazenger.com.tr/Data/EditorFiles/2022/lightGallery/2/lightgallery.css?OD-2" />
+<link type="text/css" rel="stylesheet" href="https://img.slazenger.com.tr/Data/EditorFiles/2022/lightGallery/2/lg-zoom.css?OD-2" />
+<link type="text/css" rel="stylesheet" href="https://img.slazenger.com.tr/Data/EditorFiles/2022/lightGallery/2/lg-thumbnail.css?v=995?OD-2" />
+<script src="https://img.slazenger.com.tr/Data/EditorFiles/2022/lightGallery/2/lightgallery.umd.js?OD-2"></script>
+<script src="https://img.slazenger.com.tr/Data/EditorFiles/2022/lightGallery/2/lightgallery.min.js?OD-2"></script>
+<script src="https://img.slazenger.com.tr/Data/EditorFiles/2022/lightGallery/2/lg-thumbnail.umd.js?OD-2"></script>
+<script src="https://img.slazenger.com.tr/Data/EditorFiles/2022/lightGallery/2/lg-zoom.umd.js?OD-2"></script>
+<script>
+lightGallery(document.getElementById('lightgallery'), {
+plugins: [lgZoom, lgThumbnail],
+speed: 500,
+zoomIn: 'lg-zoom-in',
+zoomOut: 'lg-zoom-out',
+mobileSettings: true,
+zoomFromOrigin: false,
+scale: true,
+showCloseIcon: true,
+selector: '.lg-item'
+});
+</script>
+<style>
+@media only screen and (min-width:769px){
+.videoHeight{
+max-height: 715px;
+}
+}
+@media only screen and (max-width:768px){
+li.col-2.col-sm-3.fl.current, li.col-sm-12.col-6.fl.li-detay.video.current {
+display: block!important;
+}
+.videoButton{
+height:1000px;
+}
+.videoButton {
+height: 64px;
+padding-top: 50px;
+}
+}
+</style>
 </div>
 </div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<script>PRODUCT_DATA.push(JSON.parse('{\"id\":\"24344\",\"name\":\"Slazenger TEQILA I Erkek Siyah Terlik\",\"code\":\"SA16SE030-500\",\"supplier_code\":\"SA16SE030-500\",\"sale_price\":\"363.5455\",\"total_base_price\":739.9,\"total_sale_price\":399.9,\"vat\":10,\"subproduct_code\":\"\",\"subproduct_id\":\"114198\",\"image\":\"https:\\/\\/www.slazenger.com.tr\\/slazenger-teqila-i-erkek-siyah-terlik-terlik-448891-24-O.jpg\",\"quantity\":13108,\"url\":\"slazenger-teqila-i-erkek-siyah-terlik\",\"currency\":\"TL\",\"currency_target\":\"TL\",\"brand\":\"Slazenger\",\"category\":\"TERL\\u0130K\",\"category_id\":\"256\",\"category_path\":\"ERKEK > SPOR AYAKKABI > \",\"model\":\"SA16SE030\",\"personalization_id\":null,\"variant1\":null,\"variant2\":null,\"additional_field_7\":\"\"}'));</script>
-</div>
-</div>
-</div>
-<div class="fl col-12 mb">
-<div class="col col-12 box-border mb">
-<div class="row">
-<div class="box col-12 col-sm-12 text-center">
+<div class="col col-12 forMobile mobile-slider-detay">
+<div>
+<ul id="productThumbs" class="fl col-12 notClear">
+<li class="col-2 col-sm-3 fl" data-type="175">
 <div class="col col-12 p-left">
-<span class="text-custom-dark-gray">
-<div class="fl col-12 appendFilter2 text-center fw600 ">6 Ürün Gösteriliyor</div>
-Aramanız için 6 sonuç bulundu
+<div class="col col-12 ease">
+<div class="row">
+<a data-id="444717" data-href="https://www.slazenger.com.tr/slazenger-teqila-i-erkek-bej-terlik-terlik-444717-24-B.jpg" class="image-wrapper fl" data-standard="https://img.slazenger.com.tr/slazenger-teqila-i-erkek-bej-terlik-terlik-444717-24-B.jpg">
+<span class="imgInner">
+<img src="https://img.slazenger.com.tr/slazenger-teqila-i-erkek-bej-terlik-terlik-444717-24-B.jpg" alt="Slazenger TEQILA I Erkek Bej Terlik - Thumbnail" />
+</span>
+</a>
+</div>
+</div>
+</div>
+</li>
+<li class="col-2 col-sm-3 fl" data-type="175">
+<div class="col col-12 p-left">
+<div class="col col-12 ease">
+<div class="row">
+<a data-id="444718" data-href="https://www.slazenger.com.tr/slazenger-teqila-i-erkek-bej-terlik-terlik-444718-24-B.jpg" class="image-wrapper fl" data-standard="https://img.slazenger.com.tr/slazenger-teqila-i-erkek-bej-terlik-terlik-444718-24-B.jpg">
+<span class="imgInner">
+<img src="https://img.slazenger.com.tr/slazenger-teqila-i-erkek-bej-terlik-terlik-444718-24-B.jpg" alt="Slazenger TEQILA I Erkek Bej Terlik - Thumbnail" />
+</span>
+</a>
+</div>
+</div>
+</div>
+</li>
+<li class="col-2 col-sm-3 fl" data-type="175">
+<div class="col col-12 p-left">
+<div class="col col-12 ease">
+<div class="row">
+<a data-id="444719" data-href="https://www.slazenger.com.tr/slazenger-teqila-i-erkek-bej-terlik-terlik-444719-24-B.jpg" class="image-wrapper fl" data-standard="https://img.slazenger.com.tr/slazenger-teqila-i-erkek-bej-terlik-terlik-444719-24-B.jpg">
+<span class="imgInner">
+<img src="https://img.slazenger.com.tr/slazenger-teqila-i-erkek-bej-terlik-terlik-444719-24-B.jpg" alt="Slazenger TEQILA I Erkek Bej Terlik - Thumbnail" />
+</span>
+</a>
+</div>
+</div>
+</div>
+</li>
+<li class="col-2 col-sm-3 fl" data-type="175">
+<div class="col col-12 p-left">
+<div class="col col-12 ease">
+<div class="row">
+<a data-id="444720" data-href="https://www.slazenger.com.tr/slazenger-teqila-i-erkek-bej-terlik-terlik-444720-24-B.jpg" class="image-wrapper fl" data-standard="https://img.slazenger.com.tr/slazenger-teqila-i-erkek-bej-terlik-terlik-444720-24-B.jpg">
+<span class="imgInner">
+<img src="https://img.slazenger.com.tr/slazenger-teqila-i-erkek-bej-terlik-terlik-444720-24-B.jpg" alt="Slazenger TEQILA I Erkek Bej Terlik - Thumbnail" />
+</span>
+</a>
+</div>
+</div>
+</div>
+</li>
+<li class="col-2 col-sm-3 fl" data-type="175">
+<div class="col col-12 p-left">
+<div class="col col-12 ease">
+<div class="row">
+<a data-id="444721" data-href="https://www.slazenger.com.tr/slazenger-teqila-i-erkek-bej-terlik-terlik-444721-24-B.jpg" class="image-wrapper fl" data-standard="https://img.slazenger.com.tr/slazenger-teqila-i-erkek-bej-terlik-terlik-444721-24-B.jpg">
+<span class="imgInner">
+<img src="https://img.slazenger.com.tr/slazenger-teqila-i-erkek-bej-terlik-terlik-444721-24-B.jpg" alt="Slazenger TEQILA I Erkek Bej Terlik - Thumbnail" />
+</span>
+</a>
+</div>
+</div>
+</div>
+</li>
+<li class="col-2 col-sm-3 fl" data-type="175">
+<div class="col col-12 p-left">
+<div class="col col-12 ease">
+<div class="row">
+<a data-id="444722" data-href="https://www.slazenger.com.tr/slazenger-teqila-i-erkek-bej-terlik-terlik-444722-24-B.jpg" class="image-wrapper fl" data-standard="https://img.slazenger.com.tr/slazenger-teqila-i-erkek-bej-terlik-terlik-444722-24-B.jpg">
+<span class="imgInner">
+<img src="https://img.slazenger.com.tr/slazenger-teqila-i-erkek-bej-terlik-terlik-444722-24-B.jpg" alt="Slazenger TEQILA I Erkek Bej Terlik - Thumbnail" />
+</span>
+</a>
+</div>
+</div>
+</div>
+</li>
+<li class="col-2 col-sm-3 fl" data-type="175">
+<div class="col col-12 p-left">
+<div class="col col-12 ease">
+<div class="row">
+<a data-id="444723" data-href="https://www.slazenger.com.tr/slazenger-teqila-i-erkek-bej-terlik-terlik-444723-24-B.jpg" class="image-wrapper fl" data-standard="https://img.slazenger.com.tr/slazenger-teqila-i-erkek-bej-terlik-terlik-444723-24-B.jpg">
+<span class="imgInner">
+<img src="https://img.slazenger.com.tr/slazenger-teqila-i-erkek-bej-terlik-terlik-444723-24-B.jpg" alt="Slazenger TEQILA I Erkek Bej Terlik - Thumbnail" />
+</span>
+</a>
+</div>
+</div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="col col-12 resim-alt-bilgi forDesktop">
+<div class="row">
+<div class="col col-6 p-left"><a href="/erkek-terlik-modelleri">Daha Fazla "TERLİK"</a></div>
+<div class="col col-6 p-right">
+<a href="/erkek-giyim">
+<div class="col col-12">%60'a varan indirimler</div>
+<div class="col col-12">ERKEK</div>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="box col-4 col-sm-12 p-top loaderWrapper" id="productRight">
+<div class="box col-12 border-detay-sl">
+<div class="box col-12" id="productMobileInfo">
+<div class="row">
+<div class="col col-12 col-xs-12 p-left p-right" id="productInfo">
+<div class="p-left p-right col col-12">
+<div class="p-left p-right col col-12">
+<h1 class="col-sm-11 fl col-11 text-regular m-top m-bottom" id="productName">Slazenger TEQILA I Erkek Bej Terlik</h1>
+<div data-id="24507" class="col col-1 kalp-ekle24507 kalp-ekle-fv"></div>
+</div>
+<div class="p-left p-right col col-12 p-code">
+<div>Ürün Kodu:</div><div>SA16SE030-120</div>
+</div>
+</div>
+</div>
+<div class="p-left p-right col col-12 detay-fiyat" id="product-price-slazenger-teqila-i-erkek-bej-terlik" >
+<div class="col col-12 mainPrices">
+<div class="row priceLine">
+<div class="pos-r fl col-12 ucret-kargo" id="price-flexer">
+<div class="col col-12 kargo-title-alan" style="display:none;">
+<div class="row">
+<!--<div class="fl kargo-bedava"></div>-->
+</div>
+</div>
+<div class="col col-12 sepetteFiyat" style="display:none;">
+<div class="row">
+<span>Sepette:</span><span></span>
+</div>
+</div>
+<div class="fl col-12 d-flex anaurunFiyat ">
+<div class="fl indirim-detay">
+<span class="p-left p-right col productDiscount-detay" lang="tr">
+<span>%46</span>
+<span>indirimli</span>
 </span>
 </div>
+<div class="fl col-sm-12 ">
+<div class="fl col-sm-12">
+<div class="col-12 fl col-sm-12 text-line discountedPrice-detay" data-old="0">
+<span class="product-price-not-discounted">739,90</span> TL
+</div>
+<div class="fl col-12 col-sm-12 discountPrice-detay" data-old="0">
+<span class="product-price">399,90</span> TL
 </div>
 </div>
 </div>
-<div class="col col-12 box-border mb">
+</div>
+</div>
+</div>
+</div>
+</div>
+<!---->
+</div>
+<div class="beden-overly" style="display:none;"></div>
+<div class="col bdn-tablo-alan" style="display:none"></div>
+</div>
+</div>
+<input type="hidden" name="subPro24507" id="subPro24507" value="0" />
+<div class="variantOverlay" data-id="24507"></div>
+<div class="col col-12 variantWrapper tooltipWrapper">
 <div class="row">
-<div id="pager-wrapper" class="fl col-12 d-flex-liste">
-<div class="box col-12 col-sm-12 text-description text-center">
-<div class="fr col-12 col-sm-12 text-center productPager">
+<textarea id="json24507" class="hideThis">{"vat":10,"m_o_p":0,"variant_ids":{"175_28":"114910","175_29":"114911","175_30":"114912","175_31":"114913","175_32":"114914","175_33":"114915"},"variant_prices":{"175_28":"363.5455","175_29":"363.5455","175_30":"363.5455","175_31":"363.5455","175_32":"363.5455","175_33":"363.5455"},"variant_price_raws":{"175_28":363.5455,"175_29":363.5455,"175_30":363.5455,"175_31":363.5455,"175_32":363.5455,"175_33":363.5455},"buying_prices":{"175_28":"0","175_29":"0","175_30":"0","175_31":"0","175_32":"0","175_33":"0"},"not_discounted_prices":{"175_28":672.6364,"175_29":672.6364,"175_30":672.6364,"175_31":672.6364,"175_32":672.6364,"175_33":672.6364},"variant_supplier_codes":{"175_28":"8683678704139","175_29":"8683678704146","175_30":"8683678704153","175_31":"8683678704160","175_32":"8683678704177","175_33":"8683678742209"},"active_ids":{"one_175":["28","29","30","31","32","33"],"two_28":["175"],"two_29":["175"],"two_30":["175"],"two_31":["175"],"two_32":["175"],"two_33":["175"]},"variant_informations":[],"variant_stocks":{"175_28":"377","175_29":"761","175_30":"720","175_31":"644","175_32":"335","175_33":"329"}}</textarea>
+<div class="row variantLine displayNone">
+<div class="box col-12 col-xs-12 variantBox subOne" data-order="1">
+<div class="pos-r fl col-12 ease variantList">
+<a data-subproduct-id="114910" data-id="175" data-target="24507" class="col box-border selected">
+<p>Bej</p>
+</a>
+<script>
+$('#subPro24507').val(114910);
+</script>
+</div>
+<div class="fl col-12 forMobile variantMoreBtn"></div>
+</div>
+</div>
+<div class="row mb variantLine">
+<div class="fl col-12 d-flex">
+<div class="box col-12 col-xs-12 variantBox subTwo" data-order="2">
+<div class="pos-r fl col-12 ease variantList twoSubTwo deneme">
+<a data-subproduct-id="114910" data-id="28" data-target="24507" class="col box-border selected">
+<p>40</p>
+</a>
+<script>
+$('#subPro24507').val(114910);
+</script>
+<a data-subproduct-id="114911" data-id="29" data-target="24507" class="col box-border">
+<p>41</p>
+</a>
+<a data-subproduct-id="114912" data-id="30" data-target="24507" class="col box-border">
+<p>42</p>
+</a>
+<a data-subproduct-id="114913" data-id="31" data-target="24507" class="col box-border">
+<p>43</p>
+</a>
+<a data-subproduct-id="114914" data-id="32" data-target="24507" class="col box-border">
+<p>44</p>
+</a>
+<a data-subproduct-id="114915" data-id="33" data-target="24507" class="col box-border">
+<p>45</p>
+</a>
+</div>
+<div class="fl col-12 forMobile variantMoreBtn"></div>
 </div>
 </div>
 </div>
 </div>
 </div>
+<div class="col col-12 Odbeden mb">
+<a data-width="1000" data-url="/srv/service/content/getBlock/2138" class="popupWin"><u>Hangi Bedenim?</u></a>
+</div>
+<div class="col col-12 beden-tablosu hideThis">
+<div class="fl"><u>Hangi Bedenim?</u></div>
+<div class="fr" style="display: none;">+ Ücretsiz Gönderim</div>
+</div>
+<div class="col col-12 spt-btnDty inStock" id="varShareButton">
+<div class="row">
+<div data-id="24507" class="p-left p-right col col-12 spt-ekle-yeni" onclick="sepetEkle(); sepetEkleYeni();">SEPETE EKLE</div>
+</div>
+<a onclick="shareBtnOn()" class="forMobile">
+<img src="https://img.slazenger.com.tr/Data/EditorFiles/shareBtn.svg" class="shareImg" alt="Paylaş Butonu">
+</a>
+</div>
+<div class="p-left p-right col col-12 ilgili-detay-app ilgili-detay24507" style="display: none;">
+<div class="col col-12 ilgili-title-detay">
+<div></div>
+<div>Ürünün Diğer Renkleri</div>
+</div>
+<div class="p-left p-right col col-12 ilgili-detay-append pasif"></div>
+<div class="GizleSec-kpt forMobile" style="display: none;">
+<div class="tablarLi">
+<div>Göster</div>
+</div>
+<div class="tablarLi" style="display: none;">
+<div>Gizle</div>
 </div>
 </div>
 </div>
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-const lazyVideos = document.querySelectorAll("video.lazy-video");
-if ('IntersectionObserver' in window) {
-const observer = new IntersectionObserver(entries => {
-entries.forEach(entry => {
-if (entry.isIntersecting) {
-const video = entry.target;
-const source = video.querySelector("source[data-src]");
-if (source && !source.src) {
-source.src = source.dataset.src;
-video.load(); // video başlatmaya hazır
+let kapatAc = document.querySelectorAll('.GizleSec-kpt .tablarLi');
+for(let i = 0; i < kapatAc.length; i++){
+kapatAc[0].addEventListener('click', function(){
+if(document.querySelector('.ilgili-detay-append').classList.contains('pasif')){
+document.querySelector('.ilgili-detay-append').classList.remove('pasif');
 }
-observer.unobserve(video); // bir kez yükle
+kapatAc[1].style.display = 'block';
+kapatAc[0].style.display = 'none';
+});
+kapatAc[1].addEventListener('click', function(){
+if(!document.querySelector('.ilgili-detay-append').classList.contains('pasif')){
+document.querySelector('.ilgili-detay-append').classList.add('pasif');
 }
+kapatAc[0].style.display = 'block';
+kapatAc[1].style.display = 'none';
 });
-});
-lazyVideos.forEach(video => observer.observe(video));
-} else {
-// Eski tarayıcılar için: görünürse hemen yükle
-lazyVideos.forEach(video => {
-const source = video.querySelector("source[data-src]");
-if (source) {
-source.src = source.dataset.src;
-video.load();
 }
-});
+fetch('/srv/service/product/get-related-products/24507/1').then(function(ilgili){
+return ilgili.json();
+})
+.then(function(ilgiliJs){
+var ilgiliListe = ilgiliJs.PRODUCTS;
+var ilgiliListeUzun = ilgiliListe.length;
+if(ilgiliListeUzun > 0){
+document.querySelector('.ilgili-detay24507').style.display = 'block';
+}
+if(ilgiliListeUzun > 7){
+document.querySelector('.ilgili-detay24507 .GizleSec-kpt').style.display = 'flex';
+}
+for(let i = 0; i < ilgiliListe.length; i++){
+var stok = ilgiliListe[i].STOCK;
+var isim = ilgiliListe[i].TITLE;
+var link = ilgiliListe[i].URL;
+var resim = ilgiliListe[i].IMAGE.BIG;
+var resimler = resim.replace('https://www','https://www');
+var id = ilgiliListe[i].ID
+document.querySelector('.ilgili-detay24507 .ilgili-detay-append').innerHTML += '<div class="siralaListe col col-2 altAltListe'+id+'">'+
+'<a class="p-left p-right col col-12 ODDigerRenkler" href="/'+link+'"><img src="'+resimler+'?width=150"></a>'+
+'</div>';
+if(stok < 1){
+document.querySelector('.altAltListe'+id+'').remove();
+}
 }
 });
 </script>
-<script type="text/javascript">
+<div class="p-left p-right col col-12 diger-renk-mbl">
+<div></div>
+</div>
+<input type="hidden" id="IS_STOCK_NOTIFICATION_SUBPRODUCT" value="1"/>
+<div class="subProductStockAlert box col-12 outStock backgroundWhite colorOrange borderOrange" style="display:none">
+<a data-width="500" data-url="/srv/service/customer/login-form" class="popupWin box productFunction popupHide priceAlertLink">Gelince Haber Ver</a>
+</div>
+<div class="col col-12 urun-aciklama-alan">
+<div class="col col-12 tab-alan aktif">Ürün Açıklaması</div>
+<div class="col col-12 tab-yorum-alan" style="display:block;"><div><ul>Slazenger TEQILA I erkek terlik modeli, Siyah renk konseptiyle dikkat çekici bir deneyim sunuyor. Sağlam malzeme kalitesi, topuk ve tabanda her adımda rahatlık sunan tasarımı, terliği tercih sebebi kılıyor. Yaz sezonunda günlük aktivitelerde ya da deniz, havuz başında kaliteli terlik her an yanında. Üst malzemesi kalitesiyle öne çıkan Slazenger TEQILA I, normal kalıptan üretilmiş olan ayakkabı yaz sezonunda harika bir deneyim sunacak ve Slazenger kalitesini, uzun yıllar hissettirecek.</ul></div><br><div><ul><span style='font-weight:bold;text-decoration:underline;'>Ürün Özellikleri</span></ul><br><ul><span style='font-weight:bold;'>Taban Kalınlığı (cm) :</span>3,5</ul><ul><span style='font-weight:bold;'>Topuk Yüksekliği (cm) :</span>4</ul><ul><span style='font-weight:bold;'>Uzunluk (cm) :</span>28</ul><ul><span style='font-weight:bold;'>Yükseklik (cm) :</span>10</ul><ul><span style='font-weight:bold;'>Görsel Numune Bedeni :</span>41</ul><ul><span style='font-weight:bold;'>Üst Malzemesi :</span>EVA</ul><ul><span style='font-weight:bold;'>Taban Malzemesi :</span>EVA</ul><ul><span style='font-weight:bold;'>Kalıp :</span>Normal</ul><ul><span style='font-weight:bold;'>Bağlama Şekli :</span>Bağcıklı</ul><ul><span style='font-weight:bold;'>Sezon :</span>Yaz</ul></div></div>
+</div>
+<div class="col col-12 detay-sepet-ekle">
+<input class="dty-id" data-id="24507" style="display:none;">
+<div class="row mb tooltipWrapper">
+<div class="fl col-12 inStock">
+</div>
+</div>
+</div>
+<div class="fl col-12 d-none" id="cmpList">
+<div class="box col-12" id="cmp-wrapper">
+<div class="row">
+<div class="box col-12">
+<div class="row text-title text-light">Kampanya</div>
+</div>
+<div class="col col-12 p-right">
+<div class="row" id="cmps"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="col col-12 detay-talimatlar">
+<div class="col col-12 yikama-open">Sıkça Sorulan Sorular</div>
+<div class="col col-12 kargo-open">Kargo & Teslimat Koşulları</div>
+<div class="col col-12 iade-open">İade Koşulları</div>
+<div class="col col-12 odeme-secenek">Ödeme Seçenekleri</div>
+</div>
+<div class="dty-overly" style="display:none;"></div>
+<script>
+document.querySelector('.yikama-open').addEventListener('click', function(){
+document.querySelector('.dty-overly').style.display = 'block';
+fetch('/srv/service/content/get-block/1018/content/9').then(function(teslimat){
+return teslimat.text();
+}).then(function(teslimatYazı){
+var popupTitle = document.createElement('div');
+popupTitle.classList.add('popup-ekran');
+popupTitle.innerHTML += teslimatYazı;
+document.querySelector('body').append(popupTitle);
+popupTitle.querySelector('.icon-doc-text').remove();
+document.querySelector('.popup-ekran').innerHTML += '<div class="popUp-hide"></div>';
+document.querySelector('.popUp-hide').addEventListener('click', function(){
+document.querySelector('.dty-overly').style.display = 'none';
+document.querySelector('.popup-ekran').remove();
+});
+});
+});
+document.querySelector('.kargo-open').addEventListener('click', function(){
+document.querySelector('.dty-overly').style.display = 'block';
+fetch('/srv/service/content/get-block/1018/content/1').then(function(teslimat){
+return teslimat.text();
+}).then(function(teslimatYazı){
+var popupTitle = document.createElement('div');
+popupTitle.classList.add('popup-ekran');
+popupTitle.innerHTML += teslimatYazı;
+document.querySelector('body').append(popupTitle);
+popupTitle.querySelector('.icon-doc-text').remove();
+document.querySelector('.popup-ekran').innerHTML += '<div class="popUp-hide"></div>';
+document.querySelector('.popUp-hide').addEventListener('click', function(){
+document.querySelector('.dty-overly').style.display = 'none';
+document.querySelector('.popup-ekran').remove();
+});
+});
+});
+document.querySelector('.iade-open').addEventListener('click', function(){
+document.querySelector('.dty-overly').style.display = 'block';
+fetch('/srv/service/content/get-block/1018/content/5').then(function(teslimat){
+return teslimat.text();
+}).then(function(teslimatYazı){
+var popupTitle = document.createElement('div');
+popupTitle.classList.add('popup-ekran');
+popupTitle.innerHTML += teslimatYazı;
+document.querySelector('body').append(popupTitle);
+popupTitle.querySelector('.icon-doc-text').remove();
+document.querySelector('.popup-ekran').innerHTML += '<div class="popUp-hide"></div>';
+document.querySelector('.popUp-hide').addEventListener('click', function(){
+document.querySelector('.dty-overly').style.display = 'none';
+document.querySelector('.popup-ekran').remove();
+});
+});
+});
+document.querySelector('.odeme-secenek').addEventListener('click', function(){
+document.querySelector('.dty-overly').style.display = 'block';
+fetch('/srv/service/product-detail/payment-options/24507/0').then(function(teslimat){
+return teslimat.text();
+}).then(function(teslimatYazı){
+var popupTitle = document.createElement('div');
+popupTitle.classList.add('popup-ekran','popup-ode');
+popupTitle.innerHTML += teslimatYazı;
+document.querySelector('body').append(popupTitle);
+document.querySelector('.popup-ekran').innerHTML += '<div class="popUp-hide"></div>';
+document.querySelector('.popUp-hide').addEventListener('click', function(){
+document.querySelector('.dty-overly').style.display = 'none';
+document.querySelector('.popup-ekran').remove();
+});
+});
+});
+document.querySelector('.dty-overly').addEventListener('click', function(){
+this.style.display = 'none';
+document.querySelector('.popup-ekran').remove();
+});
+</script>
+</div>
+</div>
+</div>
+</div>
+</div>
+<style>
+@media only screen and (max-width:768px){
+#varShareButton {
+display: flex;
+align-items: center;
+}
+#varShareButton > div{
+width:95%
+}
+#varShareButton > a{
+width:20px;
+padding-left:30px;
+}
+.overlayShareBackground {
+display: none;
+box-sizing: border-box;
+width: 100%;
+position: fixed;
+right: 0;
+top: 0;
+background: #00000063;
+height: 100%;
+z-index: 99;
+}
+.overlayShareMax {
+height: 0;
+width: 100%;
+position: fixed;
+z-index: 9999;
+bottom: 0;
+right: 0;
+background-color: #fff;
+overflow-x: hidden;
+transition: .5s;
+}
+.shareTitleTwo {
+display: flex;
+justify-content: space-between;
+align-items: center
+}
+.whatsAppImg,.facebookImg,.twitterImg {
+width: 60px
+}
+#shareSocialButtonNew>div>a {
+display: flex;
+align-items: center;
+flex-direction: column
+}
+.overlayShare {
+z-index: 99999!important
+}
+.overlayShareBackground {
+z-index: 9999!important
+}
+.overflow-hidden{
+overflow: hidden!important;
+}
+#shareContent::-webkit-scrollbar {
+display: none;
+}
+}
+</style>
+<script>
+function shareBtnOn() {
+if ($(window).width() < 769) {
+document.getElementById("shareContent").style.height = "46%";
+}
+document.querySelector('.overlayShareBackground').style.display = 'flex';
+document.querySelector('body').classList.add('overflow-hidden');
+}
+function closeNav() {
+document.getElementById("shareContent").style.height = "0px";
+document.querySelector('.overlayShareBackground').style.display = 'none';
+document.querySelector('body').classList.remove('overflow-hidden');
+}
+function shareCloseTwo() {
+document.getElementById("shareContent").style.height = "0%";
+document.querySelector('.overlayShareBackground').style.display = 'none';
+document.querySelector('body').classList.remove('overflow-hidden');
+}
+</script>
+<div class="overlayShareBackground" onclick="shareCloseTwo()"></div>
+<div id="shareContent" class="overlayShareMax forMobile">
+<div class="box col-12 shareTitleTwo line-bottom">
+<div class="fl shareText">Paylaş</div>
+<a href="javascript:void(0)" class="closebtn fr" onclick="closeNav()"><img src="https://img.slazenger.com.tr/Data/EditorFiles/close.svg" alt="Kapat"></a>
+</div>
+<div class="overlayShare-content">
+<div class="box col-12 line-bottom" id="shareSocialButtonNew">
+<div class="box col-4 colorOpenNavy">
+<a href="https://api.whatsapp.com/send?&amp;text=https://www.slazenger.com.tr/slazenger-teqila-i-erkek-bej-terlik" target="_new" class="shareSocialButton">
+<img src="https://img.slazenger.com.tr/Data/EditorFiles/whatsapp.svg" class="whatsAppImg" alt="Whats App">
+<span class="box whatsAppText">WhatsApp</span>
+</a>
+</div>
+<div class="box col-4 colorOpenNavy ">
+<a href="https://www.facebook.com/sharer/sharer.php?u=https://www.slazenger.com.tr/slazenger-teqila-i-erkek-bej-terlik" target="_new" class="shareSocialButton">
+<img src="https://img.slazenger.com.tr/Data/EditorFiles/facebook.svg" class="facebookImg" alt="Facebook">
+<span class="box whatsAppText">Facebook</span>
+</a>
+</div>
+<div class="box col-4 colorOpenNavy ">
+<a href="https://twitter.com/intent/tweet?text=https://www.slazenger.com.tr/slazenger-teqila-i-erkek-bej-terlik" target="_new" class="shareSocialButton">
+<img src="https://img.slazenger.com.tr/Data/EditorFiles/twitter.svg" class="twitterImg" alt="Twitter">
+<span class="box whatsAppText">Twitter</span>
+</a>
+</div>
+</div>
+<div class="box col-12 line-bottom" id="shareSocialButtonNew">
+<div class="box col-4 colorOpenNavy">
+<a href="mailto:?body=https://www.slazenger.com.tr/slazenger-teqila-i-erkek-bej-terlik" target="_new" class="shareSocialButton">
+<img src="https://img.slazenger.com.tr/Data/EditorFiles/shareBtnMail.svg" class="whatsAppImg" alt="Mail">
+<span class="box whatsAppText">E-Posta</span>
+</a>
+</div>
+<div class="box col-4 colorOpenNavy ">
+<a href="sms:?&body=https://www.slazenger.com.tr/slazenger-teqila-i-erkek-bej-terlik" target="_new" class="shareSocialButton">
+<img src="https://img.slazenger.com.tr/Data/EditorFiles/shareBtnSms.svg" class="facebookImg" alt="SMS">
+<span class="box whatsAppText">SMS</span>
+</a>
+</div>
+<div class="box col-4 colorOpenNavy ">
+<a id="copyLink" target="_new" class="shareSocialButton">
+<img src="https://img.slazenger.com.tr/Data/EditorFiles/shareBtnCopy.svg" class="twitterImg" alt="Share">
+<span class="box whatsAppText">Kopyala</span>
+</a>
+</div>
+<script>
+const copyLinkButton = document.getElementById('copyLink');
+copyLinkButton.addEventListener('click', () => {
+const currentUrl = window.location.href;
+navigator.clipboard.writeText(currentUrl).then(() => {
+alert('Link kopyalandı!');
+}).catch((error) => {
+console.error('Link kopyalanırken bir hata oluştu: ', error);
+});
+});
+</script>
+</div>
+</div>
+</div>
+</div>
+<div id="pageScripts">
+<input type="hidden" id="urun-id" value="24507" />
+<input type="hidden" id="urun-ad" value="Slazenger TEQILA I Erkek Bej Terlik" />
+<input type="hidden" id="urun-kategori" value="TERLİK" />
+<input type="hidden" id="urun-kur" value="TL" />
+<input type="hidden" id="urun-fiyat" value="363.5455" />
+<input type="hidden" id="urun-fiyat-kdvli" value="399,90" />
+<input type="hidden" id="urun-tedarikci-kod" value="SA16SE030-120" />
+<input type="hidden" id="urun-kategoriler" value="1583,1054,1917,1580,1770,256,1767" />
+<!-- #pageScripts = Sayfa scriptleri bu div içerisinden yükleniyor. Hızlı görünüm için gerekli. -->
+<link rel="stylesheet" property="stylesheet" type="text/css" href="/theme/v4/sub_theme/urundetay/firat/user_Detay/urundetay.css?v10" />
+<link rel="stylesheet" property="stylesheet" type="text/css" href="https://www.slazenger.com.tr/theme/v4/sub_theme/genel/firat/user_YeniStandart/photoGallery.css" />
+<link rel="stylesheet" property="stylesheet" type="text/css" href="/js/lightbox/css/lightbox.css" />
+<script type="text/javascript" src="/srv/service/conf/load/Blok_UrunDetay/1" charset="utf-8"></script>
+<script type="text/javascript" src="/js/lightbox/js/lightbox.js"></script>
+<script type="text/javascript" src="https://www.slazenger.com.tr/theme/standart/js/blok-v4/product-detail.js"></script>
+<script>
+if(window.innerWidth < 769){
+document.querySelector('.DetayGeri').addEventListener('click', function(){
+window.history.back();
+});
+let renklerMbl = document.querySelector('.ilgili-detay24507');
+document.querySelector('.diger-renk-mbl > div').append(renklerMbl);
+}
+fetch('/srv/service/product-detail/comments/24507').then(function(yorumla){
+return yorumla.json();
+})
+.then(function(yorumlajs){
+var yorumlar = yorumlajs.TOTAL;
+if(yorumlar > 2){
+document.querySelector('.devam-yorum').style.display = 'flex';
+}
+});
+var FvGrs = MEMBER_INFO.ID;
+document.querySelector('.kalp-ekle24507').addEventListener('click', function(){
+var UrunismiFv = 'Slazenger TEQILA I Erkek Bej Terlik';
+var thisID = this.getAttribute('data-id');
+var thisAltBdn = document.querySelector('#subPro24507').value;
+if(FvGrs > 0){
+if(document.querySelector('.kalp-ekle24507').classList.contains('yeni-fv-eklendi')){
+var popDidv = document.createElement('div');
+popDidv.classList.add('col','fv-popup');
+popDidv.innerHTML = '<div class="col col-12 pos-r"><div class="col fv-ekran">'+UrunismiFv+' Bu ürün favori listenizde mevcut</div><div class="col col-12 fv-listem"><a href="/uye-alisveris-listesi">Alışveriş listem</a></div><div class="col fv-kapat"></div></div>';
+document.querySelector('body').append(popDidv);
+document.querySelector('.dty-overly').style.display = 'block';
+document.querySelector('.fv-kapat').addEventListener('click', function(){
+document.querySelector('.dty-overly').style.display = 'none';
+document.querySelector('.fv-popup').remove();
+});
+document.querySelector('.dty-overly').addEventListener('click', function(){
+document.querySelector('.dty-overly').style.display = 'none';
+document.querySelector('.fv-popup').remove();
+});
+}else{
+AddToShoppingList(thisAltBdn,thisID);
+fetch('/srv/service/profile/get-shopping-list').then(function(kalp){
+return kalp.json();
+})
+.then(function(kalpjs){
+var kalpId = kalpjs.CATEGORIES[0];
+var kalpPro = kalpId.PRODUCTS;
+var kalpProLeng = kalpPro.length;
+document.querySelector('.kalp-fv > span').innerText = kalpProLeng;
+for(let i = 0; i < kalpPro.length; i++){
+var kalpProId = kalpPro[i].ID;
+if(kalpProId == thisID){
+document.querySelector('.kalp-ekle24507').classList.add('yeni-fv-eklendi');
+}
+}
+});
+}
+}else{
+window.location.href = '/uye-girisi-sayfasi';
+}
+});
+document.querySelector('.tab-alan').addEventListener('click', function(){
+if(document.querySelector('.tab-yorum-alan').style.display == 'none'){
+document.querySelector('.tab-alan').classList.add('aktif');
+document.querySelector('.tab-yorum-alan').style.display = 'block';
+}else{
+document.querySelector('.tab-yorum-alan').style.display = 'none';
+document.querySelector('.tab-alan').classList.remove('aktif');
+}
+});
+function sepetEkle(){
+var EkleId = document.querySelector('.spt-ekle-yeni').getAttribute('data-id');
+Add2Cart(EkleId,0,1);
+}
+var KargoFiyat = '399,90';
+var KargoFiyatYeni = parseFloat(KargoFiyat.split(',').join('.'));
+if(KargoFiyatYeni >= 150){
+document.querySelector('.beden-tablosu div:last-child').style.display = 'block';
+}
+function sepetEkle(){
+var altUrunid = $('.dty-id').attr('data-urun');
+var anaUrunid = $('.dty-id').attr('data-id');
+var urunAdt = 1;
+Add2Cart(anaUrunid,altUrunid,urunAdt);
+}
+$(function(){
+let SepetTeFiyat = 0;
+let FiyatKur = 'TL';
+let kargoFiyat = 100;
+let AnaFiyat = parseFloat(399,90);
+if(SepetTeFiyat > 0){
+$('.sepetteFiyat').show();
+$('.anaurunFiyat').hide();
+$('.sepetteFiyat span:last-child').text(SepetTeFiyat +' ' +FiyatKur);
+if (SepetTeFiyat > AnaFiyat){
+$('.kargo-title-alan').show();
+$('.kargo-bedava').text('Ücretsiz Kargo');
+}
+}else if (AnaFiyat > kargoFiyat){
+$('.kargo-title-alan').show();
+$('.kargo-bedava').text('Ücretsiz Kargo');
+}
+$('.seo-iade-yazi').appendTo('.tab-kosul');
+$('.dty-tablar-btn > .urun-aciklama').click(function(){
+$(this).addClass('aktif').parent().children().not(this).removeClass('aktif');
+$('.yeni-tablar > .tab-aciklama').show().parent().children().not($('.tab-aciklama')).hide();
+});
+$('.dty-tablar-btn > .urun-odeme').click(function(){
+$(this).addClass('aktif').parent().children().not(this).removeClass('aktif');
+$('.yeni-tablar > .tab-odeme').show().parent().children().not($('.tab-odeme')).hide();
+});
+$('.dty-tablar-btn > .urun-yorum').click(function(){
+$(this).addClass('aktif').parent().children().not(this).removeClass('aktif');
+$('.yeni-tablar > .tab-yorum').show().parent().children().not($('.tab-yorum')).hide();
+});
+$('.dty-tablar-btn > .urun-kosullar').click(function(){
+$(this).addClass('aktif').parent().children().not(this).removeClass('aktif');
+$('.yeni-tablar > .tab-kosul').show().parent().children().not($('.tab-kosul')).hide();
+});
+$('.dty-beden-tablo').appendTo('.bdn-tablo-alan');
+$('.beden-tablosu > div:first-child').click(function(){
+$('.beden-overly').fadeIn();
+$('.dty-beden-tablo').fadeIn();
+$('.bdn-tablo-alan').fadeIn();
+});
+$('.beden-overly, .bdn-kpt').click(function(){
+$('.beden-overly').fadeOut();
+$('.dty-beden-tablo').fadeOut();
+$('.bdn-tablo-alan').fadeOut();
+});
+$('.variantBox > div > a').click(function(){
+var altsec = $(this).attr('data-subproduct-id');
+$('.dty-id').attr('data-urun', altsec);
+});
+$('#productThumbs').slide({
+slideType: 'carousel',
+slideMove:{
+slideDirection : 'vertical',
+visibleItem : 5
+},
+isAuto: false,
+slideCtrl: {
+showCtrl: true,
+wrapCtrl: '#thumbControl',
+nextBtn: '#nextThumb',
+prevBtn: '#prevThumb'
+}
+});
+});
+var isNewJsOptimizer = true;
+var variant = JSON.parse($('#json24507').val());
 $(document).ready(function () {
-$('#katalog').equalizer();
-$('#filterSortBtn').click(function(){
-$(this).toggleClass('active').next().slideToggle();
+$('.subOne a[data-id].selected, .subTwo a[data-id].selected').trigger('click');
 });
+function zoomCallback() {
+$('.subOne a[data-id].selected, .subTwo a[data-id].selected').trigger('click');
+$('.subOne select, .subTwo select').trigger('change');
+}
+function lightCallback() {
+var img = $('#lightContent img');
+img.on('load', function() {
+var contentHeight = $('#lightContent img').height();
+var contentWidth = $('#lightContent img').width();
+setTimeout(function() {
+var maxH = $('.pWin:last').height();
+if (contentHeight > maxH) {
+$('.pWin:last').addClass('overflow').width(contentWidth + 10);
+}
+}, 500);
 });
-$(document).on('click', '#pageLayout span', function (e) {
-e.preventDefault();
-window.location.href = getLink('view', $(this).attr('data-id'));
-});
-$(document).on('change', '#sort', function (e) {
-e.preventDefault();
-window.location.href = getLink('sort', $(this).val());
-});
-</script>
-<!--cache--><script>
-if (window.location.href === 'https://www.slazenger.com.tr/arama?q=iade') {
-window.location.href = 'https://www.slazenger.com.tr/garanti-ve-iade-kosullari';
-}
-else if (window.location.href === 'https://www.slazenger.com.tr/arama?q=garanti') {
-window.location.href = 'https://www.slazenger.com.tr/garanti-ve-iade-kosullari';
-}
-else if (window.location.href === 'https://www.slazenger.com.tr/arama?q=%C4%B0ade') {
-window.location.href = 'https://www.slazenger.com.tr/garanti-ve-iade-kosullari';
-}
-else if (window.location.href === 'https://www.slazenger.com.tr/arama?q=degisim') {
-window.location.href = 'https://www.slazenger.com.tr/garanti-ve-iade-kosullari';
-}
-else if (window.location.href === 'https://www.slazenger.com.tr/arama?q=1+alana+1+bedava') {
-window.location.href = 'https://www.slazenger.com.tr/1-al-1-bedava';
-}
-else if (window.location.href === 'https://www.slazenger.com.tr/arama?q=Bir+alana+bir+bedava') {
-window.location.href = 'https://www.slazenger.com.tr/1-al-1-bedava';
-}
-else if (window.location.href === 'https://www.slazenger.com.tr/arama?q=siparislerim') {
-window.location.href = 'https://www.slazenger.com.tr/uye-siparisleri';
-}
-else if (window.location.href === 'https://www.slazenger.com.tr/arama?q=siparişlerim') {
-window.location.href = 'https://www.slazenger.com.tr/uye-siparisleri';
-}
-else if (window.location.href === 'https://www.slazenger.com.tr/arama?q=sipari%C5%9F') {
-window.location.href = 'https://www.slazenger.com.tr/uye-siparisleri';
-}
-else if (window.location.href === 'https://www.slazenger.com.tr/arama?q=siparis') {
-window.location.href = 'https://www.slazenger.com.tr/uye-siparisleri';
-}
-else if (window.location.href === 'https://www.slazenger.com.tr/arama?q=siparis+takip') {
-window.location.href = 'https://www.slazenger.com.tr/siparis-takip';
-}
-else if (window.location.href === 'https://www.slazenger.com.tr/arama?q=hediye+ceklerim') {
-window.location.href = 'https://www.slazenger.com.tr/uye-hediye-ceklerim';
-}
-else if (window.location.href === 'https://www.slazenger.com.tr/arama?q=iletisim') {
-window.location.href = 'https://www.slazenger.com.tr/iletisim';
-}
-else if (window.location.href === 'https://www.slazenger.com.tr/arama?q=musteri+hizmetleri') {
-window.location.href = 'https://www.slazenger.com.tr/iletisim';
-}
-else if (window.location.href === 'https://www.slazenger.com.tr/arama?q=teslimat+kosullari') {
-window.location.href = 'https://www.slazenger.com.tr/teslimat-kosullari';
-}
-else if (window.location.href === 'https://www.slazenger.com.tr/arama?q=kampanyalar') {
-window.location.href = 'https://www.slazenger.com.tr/kampanyalar';
 }
 </script>
-
+</div>
+<script type="application/ld+json">
+{"@context":"https:\/\/schema.org","@type":"Product","@id":"https:\/\/www.slazenger.com.tr\/slazenger-teqila-i-erkek-bej-terlik#product","name":"Slazenger TEQILA I Erkek  Bej Terlik","image":["https:\/\/www.slazenger.com.tr\/slazenger-teqila-i-erkek-bej-terlik-terlik-444717-24-O.jpg","https:\/\/www.slazenger.com.tr\/slazenger-teqila-i-erkek-bej-terlik-terlik-444718-24-O.jpg","https:\/\/www.slazenger.com.tr\/slazenger-teqila-i-erkek-bej-terlik-terlik-444719-24-O.jpg","https:\/\/www.slazenger.com.tr\/slazenger-teqila-i-erkek-bej-terlik-terlik-444720-24-O.jpg","https:\/\/www.slazenger.com.tr\/slazenger-teqila-i-erkek-bej-terlik-terlik-444721-24-O.jpg","https:\/\/www.slazenger.com.tr\/slazenger-teqila-i-erkek-bej-terlik-terlik-444722-24-O.jpg","https:\/\/www.slazenger.com.tr\/slazenger-teqila-i-erkek-bej-terlik-terlik-444723-24-O.jpg"],"mainEntityOfPage":{"@type":"ItemPage","@id":"https:\/\/www.slazenger.com.tr\/slazenger-teqila-i-erkek-bej-terlik","primaryImageOfPage":{"@type":"ImageObject","url":"https:\/\/www.slazenger.com.tr\/slazenger-teqila-i-erkek-bej-terlik-terlik-444717-24-O.jpg"}},"description":"Slazenger TEQILA I erkek terlik modeli, Siyah renk konseptiyle dikkat çekici bir deneyim sunuyor. Sağlam malzeme kalitesi, topuk ve tabanda her adımda rahatlık sunan tasarımı, terliği tercih sebebi kılıyor. Yaz sezonunda günlük aktivitelerde ya da deniz, havuz başında kaliteli terlik her an yanında. Üst malzemesi kalitesiyle öne çıkan Slazenger TEQILA I, normal kalıptan üretilmiş olan ayakkabı yaz sezonunda harika bir deneyim sunacak ve Slazenger kalitesini, uzun yıllar hissettirecek.Ürün ÖzellikleriTaban Kalınlığı (cm) :3,5Topuk Yüksekliği (cm) :4Uzunluk (cm) :28Yükseklik (cm) :10Görsel Numune Bedeni :41Üst Malzemesi :EVATaban Malzemesi :EVAKalıp :NormalBağlama Şekli :BağcıklıSezon :Yaz","sku":"SA16SE030-120","category":"ERKEK \u003E SPOR AYAKKABI \u003E TERLİK","productID":"24507","brand":{"@type":"Brand","name":"Slazenger"},"offers":{"@type":"Offer","url":"https:\/\/www.slazenger.com.tr\/slazenger-teqila-i-erkek-bej-terlik","priceCurrency":"TRY","price":"399.90","priceSpecification":{"@type":"UnitPriceSpecification","priceType":"https:\/\/schema.org\/StrikethroughPrice","price":"739.90","priceCurrency":"TRY"},"priceValidUntil":"2026-11-09","validFrom":"2026-06-30T15:46:03+03:00","availability":"https:\/\/schema.org\/InStock","itemCondition":"https:\/\/schema.org\/NewCondition","hasMerchantReturnPolicy":{"@type":"MerchantReturnPolicy","returnPolicyCategory":"https:\/\/schema.org\/MerchantReturnFiniteReturnWindow","merchantReturnDays":30,"returnMethod":"https:\/\/schema.org\/ReturnByMail","returnFees":"https:\/\/schema.org\/FreeReturn","applicableCountry":"+90","merchantReturnLink":"https:\/\/www.slazenger.com.tr\/iptal-ve-iade-kosullari"}}}
+</script>
+<script>PRODUCT_DATA.push(JSON.parse('{\"id\":\"24507\",\"name\":\"Slazenger TEQILA I Erkek  Bej Terlik\",\"code\":\"SA16SE030-120\",\"supplier_code\":\"SA16SE030-120\",\"sale_price\":\"363.5455\",\"total_base_price\":739.9,\"total_sale_price\":399.9,\"vat\":10,\"subproduct_code\":\"\",\"subproduct_id\":\"114910\",\"price\":672.6364,\"total_price\":739.9,\"available\":true,\"category_ids\":\"1583,1054,1917,1580,1770,256,1767\",\"barcode\":\"\",\"subproduct_name\":\"\",\"image\":\"https:\\/\\/www.slazenger.com.tr\\/slazenger-teqila-i-erkek-bej-terlik-terlik-444717-24-O.jpg\",\"quantity\":3166,\"url\":\"slazenger-teqila-i-erkek-bej-terlik\",\"currency\":\"TL\",\"currency_target\":\"TL\",\"brand\":\"Slazenger\",\"category\":\"TERL\\u0130K\",\"category_id\":\"256\",\"category_path\":\"ERKEK > SPOR AYAKKABI > \",\"model\":\"SA16SE030\",\"personalization_id\":0,\"variant1\":null,\"variant2\":null,\"additional_field_7\":\"\"}')); </script><script>var cnf_negative_stock=0;</script>
                     </div>
                     <aside class="col col-2 col-md-3 col-sm-12 p-right" id="rightColumn">
                         
@@ -4031,7 +3555,7 @@ color:#e40053;
                 if(typeof setCookie=='function'){
                     setCookie('nocache', '1', -1);
                 }
-        </script><input type="hidden" id="link_type" value="page" /><input type="hidden" id="link_table_id" value="12" /><input type="hidden" id="link_language" value="tr" /><input type="hidden" id="sol_aktif" value="0" /><input type="hidden" id="sag_aktif" value="0" /><!--cache--><script src="https://cdn.aisearch.app/integrations/custom/slazenger.com.tr.js" async></script><!-- T-Soft Apps - Facebook Pixel - Tracking Code Start -->
+        </script><input type="hidden" id="link_type" value="product" /><input type="hidden" id="link_table_id" value="24507" /><input type="hidden" id="link_language" value="tr" /><input type="hidden" id="sol_aktif" value="0" /><input type="hidden" id="sag_aktif" value="0" /><!--cache--><script src="https://cdn.aisearch.app/integrations/custom/slazenger.com.tr.js" async></script><!-- T-Soft Apps - Facebook Pixel - Tracking Code Start -->
 <script>
 !function (f, b, e, v, n, t, s) {
 if (f.fbq) return;
