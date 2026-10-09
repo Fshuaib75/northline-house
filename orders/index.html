@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="theme-color" content="#FAF8F4">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Northline · Orders</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Figtree:wght@400;500;600;700&display=swap">
+<style>
+/* Northline order log (owner only). Paste the order WhatsApp sends you, mark it paid when the transfer arrives, and
+   record payouts to agents. Saved to orders.json in the site's repository with your GitHub token. Only what sold is
+   saved (date, agent code, styles, sizes, prices, commission): never the customer's name, phone or address, because
+   the file is public. The agent page reads it to show each agent their earnings. */
+:root{
+  --bg:#FAF8F4; --surface:#FFFFFF; --ink:#0E1B2C; --ink-2:#344050; --muted:#6B7380; --line:#E9E4DB; --line-2:#D8D1C4;
+  --sky:#4A9FD8; --sky-ink:#1F5F8B; --sky-soft:#E9F3FB; --gold:#9A7642; --gold-soft:#F5EFE5; --good:#1F7A4D; --good-soft:#E8F3EC;
+  --warn:#95560F; --warn-soft:#FBF1E4; --err:#B3261E;
+  --display:"Fraunces",Georgia,"Times New Roman",serif; --ui:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --gut:16px; --head:58px; color-scheme:light;
+}
+@media (min-width:720px){:root{--gut:28px; --head:64px}}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:15px/1.5 var(--ui);-webkit-font-smoothing:antialiased;padding-bottom:60px}
+button{font:inherit;color:inherit;cursor:pointer}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--sky-ink);outline-offset:2px}
+input,select,textarea{font:15px var(--ui);color:var(--ink);background:var(--surface);border:1px solid var(--line-2);border-radius:4px;padding:10px 12px;width:100%}
+textarea{min-height:150px;resize:vertical;font-size:14px}
+.wrap{max-width:1080px;margin:0 auto;padding-inline:var(--gut)}
+.eyebrow{font:600 11px/1.2 var(--ui);letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+header.top{position:sticky;top:0;z-index:30;background:rgba(250,248,244,.94);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+header.top .wrap{height:var(--head);display:flex;align-items:center;justify-content:space-between;gap:12px}
+.logo{font:600 15px var(--ui);letter-spacing:.36em;text-decoration:none;white-space:nowrap}
+.logo i{font-style:normal;color:var(--sky)}
+nav.links{display:flex;gap:16px;font:600 13px var(--ui)}
+nav.links a{text-decoration:none;color:var(--muted)}
+nav.links a:hover{color:var(--ink)}
+.intro{padding-block:24px 6px;display:grid;gap:8px}
+.intro h1{margin:0;font:400 clamp(28px,6vw,44px)/1.08 var(--display);letter-spacing:-.015em}
+.intro p{margin:0;color:var(--ink-2);max-width:64ch}
+.tabs{display:flex;gap:22px;border-bottom:1px solid var(--line);margin-top:18px;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{flex:0 0 auto;border:0;background:none;padding:12px 0 10px;border-bottom:2px solid transparent;font:600 15px var(--ui);color:var(--muted)}
+.tabs button[aria-selected="true"]{color:var(--ink);border-color:var(--ink)}
+.tabs button span{font-weight:500;color:var(--muted);margin-left:4px}
+section.pane{padding-top:18px;display:grid;gap:16px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:16px 18px;display:grid;gap:12px;min-width:0}
+.panel h2{margin:0;font:500 22px var(--display)}
+.panel h3{margin:0;font:600 11px var(--ui);letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.hint{font-size:12.5px;color:var(--muted);margin:0}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.f{display:grid;gap:5px;font-size:12.5px;color:var(--muted);min-width:0}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
+.btn{border:1px solid var(--line-2);background:var(--surface);color:var(--ink);font:600 13.5px var(--ui);padding:9px 14px;border-radius:999px;white-space:nowrap}
+.btn:hover{border-color:var(--ink)}
+.btn.primary{background:var(--ink);border-color:var(--ink);color:#fff;border-radius:4px;padding:11px 18px}
+.btn.good{background:var(--good);border-color:var(--good);color:#fff}
+.btn.small{padding:6px 11px;font-size:12.5px}
+.btn:disabled{opacity:.45;cursor:default}
+.lnk{border:0;background:none;padding:0;font:600 12.5px var(--ui);text-decoration:underline;text-underline-offset:3px;color:var(--muted)}
+.msg{font-size:13.5px;padding:9px 12px;border-radius:4px;background:var(--sky-soft);color:var(--sky-ink)}
+.msg.ok{background:var(--good-soft);color:var(--good)}
+.msg.bad{background:#FCECEA;color:var(--err)}
+.msg.warn{background:var(--warn-soft);color:var(--warn)}
+.conn{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
+.conn i{width:9px;height:9px;border-radius:50%;background:var(--line-2)}
+.conn.on i{background:var(--good)}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line);font-size:14px;vertical-align:top}
+th{font:600 10.5px var(--ui);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+td.n,th.n{text-align:right;white-space:nowrap}
+.tw{overflow-x:auto;margin-inline:-4px}
+.order{border:1px solid var(--line);border-radius:6px;background:var(--surface);padding:14px 16px;display:grid;gap:8px}
+.order .hd{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 12px;align-items:baseline}
+.order .hd b{font:500 18px var(--display)}
+.order ul{margin:0;padding:0;list-style:none;display:grid;gap:3px;font-size:14px;color:var(--ink-2)}
+.order li{display:flex;justify-content:space-between;gap:10px}
+.order li span:last-child{white-space:nowrap;font-variant-numeric:tabular-nums}
+.order .ft{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;padding-top:8px;border-top:1px solid var(--line);font-size:13.5px}
+.pill{display:inline-block;font:700 10px/1 var(--ui);letter-spacing:.12em;text-transform:uppercase;padding:5px 8px;border-radius:2px;background:var(--warn-soft);color:var(--warn)}
+.pill.paid{background:var(--good-soft);color:var(--good)}
+.pill.cancelled{background:#EEF0F2;color:var(--muted)}
+.filters{display:flex;gap:8px;flex-wrap:wrap}
+.chip{border:1px solid var(--line-2);background:transparent;font:500 13.5px var(--ui);padding:7px 14px;border-radius:999px}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:12px 14px}
+.stat b{display:block;font:600 22px var(--ui);font-variant-numeric:tabular-nums}
+.stat span{font-size:12.5px;color:var(--muted)}
+.bars{display:grid;gap:6px}
+.bar{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,2fr) auto;gap:10px;align-items:center;font-size:13.5px}
+.bar .lbl{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bar .trk{height:8px;background:var(--line);border-radius:4px;overflow:hidden}
+.bar .trk i{display:block;height:100%;background:var(--sky-ink)}
+.bar .v{font-variant-numeric:tabular-nums;color:var(--ink-2);min-width:2.5em;text-align:right}
+.empty{color:var(--muted);text-align:center;padding:30px 0}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 18px;border-radius:999px;font-weight:600;font-size:13.5px;z-index:70;max-width:calc(100% - 32px);box-shadow:0 6px 20px rgba(14,27,44,.2)}
+details summary{cursor:pointer;font:600 13.5px var(--ui)}
+details[open] summary{margin-bottom:10px}
+details ol{margin:0;padding-left:20px;display:grid;gap:5px;font-size:14px;color:var(--ink-2)}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="../" aria-label="Northline House">NORTH<i>LINE</i></a>
+    <nav class="links"><a href="../book/">Book</a><a href="../">Agents</a><a href="../shop/">Shop</a></nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="intro">
+    <span class="eyebrow">Owner only · order log</span>
+    <h1>Orders, payouts and what sells</h1>
+    <p>Paste each order WhatsApp sends you and mark it paid when the transfer arrives. Agents see their earnings on the agent page. Only what sold is saved, never the customer’s name, phone or address.</p>
+    <div class="conn" id="conn"><i></i><span id="connText">Not connected: you can look, but saving needs your GitHub token.</span> <button class="lnk" id="connBtn">Connect</button></div>
+  </section>
+
+  <section class="panel" id="tokenPanel" hidden>
+    <h2>Connect to save</h2>
+    <p class="hint">Saving writes <code>orders.json</code> to your <b>northline-house</b> repository. The token stays on this phone or computer only.</p>
+    <details>
+      <summary>How to make the token (2 minutes, once)</summary>
+      <ol>
+        <li>On GitHub: Settings → Developer settings → Personal access tokens → <b>Fine-grained tokens</b> → Generate new token.</li>
+        <li>Name it “Northline orders”, expiry 1 year, Repository access: <b>Only select repositories</b> → northline-house.</li>
+        <li>Permissions → Repository permissions → <b>Contents: Read and write</b>. Nothing else.</li>
+        <li>Generate, copy the token and paste it below.</li>
+      </ol>
+    </details>
+    <label class="f" for="tok">GitHub token<input id="tok" type="password" autocomplete="off" placeholder="github_pat_…"></label>
+    <div class="row"><button class="btn primary" id="tokSave">Save and connect</button><button class="lnk" id="tokForget">Forget the token on this device</button></div>
+    <div class="msg" id="tokMsg" hidden></div>
+  </section>
+
+  <div class="tabs" role="tablist">
+    <button role="tab" data-t="add" aria-selected="true">Add order</button>
+    <button role="tab" data-t="orders" aria-selected="false">Orders <span id="nOrders"></span></button>
+    <button role="tab" data-t="agents" aria-selected="false">Agents</button>
+    <button role="tab" data-t="sells" aria-selected="false">What sells</button>
+  </div>
+
+  <!-- add -->
+  <section class="pane" id="p-add">
+    <div class="panel">
+      <h2>Paste an order</h2>
+      <p class="hint">Copy the whole WhatsApp message that starts with “NORTHLINE ORDER” and paste it here. Several orders at once is fine.</p>
+      <textarea id="paste" placeholder="NORTHLINE ORDER&#10;Agent: AMINA-KD&#10;…&#10;1. Halsey · Black · size 39 · x1 · ₦40,000 [HRM001-BLK-3 · earns ₦5,000]"></textarea>
+      <div class="row"><button class="btn primary" id="parseBtn">Read the order</button><span class="hint" id="parseMsg"></span></div>
+    </div>
+    <div id="preview"></div>
+  </section>
+
+  <!-- orders -->
+  <section class="pane" id="p-orders" hidden>
+    <div class="filters" id="oFilter">
+      <button class="chip" data-s="waiting" aria-pressed="true">Waiting for payment</button>
+      <button class="chip" data-s="paid" aria-pressed="false">Paid</button>
+      <button class="chip" data-s="cancelled" aria-pressed="false">Cancelled</button>
+      <button class="chip" data-s="" aria-pressed="false">All</button>
+    </div>
+    <div id="orderList" style="display:grid;gap:12px"></div>
+  </section>
+
+  <!-- agents -->
+  <section class="pane" id="p-agents" hidden>
+    <div class="panel">
+      <h2>What you owe agents</h2>
+      <p class="hint">First paid item is paid straight away, then every 5 paid items together. “Owed now” is what finished groups earned, minus what you’ve already paid.</p>
+      <div class="tw"><table><thead><tr><th>Agent</th><th class="n">Owed now</th><th></th><th class="n">Items paid</th><th class="n">Earned</th><th class="n">Paid out</th><th class="n">To next payout</th></tr></thead><tbody id="agentRows"></tbody></table></div>
+    </div>
+    <div class="panel">
+      <h2>Record a payout</h2>
+      <div class="grid2">
+        <label class="f" for="poAgent">Agent code<input id="poAgent" autocomplete="off"></label>
+        <label class="f" for="poAmt">Amount (₦)<input id="poAmt" inputmode="numeric"></label>
+        <label class="f" for="poDate">Date<input id="poDate" type="date"></label>
+      </div>
+      <div class="row"><button class="btn primary" id="poSave">Save payout</button></div>
+      <div class="tw"><table><thead><tr><th>Date</th><th>Agent</th><th class="n">Amount</th><th></th></tr></thead><tbody id="poRows"></tbody></table></div>
+    </div>
+  </section>
+
+  <!-- what sells -->
+  <section class="pane" id="p-sells" hidden>
+    <div class="filters" id="sFilter">
+      <button class="chip" data-d="30" aria-pressed="true">Last 30 days</button>
+      <button class="chip" data-d="90" aria-pressed="false">Last 90 days</button>
+      <button class="chip" data-d="0" aria-pressed="false">All time</button>
+    </div>
+    <div class="stats" id="sStats"></div>
+    <div class="panel"><h3>Top styles (items paid for)</h3><div class="bars" id="sStyles"></div></div>
+    <div class="panel"><h3>Sizes sold</h3><div class="bars" id="sSizes"></div></div>
+    <div class="panel"><h3>Brands</h3><div class="bars" id="sBrands"></div></div>
+    <div class="panel"><h3>Agents (items paid for)</h3><div class="bars" id="sAgents"></div></div>
+    <div class="panel">
+      <h2>Asked for, couldn’t supply</h2>
+      <p class="hint">Log what customers ask for that you can’t get: a sold-out size, a style you don’t carry. Back-in-stock requests from the shop and agent page arrive on your WhatsApp: log them here too.</p>
+      <div class="grid2">
+        <label class="f" for="wWhat">Style or ref<input id="wWhat" autocomplete="off" placeholder="e.g. HRM001-BLK-3 or red block heels"></label>
+        <label class="f" for="wSize">Size (optional)<input id="wSize" autocomplete="off" placeholder="e.g. 42"></label>
+      </div>
+      <div class="row"><button class="btn primary" id="wSave">Log it</button></div>
+      <div class="bars" id="sWants"></div>
+    </div>
+  </section>
+</main>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+const REPO="Fshuaib75/northline-house", LIVE="gh-pages", ALSO="main", FILE="orders.json";
+const $=id=>document.getElementById(id);
+const N=n=>"₦"+Math.round(n||0).toLocaleString("en-NG");
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const today=()=>new Date(Date.now()+3600e3).toISOString().slice(0,10);   // Nigeria time
+const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}}, set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}, del(k){try{localStorage.removeItem(k)}catch(e){}}};
+function toast(t){ const el=$("toast"); el.textContent=t; el.hidden=false; clearTimeout(toast.t); toast.t=setTimeout(()=>el.hidden=true,2600); }
+const EMPTY=()=>({v:1, orders:[], payouts:[], wants:[]});
+let DATA=EMPTY(), PRICES={}, CAT=new Map(), TOKEN=store.get("nl-orders-token","");
+
+// ---------- GitHub: read and save orders.json on the live branch, then move main to the same commit ----------
+const API="https://api.github.com/repos/"+REPO;
+const hdr=()=>({Accept:"application/vnd.github+json","X-GitHub-Api-Version":"2022-11-28",Authorization:"Bearer "+TOKEN});
+async function gh(method, path, body){ const r=await fetch(API+path,{method, headers:{...hdr(),...(body?{"Content-Type":"application/json"}:{})}, body:body?JSON.stringify(body):undefined});
+  const j=await r.json().catch(()=>null); if(!r.ok){ const e=new Error((j&&j.message)||("GitHub "+r.status)); e.status=r.status; throw e; } return j; }
+const b64dec=s=>decodeURIComponent(escape(atob(String(s).replace(/\s/g,""))));
+function clean(d){ d=d&&typeof d==="object"?d:{}; return {v:1, orders:Array.isArray(d.orders)?d.orders:[], payouts:Array.isArray(d.payouts)?d.payouts:[], wants:Array.isArray(d.wants)?d.wants:[], updated:d.updated}; }
+async function readRemote(){ const ref=await gh("GET",`/git/ref/heads/${LIVE}`), head=ref.object.sha;
+  try{ const f=await gh("GET",`/contents/${FILE}?ref=${head}`); return {head, data:clean(JSON.parse(b64dec(f.content)))}; }
+  catch(e){ if(e.status===404) return {head, data:EMPTY()}; throw e; } }
+function why(e){ if(e.status===401) return "GitHub didn’t accept the token. Make a new one (Connect → How to make the token)."; if(e.status===403||e.status===404) return "GitHub refused: check the token has Contents: Read and write on northline-house."; return "Couldn’t reach GitHub: "+e.message+". Check your connection and try again."; }
+// change = function that edits the data; it runs on the newest saved copy, so two devices can't overwrite each other
+async function save(change, what){
+  if(!TOKEN){ openToken(); toast("Connect first: saving needs your GitHub token"); return false; }
+  for(let tries=0; tries<3; tries++){
+    try{
+      const {head, data}=await readRemote(); change(data); data.updated=new Date().toISOString();
+      const base=await gh("GET",`/git/commits/${head}`);
+      const tree=await gh("POST","/git/trees",{base_tree:base.tree.sha, tree:[{path:FILE, mode:"100644", type:"blob", content:JSON.stringify(data,null,1)+"\n"}]});
+      const c=await gh("POST","/git/commits",{message:"Orders: "+what, tree:tree.sha, parents:[head]});
+      try{ await gh("PATCH",`/git/refs/heads/${LIVE}`,{sha:c.sha, force:false}); }catch(e){ if(e.status===422) continue; throw e; }   // someone saved in between: redo on the newer copy
+      try{ await gh("PATCH",`/git/refs/heads/${ALSO}`,{sha:c.sha, force:false}); }catch(e){}   // keep main the same as the live site when it can
+      DATA=data; drawAll(); toast("Saved"); return true;
+    }catch(e){ toast(why(e)); return false; }
+  }
+  toast("Couldn’t save: the file kept changing. Try again."); return false;
+}
+async function load(){
+  if(TOKEN){ try{ const {data}=await readRemote(); DATA=data; conn(true); drawAll(); return; }catch(e){ conn(false, why(e)); } }
+  try{ const r=await fetch("../"+FILE+"?t="+Date.now(),{cache:"no-store"}); DATA=r.ok?clean(await r.json()):EMPTY(); }catch(e){ DATA=EMPTY(); }
+  drawAll();
+}
+function conn(on, err){ $("conn").classList.toggle("on",!!on); $("connText").textContent=on?"Connected: changes save to the live site.":(err||"Not connected: you can look, but saving needs your GitHub token."); $("connBtn").textContent=on?"Token":"Connect"; }
+function openToken(){ $("tokenPanel").hidden=false; $("tok").value=TOKEN; $("tok").focus(); }
+$("connBtn").onclick=()=>{ const p=$("tokenPanel"); p.hidden=!p.hidden; if(!p.hidden) openToken(); };
+$("tokSave").onclick=async()=>{ TOKEN=$("tok").value.trim(); const m=$("tokMsg"); m.hidden=false; m.className="msg"; m.textContent="Checking…";
+  try{ await gh("GET",`/git/ref/heads/${LIVE}`); store.set("nl-orders-token",TOKEN); m.className="msg ok"; m.textContent="Connected. Saving works on this device."; await load(); setTimeout(()=>$("tokenPanel").hidden=true,1200); }
+  catch(e){ m.className="msg bad"; m.textContent=why(e); } };
+$("tokForget").onclick=()=>{ store.del("nl-orders-token"); TOKEN=""; $("tok").value=""; conn(false); toast("Token removed from this device"); };
+
+// ---------- catalogue: brand and commission for refs (commission is taken from the order text when it has one) ----------
+async function catalogue(){
+  const get=f=>fetch("../"+f+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.ok?r.json():null).catch(()=>null);
+  const [p, prods]=await Promise.all([get("prices.json"), get("products.json")]); PRICES=(p&&p.prices)||{};
+  try{ const h=await fetch("../shop/",{cache:"no-store"}).then(r=>r.text()); const m=h.match(/let ALL = (\[.*?\]);\n/s); if(m) JSON.parse(m[1]).forEach(i=>CAT.set(i.ref,i)); }catch(e){}
+  (prods||[]).forEach(i=>{ if(i&&i.ref&&!CAT.has(i.ref)) CAT.set(i.ref,i); });
+  drawAll();
+}
+
+// ---------- reading the WhatsApp order text ----------
+// agent page: "1. Halsey · Black · size 39 · x2 · ₦80,000 [HRM001-BLK-3 · earns ₦5,000 each]"
+// shop:       "1. Halsey · Black · size 39 · x1 · ₦40,000 [HRM001-BLK-3/50]" (commission in hundreds; no "/…" = direct sale)
+const money=s=>parseInt(String(s||"").replace(/[^\d]/g,""),10)||0;
+function parseOrders(text){
+  const parts=String(text).replace(/\r/g,"").split(/(?=NORTHLINE ORDER)/).filter(t=>/NORTHLINE ORDER/.test(t));
+  return parts.map(t=>{
+    const src=/NORTHLINE ORDER \(shop\)/.test(t)?"shop":"agent";
+    let agent=((t.match(/^\s*Agent:\s*(.+)$/m)||[])[1]||"").trim().replace(/[^A-Za-z0-9_-]/g,"").slice(0,24);
+    if(/^DIRECT$/i.test(agent)) agent="";
+    const items=[], problems=[];
+    t.split("\n").forEach(line=>{ const m=line.match(/^\s*\d+\.\s+(.+?)\s*\[([^\]]+)\]\s*$/); if(!m) return;
+      const bits=m[1].split(" · ").map(x=>x.trim()); const br=m[2].trim();
+      const ref=br.split(/\s*·\s*|\//)[0].trim();
+      const qtyBit=bits.find(b=>/^x\d+$/i.test(b)), amtBit=bits.find(b=>/^₦[\d,]+$/.test(b)), sizeBit=bits.find(b=>/^size\s+/i.test(b));
+      const qty=qtyBit?parseInt(qtyBit.slice(1),10):1, total=money(amtBit);
+      const rest=bits.filter(b=>b!==qtyBit&&b!==amtBit&&b!==sizeBit);
+      let comm=null; const earns=br.match(/earns\s+₦([\d,]+)/i), hund=br.match(/\/(\d+)\s*$/);
+      if(earns) comm=money(earns[1]); else if(hund) comm=parseInt(hund[1],10)*100;
+      else if(agent&&src==="agent"&&PRICES[ref]) comm=PRICES[ref][1];
+      else if(!agent) comm=0;
+      if(comm==null){ comm=PRICES[ref]?PRICES[ref][1]:0; if(agent) problems.push(`No commission in the text for ${ref}: used today’s ${N(comm)}.`); }
+      const c=CAT.get(ref);
+      items.push({ref, model:rest[0]||(c&&c.model)||ref, colour:rest[1]&&rest[1]!=="—"?rest[1]:((c&&c.colour)||""), brand:(c&&c.brand)||"", size:sizeBit?sizeBit.replace(/^size\s+/i,""):"One size", qty, price:qty?Math.round(total/qty):total, comm});
+    });
+    if(!items.length) problems.push("No item lines found. Paste the whole message, including the numbered lines.");
+    return {id:"O"+Date.now().toString(36)+Math.random().toString(36).slice(2,6), at:today(), agent, src, status:"waiting", items, problems};
+  });
+}
+let PARSED=[];
+$("parseBtn").onclick=()=>{ PARSED=parseOrders($("paste").value); $("parseMsg").textContent=PARSED.length?`${PARSED.length} order${PARSED.length===1?"":"s"} found`:"No “NORTHLINE ORDER” found in the text."; drawPreview(); };
+const total=o=>(o.items||[]).reduce((s,it)=>s+(it.price||0)*(it.qty||1),0);
+const commOf=o=>(o.items||[]).reduce((s,it)=>s+(it.comm||0)*(it.qty||1),0);
+const units=o=>(o.items||[]).reduce((s,it)=>s+(it.qty||1),0);
+const itemLine=it=>`${esc(it.model)}${it.colour?" · "+esc(it.colour):""}${it.size&&it.size!=="One size"?" · size "+esc(it.size):""}${it.qty>1?" ×"+it.qty:""}`;
+function drawPreview(){
+  $("preview").innerHTML=PARSED.map((o,k)=>`<div class="panel" data-k="${k}">
+    <h2>Order ${PARSED.length>1?k+1:""}</h2>
+    ${o.problems.map(p=>`<div class="msg warn">${esc(p)}</div>`).join("")}
+    <div class="grid2">
+      <label class="f">Agent code (empty = direct sale)<input data-f="agent" value="${esc(o.agent)}"></label>
+      <label class="f">Order date<input type="date" data-f="at" value="${esc(o.at)}"></label>
+    </div>
+    <ul style="margin:0;padding:0;list-style:none;display:grid;gap:4px;font-size:14px">${o.items.map(it=>`<li style="display:flex;justify-content:space-between;gap:10px"><span>${itemLine(it)} <span class="hint">${esc(it.ref)}</span></span><span style="white-space:nowrap">${N(it.price*it.qty)}${it.comm?` · agent ${N(it.comm*it.qty)}`:""}</span></li>`).join("")}</ul>
+    <div class="row" style="justify-content:space-between"><b>Total ${N(total(o))}</b><span class="hint">${units(o)} item${units(o)===1?"":"s"}${commOf(o)?" · agent earns "+N(commOf(o)):""}</span></div>
+    <div class="row"><button class="btn primary" data-a="save" ${o.items.length?"":"disabled"}>Save: waiting for payment</button><button class="btn good" data-a="savepaid" ${o.items.length?"":"disabled"}>Save as paid</button><button class="lnk" data-a="drop">Discard</button></div>
+  </div>`).join("");
+}
+$("preview").addEventListener("input",e=>{ const p=e.target.closest("[data-k]"), f=e.target.dataset.f; if(!p||!f) return; const o=PARSED[+p.dataset.k]; o[f]=f==="agent"?e.target.value.trim().replace(/[^A-Za-z0-9_-]/g,"").slice(0,24):e.target.value; });
+$("preview").addEventListener("click",async e=>{ const b=e.target.closest("[data-a]"); if(!b) return; const k=+b.closest("[data-k]").dataset.k, o=PARSED[k];
+  if(b.dataset.a==="drop"){ PARSED.splice(k,1); drawPreview(); return; }
+  const rec={id:o.id, at:o.at, agent:o.agent, src:o.src, status:b.dataset.a==="savepaid"?"paid":"waiting", items:o.items};
+  if(rec.status==="paid") rec.paid=today();
+  b.disabled=true;
+  const dup=DATA.orders.find(x=>x.agent===rec.agent&&x.at===rec.at&&JSON.stringify(x.items.map(i=>[i.ref,i.size,i.qty]))===JSON.stringify(rec.items.map(i=>[i.ref,i.size,i.qty])));
+  if(dup&&!confirm("An order with the same agent, date and items is already saved. Save it again?")){ b.disabled=false; return; }
+  if(await save(d=>{ d.orders.push(rec); }, `${rec.status==="paid"?"paid":"new"} order ${rec.agent||"direct"}, ${units(rec)} item${units(rec)===1?"":"s"}`)){ PARSED.splice(k,1); drawPreview(); if(!PARSED.length) $("paste").value=""; }
+  else b.disabled=false; });
+
+// ---------- orders list ----------
+let OF="waiting";
+$("oFilter").addEventListener("click",e=>{ const b=e.target.closest(".chip"); if(!b) return; OF=b.dataset.s; document.querySelectorAll("#oFilter .chip").forEach(x=>x.setAttribute("aria-pressed",x===b)); drawOrders(); });
+function drawOrders(){
+  const l=DATA.orders.filter(o=>!OF||o.status===OF).sort((a,b)=>String(b.at).localeCompare(String(a.at))||String(b.id).localeCompare(String(a.id)));
+  const waiting=DATA.orders.filter(o=>o.status==="waiting").length; $("nOrders").textContent=waiting?`· ${waiting} waiting`:"";
+  $("orderList").innerHTML=l.length?l.map(o=>`<div class="order" data-id="${esc(o.id)}">
+    <div class="hd"><b>${esc(o.agent||"Direct sale")}</b><span class="hint">${esc(o.at)}${o.paid?" · paid "+esc(o.paid):""} · ${o.src==="shop"?"from the shop":"from the agent page"}</span></div>
+    <ul>${(o.items||[]).map(it=>`<li><span>${itemLine(it)}</span><span>${N(it.price*it.qty)}</span></li>`).join("")}</ul>
+    <div class="ft"><span><span class="pill ${esc(o.status)}">${o.status==="waiting"?"Waiting for payment":esc(o.status)}</span> <b style="margin-left:8px">${N(total(o))}</b>${commOf(o)?` <span class="hint">· agent ${N(commOf(o))}</span>`:""}</span>
+      <span class="row">${o.status!=="paid"?`<button class="btn good small" data-a="paid">Mark paid</button>`:`<button class="btn small" data-a="waiting">Not paid</button>`}${o.status!=="cancelled"?`<button class="btn small" data-a="cancelled">Cancel</button>`:""}<button class="lnk" data-a="delete">Delete</button></span></div>
+  </div>`).join(""):`<div class="empty">${OF==="waiting"?"Nothing waiting for payment.":"No orders here yet."}</div>`;
+}
+$("orderList").addEventListener("click",async e=>{ const b=e.target.closest("[data-a]"); if(!b) return; const id=b.closest("[data-id]").dataset.id, a=b.dataset.a;
+  if(a==="delete"&&!confirm("Delete this order for good? (Cancel keeps it in the log.)")) return;
+  b.disabled=true;
+  await save(d=>{ const k=d.orders.findIndex(o=>o.id===id); if(k<0) return; if(a==="delete") d.orders.splice(k,1); else { d.orders[k].status=a; if(a==="paid") d.orders[k].paid=today(); else delete d.orders[k].paid; } }, `${a} ${id}`);
+  b.disabled=false; });
+
+// ---------- agents: earnings and payouts (same rule as the agent page) ----------
+function earnings(who){ const k=String(who).toUpperCase();
+  const mine=DATA.orders.filter(o=>o.status==="paid"&&String(o.agent||"").toUpperCase()===k).sort((a,b)=>String(a.paid||a.at).localeCompare(String(b.paid||b.at))||String(a.id).localeCompare(String(b.id)));
+  const u=[]; mine.forEach(o=>(o.items||[]).forEach(it=>{ for(let n=0;n<(it.qty||1);n++) u.push(it.comm||0); }));
+  const done=u.length<1?0:1+Math.floor((u.length-1)/5)*5, due=u.slice(0,done).reduce((s,x)=>s+x,0), waiting=u.slice(done).reduce((s,x)=>s+x,0);
+  const paidOut=DATA.payouts.filter(p=>String(p.agent||"").toUpperCase()===k).reduce((s,p)=>s+(p.amount||0),0);
+  return {items:u.length, earned:due+waiting, paidOut, owed:Math.max(0,due-paidOut), toNext:u.length<1?1:(5-((u.length-1)%5))%5||5}; }
+function drawAgents(){
+  const codes=[...new Set(DATA.orders.filter(o=>o.agent).map(o=>o.agent.toUpperCase()).concat(DATA.payouts.map(p=>String(p.agent).toUpperCase())))].sort();
+  const rows=codes.map(c=>[c,earnings(c)]).sort((a,b)=>b[1].owed-a[1].owed||b[1].items-a[1].items);
+  $("agentRows").innerHTML=rows.length?rows.map(([c,e])=>`<tr><td style="white-space:nowrap"><b>${esc(c)}</b></td><td class="n"><b style="color:${e.owed?"var(--good)":"inherit"}">${N(e.owed)}</b></td><td>${e.owed?`<button class="btn small" data-pay="${esc(c)}" data-amt="${e.owed}">Pay</button>`:""}</td><td class="n">${e.items}</td><td class="n">${N(e.earned)}</td><td class="n">${N(e.paidOut)}</td><td class="n">${e.items?e.toNext+" item"+(e.toNext===1?"":"s"):"first sale"}</td></tr>`).join(""):`<tr><td colspan="7" class="empty">No agent sales recorded yet.</td></tr>`;
+  $("poRows").innerHTML=DATA.payouts.slice().sort((a,b)=>String(b.at).localeCompare(String(a.at))).map(p=>`<tr><td>${esc(p.at)}</td><td>${esc(p.agent)}</td><td class="n">${N(p.amount)}</td><td class="n"><button class="lnk" data-del="${esc(p.id)}">Delete</button></td></tr>`).join("")||`<tr><td colspan="4" class="hint">No payouts recorded yet.</td></tr>`;
+}
+$("agentRows").addEventListener("click",e=>{ const b=e.target.closest("[data-pay]"); if(!b) return; $("poAgent").value=b.dataset.pay; $("poAmt").value=b.dataset.amt; $("poDate").value=today(); $("poAmt").focus(); });
+$("poSave").onclick=async()=>{ const agent=$("poAgent").value.trim().replace(/[^A-Za-z0-9_-]/g,"").slice(0,24).toUpperCase(), amount=money($("poAmt").value), at=$("poDate").value||today();
+  if(!agent||!amount){ toast("Add the agent code and the amount"); return; }
+  if(await save(d=>{ d.payouts.push({id:"P"+Date.now().toString(36), agent, amount, at}); }, `payout ${agent} ${amount}`)){ $("poAgent").value=""; $("poAmt").value=""; } };
+$("poRows").addEventListener("click",async e=>{ const b=e.target.closest("[data-del]"); if(!b||!confirm("Delete this payout?")) return; await save(d=>{ d.payouts=d.payouts.filter(p=>p.id!==b.dataset.del); }, "delete payout"); });
+
+// ---------- what sells ----------
+let DAYS=30;
+$("sFilter").addEventListener("click",e=>{ const b=e.target.closest(".chip"); if(!b) return; DAYS=+b.dataset.d; document.querySelectorAll("#sFilter .chip").forEach(x=>x.setAttribute("aria-pressed",x===b)); drawSells(); });
+function bars(el, pairs, max){ const top=pairs.slice(0,max||12), m=Math.max(1,...top.map(p=>p[1]));
+  $(el).innerHTML=top.length?top.map(([l,v,sub])=>`<div class="bar"><span class="lbl" title="${esc(l)}">${esc(l)}${sub?` <span class="hint">${esc(sub)}</span>`:""}</span><span class="trk"><i style="width:${Math.round(v/m*100)}%"></i></span><span class="v">${v}</span></div>`).join(""):`<p class="hint">Nothing yet.</p>`; }
+function drawSells(){
+  const since=DAYS?new Date(Date.now()-DAYS*864e5).toISOString().slice(0,10):"";
+  const paid=DATA.orders.filter(o=>o.status==="paid"&&String(o.paid||o.at)>=since), all=DATA.orders.filter(o=>o.status!=="cancelled"&&String(o.at)>=since);
+  const sum=(l,f)=>l.reduce((s,o)=>s+f(o),0);
+  $("sStats").innerHTML=[[sum(paid,units),"items paid for"],[N(sum(paid,total)),"sales paid"],[N(sum(paid,commOf)),"agent commission"],[all.length?Math.round(paid.length/all.length*100)+"%":"–","orders that got paid"]].map(([v,l])=>`<div class="stat"><b>${v}</b><span>${l}</span></div>`).join("");
+  const cnt=(f)=>{ const m=new Map(); paid.forEach(o=>(o.items||[]).forEach(it=>{ const [k,sub]=f(it,o); if(k) m.set(k,[(m.get(k)||[0])[0]+(it.qty||1),sub]); })); return [...m].map(([k,[v,sub]])=>[k,v,sub]).sort((a,b)=>b[1]-a[1]); };
+  bars("sStyles",cnt(it=>[`${it.model}${it.colour?" · "+it.colour:""}`, it.ref]));
+  bars("sSizes",cnt(it=>[it.size&&it.size!=="One size"?"Size "+it.size:"",""]).sort((a,b)=>parseFloat(a[0].slice(5))-parseFloat(b[0].slice(5))),20);
+  bars("sBrands",cnt(it=>[it.brand||(CAT.get(it.ref)||{}).brand||"Unknown",""]));
+  bars("sAgents",cnt((it,o)=>[o.agent||"Direct sale",""]));
+  const w=new Map(); DATA.wants.forEach(x=>{ const k=(x.what+(x.size?" · size "+x.size:"")).trim(); w.set(k,(w.get(k)||0)+(x.n||1)); });
+  bars("sWants",[...w].sort((a,b)=>b[1]-a[1]),20);
+}
+$("wSave").onclick=async()=>{ const what=$("wWhat").value.trim().slice(0,80), size=$("wSize").value.trim().slice(0,8); if(!what){ toast("Write the style or ref"); return; }
+  if(await save(d=>{ d.wants.push({at:today(), what, size, n:1}); }, "asked for "+what)){ $("wWhat").value=""; $("wSize").value=""; } };
+
+// ---------- tabs ----------
+document.querySelector(".tabs").addEventListener("click",e=>{ const b=e.target.closest("button[data-t]"); if(!b) return;
+  document.querySelectorAll(".tabs button").forEach(x=>x.setAttribute("aria-selected",x===b)); ["add","orders","agents","sells"].forEach(t=>$("p-"+t).hidden=t!==b.dataset.t); });
+function drawAll(){ drawOrders(); drawAgents(); drawSells(); }
+$("poDate").value=today();
+conn(false); load(); catalogue();
+</script>
+</body>
+</html>

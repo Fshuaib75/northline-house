@@ -109,7 +109,29 @@ label.f{display:grid;gap:5px;font-size:12.5px;color:var(--muted)}
 .price{font:600 15px var(--ui);font-variant-numeric:tabular-nums;display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px}
 .earn{display:inline-block;background:var(--good-soft);color:var(--good);border-radius:999px;padding:3px 9px;font:600 12px var(--ui)}
 @media (max-width:420px){.mname{font-size:15.5px}.price{font-size:14.5px}.earn{font-size:11.5px;padding:2px 7px}}
-.soldout{font:700 10.5px var(--ui);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:6px 0}
+.soldout{font:700 10.5px var(--ui);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:6px 0 2px}
+.tag{position:absolute;top:8px;left:8px;background:var(--surface);color:var(--ink);font:700 10px/1 var(--ui);letter-spacing:.12em;text-transform:uppercase;padding:6px 8px;border-radius:2px;pointer-events:none}
+.tag.back{color:var(--good)}
+.tag.all{color:var(--sky-ink)}
+.tag.few{color:var(--warn)}
+.links{display:flex;flex-wrap:wrap;gap:4px 14px}
+.ntf{border:0;background:none;padding:0;color:var(--ink);font:600 12.5px var(--ui);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.soldout+.ntf{justify-self:start;align-self:flex-start}
+#size{flex:0 0 auto;width:auto;border-radius:999px;padding:9px 12px;font:600 13.5px var(--ui)}
+#size.on{background:var(--ink);border-color:var(--ink);color:#fff}
+/* earnings */
+.earnbox{margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:8px}
+@media (max-width:480px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.stat{background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:10px 12px;min-width:0}
+.stat b{display:block;font:600 18px var(--ui);font-variant-numeric:tabular-nums}
+.stat span{font-size:12px;color:var(--muted)}
+.stat.owe b{color:var(--good)}
+.prog{height:6px;border-radius:3px;background:var(--line);overflow:hidden;margin:10px 0 4px}
+.prog i{display:block;height:100%;background:var(--good)}
+.recent{margin:10px 0 0;padding:0;list-style:none;display:grid;gap:4px;font-size:13px;color:var(--ink-2)}
+.recent li{display:flex;justify-content:space-between;gap:10px}
+.recent li span:last-child{font-variant-numeric:tabular-nums;white-space:nowrap}
 .picker{display:grid;grid-template-columns:minmax(0,1fr) 52px;gap:6px;align-items:center}
 .picker select,.picker input{padding:8px;font-size:14px}
 .picker input{text-align:center}
@@ -223,6 +245,10 @@ label.f{display:grid;gap:5px;font-size:12.5px;color:var(--muted)}
       <div class="big">Your first sale is paid straight away</div>
       <p id="commOld">Shoes and bags: ₦5,000 each, or ₦3,000 on items priced ₦30,000 and under. Baby clothes: ₦1,500 a piece. An item counts once the customer has paid. Your first sale is paid as soon as the customer pays. After that, when you reach 5 items, Northline pays you what those 5 earned and your count starts again from 0. Every item shows what you earn on it.</p>
       <p id="commNew" hidden>Every item shows what you earn on it: a quarter (25%) of Northline’s margin on that item, rounded up to the next ₦500 (most baby clothes ₦1,500). An item counts once the customer has paid. Your first sale is paid as soon as the customer pays. After that, when you reach 5 items, Northline pays you what those 5 earned and your count starts again from 0.</p>
+      <div class="earnbox" id="earnBox" hidden>
+        <h2>Your earnings</h2>
+        <div id="earnBody"><p class="hint">Loading…</p></div>
+      </div>
       <div class="notice" id="commNotice" hidden><b>New from <span class="swd"></span>:</b> your commission becomes a quarter (25%) of Northline’s margin on each item, rounded up to the next ₦500. Your first sale is still paid straight away, then every 5 items. Most prices go down at the same time, so items are easier to sell. Orders sent before <span class="swd"></span> earn today’s rate. Every item will keep showing what you earn.</div>
     </div>
   </section>
@@ -235,6 +261,7 @@ label.f{display:grid;gap:5px;font-size:12.5px;color:var(--muted)}
         <button data-g="K" aria-pressed="false">Kids</button>
       </div>
       <input type="search" id="q" placeholder="Search style or colour">
+      <select id="size" aria-label="Customer’s size"><option value="">Any size</option></select>
       <select id="sort" aria-label="Sort"><option value="rec">Recommended</option><option value="new">Newest</option><option value="low">Price: low to high</option><option value="high">Price: high to low</option><option value="brand">Brand A–Z</option></select>
     </div>
     <div class="row brands secs" id="secs" role="group" aria-label="Section"></div>
@@ -314,7 +341,20 @@ const STOCK={};
 const inStock=(i,s)=>{ const z=STOCK[i.ref]; return !z||((sizesOf(i).length===1&&sizesOf(i)[0]==="One size")?z.length>0:z.includes(s)); };
 const soldOut=i=>!!STOCK[i.ref]&&!sizesOf(i).some(s=>inStock(i,s));
 const unit = (n,g) => (g==="B"||g==="BG"||g==="CL") ? `${n} piece${n===1?"":"s"}` : `${n} pair${n===1?"":"s"}`;
-const S = {g:"M", sec:"", q:"", f:new Set(), sort:"rec", more:false};
+const S = {g:"M", sec:"", q:"", f:new Set(), sort:"rec", more:false, size:""};
+// customer's size: only styles in stock in that size (one-size items such as bags drop out while a size is chosen)
+const oneSize=i=>{ const z=sizesOf(i); return z.length===1&&z[0]==="One size"; };
+const sizeOk=i=>!S.size||(!oneSize(i)&&sizesOf(i).includes(S.size)&&inStock(i,S.size));
+const SIZE_ORDER=[].concat(SIZES.W,SIZES.M,SIZES.B,SIZES.CL);
+const sizeSort=(a,b)=>{ const x=parseFloat(a), y=parseFloat(b); if(!isNaN(x)&&!isNaN(y)&&/^\d+(\.\d+)?$/.test(a)&&/^\d+(\.\d+)?$/.test(b)) return x-y; return (SIZE_ORDER.indexOf(a)+1||99)-(SIZE_ORDER.indexOf(b)+1||99)||String(a).localeCompare(String(b)); };
+// Capone stock badges: back in stock (from the weekly check, for 14 days), every size in stock, few sizes left
+const BACK={};
+const isBack=i=>!!BACK[i.ref]&&!soldOut(i);
+const allSizes=i=>!!STOCK[i.ref]&&!oneSize(i)&&sizesOf(i).length>=5&&sizesOf(i).every(s=>inStock(i,s));
+const fewLeft=i=>!!STOCK[i.ref]&&!oneSize(i)&&!soldOut(i)&&sizesOf(i).filter(s=>inStock(i,s)).length<=2;
+// a model sold out in every colour is left out of the list; it comes back by itself when Capone restocks
+function dropDead(){ const live=new Map(); ITEMS.forEach(i=>{ const k=i.brand+"|"+i.model; if(!live.has(k)) live.set(k,false); if(!soldOut(i)) live.set(k,true); });
+  ITEMS=ITEMS.filter(i=>live.get(i.brand+"|"+i.model)); }
 // Who for (Men / Women / Kids) → section (Shoes / Clothing / Bags) → type. Items keep their own line (i.g) for sizes.
 const audOf=i=>i.g==="M"?"M":i.g==="W"?"W":i.g==="B"?"K":(i.for==="Men"?"M":(i.for==="Girl"||i.for==="Boy")?"K":"W");
 const secOf=i=>i.g==="BG"?"Bags":(i.g==="CL"||i.g==="B")?"Clothing":"Shoes";
@@ -412,7 +452,7 @@ let FILTERS = [["for","Women","For women"],["for","Men","For men"],["for","Girl"
 const GROUP={for:"For",kind:"Type",heel:"Heel",band:"Price",fam:"Colour",brand:"Brand"};
 const MAIN=new Set(["for","kind","band"]);
 function chips(){
-  const aud = ITEMS.filter(i=>audOf(i)===S.g), pool = aud.filter(i=>!S.sec||secOf(i)===S.sec); secRow(aud);
+  const aud = ITEMS.filter(i=>audOf(i)===S.g&&sizeOk(i)), pool = aud.filter(i=>!S.sec||secOf(i)===S.sec); secRow(aud);
   const brands=[...new Set(pool.map(i=>i.brand))].sort();
   const all=FILTERS.filter(f=>f[0]!=="brand"&&(f[0]!=="for"||S.g==="K")).filter(([k,v])=>pool.some(i=>i[k]===v)).map(f=>f[0]==="kind"&&f[1]==="slide"&&S.g==="M"?["kind","slide","Palms & slides"]:f).sort((a,b)=>{ const G={for:0,kind:1,heel:2,band:3,fam:4}, K=[...KIND_ORDER.Shoes,...KIND_ORDER.Clothing,...KIND_ORDER.Bags]; return (G[a[0]]-G[b[0]])||(a[0]==="kind"?K.indexOf(a[1])-K.indexOf(b[1]):0); });   // brands have their own row
   brandRow(pool);
@@ -423,10 +463,17 @@ function chips(){
     + (S.f.size?`<button class="chip clr" id="clrBtn">Clear filters</button>`:"");
   $("more").innerHTML = html(extra); $("more").hidden = !S.more || !extra.length;
 }
+function sizeSel(){ const q=S.q.trim().toLowerCase(), byK={}; S.f.forEach(x=>{const [k,v]=x.split(":"); (byK[k]=byK[k]||new Set()).add(v);});
+  const pool=ITEMS.filter(i=>(!S.drop||(DROP&&DROP.refs.includes(i.ref)))&&inView(i)&&!oneSize(i)&&Object.entries(byK).every(([k,set])=>set.has(i[k]))&&(!q||(i.brand+" "+i.model+" "+i.colour+" "+(i.fam||"")+" "+i.desc+" "+i.kind).toLowerCase().includes(q)));
+  const n=new Map(); pool.forEach(i=>sizesOf(i).forEach(s=>{ if(inStock(i,s)) n.set(s,(n.get(s)||0)+1); }));
+  if(LOADED&&S.size&&!n.has(S.size)) n.set(S.size,0);
+  const el=$("size"); el.hidden=!n.size&&!S.size;
+  el.innerHTML=`<option value="">Any size</option>`+[...n.keys()].sort(sizeSort).map(s=>`<option value="${esc(s)}">Size ${esc(s)} · ${n.get(s)}</option>`).join("");
+  el.value=S.size; el.classList.toggle("on",!!S.size); }
 function list(){
   const q=S.q.trim().toLowerCase();
   const byK={}; S.f.forEach(x=>{const [k,v]=x.split(":"); (byK[k]=byK[k]||new Set()).add(v);});
-  const out = ITEMS.filter(i=>(!S.drop||(DROP&&DROP.refs.includes(i.ref))) && inView(i) && Object.entries(byK).every(([k,set])=>set.has(i[k])) && (!q || (i.brand+" "+i.model+" "+i.colour+" "+(i.fam||"")+" "+i.desc+" "+i.kind).toLowerCase().includes(q)));
+  const out = ITEMS.filter(i=>(!S.drop||(DROP&&DROP.refs.includes(i.ref))) && inView(i) && Object.entries(byK).every(([k,set])=>set.has(i[k])) && sizeOk(i) && (!q || (i.brand+" "+i.model+" "+i.colour+" "+(i.fam||"")+" "+i.desc+" "+i.kind).toLowerCase().includes(q)));
   return sortItems(out);
 }
 // Recommended: styles in the price range customers buy most (₦20k–50k) and with several photos come first; then brands and
@@ -459,15 +506,15 @@ function cardHtml(i){
   const img = chain.length ? imgTag(chain, `loading="lazy" alt="${esc(i.model+" "+i.colour)}"`, "miss") : `<div class="miss">Photo coming soon</div>`;
   const gone=soldOut(i);
   return `<article class="card${gone?" out":""}" data-ref="${esc(i.ref)}">
-    <div class="ph">${img}${(i.imgs||[]).length>1?`<span class="pcount">More photos ›</span>`:""}</div>
+    <div class="ph">${img}${gone?"":isBack(i)?`<span class="tag back">Back in stock</span>`:allSizes(i)?`<span class="tag all">All sizes</span>`:fewLeft(i)?`<span class="tag few">Few sizes left</span>`:""}${(i.imgs||[]).length>1?`<span class="pcount">More photos ›</span>`:""}</div>
     <div><div class="mb">${esc(i.brand)}</div><div class="mname">${esc(i.model)}</div><div class="mcol">${esc([i.colour,i.desc].filter(Boolean).join(" · "))}</div></div>
     <div class="price">${N(i.price)} <span class="earn">you earn ${N(i.comm)}</span></div>
-    ${gone?`<div class="soldout">Sold out for now</div>`:`<div class="picker">
-      <select aria-label="Size">${sizesOf(i).map(s=>inStock(i,s)?`<option>${s}</option>`:`<option value="${s}" disabled>${s} · sold out</option>`).join("")}</select>
+    ${gone?`<div class="soldout">Sold out for now</div><button class="ntf" title="Ask Northline to tell you when it’s back">Customer wants it: tell me when it’s back</button>`:`<div class="picker">
+      <select aria-label="Size">${sizesOf(i).map(s=>inStock(i,s)?`<option${s===S.size?" selected":""}>${s}</option>`:`<option value="${s}" disabled>${s} · sold out</option>`).join("")}</select>
       <input type="number" min="1" value="1" aria-label="Quantity">
       <button class="add">Add</button>
     </div>`}
-    ${i.g!=="BG"&&i.g!=="CL"?`<button class="sgb">Size guide</button>`:""}
+    ${(()=>{ const sg=i.g!=="BG"&&i.g!=="CL", part=!gone&&!oneSize(i)&&sizesOf(i).some(s=>!inStock(i,s)); return sg||part?`<div class="links">${sg?`<button class="sgb">Size guide</button>`:""}${part?`<button class="ntf">Size sold out? Request it</button>`:""}</div>`:""; })()}
     <div class="acts"><button class="mini cap" title="Copy caption">Caption</button><button class="mini shr" title="Copy your shop link for this style">Link</button><button class="mini st" title="Make a status or Instagram image">Status</button>${i.full?`<a class="mini" href="${esc(i.full)}" target="_blank" rel="noopener" title="Save photo">Photo</a>`:""}</div>
   </article>`;
 }
@@ -493,25 +540,25 @@ function brandParam(){ const b=new URLSearchParams(location.search).get("b"); if
 // that list; each history entry keeps its view, so Back/Forward step through what the agent saw.
 try{ history.scrollRestoration="manual"; }catch(e){}
 const PAGE_N=36; let SIG=null, LOADED=false, QUIET=false, LASTPG=null, PG=1;
-const VIEW_KEYS=["g","sec","s","q","f","d","p"], F_KEYS=["for","kind","heel","band","fam","brand"], SORTS=["rec","new","low","high","brand"];
+const VIEW_KEYS=["g","sec","s","q","f","d","p","z"], F_KEYS=["for","kind","heel","band","fam","brand"], SORTS=["rec","new","low","high","brand"];
 function viewFromURL(){ const sp=new URLSearchParams(location.search); if(!VIEW_KEYS.some(k=>sp.has(k))) return null;
   const g=sp.get("g"), sec=sp.get("sec"), so=sp.get("s"), p=parseInt(sp.get("p"),10);
   return {g:["M","W","K"].includes(g)?g:"M", sec:SEC_ORDER.includes(sec)?sec:"", sort:SORTS.includes(so)?so:"rec", q:sp.get("q")||"",
-    f:sp.getAll("f").filter(x=>F_KEYS.includes(x.split(":")[0])).sort(), drop:sp.get("d")==="1", page:p>0?p:1}; }
-const view=()=>({g:S.g, sec:S.sec, sort:S.sort, q:S.q.trim(), f:[...S.f].sort(), drop:!!S.drop, page:PG});
-function applyView(v){ S.g=v.g; S.sec=v.sec; S.sort=v.sort; S.q=v.q; S.f=new Set(v.f); S.drop=v.drop; PG=v.page; syncControls(); }
-function syncControls(){ document.querySelectorAll("#gSeg button").forEach(x=>x.setAttribute("aria-pressed",x.dataset.g===S.g)); $("q").value=S.q; $("sort").value=S.sort; chips(); shopBox(); }
+    f:sp.getAll("f").filter(x=>F_KEYS.includes(x.split(":")[0])).sort(), drop:sp.get("d")==="1", page:p>0?p:1, size:(sp.get("z")||"").slice(0,8)}; }
+const view=()=>({g:S.g, sec:S.sec, sort:S.sort, q:S.q.trim(), f:[...S.f].sort(), drop:!!S.drop, page:PG, size:S.size});
+function applyView(v){ S.g=v.g; S.sec=v.sec; S.sort=v.sort; S.q=v.q; S.f=new Set(v.f); S.drop=v.drop; PG=v.page; S.size=v.size||""; syncControls(); }
+function syncControls(){ document.querySelectorAll("#gSeg button").forEach(x=>x.setAttribute("aria-pressed",x.dataset.g===S.g)); $("q").value=S.q; $("sort").value=S.sort; chips(); shopBox(); sizeSel(); }
 function urlFor(){ const u=new URL(location.href), sp=u.searchParams; VIEW_KEYS.concat(["b"]).forEach(k=>sp.delete(k));
   if(S.g!=="M") sp.set("g",S.g); if(S.sec) sp.set("sec",S.sec); if(S.sort!=="rec") sp.set("s",S.sort); if(S.q.trim()) sp.set("q",S.q.trim());
-  [...S.f].sort().forEach(x=>sp.append("f",x)); if(S.drop) sp.set("d","1"); if(PG>1) sp.set("p",PG);
+  [...S.f].sort().forEach(x=>sp.append("f",x)); if(S.drop) sp.set("d","1"); if(S.size) sp.set("z",S.size); if(PG>1) sp.set("p",PG);
   const qs=sp.toString(); return u.pathname+(qs?"?"+qs:"")+u.hash; }
 const here=()=>location.pathname+location.search+location.hash;
 function setURL(push){ try{ if(push){ history.pushState({v:view()},"",urlFor()); return; } const st=history.state;
   history.replaceState(st&&st.ov?{ov:st.ov, v:view()}:{v:view()},"",urlFor()); }catch(e){} }
 const V0=(history.state&&history.state.v)||viewFromURL();
-if(V0){ S.g=V0.g; S.sec=V0.sec; S.sort=V0.sort; S.q=V0.q; S.f=new Set(V0.f); S.drop=V0.drop; PG=V0.page; }
+if(V0){ S.g=V0.g; S.sec=V0.sec; S.sort=V0.sort; S.q=V0.q; S.f=new Set(V0.f); S.drop=V0.drop; PG=V0.page; S.size=V0.size||""; }
 // what the list depends on: when any of it changes, go back to page 1 (adding to an order doesn't)
-const sigOf=()=>JSON.stringify([S.g,S.sec,S.q.trim().toLowerCase(),[...S.f].sort(),S.sort,!!S.drop]);
+const sigOf=()=>JSON.stringify([S.g,S.sec,S.q.trim().toLowerCase(),[...S.f].sort(),S.sort,!!S.drop,S.size]);
 const sameButSearch=(a,b)=>{ const x=JSON.parse(a), y=JSON.parse(b); x.splice(2,1); y.splice(2,1); return JSON.stringify(x)===JSON.stringify(y); };
 const NARROW=window.matchMedia?matchMedia("(max-width:379px)"):{matches:false};
 function pageList(cur,n,compact){ const s=new Set([1,n,cur]);
@@ -551,7 +598,7 @@ window.addEventListener("popstate",e=>{ const st=e.state||{};
   if(JSON.stringify(v)!==JSON.stringify(view())){ QUIET=true; applyView(v); render(); QUIET=false; listTop(); }
 });
 function render(){
-  const all=list(), sig=sigOf();
+  sizeSel(); const all=list(), sig=sigOf();
   if(SIG!==null&&sig!==SIG&&!QUIET){ PG=1; setURL(!sameButSearch(SIG,sig)); }
   SIG=sig;
   const pages=Math.max(1,Math.ceil(all.length/PAGE_N));
@@ -590,6 +637,24 @@ const shopUrl = ref => SHOP + "?a=" + encodeURIComponent(code()) + (ref ? "&i=" 
 function shopBox(){ const c=code(); $("shopBox").hidden=!c; if(!c) return; $("shopUrl").textContent=shopUrl(); $("shopFor").textContent=selBrand()?` (${selBrand()} only)`:"";
   $("shopWa").href="https://wa.me/?text="+encodeURIComponent("Shop Turkish shoes, bags and baby clothes from Northline House, delivered in Nigeria: "+shopUrl()); }
 $("shopCopy").onclick=()=>copy(shopUrl());
+// ---------- your earnings: paid orders Northline has recorded for this agent code (orders.json, kept by the owner) ----------
+// First paid item is paid straight away; after that, every 5 paid items are paid together.
+let ORDERS=null;
+function earningsOf(data, who){ const k=String(who||"").toUpperCase(); if(!k) return null;
+  const mine=(data.orders||[]).filter(o=>o.status==="paid"&&String(o.agent||"").toUpperCase()===k).sort((a,b)=>String(a.paid||a.at).localeCompare(String(b.paid||b.at))||String(a.id).localeCompare(String(b.id)));
+  const units=[]; mine.forEach(o=>(o.items||[]).forEach(it=>{ for(let n=0;n<(it.qty||1);n++) units.push({o, it}); }));
+  const done=units.length<1?0:1+Math.floor((units.length-1)/5)*5, due=units.slice(0,done).reduce((s,u)=>s+(u.it.comm||0),0), waiting=units.slice(done).reduce((s,u)=>s+(u.it.comm||0),0);
+  const paidOut=(data.payouts||[]).filter(p=>String(p.agent||"").toUpperCase()===k).reduce((s,p)=>s+(p.amount||0),0);
+  return {items:units.length, earned:due+waiting, owed:Math.max(0,due-paidOut), paidOut, waiting, toNext:units.length<1?1:(5-((units.length-1)%5))%5||5, inBatch:units.length<1?0:((units.length-1)%5), recent:mine.slice(-5).reverse()}; }
+function earnBox(){ const c=code(); $("earnBox").hidden=!c; if(!c) return;
+  if(!ORDERS){ $("earnBody").innerHTML='<p class="hint">Loading…</p>'; return; }
+  const e=earningsOf(ORDERS,c);
+  if(!e||!e.items){ $("earnBody").innerHTML=`<p>No paid orders recorded for <b>${esc(c)}</b> yet. Your first paid item is paid to you straight away.</p>`; return; }
+  const pct=Math.round(e.inBatch/5*100);
+  $("earnBody").innerHTML=`<div class="stats"><div class="stat"><b>${e.items}</b><span>items paid for</span></div><div class="stat"><b>${N(e.earned)}</b><span>earned in total</span></div><div class="stat"><b>${N(e.paidOut)}</b><span>paid to you</span></div><div class="stat owe"><b>${N(e.owed)}</b><span>owed to you now</span></div></div>`
+    +(e.waiting?`<div class="prog" aria-hidden="true"><i style="width:${pct}%"></i></div><p class="hint">${e.inBatch} of 5 items toward your next payout (${N(e.waiting)} so far). ${e.toNext} more and Northline pays you for all 5.</p>`:`<p class="hint">Your next 5 paid items are paid out together.</p>`)
+    +`<ul class="recent">${e.recent.map(o=>`<li><span>${esc(o.paid||o.at)} · ${(o.items||[]).map(it=>esc(it.model)+(it.size&&it.size!=="One size"?" "+esc(it.size):"")+(it.qty>1?" ×"+it.qty:"")).join(", ")}</span><span>${N((o.items||[]).reduce((s,it)=>s+(it.comm||0)*(it.qty||1),0))}</span></li>`).join("")}</ul>`; }
+$("agentCode").addEventListener("input",earnBox);
 shopBox();
 $("waShow").textContent="+"+WA;
 function tabs(){ const has=g=>ITEMS.some(i=>audOf(i)===g); ["M","W","K"].forEach(g=>{ document.querySelector(`#gSeg [data-g="${g}"]`).hidden=!has(g); });
@@ -606,6 +671,7 @@ function chipClick(e){ const b=e.target.closest(".chip"); if(!b) return;
 $("chips").addEventListener("click",chipClick); $("more").addEventListener("click",chipClick);
 $("sort").value=S.sort; $("sort").addEventListener("change",e=>{ S.sort=e.target.value; store.set("nl-sort",S.sort); render(); window.scrollTo({top:$("grid").offsetTop-120,behavior:"smooth"}); });
 $("q").addEventListener("input",e=>{S.q=e.target.value;render();});
+$("size").addEventListener("change",e=>{ S.size=e.target.value; if(S.size) track("size/"+S.size,"Size "+S.size); render(); });
 $("grid").addEventListener("click",e=>{
   const card=e.target.closest(".card"); if(!card) return; const i=ITEMS.find(x=>x.ref===card.dataset.ref);
   if(e.target.closest(".add")){
@@ -615,6 +681,9 @@ $("grid").addEventListener("click",e=>{
     store.set("nl-cart",cart); render(); track("add/"+i.ref, i.brand+" "+i.model+" · "+(i.colour||"")); toast(`Added ${i.model}${size!=="One size"?", size "+size:""}`);
   }
   if(e.target.closest(".sgb")){ openSG(i, card); track("sizeguide/"+i.ref, i.model); return; }
+  if(e.target.closest(".ntf")){ const out=sizesOf(i).filter(s=>!inStock(i,s)), sz=S.size&&out.includes(S.size)?S.size:"";
+    track("notify/"+i.ref, i.brand+" "+i.model+" · "+(i.colour||"")+(sz?" · "+sz:""));
+    window.open("https://wa.me/"+WA+"?text="+encodeURIComponent(`Back-in-stock request from agent ${code()||"(no code)"}: my customer wants ${i.brand} ${i.model}${i.colour?" ("+i.colour+")":""}, ref ${i.ref}, size ${sz||"___"}${out.length&&!oneSize(i)?" (sold out now: "+out.join(", ")+")":""}. Please tell me when it’s back.`),"_blank","noopener"); return; }
   if(e.target.closest(".st")){ openStatus(i); return; }
   if(e.target.closest(".ph")){ track("photos/"+i.ref, i.brand+" "+i.model+" · "+(i.colour||"")); openGal(i.model+(i.colour?" · "+i.colour:""), (i.imgs&&i.imgs.length)?i.imgs:[i.full||i.img]); return; }
   if(e.target.closest(".shr")){
@@ -760,10 +829,13 @@ function commText(){ const on = SWITCH && todayNG()>=SWITCH;
 commText();
 const fresh = f => fetch(f+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.ok?r.json():null).catch(()=>null);
 fresh("build.json").then(j=>{ if(j&&j.build&&j.build!==BUILD) $("stale").hidden=false; });
+fresh("orders.json").then(j=>{ ORDERS=j||{orders:[],payouts:[]}; earnBox(); });
+earnBox();
 // Capone's current photo links, from the weekly check (tools/capone): Capone re-uploads photos under new file names,
 // which breaks the links saved in the catalogue
 function capPhotos(c){ const st=c&&c.styles; if(!st) return;
-  Object.entries(st).forEach(([ref,r])=>{ if(!r.on) STOCK[ref]=[]; else if(Array.isArray(r.stock)) STOCK[ref]=r.stock; });
+  const fresh14=new Date(Date.now()-14*864e5).toISOString().slice(0,10);
+  Object.entries(st).forEach(([ref,r])=>{ if(!r.on) STOCK[ref]=[]; else if(Array.isArray(r.stock)) STOCK[ref]=r.stock; if(r.back&&r.back>=fresh14) BACK[ref]=r.back; });
   ALL=ALL.map(i=>{ const r=st[i.ref], im=r&&r.img; if(!im||!im.length) return i; const at=w=>im[0].replace(/\?.*$/,"")+"?width="+w;
     return {...i, img:at(700), full:at(2000), imgs:im}; }); }
 Promise.all([fresh("products.json"), fresh("prices.json"), fresh("drop.json"), fresh("capone.json")]).then(([added,j,drop,cap])=>{
@@ -780,6 +852,7 @@ Promise.all([fresh("products.json"), fresh("prices.json"), fresh("drop.json"), f
   SWITCH=j.switchAt||"";
   const P = (commText() && j.next) ? Object.assign({}, j.prices, j.next) : j.prices;
   ITEMS = ALL.filter(i=>P[i.ref]).map(i=>({...i, price:P[i.ref][0], comm:P[i.ref][1], band:band(P[i.ref][0])}));
+  dropDead();
   cart = store.get("nl-cart",[]).filter(c=>ITEMS.some(i=>i.ref===c.ref)).map(c=>{ const i=ITEMS.find(x=>x.ref===c.ref); return {...c, price:i.price, comm:i.comm, g:i.g}; }); store.set("nl-cart",cart);
   try{ $("upd").textContent=new Date(j.updated).toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"}); }catch(e){}
   S.f=new Set([...S.f].filter(x=>{ const n=x.indexOf(":"), k=x.slice(0,n), v=x.slice(n+1); return ITEMS.some(i=>String(i[k])===v); }));

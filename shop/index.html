@@ -88,6 +88,13 @@ svg{display:block}
 .meta .clr{text-decoration:underline;text-underline-offset:3px;margin-left:10px;color:var(--ink)}
 .sortw{display:flex;align-items:center;gap:6px;white-space:nowrap}
 .sortw select{width:auto;border:0;background:transparent;padding:4px 2px;font:600 13px var(--ui);color:var(--ink);cursor:pointer}
+.meta{flex-wrap:wrap;row-gap:6px}
+.mctl{display:flex;align-items:center;gap:14px;margin-left:auto}
+.sizew select{width:auto;border:1px solid var(--line-2);border-radius:999px;background:var(--surface);padding:5px 10px;font:600 13px var(--ui);color:var(--ink);cursor:pointer}
+.sizew select.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.tag.back{color:var(--wa)}
+.allsz{font-size:12px;color:var(--wa)}
+#pdNotify{margin-top:10px}
 
 /* grid + cards */
 .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:30px 12px;padding-block:14px 32px}
@@ -303,7 +310,8 @@ body.hasbar .foot{padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}
 
 <main class="wrap">
   <div class="meta"><span><span id="count" tabindex="-1"></span><button class="clr" id="clearAll" hidden>Clear filters</button></span>
-    <label class="sortw"><span class="sl">Sort</span> <select id="sort" aria-label="Sort"><option value="rec">Featured</option><option value="new">New in</option><option value="low">Price: low to high</option><option value="high">Price: high to low</option><option value="brand">Brand A–Z</option></select></label></div>
+    <span class="mctl"><label class="sortw sizew"><span class="sl">Size</span> <select id="size" aria-label="Your size"><option value="">Any</option></select></label>
+    <label class="sortw"><span class="sl">Sort</span> <select id="sort" aria-label="Sort"><option value="rec">Featured</option><option value="new">New in</option><option value="low">Price: low to high</option><option value="high">Price: high to low</option><option value="brand">Brand A–Z</option></select></label></span></div>
   <div class="grid" id="grid"></div>
   <div class="empty" id="empty" hidden><b>No styles match</b>Try fewer filters, or another search.</div>
   <nav class="pager" id="pager" aria-label="Pages" hidden></nav>
@@ -332,7 +340,7 @@ body.hasbar .foot{padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}
       <div class="pr" id="pdPrice"></div>
       <p class="desc" id="pdDesc"></p>
       <div id="pdColours"><div class="lab">Colour <span class="val" id="pdColour"></span></div><div class="sws" id="pdSw" style="margin-top:10px"></div></div>
-      <div id="pdSizes"><div class="lab">Size <button id="pdSG">Size guide</button></div><div class="sizes" id="pdSz" style="margin-top:10px"></div><p class="few" id="pdFew" hidden style="margin:8px 0 0">Only a few sizes left in this colour.</p></div>
+      <div id="pdSizes"><div class="lab">Size <button id="pdSG">Size guide</button></div><div class="sizes" id="pdSz" style="margin-top:10px"></div><p class="few" id="pdFew" hidden style="margin:8px 0 0">Only a few sizes left in this colour.</p><a class="secondary" id="pdNotify" target="_blank" rel="noopener" hidden>Your size sold out? Tell me when it’s back</a></div>
       <div class="buy">
         <div class="perr" id="pdErr" hidden></div>
         <div class="buyrow"><div class="qty"><button id="qMinus" aria-label="One less">−</button><span id="qN">1</span><button id="qPlus" aria-label="One more">+</button></div><button class="primary" id="pdAdd">Add to bag</button></div>
@@ -419,6 +427,13 @@ const oneSize = i => { const z=sizesOf(i); return z.length===1 && z[0]==="One si
 const STOCK={};
 const inStock=(i,s)=>{ const z=STOCK[i.ref]; return !z||(oneSize(i)?z.length>0:z.includes(s)); };
 const soldOut=i=>!!STOCK[i.ref]&&!sizesOf(i).some(s=>inStock(i,s));
+// Capone stock badges: back in stock (weekly check, for 14 days) and every size in stock
+const BACK={};
+const isBack=i=>!!BACK[i.ref]&&!soldOut(i);
+const allSizes=i=>!!STOCK[i.ref]&&!oneSize(i)&&sizesOf(i).length>=5&&sizesOf(i).every(s=>inStock(i,s));
+// a model sold out in every colour is left out of the shop; it comes back by itself when Capone restocks
+function dropDead(){ const live=new Map(); ITEMS.forEach(i=>{ const k=i.brand+"|"+i.model; if(!live.has(k)) live.set(k,false); if(!soldOut(i)) live.set(k,true); });
+  ITEMS=ITEMS.filter(i=>live.get(i.brand+"|"+i.model)); }
 const $ = id=>document.getElementById(id);
 const N = n=>"₦"+Math.round(n).toLocaleString("en-NG");
 const esc = s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -527,7 +542,11 @@ const fewSizes=i=>{ const z=i.sizes||[]; return z.length>0&&z.length<=2&&z[0]!==
 const itemRank=i=>(inDrop(i)?8:0)+(isFresh(i)?4:0)+Math.min(photos(i),4)*0.5+(fewSizes(i)?-2:0)+((i.sizes||[]).length>4?0.5:0);
 
 // ---------- state ----------
-const S = {g:"W", type:"", q:"", f:new Set(), sort:"rec", page:1};
+const S = {g:"W", type:"", q:"", f:new Set(), sort:"rec", page:1, size:""};
+// the customer's size: only styles in stock in that size (one-size items such as bags drop out while a size is chosen)
+const sizeOk=i=>!S.size||(!oneSize(i)&&sizesOf(i).includes(S.size)&&inStock(i,S.size));
+const SIZE_ORDER=[].concat(SIZES.W,SIZES.M,SIZES.B,SIZES.CL);
+const sizeSort=(a,b)=>{ const num=/^\d+(\.\d+)?$/; if(num.test(a)&&num.test(b)) return parseFloat(a)-parseFloat(b); return (SIZE_ORDER.indexOf(a)+1||99)-(SIZE_ORDER.indexOf(b)+1||99)||String(a).localeCompare(String(b)); };
 S.g = ["W","M","K"].includes(store.get("nl-aud","W")) ? store.get("nl-aud","W") : "W";
 S.sort = ["rec","new","low","high","brand"].includes(store.get("nl-sort","rec")) ? store.get("nl-sort","rec") : "rec";
 let cart = store.get("nl-shop-cart",[]).filter(c=>ITEMS.some(i=>i.ref===c.ref));
@@ -543,7 +562,13 @@ function filtersOk(i, skip){
   return Object.entries(byK).every(([k,set])=>set.has(String(i[k])));
 }
 const qOk=i=>{ const q=S.q.trim().toLowerCase(); return !q || q.split(/\s+/).every(w=>textOf(i).includes(w)); };
-const baseOk=i=>audOf(i)===S.g&&typeOk(i)&&qOk(i);
+const baseOk=i=>audOf(i)===S.g&&typeOk(i)&&qOk(i)&&sizeOk(i);
+function sizeSel(){ const pool=new Set(ITEMS.filter(i=>audOf(i)===S.g&&typeOk(i)&&qOk(i)&&filtersOk(i)&&!oneSize(i)));
+  const n=new Map(); GROUPS.forEach(g=>{ const seen=new Set(); g.items.forEach(i=>{ if(pool.has(i)) sizesOf(i).forEach(s=>{ if(inStock(i,s)) seen.add(s); }); }); seen.forEach(s=>n.set(s,(n.get(s)||0)+1)); });
+  if(LOADED&&S.size&&!n.has(S.size)) n.set(S.size,0);
+  const el=$("size"); el.closest("label").hidden=!n.size&&!S.size;
+  el.innerHTML=`<option value="">Any</option>`+[...n.keys()].sort(sizeSort).map(s=>`<option value="${esc(s)}">${esc(s)} (${n.get(s)})</option>`).join("");
+  el.value=S.size; el.classList.toggle("on",!!S.size); }
 // cards for the current view: a design shows when any of its colours passes; that colour leads the card
 function cards(){
   const out=[]; GROUPS.forEach(g=>{ const pass=g.items.filter(i=>baseOk(i)&&filtersOk(i)); if(pass.length) out.push({g, rep:pass.find(i=>!soldOut(i))||pass[0], pass, out:pass.every(soldOut)}); });
@@ -598,14 +623,14 @@ function dotsHtml(items, max){ const fams=[]; items.forEach(i=>{ const f=FAM_HEX
   return `<span class="dots">${fams.slice(0,max).map(f=>`<i class="dot" style="background:${FAM_HEX[f]}"></i>`).join("")}</span>`; }
 function cardHtml(c){
   const i=c.rep, n=c.g.items.length, alt=(i.imgs||[]).find(u=>u&&u!==i.img&&u!==i.full&&u!==(i.imgs||[])[0]) || ((i.imgs||[]).length>1?i.imgs[1]:"");
-  const tag=c.out?`<span class="tag out">Sold out</span>`:inDrop(i)?`<span class="tag pick">This week</span>`:isFresh(i)?`<span class="tag">New</span>`:"";
+  const tag=c.out?`<span class="tag out">Sold out</span>`:inDrop(i)?`<span class="tag pick">This week</span>`:isBack(i)?`<span class="tag back">Back in stock</span>`:isFresh(i)?`<span class="tag">New</span>`:"";
   const main=imgTag(photoChain(i.img, i.imgs||[], i.full), `class="main" loading="lazy" alt="${esc(i.model+" "+(i.colour||""))}"`, "card");
   const ph=main?main+(alt?`<img class="alt" alt="" data-lazy="1" data-alts="${esc(JSON.stringify(photoChain(alt)))}" data-gone="alt" referrerpolicy="no-referrer" onload="imgOk(this)" onerror="imgNext(this)">`:""):"";
   return `<article class="card${c.out?" out":""}" data-ref="${esc(i.ref)}" tabindex="0" role="link" aria-label="${esc(i.brand+" "+i.model+", "+(i.colour||"")+", "+N(i.price))}">
     <div class="ph${ph?"":" nophoto"}">${ph}${tag}</div>
     <div class="info"><span class="b">${esc(i.brand)}</span><span class="m">${esc(i.model)}</span>
       <span class="c">${n>1?`${dotsHtml(c.g.items,5)}${n} colours`:esc(i.colour||"")}</span>
-      <span class="p">${N(i.price)}</span>${fewSizes(i)?`<span class="few">Few sizes left</span>`:""}</div>
+      <span class="p">${N(i.price)}</span>${fewSizes(i)?`<span class="few">Few sizes left</span>`:allSizes(i)?`<span class="allsz">All sizes in stock</span>`:""}</div>
   </article>`;
 }
 // ---------- numbered pages, and the whole view in the link ----------
@@ -613,19 +638,19 @@ function cardHtml(c){
 // of that list, and each history entry also keeps its view, so Back/Forward step through what the shopper actually saw.
 try{ history.scrollRestoration="manual"; }catch(e){}
 const PAGE_N=36; let LIST=[], SIG=null, LOADED=false, QUIET=false, LASTPG=null, SEARCHING=false, FORCE_PUSH=false;
-const VIEW_KEYS=["g","t","s","q","f","p"], F_KEYS=["for","kind","band","fam","heel","brand"], SORTS=["rec","new","low","high","brand"];
+const VIEW_KEYS=["g","t","s","q","f","p","z"], F_KEYS=["for","kind","band","fam","heel","brand"], SORTS=["rec","new","low","high","brand"];
 function viewFromURL(){ const sp=new URLSearchParams(location.search); if(!VIEW_KEYS.some(k=>sp.has(k))) return null;
   const g=sp.get("g"), s=sp.get("s"), p=parseInt(sp.get("p"),10);
   return {g:["W","M","K"].includes(g)?g:"W", type:sp.get("t")||"", sort:SORTS.includes(s)?s:"rec", q:sp.get("q")||"",
-    f:sp.getAll("f").filter(x=>F_KEYS.includes(x.split(":")[0])).sort(), page:p>0?p:1}; }
-const view=()=>({g:S.g, type:S.type, sort:S.sort, q:S.q.trim(), f:[...S.f].sort(), page:S.page});
-function applyView(v){ S.g=v.g; S.type=v.type; S.sort=v.sort; S.q=v.q; S.f=new Set(v.f); S.page=v.page; syncControls(); }
+    f:sp.getAll("f").filter(x=>F_KEYS.includes(x.split(":")[0])).sort(), page:p>0?p:1, size:(sp.get("z")||"").slice(0,8)}; }
+const view=()=>({g:S.g, type:S.type, sort:S.sort, q:S.q.trim(), f:[...S.f].sort(), page:S.page, size:S.size});
+function applyView(v){ S.g=v.g; S.type=v.type; S.sort=v.sort; S.q=v.q; S.f=new Set(v.f); S.page=v.page; S.size=v.size||""; syncControls(); }
 function syncControls(){ $("sort").value=S.sort; $("q").value=S.q;
   if(S.q&&$("searchRow").hidden){ $("searchRow").hidden=false; $("searchBtn").setAttribute("aria-expanded",true); document.documentElement.style.setProperty("--toolsTop", document.querySelector(".top").offsetHeight+"px"); }
   audTabs(); }
 function urlFor(extra){ const u=new URL(location.href), sp=u.searchParams; VIEW_KEYS.concat(["b","i"]).forEach(k=>sp.delete(k));
   if(S.g!=="W") sp.set("g",S.g); if(S.type) sp.set("t",S.type); if(S.sort!=="rec") sp.set("s",S.sort); if(S.q.trim()) sp.set("q",S.q.trim());
-  [...S.f].sort().forEach(x=>sp.append("f",x)); if(S.page>1) sp.set("p",S.page);
+  [...S.f].sort().forEach(x=>sp.append("f",x)); if(S.size) sp.set("z",S.size); if(S.page>1) sp.set("p",S.page);
   if(extra) Object.entries(extra).forEach(([k,v])=>sp.set(k,v)); const qs=sp.toString(); return u.pathname+(qs?"?"+qs:"")+u.hash; }
 const here=()=>location.pathname+location.search+location.hash;
 // write the view into the link: push = a new Back step; replace keeps an open overlay's own entry (and a product's ?i=)
@@ -633,9 +658,9 @@ function setURL(push){ try{ if(push){ history.pushState({v:view()},"",urlFor());
   const st=history.state, ov=st&&st.ov, pd=OPEN.includes("pd")&&PD.i; history.replaceState(ov?{ov, v:view()}:{v:view()},"",urlFor(pd?{i:PD.i.ref}:null)); }catch(e){} }
 const V0=(history.state&&history.state.v)||viewFromURL(), INIT_I=new URLSearchParams(location.search).get("i");
 const INIT_OV=history.state&&history.state.ov;   // reloaded (or came Back) onto an overlay's entry: reopen it once the data is in
-if(V0){ S.g=V0.g; S.type=V0.type; S.sort=V0.sort; S.q=V0.q; S.f=new Set(V0.f); S.page=V0.page; }
+if(V0){ S.g=V0.g; S.type=V0.type; S.sort=V0.sort; S.q=V0.q; S.f=new Set(V0.f); S.page=V0.page; S.size=V0.size||""; }
 // what the list depends on: when any of it changes, go back to page 1 (a new Back step; typing a search just updates the link)
-const sigOf=()=>JSON.stringify([S.g,S.type,S.q.trim().toLowerCase(),[...S.f].sort(),S.sort]);
+const sigOf=()=>JSON.stringify([S.g,S.type,S.q.trim().toLowerCase(),[...S.f].sort(),S.sort,S.size]);
 const sameButSearch=(a,b)=>{ const x=JSON.parse(a), y=JSON.parse(b); x.splice(2,1); y.splice(2,1); return JSON.stringify(x)===JSON.stringify(y); };
 const NARROW=window.matchMedia?matchMedia("(max-width:379px)"):{matches:false};
 // page numbers: first, last, current and its neighbours (only the current one on very narrow phones), "…" for gaps
@@ -645,7 +670,7 @@ function pageList(cur,n,compact){ const s=new Set([1,n,cur]);
   const a=[...s].filter(x=>x>=1&&x<=n).sort((x,y)=>x-y), out=[];
   a.forEach((x,k)=>{ if(k){ const gap=x-a[k-1]; if(gap===2) out.push(x-1); else if(gap>2) out.push("…"); } out.push(x); }); return out; }
 function render(){
-  LIST=cards(); const sig=sigOf();
+  sizeSel(); LIST=cards(); const sig=sigOf();
   if(SIG!==null&&sig!==SIG&&!QUIET){ S.page=1; setURL((FORCE_PUSH||(!SEARCHING&&!sameButSearch(SIG,sig)))&&!OPEN.length); }
   SIG=sig; FORCE_PUSH=false;
   const pages=Math.max(1,Math.ceil(LIST.length/PAGE_N));
@@ -655,7 +680,7 @@ function render(){
   $("grid").innerHTML=html;
   $("empty").hidden=LIST.length>0;
   $("count").innerHTML=`<span class="pgof">${LIST.length} ${LIST.length===1?"style":"styles"}</span>`+(pages>1?`<span class="pgof"> · page ${cur} of ${pages}</span>`:"");
-  const nf=S.f.size; $("filterN").hidden=!nf; $("filterN").textContent=nf; $("clearAll").hidden=!(nf||S.q.trim());
+  const nf=S.f.size; $("filterN").hidden=!nf; $("filterN").textContent=nf; $("clearAll").hidden=!(nf||S.q.trim()||S.size);
   drawPager(cur,pages,from,to);
   store.set("nl-aud",S.g); store.set("nl-sort",S.sort);
 }
@@ -684,7 +709,8 @@ $("q").addEventListener("input",e=>{ S.q=e.target.value; clearTimeout(render.t);
 $("searchBtn").onclick=()=>{ const r=$("searchRow"), open=r.hidden; r.hidden=!open; $("searchBtn").setAttribute("aria-expanded",open);
   document.documentElement.style.setProperty("--toolsTop", document.querySelector(".top").offsetHeight+"px");
   if(open) $("q").focus(); else if(S.q){ S.q=""; $("q").value=""; FORCE_PUSH=true; refresh(); } };
-$("clearAll").onclick=()=>{ S.f.clear(); S.q=""; $("q").value=""; FORCE_PUSH=true; refresh(); };
+$("clearAll").onclick=()=>{ S.f.clear(); S.q=""; S.size=""; $("q").value=""; FORCE_PUSH=true; refresh(); };
+$("size").addEventListener("change",e=>{ S.size=e.target.value; if(S.size) track("size/"+S.size,"Size "+S.size); render(); toTop(); });
 $("grid").addEventListener("click",e=>{ const c=e.target.closest(".card"); if(c) openPD(c.dataset.ref); });
 $("grid").addEventListener("keydown",e=>{ if(e.key==="Enter"){ const c=e.target.closest(".card"); if(c) openPD(c.dataset.ref); } });
 $("grid").addEventListener("mouseover",e=>{ const im=e.target.closest(".card")?.querySelector("img.alt[data-lazy]"); if(!im) return; im.removeAttribute("data-lazy"); im.addEventListener("load",()=>im.parentNode&&im.parentNode.classList.add("alton")); imgNext(im); });
@@ -751,7 +777,7 @@ document.addEventListener("keydown",e=>{ if(e.key!=="Escape") return; if(OPEN.le
 // ---------- product sheet ----------
 const PD={items:null,i:null,size:null,qty:1};
 function openPD(ref, noPush){ const g=BYREF.get(ref); if(!g) return; const i=g.items.find(x=>x.ref===ref)||g.items[0];
-  PD.items=g.items; PD.i=i; PD.size=null; PD.qty=1; drawPD(true);
+  PD.items=g.items; PD.i=i; PD.size=(S.size&&sizesOf(i).includes(S.size)&&inStock(i,S.size))?S.size:null; PD.qty=1; drawPD(true);
   openOv("pd", urlFor({i:i.ref}), noPush);
   $("pd").querySelector(".pdin").scrollTop=0; track("view/"+i.ref, i.brand+" "+i.model+" · "+(i.colour||"")); }
 function pdPhotos(i){ const l=(i.imgs&&i.imgs.length)?i.imgs:[i.full||i.img]; return l.filter(Boolean); }
@@ -767,6 +793,9 @@ function drawPD(newGallery){
   $("pdSizes").hidden=one; $("pdSG").hidden=i.g==="BG"||i.g==="CL";
   $("pdSz").innerHTML=one?"":sz.map(s=>inStock(i,s)?`<button class="sz" data-s="${esc(s)}" aria-pressed="${PD.size===s}">${esc(s)}</button>`:`<button class="sz" disabled aria-label="${esc(s)}, sold out" title="Sold out">${esc(s)}</button>`).join("");
   $("pdFew").hidden=!fewSizes(i); $("qN").textContent=PD.qty; $("pdErr").hidden=true;
+  const outSz=one?[]:sz.filter(s=>!inStock(i,s)), want=S.size&&outSz.includes(S.size)?S.size:"";
+  $("pdNotify").hidden=!(gone||outSz.length); $("pdNotify").textContent=gone?"Tell me when it’s back":want?`Size ${want} sold out? Tell me when it’s back`:"Your size sold out? Tell me when it’s back";
+  $("pdNotify").href="https://wa.me/"+WA+"?text="+encodeURIComponent(`Hello Northline, please tell me when ${i.brand} ${i.model}${i.colour?" ("+i.colour+")":""}, ref ${i.ref}, is back${one?"":" in size "+(want||"___")}.`);
   $("pdRef").textContent=`Ref ${i.ref}`;
   $("pdAsk").href="https://wa.me/"+WA+"?text="+encodeURIComponent(`Hello Northline, I have a question about ${i.brand} ${i.model}${i.colour?" ("+i.colour+")":""}, ref ${i.ref}.`);
 }
@@ -783,6 +812,7 @@ $("pdSz").addEventListener("click",e=>{ const b=e.target.closest(".sz"); if(!b) 
 $("qMinus").onclick=()=>{ PD.qty=Math.max(1,PD.qty-1); $("qN").textContent=PD.qty; };
 $("qPlus").onclick=()=>{ PD.qty=Math.min(20,PD.qty+1); $("qN").textContent=PD.qty; };
 $("pdSG").onclick=()=>{ openSG(PD.i); track("sizeguide/"+PD.i.ref, PD.i.model); };
+$("pdNotify").addEventListener("click",()=>track("notify/"+PD.i.ref, PD.i.brand+" "+PD.i.model+" · "+(PD.i.colour||"")+(S.size?" · "+S.size:"")));
 $("pdAdd").onclick=()=>{ const i=PD.i; if(soldOut(i)) return;
   if(!PD.size){ $("pdErr").textContent="Choose your size first. Not sure? Open the size guide."; $("pdErr").hidden=false; $("pdSz").scrollIntoView({block:"center",behavior:"smooth"}); return; }
   const ex=cart.find(c=>c.ref===i.ref&&c.size===PD.size); if(ex) ex.qty+=PD.qty; else cart.push({ref:i.ref,model:i.model,colour:i.colour,price:i.price,comm:i.comm,g:i.g,img:i.img,size:PD.size,qty:PD.qty});
@@ -897,7 +927,8 @@ fresh("build.json").then(j=>{ if(j&&j.build&&j.build!==BUILD) $("stale").hidden=
 // Capone's current photo links, from the weekly check (tools/capone): Capone re-uploads photos under new file names,
 // which breaks the links saved in the catalogue
 function capPhotos(c){ const st=c&&c.styles; if(!st) return;
-  Object.entries(st).forEach(([ref,r])=>{ if(!r.on) STOCK[ref]=[]; else if(Array.isArray(r.stock)) STOCK[ref]=r.stock; });
+  const fresh14=new Date(Date.now()-14*864e5).toISOString().slice(0,10);
+  Object.entries(st).forEach(([ref,r])=>{ if(!r.on) STOCK[ref]=[]; else if(Array.isArray(r.stock)) STOCK[ref]=r.stock; if(r.back&&r.back>=fresh14) BACK[ref]=r.back; });
   ALL=ALL.map(i=>{ const r=st[i.ref], im=r&&r.img; if(!im||!im.length) return i; const at=w=>im[0].replace(/\?.*$/,"")+"?width="+w;
     return {...i, img:at(700), full:at(2000), imgs:im}; }); }
 Promise.all([fresh("products.json"), fresh("prices.json"), fresh("drop.json"), fresh("capone.json")]).then(([added,j,drop,cap])=>{
@@ -913,6 +944,7 @@ Promise.all([fresh("products.json"), fresh("prices.json"), fresh("drop.json"), f
     SWITCH=j.switchAt||"";
     const P = (commText() && j.next) ? Object.assign({}, j.prices, j.next) : j.prices;
     ITEMS = ALL.filter(i=>P[i.ref]).map(i=>({...i, price:P[i.ref][0], comm:P[i.ref][1], band:band(P[i.ref][0])}));
+    dropDead();
   } else ITEMS = ALL.filter(i=>i.price).map(i=>({...i, band:band(i.price)}));
   cart = store.get("nl-shop-cart",[]).filter(c=>ITEMS.some(i=>i.ref===c.ref)).map(c=>{ const i=ITEMS.find(x=>x.ref===c.ref); return {...c, price:i.price, comm:i.comm, g:i.g}; }); store.set("nl-shop-cart",cart);
   LOADED=true; buildGroups();

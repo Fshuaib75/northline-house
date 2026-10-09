@@ -120,6 +120,41 @@ def check(cap, P, prods):
 
 def label(i): return f"{i['model']} · {i.get('colour') or ''}".strip(" ·")
 
+SIZES = {"W": ["36", "37", "38", "39", "40", "41"], "M": ["40", "41", "42", "43", "44", "45"]}
+SHOP = "https://fshuaib75.github.io/northline-house/shop/?i="
+PUSH_MIN = 5          # sizes in stock for a style to count as safe to push
+BACK_DAYS = 14        # how long a restocked style keeps its "Back in stock" badge
+
+
+def sizes_of(i):
+    return i.get("sizes") or SIZES.get(i.get("g"), ["One size"])
+
+
+def in_stock(i, rec):
+    """Sizes of this style Capone has in stock, limited to the sizes we sell (None = not checked)."""
+    if not rec: return None
+    if not rec.get("on"): return []
+    if "stock" not in rec: return None
+    z = sizes_of(i)
+    if z == ["One size"]: return z if rec["stock"] else []
+    return [s for s in z if s in rec["stock"]]
+
+
+def mark_back(res, prev, today):
+    """Styles in stock again after being sold out or unlisted get "back": date, kept for BACK_DAYS while still in stock."""
+    old = prev.get("styles") or {}
+    for ref, rec in res.items():
+        if not (rec.get("on") and rec.get("stock")): continue
+        p = old.get(ref)
+        if p is not None and (not p.get("on") or p.get("stock") == []):
+            rec["back"] = today
+        elif p and p.get("back"):
+            try:
+                if (datetime.date.fromisoformat(today) - datetime.date.fromisoformat(p["back"])).days < BACK_DAYS:
+                    rec["back"] = p["back"]
+            except ValueError:
+                pass
+
 
 def report(cap, P, res, prev, when):
     hidden = set(P.get("hidden", [])); prices = P.get("prices", {})
@@ -131,43 +166,93 @@ def report(cap, P, res, prev, when):
     back = [i for i in hid if r(i) and r(i)["on"] and r(i).get("stock")]
     unknown = [i for i in inshop if not r(i)]
     newfoto = [i for i in inshop if r(i) and r(i)["on"] and fname(r(i)["img"][0]) != fname(i.get("img") or "")]
+    old = prev.get("styles") or {}
     def was(i, k):
-        p = (prev.get("styles") or {}).get(i["ref"])
+        p = old.get(i["ref"])
         return p is not None and (k(p))
+    # the shop and agent page hide a style when every colour of its model is sold out or unlisted (it comes back by itself)
+    out = lambda i: (in_stock(i, r(i)) == [])
+    models = collections.defaultdict(list)
+    for i in inshop: models[(i["brand"], i["model"])].append(i)
+    dead = [i for xs in models.values() if all(out(x) for x in xs) for i in xs]
+    sister = [i for i in sold + gone if i not in dead]
+    # push list: in stock in PUSH_MIN+ sizes; one colour per model (the one with most sizes), models with more colours first
+    deep = [i for i in inshop if (in_stock(i, r(i)) is not None) and len(in_stock(i, r(i)) or []) >= PUSH_MIN]
+    best = {}
+    for i in deep:
+        k = (i["brand"], i["model"]); n = len(in_stock(i, r(i)))
+        if k not in best or n > best[k][1]: best[k] = (i, n)
+    colours = lambda i: sum(1 for x in models[(i["brand"], i["model"])] if len(in_stock(x, r(x)) or []) >= PUSH_MIN)
+    push = sorted((v[0] for v in best.values()), key=lambda i: (-len(in_stock(i, r(i))), -colours(i), prices.get(i["ref"], [0])[0]))
+    # fell below PUSH_MIN sizes since last week
+    def prev_n(i):
+        p = old.get(i["ref"]); z = in_stock(i, p) if p else None
+        return None if z is None else len(z)
+    fell = [i for i in inshop if prev_n(i) is not None and prev_n(i) >= PUSH_MIN and 0 < len(in_stock(i, r(i)) or []) < PUSH_MIN]
     news = []
-    if prev.get("styles"):
+    if old:
         ns = [i for i in sold if not was(i, lambda p: p.get("on") and p.get("stock") == [])]
         ng = [i for i in gone if not was(i, lambda p: not p.get("on"))]
         nb = [i for i in inshop + hid if r(i) and r(i).get("stock") and was(i, lambda p: p.get("stock") == [] or not p.get("on"))]
         if ns: news.append(f"**{len(ns)} newly sold out:** " + ", ".join(f"{i['ref']} ({label(i)})" for i in ns))
         if ng: news.append(f"**{len(ng)} no longer on Capone's site:** " + ", ".join(f"{i['ref']} ({label(i)})" for i in ng))
         if nb: news.append(f"**{len(nb)} back in stock:** " + ", ".join(f"{i['ref']} ({label(i)})" for i in nb))
-    lines = lambda xs: "\n".join(f"- `{i['ref']}` {label(i)}" for i in sorted(xs, key=lambda i: (i["model"], i.get("colour") or ""))) or "- none"
+        if fell: news.append(f"**{len(fell)} fell below {PUSH_MIN} sizes:** " + ", ".join(f"{i['ref']} ({label(i)})" for i in fell))
+    else:
+        nb = []
+    srt = lambda xs: sorted(xs, key=lambda i: (i["model"], i.get("colour") or ""))
+    lines = lambda xs: "\n".join(f"- `{i['ref']}` {label(i)}" for i in srt(xs)) or "- none"
+    szs = lambda i: "/".join(in_stock(i, r(i)) or [])
+    price = lambda i: f"₦{prices[i['ref']][0]:,}" if i["ref"] in prices else ""
+    push_rows = "\n".join(f"| [{label(i)}]({SHOP}{i['ref']}) | `{i['ref']}` | {price(i)} | {szs(i)} | {colours(i)} |" for i in push[:20])
+    fell_lines = "\n".join(f"- `{i['ref']}` {label(i)}: now {szs(i)}" for i in srt(fell)) or "- none"
+    model_lines = "\n".join(f"- {m[1]}: " + ", ".join(f"`{x['ref']}`" for x in xs) for m, xs in sorted(models.items(), key=lambda kv: kv[0][1]) if all(out(x) for x in xs)) or "- none"
     body = f"""Checked {when:%d %b %Y, %H:%M} UTC against Capone's website ({len(cap)} Capone styles in the catalogue).
 
 | | Styles |
 |---|---:|
 | In your shop | {len(inshop)} |
+| … safe to push: in stock in {PUSH_MIN}+ sizes | {len(deep)} |
 | … sold out in every size at Capone | {len(sold)} |
 | … no longer on Capone's site | {len(gone)} |
+| … hidden automatically (every colour of the model sold out) | {len(dead)} |
+| … fell below {PUSH_MIN} sizes since last week | {len(fell)} |
+| … back in stock since last week | {len(nb)} |
 | … photos refreshed (Capone uploaded new ones) | {len(newfoto)} |
-| Hidden, but in stock at Capone again | {len(back)} |
+| Hidden in your book, but in stock at Capone again | {len(back)} |
 
-The shop and agent page use the new photo links automatically, and sizes Capone has sold out can't be ordered
-(a style with nothing left shows "Sold out"). Hiding or showing styles is still up to you, in your book.
+The shop and agent page use the new photo links, block sizes Capone has sold out, and hide a style by themselves
+when every colour of its model is sold out or unlisted; it comes back on its own when Capone restocks. Styles back
+in stock show a "Back in stock" badge for {BACK_DAYS} days.
 
-### Sold out in every size at Capone, still in your shop ({len(sold)})
-These show "Sold out" and can't be ordered until Capone restocks. Hide them in your book if they won't come back.
-{lines(sold)}
+### This week's push list ({len(push)} models in stock in {PUSH_MIN}+ sizes, best colour of each)
+Send 5 or 6 of these to agents. Colours = colours of that model also in stock in {PUSH_MIN}+ sizes.
 
-### No longer on Capone's site, still in your shop ({len(gone)})
-{lines(gone)}
+| Style | Ref | Price | Sizes in stock | Colours |
+|---|---|---:|---|---:|
+{push_rows or "| none | | | | |"}
 
-### Hidden in your shop, in stock at Capone again ({len(back)})
+### Fell below {PUSH_MIN} sizes since last week ({len(fell)})
+Take these off your push list.
+{fell_lines}
+
+### Back in stock since last week ({len(nb)})
+{lines(nb)}
+
+### Hidden automatically: every colour sold out or unlisted ({len(dead)} styles)
+Nothing to do: they come back by themselves when Capone restocks. Hide them in your book only if you never want them back.
+{model_lines}
+
+### Sold out, but another colour of the model is in stock ({len(sister)})
+These show "Sold out" next to their in-stock colours, and customers can ask to be told when they're back.
+{lines(sister)}
+
+### Hidden in your book, in stock at Capone again ({len(back)})
 In your book, tap *Show to agents* on the ones you want back.
 {lines(back)}
 """ + (f"\n### Couldn't be checked ({len(unknown)})\nTheir photos aren't from Capone's own store.\n{lines(unknown)}\n" if unknown else "")
-    summary = f"{len(inshop)} in the shop: {len(sold)} sold out at Capone, {len(gone)} no longer listed, {len(back)} hidden ones back in stock."
+    summary = (f"{len(inshop)} in the shop: {len(deep)} safe to push, {len(sold)} sold out at Capone ({len(dead)} hidden automatically), "
+               f"{len(gone)} no longer listed, {len(fell)} fell below {PUSH_MIN} sizes, {len(back)} hidden ones back in stock.")
     return body, news, summary
 
 
@@ -204,6 +289,7 @@ def main():
     try: prev = json.load(open("capone.json"))
     except Exception: prev = {}
     when = datetime.datetime.now(datetime.timezone.utc)
+    mark_back(res, prev, when.strftime("%Y-%m-%d"))
     body, news, summary = report(cap, P, res, prev, when)
     print(summary); print(); print(body)
     if news: print("\n".join(news))
