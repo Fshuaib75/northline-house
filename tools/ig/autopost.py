@@ -4,7 +4,7 @@
 Runs on GitHub Actions (see .github/workflows/ig-autopost.yml). Each run:
   1. picks the next style to post: this week's drop first, then styles you added recently,
      then best-value styles (₦18k–45k), alternating Men / Women so the feed stays mixed;
-  2. draws a 1080×1350 feed image (and a 1080×1920 story) in the Sky & Ink look;
+  2. draws a 1080×1350 feed image (and a 1080×1920 story) in the May look (earth palette, peak-line logo);
   3. publishes it to Instagram (and the Facebook Page, if set) with the Graph API;
   4. records the ref in tools/ig/posted.json so it isn't posted again for 60 days.
 
@@ -16,7 +16,7 @@ Without IG_USER_ID / IG_TOKEN (or with "Preview only" ticked) the run is a PREVI
 caption, keeps them as a workflow artifact for you to look at, and posts nothing.
 """
 import datetime as dt, io, json, os, re, sys, time, urllib.parse, urllib.request
-from PIL import Image, ImageDraw, ImageFont, ImageOps
+from PIL import Image, ImageChops, ImageDraw, ImageFont, ImageOps
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -26,7 +26,9 @@ REPO = os.environ.get("GITHUB_REPOSITORY", "Fshuaib75/northline-house")
 BRANCH = "gh-pages"   # the workflow commits the images here; GITHUB_REF_NAME is "main" on scheduled runs
 SHOP = "https://fshuaib75.github.io/northline-house/shop/"
 GRAPH = "https://graph.facebook.com/v21.0"
-INK, SKY, BG, PHOTO, MUTED = (14, 27, 44), (74, 159, 216), (247, 245, 240), (238, 242, 246), (201, 214, 227)
+# the May look: charcoal text, soft white page, cream photo backdrop, muted text, muted black frame
+INK, BG, PHOTO, MUTED, BLACK, CREAM2 = (46, 44, 41), (244, 240, 232), (233, 225, 211), (107, 98, 87), (31, 26, 22), (168, 156, 140)
+BRAND = os.path.join(ROOT, "brand")
 
 def load(path, default):
     try:
@@ -83,9 +85,17 @@ def pick(items, state):
 def font(name, size, wght=None):
     f = ImageFont.truetype(os.path.join(HERE, "fonts", name), size)
     if wght:
-        try: f.set_variation_by_axes([wght] if name == "Figtree.ttf" else [72, wght, 0, 0])   # Fraunces axes: opsz, wght, SOFT, WONK
+        try: f.set_variation_by_axes([wght] if name == "Jost.ttf" else [wght, min(72, max(6, size))])   # Newsreader axes: wght, opsz
         except Exception: pass
     return f
+
+def logo(im, x, y, height, colour="ink", anchor="left"):
+    """Paste the peak-line wordmark (brand/northline-wordmark-<colour>.png, transparent) at height px."""
+    lg = Image.open(os.path.join(BRAND, f"northline-wordmark-{colour}.png")).convert("RGBA")
+    lg = lg.resize((round(lg.width * height / lg.height), height), Image.LANCZOS)
+    if anchor == "center": x -= lg.width // 2
+    elif anchor == "right": x -= lg.width
+    im.paste(lg, (x, y), lg)
 
 def fetch_photo(i):
     for u in (i.get("imgs") or []) + [i.get("full"), i.get("img")]:
@@ -111,19 +121,50 @@ def wrap(draw, text, f, width):
         else: lines.append(cur); cur = w
     lines.append(cur); return [l for l in lines if l]
 
+def draw_price(d, x, y, amount, size, align="left"):
+    """₦ from Newsreader (Jost has no naira sign), digits in Jost 500; y is the baseline."""
+    sign, num = font("Newsreader.ttf", size, 500), font("Jost.ttf", size, 500)
+    digits = f"{int(round(amount)):,}"; ws = d.textlength("₦", font=sign); total = ws + d.textlength(digits, font=num)
+    if align == "right": x -= total
+    d.text((x, y), "₦", font=sign, fill=INK, anchor="ls"); d.text((x + ws, y), digits, font=num, fill=INK, anchor="ls")
+    return total
+
+def photo_box(photo, w, h):
+    """The product photo fitted on cream; white studio backgrounds melt into the cream (multiply), as on the shop."""
+    box = Image.new("RGB", (w, h), PHOTO)
+    ph = ImageOps.contain(photo, (int(w * .86), int(h * .86)))
+    pos = ((w - ph.width) // 2, (h - ph.height) // 2)
+    region = box.crop((pos[0], pos[1], pos[0] + ph.width, pos[1] + ph.height))
+    box.paste(ImageChops.multiply(region, ph), pos)
+    return box
+
 def card(i, photo, w, h, photo_h):
     im = Image.new("RGB", (w, h), BG); d = ImageDraw.Draw(im)
-    ph = ImageOps.contain(photo, (w - 40, photo_h - 40)); box = Image.new("RGB", (w, photo_h), PHOTO)
-    box.paste(ph, ((w - ph.width) // 2, (photo_h - ph.height) // 2)); im.paste(box, (0, 0))
-    d.rectangle([0, photo_h, w, h], fill=INK); d.rectangle([0, photo_h, w, photo_h + 8], fill=SKY)
-    x, y = 64, photo_h + 44
-    d.text((x, y), "NORTHLINE HOUSE", font=font("Figtree.ttf", 26, 700), fill=SKY); y += 50
-    for line in wrap(d, i["model"], font("Fraunces.ttf", 60, 600), w - 128)[:2]:
-        d.text((x, y), line, font=font("Fraunces.ttf", 60, 600), fill=(255, 255, 255)); y += 70
-    sub = " · ".join(t for t in (i.get("colour", ""), sizes_line(i)) if t)
-    d.text((x, y + 4), sub, font=font("Figtree.ttf", 32, 500), fill=MUTED); y += 58
-    d.text((x, y + 6), naira(i["price"]), font=font("Fraunces.ttf", 64, 700), fill=SKY)
-    d.text((w - 64, h - 56), "Order: link in bio", font=font("Figtree.ttf", 28, 600), fill=MUTED, anchor="rs")
+    story = h > w * 1.5
+    serif, sans = (lambda n, wt=400: font("Newsreader.ttf", n, wt)), (lambda n, wt=400: font("Jost.ttf", n, wt))
+    if story:
+        logo(im, w // 2, 110, 64, "ink", "center")
+        box = photo_box(photo, w - 120, photo_h)
+        mask = Image.new("L", box.size, 0); ImageDraw.Draw(mask).rounded_rectangle([0, 0, box.width - 1, box.height - 1], 16, fill=255)
+        im.paste(box, (60, 230), mask)
+        x, y = 60, 230 + photo_h + 60
+        d.text((x, y), i.get("brand", ""), font=sans(32), fill=MUTED); y += 54
+        d.text((x, y), wrap(d, i["model"], serif(72), w - 120)[0], font=serif(72), fill=INK); y += 96
+        sub = " · ".join(t for t in (i.get("colour", ""), sizes_line(i)) if t)
+        if sub: d.text((x, y), sub, font=sans(36), fill=MUTED); y += 66
+        draw_price(d, x, y + 84, i["price"], 96)
+        d.text((w // 2, h - 60), "Order: link in bio", font=sans(32), fill=MUTED, anchor="ms")
+    else:
+        im.paste(photo_box(photo, w, photo_h), (0, 0))
+        x, y = 64, photo_h + 36
+        pw = d.textlength("₦", font=serif(64, 500)) + d.textlength(f"{int(round(i['price'])):,}", font=sans(64, 500))
+        d.text((x, y), i.get("brand", ""), font=sans(28), fill=MUTED)
+        d.text((x, y + 44), wrap(d, i["model"], serif(58), w - 128 - pw - 40)[0], font=serif(58), fill=INK)
+        sub = " · ".join(t for t in (i.get("colour", ""), sizes_line(i)) if t)
+        if sub: d.text((x, y + 124), sub, font=sans(30), fill=MUTED)
+        draw_price(d, w - 64, y + 108, i["price"], 64, "right")
+        logo(im, x, h - 74, 34, "ink")
+        d.text((w - 64, h - 44), "Order: link in bio", font=sans(28), fill=MUTED, anchor="rs")
     return im
 
 TAGS = {"M": "#mensfashion #palms #mensslides #lagosfashion #abujafashion", "W": "#womensfashion #slides #ladiesfootwear #lagosfashion #abujafashion",
@@ -169,7 +210,7 @@ def main():
     day = dt.date.today().isoformat(); base = f"{day}-{re.sub(r'[^A-Za-z0-9-]', '', i['ref'])}"
     photo = fetch_photo(i)
     card(i, photo, 1080, 1350, 1000).save(os.path.join(OUT, base + ".jpg"), quality=90)
-    card(i, photo, 1080, 1920, 1500).save(os.path.join(OUT, base + "-story.jpg"), quality=90)
+    card(i, photo, 1080, 1920, 1180).save(os.path.join(OUT, base + "-story.jpg"), quality=90)
     text = caption(i); open(os.path.join(OUT, base + ".txt"), "w", encoding="utf-8").write(text)
     print(f"{i['ref']} · {i['model']} · {naira(i['price'])}\n---\n{text}\n---")
     with open(os.environ.get("GITHUB_OUTPUT", os.devnull), "a") as o: o.write(f"base={base}\nref={i['ref']}\n")

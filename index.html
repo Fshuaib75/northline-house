@@ -763,46 +763,50 @@ async function stPhoto(i){ const files=[], seen=new Set();
     const im=await loadImg("https://wsrv.nl/?url="+encodeURIComponent(u)+"&w=1400&output=jpg"); if(im) return im; }
   return null; }
 function spaced(x,t,X,Y,sp,align){ let w=0; for(const ch of t) w+=x.measureText(ch).width+sp; w-=sp; let cx=align==="center"?X-w/2:align==="right"?X-w:X; const a=x.textAlign; x.textAlign="left"; for(const ch of t){ x.fillText(ch,cx,Y); cx+=x.measureText(ch).width+sp; } x.textAlign=a; return w; }
-function wordmark(x,X,Y,px,align,dark){ x.font=`600 ${px}px Figtree, sans-serif`; const sp=px*.34; let w=0; for(const ch of "NORTHLINE") w+=x.measureText(ch).width+sp; w-=sp;
-  let cx=align==="center"?X-w/2:align==="right"?X-w:X; x.fillStyle=dark?"#0E1B2C":"#FFFFFF"; cx+=spaced(x,"NORTH",cx,Y,sp)+sp; x.fillStyle="#4A9FD8"; spaced(x,"LINE",cx,Y,sp); }
+const NL_VB=[20.0,-455.8,7295.0,1215.8], NL_LINE="80.0,-170.0 3517.5,-170.0 3667.5,-357.8 3817.5,-170.0 7255.0,-170.0", NL_GLYPHS=new Path2D("M610 0V521L80 -35V700H165V179L695 735V0Z M1155 350Q1155 271 1189.5 209.0Q1224 147 1284.0 111.0Q1344 75 1420 75Q1497 75 1556.5 111.0Q1616 147 1650.5 209.0Q1685 271 1685 350Q1685 429 1650.5 491.0Q1616 553 1556.5 589.0Q1497 625 1420 625Q1344 625 1284.0 589.0Q1224 553 1189.5 491.0Q1155 429 1155 350ZM1065 350Q1065 426 1091.5 492.0Q1118 558 1166.0 606.5Q1214 655 1279.0 682.5Q1344 710 1420 710Q1497 710 1561.5 682.5Q1626 655 1674.0 606.5Q1722 558 1748.5 492.0Q1775 426 1775 350Q1775 273 1748.5 207.5Q1722 142 1674.0 93.5Q1626 45 1561.5 17.5Q1497 -10 1420 -10Q1344 -10 1279.0 17.5Q1214 45 1166.0 93.5Q1118 142 1091.5 207.5Q1065 273 1065 350Z M2270 355 2510 700H2615L2365 355ZM2145 0V700H2230V0ZM2192 75H2335Q2380 75 2414.5 91.0Q2449 107 2468.5 137.0Q2488 167 2488 210Q2488 253 2468.5 283.0Q2449 313 2414.5 329.0Q2380 345 2335 345H2192V420H2335Q2403 420 2456.5 394.5Q2510 369 2541.5 321.5Q2573 274 2573 210Q2573 145 2541.5 98.0Q2510 51 2456.5 25.5Q2403 0 2335 0H2192Z M2885 80H3065V700H3150V80H3330V0H2885Z M3717 360H4197V280H3717ZM4140 0V700H4225V0ZM3670 0V700H3755V0Z M4635 0V700H4995V620H4720V0Z M5335 0V700H5420V0Z M6360 0V521L5830 -35V700H5915V179L6445 735V0Z M6902 700H7255V620H6902ZM6902 80H7255V0H6902ZM6902 360H7235V280H6902ZM6855 0V700H6940V0Z");
+// the peak-line wordmark, drawn from the logo outlines: h = height in px, X/Y = top-left (or centre/right edge by align)
+function wordmark(x,X,Y,h,align,col){ const s=h/NL_VB[3], w=NL_VB[2]*s, L=align==="center"?X-w/2:align==="right"?X-w:X;
+  x.save(); x.translate(L-NL_VB[0]*s,Y-NL_VB[1]*s); x.scale(s,s); x.fillStyle=col; x.strokeStyle=col; x.lineWidth=Math.max(46,1.4/s); x.lineJoin="miter";
+  x.beginPath(); NL_LINE.split(" ").forEach((p,k)=>{ const [a,b]=p.split(",").map(Number); k?x.lineTo(a,b):x.moveTo(a,b); }); x.stroke(); x.fill(NL_GLYPHS); x.restore(); return w; }
 function rrect(x,X,Y,w,h,r){ x.beginPath(); x.moveTo(X+r,Y); x.arcTo(X+w,Y,X+w,Y+h,r); x.arcTo(X+w,Y+h,X,Y+h,r); x.arcTo(X,Y+h,X,Y,r); x.arcTo(X,Y,X+w,Y,r); x.closePath(); }
-function photoBox(x,im,X,Y,w,h,r){ x.save(); rrect(x,X,Y,w,h,r); x.clip(); x.fillStyle="#FFFFFF"; x.fillRect(X,Y,w,h);
-  if(im){ const s=Math.min(w/im.width,h/im.height), dw=im.width*s, dh=im.height*s; x.drawImage(im,X+(w-dw)/2,Y+(h-dh)/2,dw,dh); }
-  else { x.fillStyle="#EEF2F6"; x.fillRect(X,Y,w,h); x.fillStyle="#6B7480"; x.font="500 36px Figtree, sans-serif"; x.textAlign="center"; x.fillText("Photo couldn’t load",X+w/2,Y+h/2); x.textAlign="left"; }
+function photoBox(x,im,X,Y,w,h,r){ x.save(); rrect(x,X,Y,w,h,r); x.clip(); x.fillStyle="#E9E1D3"; x.fillRect(X,Y,w,h);
+  if(im){ const s=Math.min(w*.88/im.width,h*.88/im.height), dw=im.width*s, dh=im.height*s; x.globalCompositeOperation="multiply"; x.drawImage(im,X+(w-dw)/2,Y+(h-dh)/2,dw,dh); x.globalCompositeOperation="source-over"; }
+  else { x.fillStyle="#6B6257"; x.font="400 36px Jost, sans-serif"; x.textAlign="center"; x.fillText("Photo couldn’t load",X+w/2,Y+h/2); x.textAlign="left"; }
   x.restore(); }
 function wrap(x,t,maxW,maxLines){ const words=String(t).split(/\s+/), out=[]; let cur="";
   for(const wd of words){ const nx=cur?cur+" "+wd:wd; if(x.measureText(nx).width<=maxW||!cur) cur=nx; else { out.push(cur); cur=wd; } } if(cur) out.push(cur);
   if(out.length>maxLines){ out.length=maxLines; let l=out[maxLines-1]; while(x.measureText(l+"…").width>maxW&&l.length) l=l.slice(0,-1); out[maxLines-1]=l+"…"; } return out; }
 const sizeLine=i=>{ const z=sizesOf(i); return (i.g==="BG"||(z.length===1&&z[0]==="One size"))?"":i.g==="B"?`Ages ${z[0]} to ${z[z.length-1]}`:`Sizes ${z[0]}${z.length>1?"–"+z[z.length-1]:""}`; };
 async function stDraw(){ const i=ST.i, post=ST.fmt==="post", W=1080, H=post?1080:1920, cv=$("stCanvas"); cv.width=W; cv.height=H; const x=cv.getContext("2d"), showP=$("stPrice").checked;
-  try{ await Promise.all(["600 76px Fraunces","700 120px Figtree","600 30px Figtree","500 40px Figtree"].map(f=>document.fonts.load(f))); }catch(e){}
-  const NAVY="#0E1B2C", SKY="#4A9FD8", BG="#F7F5F0", GOLD="#8A6A35", MUTED="#5F6873";
+  try{ await Promise.all(["400 72px Newsreader","italic 400 30px Newsreader","500 100px Jost","400 36px Jost"].map(f=>document.fonts.load(f))); }catch(e){}
+  // the May look: soft white page, cream photo backdrop, charcoal text, muted black frame
+  const INK="#2E2C29", BG="#F4F0E8", MUTED="#6B6257", BLACK="#1F1A16", CREAM="#EFE8DC", CREAM2="#A89C8C";
   x.fillStyle=BG; x.fillRect(0,0,W,H); x.textBaseline="alphabetic"; x.textAlign="left";
   if(!post){
-    x.fillStyle=NAVY; x.fillRect(0,0,W,200); x.fillStyle=SKY; x.fillRect(0,200,W,8);
-    wordmark(x,W/2,112,62,"center"); x.fillStyle="#9FB6CC"; x.font="600 26px Figtree, sans-serif"; spaced(x,"ISTANBUL → NIGERIA",W/2,162,7,"center");
-    photoBox(x,ST.img,60,262,960,960,40);
-    let y=1318; x.fillStyle=GOLD; x.font="700 30px Figtree, sans-serif"; spaced(x,i.brand.toUpperCase(),60,y,6);
-    x.font="600 76px Fraunces, Georgia, serif"; x.fillStyle=NAVY; for(const l of wrap(x,i.model,960,2)){ y+=90; x.fillText(l,60,y); }
-    if(i.colour){ y+=58; x.font="500 40px Figtree, sans-serif"; x.fillStyle=MUTED; x.fillText(wrap(x,i.colour,960,1)[0],60,y); }
-    if(showP){ y+=128; x.font="700 118px Figtree, sans-serif"; x.fillStyle=NAVY; x.fillText(N(i.price),60,y); }
-    const sl=sizeLine(i); if(sl){ y+=64; x.font="500 38px Figtree, sans-serif"; x.fillStyle=MUTED; x.fillText(sl,60,y); }
-    const cta="DM me to order"; x.font="700 44px Figtree, sans-serif"; const cw=x.measureText(cta).width+88; x.fillStyle=SKY; rrect(x,60,1676,cw,96,48); x.fill(); x.fillStyle=NAVY; x.fillText(cta,104,1739);
-    x.fillStyle=NAVY; x.fillRect(0,1820,W,100); x.fillStyle="#B9C8D6"; x.font="500 28px Figtree, sans-serif"; x.textAlign="center"; x.fillText("Turkish shoes, bags & baby clothes · delivered in Nigeria",W/2,1880); x.textAlign="left";
+    wordmark(x,W/2,120,64,"center",INK);
+    photoBox(x,ST.img,60,250,960,1040,16);
+    let y=1356; x.font="400 32px Jost, sans-serif"; x.fillStyle=MUTED; x.fillText(i.brand,60,y);
+    y+=80; x.font="400 72px Newsreader, Georgia, serif"; x.fillStyle=INK; x.fillText(wrap(x,i.model,960,1)[0],60,y);
+    if(i.colour){ y+=56; x.font="400 36px Jost, sans-serif"; x.fillStyle=MUTED; x.fillText(wrap(x,i.colour,960,1)[0],60,y); }
+    if(showP){ y+=112; x.font="500 100px Jost, sans-serif"; x.fillStyle=INK; x.fillText(N(i.price),60,y); }
+    const sl=sizeLine(i); if(sl){ y+=56; x.font="400 34px Jost, sans-serif"; x.fillStyle=MUTED; x.fillText(sl,60,y); }
+    const cta="Message me to order", cy=Math.max(y+48,1712); x.font="500 40px Jost, sans-serif"; const cw=x.measureText(cta).width+80;
+    x.fillStyle=INK; x.fillRect(60,cy,cw,88); x.fillStyle=BG; x.fillText(cta,100,cy+58);
+    x.font="italic 400 30px Newsreader, Georgia, serif"; x.fillStyle=MUTED; x.textAlign="center"; x.fillText("Modern form. Rooted soul.",W/2,1884); x.textAlign="left";
   } else {
     photoBox(x,ST.img,0,0,W,780,0);
-    x.fillStyle=GOLD; x.font="700 26px Figtree, sans-serif"; spaced(x,i.brand.toUpperCase(),56,840,5);
-    x.font="600 58px Fraunces, Georgia, serif"; x.fillStyle=NAVY; const pw = showP ? (x.font="700 76px Figtree, sans-serif", x.measureText(N(i.price)).width) : 0;
-    x.font="600 58px Fraunces, Georgia, serif"; x.fillText(wrap(x,i.model,W-112-pw-40,1)[0],56,910);
-    x.font="500 32px Figtree, sans-serif"; x.fillStyle=MUTED; x.fillText(wrap(x,[i.colour,sizeLine(i)].filter(Boolean).join(" · "),W-112-pw-40,1)[0],56,960);
-    if(showP){ x.font="700 76px Figtree, sans-serif"; x.fillStyle=NAVY; x.textAlign="right"; x.fillText(N(i.price),W-56,930); x.textAlign="left"; }
-    x.fillStyle=NAVY; x.fillRect(0,1000,W,80); x.fillStyle=SKY; x.fillRect(0,1000,W,5); wordmark(x,56,1056,30,"left");
-    x.fillStyle="#CFE6F7"; x.font="600 28px Figtree, sans-serif"; x.textAlign="right"; x.fillText("DM to order",W-56,1053); x.textAlign="left";
+    x.font="400 28px Jost, sans-serif"; x.fillStyle=MUTED; x.fillText(i.brand,56,840);
+    const pw = showP ? (x.font="500 72px Jost, sans-serif", x.measureText(N(i.price)).width) : 0;
+    x.font="400 56px Newsreader, Georgia, serif"; x.fillStyle=INK; x.fillText(wrap(x,i.model,W-112-pw-40,1)[0],56,906);
+    x.font="400 30px Jost, sans-serif"; x.fillStyle=MUTED; x.fillText(wrap(x,[i.colour,sizeLine(i)].filter(Boolean).join(" · "),W-112-pw-40,1)[0],56,954);
+    if(showP){ x.font="500 72px Jost, sans-serif"; x.fillStyle=INK; x.textAlign="right"; x.fillText(N(i.price),W-56,926); x.textAlign="left"; }
+    x.fillStyle=BLACK; x.fillRect(0,1000,W,80); wordmark(x,56,1023,34,"left",CREAM);
+    x.fillStyle=CREAM2; x.font="400 28px Jost, sans-serif"; x.textAlign="right"; x.fillText("Message me to order",W-56,1050); x.textAlign="left";
   }
   try{ const b=await new Promise(r=>cv.toBlob(r,"image/png")); if(ST.url) URL.revokeObjectURL(ST.url); ST.url=URL.createObjectURL(b); $("stSave").href=ST.url; $("stSave").download=`northline-${i.ref}-${ST.fmt}.png`; $("stSave").hidden=false; ST.blob=b; }
   catch(e){ ST.blob=null; $("stSave").hidden=true; $("stMsg").textContent="This photo can’t be turned into an image here. Take a screenshot of the preview instead."; }
 }
-const stCaption=i=>`${i.model}${i.colour?" · "+i.colour:""}\n${N(i.price)}${sizeLine(i)?" · "+sizeLine(i):""}\n${code()?"Order here: "+shopUrl(i.ref):"DM me to order"}`;
+const stCaption=i=>`${i.model}${i.colour?" · "+i.colour:""}\n${N(i.price)}${sizeLine(i)?" · "+sizeLine(i):""}\n${code()?"Order here: "+shopUrl(i.ref):"Message me to order"}`;
 async function openStatus(i){ track("status/"+i.ref, i.model); ST.i=i; ST.img=null; ST.blob=null; $("stMsg").textContent="Loading photo…"; $("stSheet").hidden=false; await stDraw();
   ST.img=await stPhoto(i); $("stMsg").textContent = ST.img ? (code()?"":"Tip: enter your agent code at the top so the caption includes your shop link.") : "The photo couldn’t be loaded. Try again in a moment, or use Save photo on the item."; await stDraw(); }
 $("stFmt").addEventListener("click",e=>{ const b=e.target.closest("button"); if(!b) return; ST.fmt=b.dataset.f; document.querySelectorAll("#stFmt button").forEach(x=>x.setAttribute("aria-pressed",x===b)); stDraw(); });
