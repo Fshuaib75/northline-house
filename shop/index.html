@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="theme-color" content="#FAF8F4">
+<meta name="theme-color" content="#F4F0E8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Northline House · Shop</title>
 <meta name="description" content="Turkish shoes, bags and clothing, chosen in Istanbul and delivered across Nigeria. Order on WhatsApp.">
@@ -16,15 +16,17 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Figtree:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap">
+<link rel="icon" type="image/png" href="../brand/favicon-512.png">
+<link rel="apple-touch-icon" href="../brand/apple-touch-icon.png">
 <style>
 /* Northline shop. Light, editorial, phone-first: products on the first screen, one card per design (colours grouped),
    a product sheet for photos / colour / size, filters in one panel, the bag in a drawer. Orders still go out on WhatsApp. */
 :root{
-  --bg:#FAF8F4; --surface:#FFFFFF; --ink:#0E1B2C; --ink-2:#344050; --muted:#6B7380; --line:#E9E4DB; --line-2:#D8D1C4;
-  --photo:#F1EEE8; --sky:#4A9FD8; --sky-ink:#1F5F8B; --gold:#9A7642; --warn:#95560F; --wa:#1F7A4D; --err:#B3261E;
-  --display:"Fraunces",Georgia,"Times New Roman",serif;
-  --ui:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --bg:#F4F0E8; --surface:#FBF8F2; --ink:#2E2C29; --ink-2:#4A443D; --muted:#6B6257; --line:#E2D9CA; --line-2:#D0C5B4;
+  --photo:#E9E1D3; --sky:#5E5E45; --sky-ink:#5E5E45; --gold:#4A3426; --warn:#95560F; --wa:#1F7A4D; --err:#B3261E;
+  --display:"Newsreader",Georgia,"Times New Roman",serif;
+  --ui:"Jost",system-ui,-apple-system,"Segoe UI",sans-serif;
   --gut:16px; --head:58px;
   color-scheme:light;
 }
@@ -268,12 +270,71 @@ body.hasbar .foot{padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}
 .foot h3{margin:0 0 8px;font:600 11px var(--ui);letter-spacing:.18em;text-transform:uppercase;color:#fff}
 .foot p{margin:0 0 6px}
 .foot a{color:#DCE8F3}
+
+/* NL-MAY-LOOK: Northline May direction. Earth palette, peak-line wordmark, Newsreader + Jost, tailored corners,
+   sentence case everywhere (no tracked capitals). Overrides only; behaviour unchanged. */
+.logo{display:inline-flex;align-items:center;color:var(--ink);letter-spacing:0}
+.logo .nl-logo{height:22px;width:auto}
+@media (min-width:720px){.logo .nl-logo{height:24px}}
+.top{background:rgba(244,240,232,.95)!important}
+.eyebrow{font:400 13px/1.3 var(--ui)!important;letter-spacing:0!important;text-transform:none!important;color:var(--muted)}
+:focus-visible{outline-color:var(--ink)}
+input,select,textarea{border-radius:2px}
+
+.tools{background:rgba(244,240,232,.96)!important}
+/* opening band: the dark May panel */
+.intro{background:#1F1A16;color:#EFE8DC;box-shadow:0 0 0 100vmax #1F1A16;clip-path:inset(0 -100vmax);padding-block:34px 0;gap:12px}
+.intro h1{font:400 clamp(32px,8vw,60px)/1.05 var(--display);letter-spacing:-.01em;max-width:15ch;color:#EFE8DC}
+.intro p{color:#C9BFB0;font-size:15.5px}
+.intro .bline{font:italic 400 17px/1.3 var(--display);color:#A89C8C;margin:0}
+.via{background:#33331F;color:#E6E4D6;border-radius:2px}
+.trust{border-block:0;border-top:1px solid #3A3129;margin-top:18px;padding-block:16px 20px}
+.trust svg{color:#C9B79C}
+.trust b{color:#EFE8DC;font-weight:500}
+.trust span{color:#A89C8C}
+/* browse */
+.aud button{font:500 16px var(--ui)}
+.chip,.fbtn,.opt,.pgb,.pgn,.sizew select,.searchrow input{border-radius:2px}
+.chip{font-weight:400}
+.chip.pick,.tag.pick{color:var(--gold)}
+.tag{font:500 12px/1 var(--ui);letter-spacing:0;text-transform:none;background:#C9B79C;color:#2E2C29;padding:6px 9px}
+.tag.out{background:var(--surface);color:var(--muted)}
+.tag.back{background:var(--surface)}
+.info .b{font:400 12.5px/1.3 var(--ui);letter-spacing:0;text-transform:none}
+.info .m{font-weight:500}
+.info .p{font-weight:500}
+.bhead{font-weight:400}
+.ph{border-radius:2px}
+.lab{font:500 13px var(--ui);letter-spacing:0;text-transform:none;color:var(--ink)}
+.sg th{font-size:12.5px;letter-spacing:0;text-transform:none}
+.sg tr.hit td{background:#E6E4D6;color:#5E5E45}
+.primary{border-radius:2px;font-weight:500}
+.primary:hover{background:#45413B}
+.sz{border-radius:2px;font-weight:500}
+.qty{border-radius:2px}
+.sw{border-radius:2px}
+.dh h2,.pdd h2{font-weight:400}
+.pdd .pr{font-weight:500}
+.ov{background:rgba(31,26,22,.5)}
+.pd{background:rgba(31,26,22,.55)}
+.obar{background:#1F1A16;border-radius:3px;box-shadow:0 8px 28px rgba(31,26,22,.3);font-weight:500}
+.toast{background:#1F1A16;border-radius:2px;box-shadow:0 6px 20px rgba(31,26,22,.2)}
+.stale{border-radius:3px}
+.opt[aria-pressed="true"] small{color:#CFC6B8}
+.ib .n,.fbtn .n{background:#2E2C29}
+/* footer */
+.foot{background:#1F1A16;color:#A89C8C}
+.foot .logo{color:#EFE8DC;margin-bottom:6px}
+.foot .logo .nl-logo{height:20px}
+.foot .bline{font:italic 400 17px/1.3 var(--display);color:#EFE8DC;margin:0 0 14px}
+.foot h3{font:500 15px var(--ui);letter-spacing:0;text-transform:none;color:#EFE8DC}
+.foot a{color:#EFE8DC}
 </style>
 </head>
 <body>
 <header class="top">
   <div class="wrap">
-    <a class="logo" href="./" aria-label="Northline House">NORTH<i>LINE</i></a>
+    <a class="logo" href="./" aria-label="Northline House"><svg xmlns="http://www.w3.org/2000/svg" viewBox="20.0 -455.8 7295.0 1215.8" aria-hidden="true" class="nl-logo"><polyline points="80.0,-170.0 3517.5,-170.0 3667.5,-357.8 3817.5,-170.0 7255.0,-170.0" fill="none" stroke="currentColor" stroke-width="62" stroke-linejoin="miter" stroke-miterlimit="10"/><path fill="currentColor" d="M610 0V521L80 -35V700H165V179L695 735V0Z M1155 350Q1155 271 1189.5 209.0Q1224 147 1284.0 111.0Q1344 75 1420 75Q1497 75 1556.5 111.0Q1616 147 1650.5 209.0Q1685 271 1685 350Q1685 429 1650.5 491.0Q1616 553 1556.5 589.0Q1497 625 1420 625Q1344 625 1284.0 589.0Q1224 553 1189.5 491.0Q1155 429 1155 350ZM1065 350Q1065 426 1091.5 492.0Q1118 558 1166.0 606.5Q1214 655 1279.0 682.5Q1344 710 1420 710Q1497 710 1561.5 682.5Q1626 655 1674.0 606.5Q1722 558 1748.5 492.0Q1775 426 1775 350Q1775 273 1748.5 207.5Q1722 142 1674.0 93.5Q1626 45 1561.5 17.5Q1497 -10 1420 -10Q1344 -10 1279.0 17.5Q1214 45 1166.0 93.5Q1118 142 1091.5 207.5Q1065 273 1065 350Z M2270 355 2510 700H2615L2365 355ZM2145 0V700H2230V0ZM2192 75H2335Q2380 75 2414.5 91.0Q2449 107 2468.5 137.0Q2488 167 2488 210Q2488 253 2468.5 283.0Q2449 313 2414.5 329.0Q2380 345 2335 345H2192V420H2335Q2403 420 2456.5 394.5Q2510 369 2541.5 321.5Q2573 274 2573 210Q2573 145 2541.5 98.0Q2510 51 2456.5 25.5Q2403 0 2335 0H2192Z M2885 80H3065V700H3150V80H3330V0H2885Z M3717 360H4197V280H3717ZM4140 0V700H4225V0ZM3670 0V700H3755V0Z M4635 0V700H4995V620H4720V0Z M5335 0V700H5420V0Z M6360 0V521L5830 -35V700H5915V179L6445 735V0Z M6902 700H7255V620H6902ZM6902 80H7255V0H6902ZM6902 360H7235V280H6902ZM6855 0V700H6940V0Z"/></svg></a>
     <div class="icons">
       <button class="ib" id="searchBtn" aria-label="Search" aria-expanded="false"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button>
       <button class="ib" id="bagBtn" aria-label="Your bag"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 8h14l-1 12H6L5 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg><span class="n" id="bagN" hidden>0</span></button>
@@ -283,9 +344,8 @@ body.hasbar .foot{padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}
 </header>
 
 <section class="wrap intro">
-  <span class="eyebrow">Istanbul → Nigeria</span>
-  <h1>Turkish shoes &amp; bags, <em>chosen in Istanbul.</em></h1>
-  <p>Delivered to you anywhere in Nigeria. Order on WhatsApp and we check your size before you pay.</p>
+  <h1>Chosen in Istanbul. Delivered to you in Nigeria.</h1>
+  <p>Turkish shoes, bags and clothing. Order on WhatsApp and we check your size with you before you pay.</p>
   <span class="via" id="via" hidden>Shopping with <b id="viaCode"></b></span>
   <div class="trust" aria-label="Before you order">
     <div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></svg><p style="margin:0"><b>Up to 14 days</b><span>From Istanbul to you</span></p></div>
@@ -298,8 +358,8 @@ body.hasbar .foot{padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}
   <div class="wrap">
     <div class="tabs">
       <div class="aud" role="group" aria-label="Who for" id="aud">
-        <button data-g="W" aria-pressed="true">Women</button>
-        <button data-g="M" aria-pressed="false">Men</button>
+        <button data-g="M" aria-pressed="true">Men</button>
+        <button data-g="W" aria-pressed="false">Women</button>
         <button data-g="K" aria-pressed="false">Kids</button>
       </div>
       <button class="fbtn" id="filterBtn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h16M7 12h10M10 18h4"/></svg>Filter<span class="n" id="filterN" hidden></span></button>
@@ -320,7 +380,7 @@ body.hasbar .foot{padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}
 
 <footer class="foot">
   <div class="wrap">
-    <div><span class="logo">NORTH<i>LINE</i> HOUSE</span><p>Turkish shoes, bags and clothing, chosen in Istanbul and delivered across Nigeria.</p><p>Registered with the Corporate Affairs Commission (CAC), no. 2621828263203</p></div>
+    <div><span class="logo" aria-label="Northline House"><svg xmlns="http://www.w3.org/2000/svg" viewBox="20.0 -455.8 7295.0 1215.8" aria-hidden="true" class="nl-logo"><polyline points="80.0,-170.0 3517.5,-170.0 3667.5,-357.8 3817.5,-170.0 7255.0,-170.0" fill="none" stroke="currentColor" stroke-width="62" stroke-linejoin="miter" stroke-miterlimit="10"/><path fill="currentColor" d="M610 0V521L80 -35V700H165V179L695 735V0Z M1155 350Q1155 271 1189.5 209.0Q1224 147 1284.0 111.0Q1344 75 1420 75Q1497 75 1556.5 111.0Q1616 147 1650.5 209.0Q1685 271 1685 350Q1685 429 1650.5 491.0Q1616 553 1556.5 589.0Q1497 625 1420 625Q1344 625 1284.0 589.0Q1224 553 1189.5 491.0Q1155 429 1155 350ZM1065 350Q1065 426 1091.5 492.0Q1118 558 1166.0 606.5Q1214 655 1279.0 682.5Q1344 710 1420 710Q1497 710 1561.5 682.5Q1626 655 1674.0 606.5Q1722 558 1748.5 492.0Q1775 426 1775 350Q1775 273 1748.5 207.5Q1722 142 1674.0 93.5Q1626 45 1561.5 17.5Q1497 -10 1420 -10Q1344 -10 1279.0 17.5Q1214 45 1166.0 93.5Q1118 142 1091.5 207.5Q1065 273 1065 350Z M2270 355 2510 700H2615L2365 355ZM2145 0V700H2230V0ZM2192 75H2335Q2380 75 2414.5 91.0Q2449 107 2468.5 137.0Q2488 167 2488 210Q2488 253 2468.5 283.0Q2449 313 2414.5 329.0Q2380 345 2335 345H2192V420H2335Q2403 420 2456.5 394.5Q2510 369 2541.5 321.5Q2573 274 2573 210Q2573 145 2541.5 98.0Q2510 51 2456.5 25.5Q2403 0 2335 0H2192Z M2885 80H3065V700H3150V80H3330V0H2885Z M3717 360H4197V280H3717ZM4140 0V700H4225V0ZM3670 0V700H3755V0Z M4635 0V700H4995V620H4720V0Z M5335 0V700H5420V0Z M6360 0V521L5830 -35V700H5915V179L6445 735V0Z M6902 700H7255V620H6902ZM6902 80H7255V0H6902ZM6902 360H7235V280H6902ZM6855 0V700H6940V0Z"/></svg></span><p class="bline">Modern form. Rooted soul.</p><p>Turkish shoes, bags and clothing, chosen in Istanbul and delivered across Nigeria.</p><p>Registered with the Corporate Affairs Commission (CAC), no. 2621828263203</p></div>
     <div><h3>Ordering</h3><p>Delivery up to 14 days after payment.</p><p>Payment by bank transfer, only after we confirm your order.</p><p>No size exchanges, so we check your size with you before you pay.</p></div>
     <div><h3>Talk to us</h3><p>WhatsApp <a id="footWa" target="_blank" rel="noopener"></a></p><p>Instagram <a href="https://www.instagram.com/northline_house/" target="_blank" rel="noopener">@northline_house</a></p></div>
   </div>
@@ -542,12 +602,12 @@ const fewSizes=i=>{ const z=i.sizes||[]; return z.length>0&&z.length<=2&&z[0]!==
 const itemRank=i=>(inDrop(i)?8:0)+(isFresh(i)?4:0)+Math.min(photos(i),4)*0.5+(fewSizes(i)?-2:0)+((i.sizes||[]).length>4?0.5:0);
 
 // ---------- state ----------
-const S = {g:"W", type:"", q:"", f:new Set(), sort:"rec", page:1, size:""};
+const S = {g:"M", type:"", q:"", f:new Set(), sort:"rec", page:1, size:""};
 // the customer's size: only styles in stock in that size (one-size items such as bags drop out while a size is chosen)
 const sizeOk=i=>!S.size||(!oneSize(i)&&sizesOf(i).includes(S.size)&&inStock(i,S.size));
 const SIZE_ORDER=[].concat(SIZES.W,SIZES.M,SIZES.B,SIZES.CL);
 const sizeSort=(a,b)=>{ const num=/^\d+(\.\d+)?$/; if(num.test(a)&&num.test(b)) return parseFloat(a)-parseFloat(b); return (SIZE_ORDER.indexOf(a)+1||99)-(SIZE_ORDER.indexOf(b)+1||99)||String(a).localeCompare(String(b)); };
-S.g = ["W","M","K"].includes(store.get("nl-aud","W")) ? store.get("nl-aud","W") : "W";
+S.g = ["M","W","K"].includes(store.get("nl-aud","M")) ? store.get("nl-aud","M") : "M";
 S.sort = ["rec","new","low","high","brand"].includes(store.get("nl-sort","rec")) ? store.get("nl-sort","rec") : "rec";
 let cart = store.get("nl-shop-cart",[]).filter(c=>ITEMS.some(i=>i.ref===c.ref));
 
@@ -606,7 +666,7 @@ function sortCards(list){
 // ---------- browsing UI ----------
 function audTabs(){ const has=g=>ITEMS.some(i=>audOf(i)===g);
   document.querySelectorAll("#aud button").forEach(b=>{ b.hidden=!has(b.dataset.g); b.setAttribute("aria-pressed",b.dataset.g===S.g); });
-  if(!has(S.g)){ S.g=["W","M","K"].find(has)||"W"; S.type=""; S.f.clear(); audTabs(); } }
+  if(!has(S.g)){ S.g=["M","W","K"].find(has)||"M"; S.type=""; S.f.clear(); audTabs(); } }
 function typeRail(){
   const aud=ITEMS.filter(i=>audOf(i)===S.g&&qOk(i)), opts=[];
   const nDrop=DROP?aud.filter(inDrop).length:0;
@@ -641,7 +701,7 @@ const PAGE_N=36; let LIST=[], SIG=null, LOADED=false, QUIET=false, LASTPG=null, 
 const VIEW_KEYS=["g","t","s","q","f","p","z"], F_KEYS=["for","kind","band","fam","heel","brand"], SORTS=["rec","new","low","high","brand"];
 function viewFromURL(){ const sp=new URLSearchParams(location.search); if(!VIEW_KEYS.some(k=>sp.has(k))) return null;
   const g=sp.get("g"), s=sp.get("s"), p=parseInt(sp.get("p"),10);
-  return {g:["W","M","K"].includes(g)?g:"W", type:sp.get("t")||"", sort:SORTS.includes(s)?s:"rec", q:sp.get("q")||"",
+  return {g:["M","W","K"].includes(g)?g:"M", type:sp.get("t")||"", sort:SORTS.includes(s)?s:"rec", q:sp.get("q")||"",
     f:sp.getAll("f").filter(x=>F_KEYS.includes(x.split(":")[0])).sort(), page:p>0?p:1, size:(sp.get("z")||"").slice(0,8)}; }
 const view=()=>({g:S.g, type:S.type, sort:S.sort, q:S.q.trim(), f:[...S.f].sort(), page:S.page, size:S.size});
 function applyView(v){ S.g=v.g; S.type=v.type; S.sort=v.sort; S.q=v.q; S.f=new Set(v.f); S.page=v.page; S.size=v.size||""; syncControls(); }
