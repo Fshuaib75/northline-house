@@ -110,6 +110,8 @@ def check(cap, P, prods):
             s, n = parts(u)
             if s == stem and n not in order: order.append(n)
         srcs.sort(key=lambda s: order.index(parts(s)[1]) if parts(s)[1] in order else len(order))
+        # Capone's last upload (file number 9) is a flat close-up of the leather colour, not a product shot: leave it out
+        srcs = [s for k, s in enumerate(srcs) if k == 0 or parts(s)[1] != 9]
         vs = colour_variants(q, stem, set(srcs))
         rec = {"on": 1, "img": [width(s, 1200) for s in srcs[:8]]}
         if vs:
