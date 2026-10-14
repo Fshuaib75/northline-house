@@ -227,6 +227,29 @@ input,select,textarea{border-radius:2px}
 .panel h2,.lab,.glabel,.sg th{letter-spacing:0!important;text-transform:none!important}
 .bar{background:rgba(244,240,232,.96)!important}
 .bchip,.chip,.mini,#q,#sort,#size{border-radius:2px!important}
+/*nl-polish-2026-10-14*/
+/* solid bars: nothing shows through the header or the filter bar while scrolling */
+.top,.tools{background:#F4F0E8!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+.top{box-shadow:0 1px 0 var(--line)}
+body{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+/* sizes: six sizes fit one row on a phone instead of leaving one on its own line */
+.sizes{grid-template-columns:repeat(auto-fill,minmax(50px,1fr))}
+.sz{min-height:44px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+
+/* product cards: a little more air, and a slow zoom on hover (devices with a mouse only) */
+@media (min-width:720px){.grid{gap:44px 20px}}
+@media (hover:hover){
+  .card .ph img{transition:transform .5s cubic-bezier(.2,.7,.2,1),opacity .35s ease}
+  .card:hover .ph img{transform:scale(1.035)}
+}
+.chip,.bchip{min-height:36px;display:inline-flex;align-items:center}
+.buy .add,.buy button.primary{min-height:50px;letter-spacing:.02em}
+
+/* agent page: the code box no longer stretches to the height of the commission box */
+.agent{align-items:start}
+.agent>.panel{align-self:start}
 </style>
 </head>
 <body>
