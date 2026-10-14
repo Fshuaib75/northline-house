@@ -174,9 +174,9 @@ def caption(i):
     desc = (i.get("desc") or "").replace(", confirm size before payment", "").replace("confirm size before payment", "").strip(" ,")
     lines = [f"{i['model']}" + (f" · {i['colour']}" if i.get("colour") else ""), desc[:1].upper() + desc[1:] if desc else "",
              "", f"{naira(i['price'])}" + (f" · {sizes_line(i)}" if sizes_line(i) else ""),
-             "Chosen in Istanbul, delivered anywhere in Nigeria within 14 days of payment.", "",
+             "Delivered anywhere in Nigeria within 14 days of payment.", "",
              "To order: tap the link in our bio or send us a WhatsApp message (number in bio). We confirm your size before you pay.", "",
-             f"Ref {i['ref']} · {i['brand']}", "", "#northlinehouse #turkishfashion " + TAGS[audience(i)]]
+             f"Ref {i['ref']} · {i['brand']}", "", "#northlinehouse " + TAGS[audience(i)]]
     return "\n".join(l for l in lines if l is not None).replace("\n\n\n", "\n\n")
 
 def graph(path, params):

@@ -674,7 +674,7 @@ const SHOP = location.origin + location.pathname.replace(/[^/]*$/,"") + "shop/";
 const code = () => $("agentCode").value.trim().replace(/[^A-Za-z0-9_-]/g,"").slice(0,24);
 const shopUrl = ref => SHOP + "?a=" + encodeURIComponent(code()) + (ref ? "&i=" + encodeURIComponent(ref) : (selBrand() ? "&b=" + encodeURIComponent(selBrand()) : ""));
 function shopBox(){ const c=code(); $("shopBox").hidden=!c; if(!c) return; $("shopUrl").textContent=shopUrl(); $("shopFor").textContent=selBrand()?` (${selBrand()} only)`:"";
-  $("shopWa").href="https://wa.me/?text="+encodeURIComponent("Shop Turkish shoes, bags and baby clothes from Northline House, delivered in Nigeria: "+shopUrl()); }
+  $("shopWa").href="https://wa.me/?text="+encodeURIComponent("Shop shoes, bags and baby clothes from Northline House, delivered in Nigeria: "+shopUrl()); }
 $("shopCopy").onclick=()=>copy(shopUrl());
 // ---------- your earnings: paid orders Northline has recorded for this agent code (orders.json, kept by the owner) ----------
 // First paid item is paid straight away; after that, every 5 paid items are paid together.
