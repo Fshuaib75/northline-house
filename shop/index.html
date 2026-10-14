@@ -498,7 +498,7 @@ let ALL = [{"ref": "USPA-BAG-VR046-CB", "brand": "U.S. Polo Assn.", "cat": "bags
 const band = n => n<=30000?"₦30k and under":n<=50000?"₦30k–50k":n<=80000?"₦50k–80k":"₦80k+";
 const BANDS = ["₦30k and under","₦30k–50k","₦50k–80k","₦80k+"];
 let ITEMS = ALL.filter(i=>i.price).map(i=>({...i, band:band(i.price)}));
-const WA = "2348101073068";
+const WA = "2348168230733";
 const SIZES = {W:["36","37","38","39","40","41"], M:["40","41","42","43","44","45"], B:["0-3m","3-6m","6-9m","9-12m","12-18m","18-24m","2-3y","3-4y"], BG:["One size"],AC:["One size"], CL:["S","M","L","XL"]};
 const sizesOf = i => (i.sizes&&i.sizes.length) ? i.sizes : SIZES[i.g]||["One size"];
 const oneSize = i => { const z=sizesOf(i); return z.length===1 && z[0]==="One size"; };
