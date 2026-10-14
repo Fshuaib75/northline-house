@@ -694,7 +694,7 @@ function drawSheet(){
   $("lines").innerHTML = cart.length ? cart.map((c,n)=>`<div class="line">${c.img?imgTag(photoChain(c.img), 'alt=""'):'<img alt="">'}<div><b>${esc(c.model)}</b><small>${esc(c.colour||"")}${c.size!=="One size"?" · size "+esc(c.size):""} · x${c.qty}</small><small>${N(c.price*c.qty)}</small></div><button class="x" data-n="${n}" aria-label="Remove">✕</button></div>`).join("") : `<p class="hint">Your order is empty.</p>`;
   $("total").textContent=N(cart.reduce((s,c)=>s+c.price*c.qty,0));
 }
-$("agentCode").value=store.get("nl-agent","");
+$("agentCode").value=(new URLSearchParams(location.search).get("a")||"").replace(/[^A-Za-z0-9_-]/g,"").slice(0,24)||store.get("nl-agent","");   /* agent link: northlinehouse.shop/?a=CODE fills the code */
 $("agentCode").addEventListener("input",e=>{ store.set("nl-agent",e.target.value.trim()); shopBox(); });
 // personal shop link: shop/?a=CODE (and &i=REF for one style); orders from it carry the agent code
 const SHOP = location.origin + location.pathname.replace(/[^/]*$/,"") + "shop/";
