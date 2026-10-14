@@ -26,7 +26,7 @@ Files: `.github/workflows/ig-autopost.yml` (the schedule), `tools/ig/autopost.py
 6. **Test it.** Go to Actions → Instagram daily post → Run workflow.
    - With "Preview only" ticked, the images and caption appear under the run's **Artifacts**.
    - Untick it to post for real.
-7. **Bio:** put the shop link `https://fshuaib75.github.io/northline-house/shop/` in the Instagram bio, plus your WhatsApp number.
+7. **Bio:** put the shop link `https://northlinehouse.shop/shop/` in the Instagram bio, plus your WhatsApp number.
 
 Never paste the token into a chat, a file or the repo. It belongs only in GitHub Secrets.
 

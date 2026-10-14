@@ -123,7 +123,7 @@ def check(cap, P, prods):
 def label(i): return f"{i['model']} · {i.get('colour') or ''}".strip(" ·")
 
 SIZES = {"W": ["36", "37", "38", "39", "40", "41"], "M": ["40", "41", "42", "43", "44", "45"]}
-SHOP = "https://fshuaib75.github.io/northline-house/shop/?i="
+SHOP = "https://northlinehouse.shop/shop/?i="
 PUSH_MIN = 5          # sizes in stock for a style to count as safe to push
 BACK_DAYS = 14        # how long a restocked style keeps its "Back in stock" badge
 

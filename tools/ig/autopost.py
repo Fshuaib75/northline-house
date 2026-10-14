@@ -24,7 +24,7 @@ OUT = os.path.join(ROOT, "ig")
 STATE = os.path.join(HERE, "posted.json")
 REPO = os.environ.get("GITHUB_REPOSITORY", "Fshuaib75/northline-house")
 BRANCH = "gh-pages"   # the workflow commits the images here; GITHUB_REF_NAME is "main" on scheduled runs
-SHOP = "https://fshuaib75.github.io/northline-house/shop/"
+SHOP = "https://northlinehouse.shop/shop/"
 GRAPH = "https://graph.facebook.com/v21.0"
 # the May look: charcoal text, soft white page, cream photo backdrop, muted text, muted black frame
 INK, BG, PHOTO, MUTED, BLACK, CREAM2 = (46, 44, 41), (244, 240, 232), (233, 225, 211), (107, 98, 87), (31, 26, 22), (168, 156, 140)
