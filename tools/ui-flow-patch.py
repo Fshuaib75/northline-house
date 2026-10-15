@@ -43,7 +43,7 @@ AGENT_EDITS = [
  ('</header>\n', '</header>\n<div class="agentbar"><div class="wrap"><span>This page is for Northline agents.</span><a href="shop/">Looking to buy? Go to the shop</a></div></div>\n'),
  ('<p id="commOld">Shoes and bags: ₦5,000 each, or ₦3,000 on items priced ₦30,000 and under. Baby clothes: ₦1,500 a piece. An item counts once the customer has paid. Your first sale is paid as soon as the customer pays. After that, when you reach 5 items, Northline pays you what those 5 earned and your count starts again from 0. Every item shows what you earn on it.</p>',
   '''<ul class="pts" id="commOld">
-        <li><b>Per item</b><span>Shoes and bags: ₦5,000 each, or ₦3,000 on items priced ₦30,000 and under. Baby clothes: ₦1,500 a piece.</span></li>
+        <li><b>Per item</b><span>Shoes and bags: ₦4,000 each, or ₦2,000 on items priced ₦30,000 and under. Baby clothes: ₦1,500 a piece.</span></li>
         <li><b>What counts</b><span>An item counts once the customer has paid.</span></li>
         <li><b>First sale</b><span>Paid as soon as the customer pays.</span></li>
         <li><b>After that</b><span>When you reach 5 items, Northline pays you what those 5 earned and your count starts again from 0.</span></li>
