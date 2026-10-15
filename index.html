@@ -251,6 +251,10 @@ body{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 .agent{align-items:start}
 .agent>.panel{align-self:start}
 /*nl-ui-flow-2026-10-15*/
+/* agent page label */
+.agentbar{background:#4A3426;color:#F4F0E8;font:500 13px/1.4 var(--ui)}
+.agentbar .wrap{display:flex;justify-content:space-between;align-items:center;gap:4px 16px;flex-wrap:wrap;padding-block:8px}
+.agentbar a{color:#F4F0E8;font-weight:600;text-decoration:underline;text-underline-offset:3px}
 /* commission points: short labelled rows */
 .pts{list-style:none;margin:10px 0 0;padding:0;display:grid}
 .pts[hidden]{display:none}
@@ -268,6 +272,7 @@ body{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
     <span class="eyebrow">Agents</span>
   </div>
 </header>
+<div class="agentbar"><div class="wrap"><span>This page is for Northline agents.</span><a href="shop/">Looking to buy? Go to the shop</a></div></div>
 
 <div class="wrap">
   <section class="intro">

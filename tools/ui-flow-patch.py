@@ -24,6 +24,9 @@ SHOP_EDITS = [
  ('<p class="hint">Opens WhatsApp with your order typed out: press send there. We reply to confirm your size and the total, then you pay by bank transfer. If WhatsApp doesn’t open,',
   f'<p class="hint">{ORDER} You pay by bank transfer after we confirm. Sizes can’t be exchanged. Your order opens in WhatsApp, ready to send. If it doesn’t,'),
  # filters: common first, the rest under "More filters"
+ # hero: one clear way into the products
+ ('<div class="trust" aria-label="Before you order">', '<a class="shopgo" href="#browse">Shop styles</a>\n  <div class="trust" aria-label="Before you order">'),
+ ('<nav class="tools" aria-label="Browse">', '<nav class="tools" id="browse" aria-label="Browse">'),
  # size confidence: the personal check and the no-exchange rule, right under the size choices
  ('<p class="few" id="pdFew" hidden', '<p class="szn" id="pdSzn">Not sure of your size? Add your foot length or a note when you order and we check it with you before you pay. Sizes can’t be exchanged.</p><p class="few" id="pdFew" hidden'),
  ('function drawFilters(){', '''let MOREF=false;
@@ -37,6 +40,7 @@ function drawFilters(){'''),
 ]
 
 AGENT_EDITS = [
+ ('</header>\n', '</header>\n<div class="agentbar"><div class="wrap"><span>This page is for Northline agents.</span><a href="shop/">Looking to buy? Go to the shop</a></div></div>\n'),
  ('<p id="commOld">Shoes and bags: ₦5,000 each, or ₦3,000 on items priced ₦30,000 and under. Baby clothes: ₦1,500 a piece. An item counts once the customer has paid. Your first sale is paid as soon as the customer pays. After that, when you reach 5 items, Northline pays you what those 5 earned and your count starts again from 0. Every item shows what you earn on it.</p>',
   '''<ul class="pts" id="commOld">
         <li><b>Per item</b><span>Shoes and bags: ₦5,000 each, or ₦3,000 on items priced ₦30,000 and under. Baby clothes: ₦1,500 a piece.</span></li>
@@ -64,6 +68,10 @@ AGENT_EDITS = [
 ]
 
 PTS_CSS = """
+/* agent page label */
+.agentbar{background:#4A3426;color:#F4F0E8;font:500 13px/1.4 var(--ui)}
+.agentbar .wrap{display:flex;justify-content:space-between;align-items:center;gap:4px 16px;flex-wrap:wrap;padding-block:8px}
+.agentbar a{color:#F4F0E8;font-weight:600;text-decoration:underline;text-underline-offset:3px}
 /* commission points: short labelled rows */
 .pts{list-style:none;margin:10px 0 0;padding:0;display:grid}
 .pts[hidden]{display:none}
@@ -86,6 +94,11 @@ SHOP_CSS = """
   .trust svg{display:none}
   .trust b{font-size:12.5px!important;line-height:1.25}.trust span{font-size:11.5px!important;line-height:1.3}
 }
+/* hero button */
+.shopgo{justify-self:start;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 20px;border-radius:2px;background:#F4F0E8;color:#2E2C29;font:600 14.5px var(--ui);text-decoration:none}
+.shopgo::after{content:"\\2193";font-weight:400}
+#browse{scroll-margin-top:var(--head,58px)}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
 /* size note */
 .szn{margin:10px 0 0;font-size:13px;line-height:1.45;color:var(--ink-2)}
 /* filters: common groups first, the rest folded under More filters */
