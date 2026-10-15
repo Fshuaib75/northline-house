@@ -250,6 +250,15 @@ body{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 /* agent page: the code box no longer stretches to the height of the commission box */
 .agent{align-items:start}
 .agent>.panel{align-self:start}
+/*nl-ui-flow-2026-10-15*/
+/* commission points: short labelled rows */
+.pts{list-style:none;margin:10px 0 0;padding:0;display:grid}
+.pts[hidden]{display:none}
+.pts li{display:grid;grid-template-columns:104px minmax(0,1fr);gap:12px;padding:9px 0;border-top:1px solid var(--line);font-size:14px;line-height:1.45;color:var(--ink-2)}
+.pts li:first-child{border-top:0}
+.pts li>b{font:600 11.5px/1.5 var(--ui);letter-spacing:.07em;text-transform:uppercase;color:var(--ink)}
+.notice>b{display:block}.notice .pts{margin-top:4px}.notice .pts li{border-color:rgba(74,52,38,.18)}
+@media (max-width:380px){.pts li{grid-template-columns:1fr;gap:2px}}
 </style>
 </head>
 <body>
@@ -282,13 +291,31 @@ body{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
     <div class="panel">
       <h2>Your commission</h2>
       <div class="big">Your first sale is paid straight away</div>
-      <p id="commOld">Shoes and bags: ₦5,000 each, or ₦3,000 on items priced ₦30,000 and under. Baby clothes: ₦1,500 a piece. An item counts once the customer has paid. Your first sale is paid as soon as the customer pays. After that, when you reach 5 items, Northline pays you what those 5 earned and your count starts again from 0. Every item shows what you earn on it.</p>
-      <p id="commNew" hidden>Every item shows what you earn on it: a quarter (25%) of Northline’s margin on that item, rounded up to the next ₦500 (most baby clothes ₦1,500). An item counts once the customer has paid. Your first sale is paid as soon as the customer pays. After that, when you reach 5 items, Northline pays you what those 5 earned and your count starts again from 0.</p>
+      <ul class="pts" id="commOld">
+        <li><b>Per item</b><span>Shoes and bags: ₦5,000 each, or ₦3,000 on items priced ₦30,000 and under. Baby clothes: ₦1,500 a piece.</span></li>
+        <li><b>What counts</b><span>An item counts once the customer has paid.</span></li>
+        <li><b>First sale</b><span>Paid as soon as the customer pays.</span></li>
+        <li><b>After that</b><span>When you reach 5 items, Northline pays you what those 5 earned and your count starts again from 0.</span></li>
+        <li><b>Your amount</b><span>Every item shows what you earn on it.</span></li>
+      </ul>
+      <ul class="pts" id="commNew" hidden>
+        <li><b>Per item</b><span>A quarter (25%) of Northline’s margin on that item, rounded up to the next ₦500 (most baby clothes ₦1,500).</span></li>
+        <li><b>Your amount</b><span>Every item shows what you earn on it.</span></li>
+        <li><b>What counts</b><span>An item counts once the customer has paid.</span></li>
+        <li><b>First sale</b><span>Paid as soon as the customer pays.</span></li>
+        <li><b>After that</b><span>When you reach 5 items, Northline pays you what those 5 earned and your count starts again from 0.</span></li>
+      </ul>
       <div class="earnbox" id="earnBox" hidden>
         <h2>Your earnings</h2>
         <div id="earnBody"><p class="hint">Loading…</p></div>
       </div>
-      <div class="notice" id="commNotice" hidden><b>New from <span class="swd"></span>:</b> your commission becomes a quarter (25%) of Northline’s margin on each item, rounded up to the next ₦500. Your first sale is still paid straight away, then every 5 items. Most prices go down at the same time, so items are easier to sell. Orders sent before <span class="swd"></span> earn today’s rate. Every item will keep showing what you earn.</div>
+      <div class="notice" id="commNotice" hidden><b>New from <span class="swd"></span></b>
+        <ul class="pts">
+          <li><b>New rate</b><span>Your commission becomes a quarter (25%) of Northline’s margin on each item, rounded up to the next ₦500.</span></li>
+          <li><b>Payouts</b><span>Your first sale is still paid straight away, then every 5 items.</span></li>
+          <li><b>Prices</b><span>Most prices go down at the same time, so items are easier to sell.</span></li>
+          <li><b>Before <span class="swd"></span></b><span>Orders sent before then earn today’s rate. Every item will keep showing what you earn.</span></li>
+        </ul></div>
     </div>
   </section>
 
