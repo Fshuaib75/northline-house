@@ -25,13 +25,13 @@ SHOP_EDITS = [
   f'<p class="hint">{ORDER} You pay by bank transfer after we confirm. Your order opens in WhatsApp, ready to send. If it doesn’t,'),
  # filters: common first, the rest under "More filters"
  ('function drawFilters(){', '''let MOREF=false;
-const moreActive=()=>[...S.f].filter(x=>/^(brand|heel):/.test(x)).length;
+const moreActive=()=>[...S.f].filter(x=>/^heel:/.test(x)).length;
 function moreF(html){ if(!html) return ""; const n=moreActive();
-  return `<details class="more"${MOREF||n?" open":""}><summary><span>More filters</span>${n?`<em>${n} on</em>`:`<small>Brand, heel</small>`}</summary>${html}</details>`; }
+  return `<details class="more"${MOREF||n?" open":""}><summary><span>More filters</span>${n?`<em>${n} on</em>`:`<small>Heel</small>`}</summary>${html}</details>`; }
 $("fBody").addEventListener("toggle",e=>{ if(e.target.matches&&e.target.matches("details.more")) MOREF=e.target.open; },true);
 function drawFilters(){'''),
  ('+ fOpts("fam",FAM_ORDER,"Colour") + fOpts("band",BANDS,"Price") + fOpts("heel",HEEL_ORDER,"Heel") + fOpts("brand",brands,"Brand");',
-  '+ fOpts("fam",FAM_ORDER,"Colour") + fOpts("band",BANDS,"Price") + moreF(fOpts("heel",HEEL_ORDER,"Heel") + fOpts("brand",brands,"Brand"));'),
+  '+ fOpts("brand",brands,"Brand") + fOpts("fam",FAM_ORDER,"Colour") + fOpts("band",BANDS,"Price") + moreF(fOpts("heel",HEEL_ORDER,"Heel"));'),
 ]
 
 AGENT_EDITS = [
@@ -85,6 +85,10 @@ SHOP_CSS = """
   .trust b{font-size:12.5px!important;line-height:1.25}.trust span{font-size:11.5px!important;line-height:1.3}
 }
 /* filters: common groups first, the rest folded under More filters */
+/* brand: one swipeable row so a long list stays quick to scan */
+.fgroup:has(.opt[data-k="brand"]) .opts{flex-wrap:nowrap;overflow-x:auto;padding-bottom:6px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.fgroup:has(.opt[data-k="brand"]) .opts::-webkit-scrollbar{display:none}
+.fgroup:has(.opt[data-k="brand"]) .opt{flex:0 0 auto}
 details.more{padding-top:0}
 details.more>summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:48px;cursor:pointer;font:600 15px var(--ui)}
 details.more>summary::-webkit-details-marker{display:none}
