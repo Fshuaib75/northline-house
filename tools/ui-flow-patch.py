@@ -22,8 +22,10 @@ SHOP_EDITS = [
  # order button + note
  ("Send my order on WhatsApp</a>", "Place order</a>"),
  ('<p class="hint">Opens WhatsApp with your order typed out: press send there. We reply to confirm your size and the total, then you pay by bank transfer. If WhatsApp doesn’t open,',
-  f'<p class="hint">{ORDER} You pay by bank transfer after we confirm. Your order opens in WhatsApp, ready to send. If it doesn’t,'),
+  f'<p class="hint">{ORDER} You pay by bank transfer after we confirm. Sizes can’t be exchanged. Your order opens in WhatsApp, ready to send. If it doesn’t,'),
  # filters: common first, the rest under "More filters"
+ # size confidence: the personal check and the no-exchange rule, right under the size choices
+ ('<p class="few" id="pdFew" hidden', '<p class="szn" id="pdSzn">Not sure of your size? Add your foot length or a note when you order and we check it with you before you pay. Sizes can’t be exchanged.</p><p class="few" id="pdFew" hidden'),
  ('function drawFilters(){', '''let MOREF=false;
 const moreActive=()=>[...S.f].filter(x=>/^heel:/.test(x)).length;
 function moreF(html){ if(!html) return ""; const n=moreActive();
@@ -84,6 +86,8 @@ SHOP_CSS = """
   .trust svg{display:none}
   .trust b{font-size:12.5px!important;line-height:1.25}.trust span{font-size:11.5px!important;line-height:1.3}
 }
+/* size note */
+.szn{margin:10px 0 0;font-size:13px;line-height:1.45;color:var(--ink-2)}
 /* filters: common groups first, the rest folded under More filters */
 /* brand: one swipeable row so a long list stays quick to scan */
 .fgroup:has(.opt[data-k="brand"]) .opts{flex-wrap:nowrap;overflow-x:auto;padding-bottom:6px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
