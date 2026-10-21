@@ -14,7 +14,7 @@ To regenerate everything after changing the layout: `python3 tools/packaging/bui
 ## Spec to send printers
 
 - **Size:** 34 W × 12 D × 30 H cm. Measure your largest pair before ordering, because this is sized for men's EU 45 slides.
-- **Paper:** matte charcoal, 160–175 gsm, with a cardboard insert in the base and the top fold.
+- **Paper:** matte ink (`#2E2C29`, near-black), 160–175 gsm, with a cardboard insert in the base and the top fold.
 - **Handles:** brown twisted cord (black if brown isn't available).
 - **Print:** one colour only, cream `#EFE8DC`. Hot-foil stamping if the quote allows it.
 - **Front:** NORTHLINE wordmark, "EST. 2026" with a line on each side, small caret mark at the bottom.

@@ -4,7 +4,7 @@ src = (root/'brand'/'northline-wordmark-cream.svg').read_text()
 vb = re.search(r'viewBox="([^"]+)"', src).group(1)
 inner = re.search(r'<svg[^>]*>(.*)</svg>', src, re.S).group(1)
 vx, vy, vw, vh = map(float, vb.split())
-CREAM, MUTED, BAG, HANDLE = '#EFE8DC', '#A89F90', '#2B2B2B', '#6B4A32'
+CREAM, MUTED, BAG, HANDLE = '#EFE8DC', '#A89F90', '#2E2C29', '#4A3426'
 FONT = "Jost, Montserrat, 'Helvetica Neue', Arial, sans-serif"
 
 def wordmark(cx, top, width):

@@ -14,15 +14,19 @@ Northline is the curated edit of what's good in Istanbul, for people in Nigeria 
 
 ## Palette
 
+These are the colours the live site already uses (`index.html`). Everything follows them.
+
 | Name | Hex | Use |
 |---|---|---|
-| Off-white / cream | `#EFE8DC` | Logo on dark, backgrounds |
-| Stone | `#CFC6B8` | Backgrounds, surfaces |
-| Tan | `#A87B52` | Accents (matches the tan leather) |
-| Brown | `#6B4A32` | Handles, small accents |
-| Charcoal | `#2B2B2B` | Bag, dark backgrounds |
+| Cream | `#F4F0E8` | Page background, light surfaces |
+| Paper | `#FBF8F2` | Cards |
+| Line | `#E2D9CA` | Borders, dividers |
+| Ink | `#2E2C29` | Text, logo on light, the bag |
+| Muted | `#6B6257` | Secondary text |
+| Olive | `#5E5E45` | Accent, links, buttons |
+| Brown | `#4A3426` | Accent, bag handles |
 
-Nothing outside these five. No gold, no neon.
+The logo on dark backgrounds is `#EFE8DC` (`brand/northline-wordmark-cream.svg`). Nothing outside these colours. No neon.
 
 ## Voice
 
