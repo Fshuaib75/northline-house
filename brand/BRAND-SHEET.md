@@ -4,7 +4,11 @@ One page to keep open while shooting, posting or briefing anyone.
 
 ## Idea
 
-Northline is the curated edit of what's good in Istanbul, for people in Nigeria with taste. The curation and the point of view are the product, not any one item. Every post carries the Northline name, never another brand's.
+Northline is a considered edit of everyday essentials. The selection and the point of view are the product, not any one item. Every post carries the Northline name, never another brand's.
+
+Don't lead with where products come from. "Curated in Istanbul" and "Curated from Turkey" are both ruled out as brand lines. Factual delivery and import terms on product pages are fine.
+
+Taglines proposed in PR #9 and awaiting the owner's approval: "Modern form. Rooted soul." and "Considered everyday essentials."
 
 ## Logo
 
@@ -47,11 +51,11 @@ Short, calm, certain. "Two straps. Contoured footbed. Black or tan." / "Back in 
 
 **Edit:** one preset for everything: warm, slightly desaturated, lifted shadows.
 
-**Insole branding:** keep the third-party insole logo out of hero shots. Show the small "TÜRKİYE" mark in one deliberate detail frame.
+**Insole branding:** keep third-party logos out of hero shots.
 
 ## Content pillars
 
 1. **Product still:** one clean hero shot (feed)
 2. **Detail:** buckle, footbed, stitching, to justify the price
 3. **Proof:** real customer photos and delivery confirmations (stories)
-4. **The line:** short Istanbul-to-Nigeria moments, like packing or a shipment going out
+4. **Behind the scenes:** packing an order, a parcel going out, a delivery arriving
