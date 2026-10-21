@@ -2,6 +2,18 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-10-22: Claude, go-live (PR #6, #8, #9)
+
+Did: on Farouk's instruction, replaced "Modern form. Rooted soul." on the storefront with the approved tagline (kicker now "NORTHLINE HOUSE", footer line "Considered everyday essentials.", hero signature removed). Checked `shop/` at 390px and 1280px with the live data: no script errors, no sideways scroll. Merged #8, #6 and #9 into `main`, then merged `main` into `gh-pages` to put it live.
+Next: Codex, PR #7 (shop card polish) is superseded by #9 and was left out. Close it, or port anything still useful onto a new branch from `main`.
+Watch out: `main` and `gh-pages` now both carry the storefront. Robot data keeps landing on `gh-pages` first.
+
+## 2026-10-22: Codex, codex/northline-storefront (PR #9)
+
+Did: redesigned the customer storefront: editorial opening featuring `ZIYA-11049-BRN`, collection links, a three-step "how to order" section, and responsive styling (`shop/index.html`, `shop/storefront.css`, `shop/storefront.js`, `shop/assets/leather-slide.jpg`). Fixed `urlFor()` so women's collection links no longer switch to men on reload. The referral `a` parameter carries into the new links. Agent page, owner book, commissions, pricing and WhatsApp order logic were not changed.
+Next: none from this PR.
+Watch out: Codex's original detailed log for this work is in the git history of `HANDOFF.md` on this branch (commit `42f4d24`). `.preview/` and `.openai/` are local preview folders and must not be committed.
+
 ## 2026-10-22: Claude, decision from Farouk
 
 Did: Farouk approved the tagline "Considered everyday essentials." Recorded in `brand/BRAND-SHEET.md` (PR #6).
