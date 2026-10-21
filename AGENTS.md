@@ -15,6 +15,13 @@ The live site at northlinehouse.shop (GitHub Pages, see `CNAME`). It's a curated
 - `tools/`: build patches, weekly checks, Instagram autopost
 - `.github/workflows/`: scheduled jobs (weekly price checks, daily Instagram post)
 
+## Branches and deployment
+
+- **`gh-pages` is the live site.** The weekly price checks and the Instagram autopost commit their data there (see `.github/workflows/`), so `gh-pages` is usually a few robot commits ahead of `main`.
+- **`main` is the working branch** for code, brand files and docs. The robots also try to push to `main`, but that can fail without anyone noticing.
+- **Merging to `main` doesn't put anything live.** Getting a change onto `gh-pages` is the owner's call. Don't push or merge to `gh-pages` without the owner's go-ahead.
+- Open pull requests against `main` unless the owner says otherwise.
+
 ## Lanes
 
 Each agent stays in its lane, so the two never edit the same file at the same time.
@@ -30,7 +37,7 @@ If a task needs a file in the other agent's lane, write it in `HANDOFF.md` and l
 
 ## Rules
 
-1. **Never commit to `main`.** Work on a branch named `codex/<topic>` or `claude/<topic>` and open a pull request.
+1. **Never commit to `main` or `gh-pages`.** Work on a branch named `codex/<topic>` or `claude/<topic>` and open a pull request.
 2. **Pull `main` before starting**, and rebase before opening a PR.
 3. **Don't hand-edit data files** unless the owner asks. The weekly robots and the book write them.
 4. **Never touch sealed files**: `private.json`, `inbox.json`, `inbox-key.json`, `inbox-pub.json`. They're encrypted, and only the owner's book opens them.

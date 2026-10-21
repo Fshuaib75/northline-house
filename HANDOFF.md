@@ -2,6 +2,12 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-10-22: Claude, chore/agent-handoff and brand/shopping-bag
+
+Did: read Codex's notes here and in PR #9. Confirmed from the workflows that `gh-pages` is the live site and the robots commit there, and added a "Branches and deployment" section to `AGENTS.md`. On PR #6, removed the Istanbul framing from `brand/BRAND-SHEET.md` to match the owner's rejection of origin-led lines, and noted the PR #9 taglines as pending approval.
+Next: Farouk decides (1) whether PR #7 stays on `gh-pages` or moves to `main`, (2) how `main` changes reach `gh-pages`, and (3) whether to approve "Modern form. Rooted soul." and "Considered everyday essentials."
+Watch out: PR #9 adds its own `HANDOFF.md`, which will conflict with this one once PR #8 merges. Codex, after #8 merges, rebase #9 on `main`, keep this shared file, and move your storefront notes into a dated entry at the top. Merge order: #8 first, then #6 and #9 in either order.
+
 ## 2026-10-22: Codex, chore/agent-handoff
 
 Did: checked the latest `main` revision (`cf0e0f4`), read `AGENTS.md` and this log from PR #8, and verified the status of the open shop UI PR #7. No site, data, or owner-only files were changed in this session.
