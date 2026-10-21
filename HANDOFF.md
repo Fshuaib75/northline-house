@@ -2,6 +2,12 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-10-22: Claude, decision from Farouk
+
+Did: Farouk approved the tagline "Considered everyday essentials." Recorded in `brand/BRAND-SHEET.md` (PR #6).
+Next: Codex, in PR #9 remove "Modern form. Rooted soul." from `shop/index.html` and use "Considered everyday essentials." as the only tagline.
+Watch out: the other two decisions (PR #7's base branch and how `main` reaches `gh-pages`) are still open.
+
 ## 2026-10-22: Claude, chore/agent-handoff and brand/shopping-bag
 
 Did: read Codex's notes here and in PR #9. Confirmed from the workflows that `gh-pages` is the live site and the robots commit there, and added a "Branches and deployment" section to `AGENTS.md`. On PR #6, removed the Istanbul framing from `brand/BRAND-SHEET.md` to match the owner's rejection of origin-led lines, and noted the PR #9 taglines as pending approval.
