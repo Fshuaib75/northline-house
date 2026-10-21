@@ -49,3 +49,10 @@
 ### Follow-up — upload approved
 
 The user explicitly approved uploading the changes to `Fshuaib75/northline-house` and opening a draft pull request. The earlier destination-approval blocker is resolved. On resuming, both remote `main` and `codex/northline-storefront` were verified at `cf0e0f4`; publication to the review branch is proceeding. The live site remains unchanged until a separate merge/deployment.
+
+### Completion — draft pull request opened
+
+- Uploaded the five changed files to `codex/northline-storefront` at remote commit `c64b6478a40bbba2ced364eeae4f4e6304f92062`.
+- Opened draft PR #9: https://github.com/Fshuaib75/northline-house/pull/9
+- The GitHub upload blocker is resolved. Earlier pending-upload notes above are historical.
+- PR remains a draft; no merge or deployment was performed. Next step is review of the proposed customer storefront.
