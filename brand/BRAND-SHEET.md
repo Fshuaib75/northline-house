@@ -8,7 +8,7 @@ Northline is a considered edit of everyday essentials. The selection and the poi
 
 Don't lead with where products come from. "Curated in Istanbul" and "Curated from Turkey" are both ruled out as brand lines. Factual delivery and import terms on product pages are fine.
 
-Taglines proposed in PR #9 and awaiting the owner's approval: "Modern form. Rooted soul." and "Considered everyday essentials."
+**Tagline (approved 2026-10-22):** "Considered everyday essentials." Use it wherever a tagline is needed. "Modern form. Rooted soul." was not approved, so don't use it.
 
 ## Logo
 
