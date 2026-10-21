@@ -429,6 +429,7 @@ details.more[open]>summary::after{content:"\2212"}
 details.more>summary small,details.more>summary em{font:400 12.5px var(--ui);font-style:normal;color:var(--muted);margin-left:auto}
 details.more>summary em{color:var(--ink);font-weight:600}
 </style>
+<link rel="stylesheet" href="storefront.css">
 </head>
 <body>
 <header class="top">
@@ -442,18 +443,33 @@ details.more>summary em{color:var(--ink);font-weight:600}
   <div class="searchrow" id="searchRow" hidden><div class="wrap"><input type="search" id="q" placeholder="Search styles, colours, brands" aria-label="Search"></div></div>
 </header>
 
-<section class="wrap intro">
-  <h1>Carefully chosen. Delivered to you in Nigeria.</h1>
-  <p>Shoes, bags and clothing from trusted brands. We confirm your size and delivery with you personally before you pay.</p>
-  <span class="via" id="via" hidden>Shopping with <b id="viaCode"></b></span>
-  <a class="shopgo" href="#browse">Shop styles</a>
-  <div class="trust" aria-label="Before you order">
-    <div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></svg><p style="margin:0"><b>Up to 14 days</b><span>Imported to order</span></p></div>
-    <div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/></svg><p style="margin:0"><b>Pay after we confirm</b><span>By bank transfer</span></p></div>
-    <div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 16 16 4l4 4L8 20H4z"/><path d="m8 12 2 2M11 9l2 2M14 6l2 2"/></svg><p style="margin:0"><b>Size checked first</b><span>Before you pay</span></p></div>
+<a class="skip-link" href="#browse">Skip to collection</a>
+<section class="editorial" aria-labelledby="hero-title">
+  <div class="hero-copy">
+    <p class="kicker">NORTHLINE HOUSE · MODERN FORM. ROOTED SOUL.</p>
+    <h1 id="hero-title">Everyday pieces.<br><em>A distinct point of view.</em></h1>
+    <p class="hero-description">Considered shoes, bags and clothing. Chosen for your everyday, delivered to you in Nigeria.</p>
+    <div class="hero-actions"><a class="hero-cta" href="#browse">Explore the collection <span aria-hidden="true">↗</span></a><a class="text-link" href="#how-it-works">How to order</a></div>
+    <span class="via" id="via" hidden>Shopping with <b id="viaCode"></b></span>
+    <p class="hero-signature">Modern form. Rooted soul.</p>
+  </div>
+  <div class="hero-visual">
+    <span class="visual-label">THE EVERYDAY EDIT / 01</span>
+    <img src="assets/leather-slide.jpg" width="800" height="1200" alt="Brown Ziya leather cross-strap slide from the Northline collection" fetchpriority="high">
+    <div class="visual-caption"><span>Simple form.<br>Lasting appeal.</span><a href="?g=M&amp;i=ZIYA-11049-BRN" data-collection-link aria-label="View the Ziya classic leather palm">Discover the piece ↗</a></div>
   </div>
 </section>
-
+<div class="service-strip" aria-label="Ordering essentials"><span>Considered everyday essentials</span><span>Delivered across Nigeria</span><span>Pay only after confirmation</span></div>
+<section class="collection-intro wrap" aria-labelledby="collection-title">
+  <div><p class="kicker">THE NORTHLINE COLLECTION</p><h2 id="collection-title">Find your everyday.</h2></div>
+  <p>Pieces that work with the way you dress.<br>Start with a collection, make it your own.</p>
+</section>
+<nav class="collection-links wrap" aria-label="Shop collections">
+  <a href="?g=M&amp;t=sec:Shoes#browse" data-collection-link><span>01 / FOOTWEAR</span>For him <span aria-hidden="true">↗</span></a>
+  <a href="?g=W&amp;t=sec:Shoes#browse" data-collection-link><span>02 / FOOTWEAR</span>For her <span aria-hidden="true">↗</span></a>
+  <a href="?g=W&amp;t=sec:Bags#browse" data-collection-link><span>03 / ACCESSORIES</span>Bags <span aria-hidden="true">↗</span></a>
+  <a href="?g=W&amp;t=sec:Clothing#browse" data-collection-link><span>04 / WARDROBE</span>Clothing <span aria-hidden="true">↗</span></a>
+</nav>
 <nav class="tools" id="browse" aria-label="Browse">
   <div class="wrap">
     <div class="tabs">
@@ -478,6 +494,11 @@ details.more>summary em{color:var(--ink);font-weight:600}
   <p class="pginfo" id="pginfo" hidden></p>
 </main>
 
+<section class="ordering wrap" id="how-it-works" aria-labelledby="ordering-title">
+  <div class="ordering-heading"><p class="kicker">A PERSONAL WAY TO SHOP</p><h2 id="ordering-title">From your shortlist<br>to your doorstep.</h2><p>We check the details with you before you pay.</p></div>
+  <div class="ordering-steps"><article><span>01</span><h3>Choose your pieces</h3><p>Select your colour and size, add to your bag, then send your order on WhatsApp.</p></article><article><span>02</span><h3>Confirm, then pay</h3><p>We confirm availability, sizing and delivery personally. Pay by bank transfer after confirmation.</p></article><article><span>03</span><h3>Make them yours</h3><p>Your pieces are imported to order. Allow up to 14 days after payment for delivery.</p></article></div>
+  <details class="ordering-note"><summary>Before you order: sizing and exchanges</summary><p>Sizes cannot be exchanged. Please check the size guide on the product page and confirm your size with us before payment. If you have a question about an item, contact us on WhatsApp before ordering.</p></details>
+</section>
 <section class="wrap" id="fbSec" aria-labelledby="fbH">
   <div><h2 id="fbH">What customers say</h2><p class="lead" id="fbLead">Real words from people who ordered. Nothing here is written by us.</p></div>
   <div class="fbgrid">
@@ -838,7 +859,7 @@ function syncControls(){ $("sort").value=S.sort; $("q").value=S.q;
   if(S.q&&$("searchRow").hidden){ $("searchRow").hidden=false; $("searchBtn").setAttribute("aria-expanded",true); document.documentElement.style.setProperty("--toolsTop", document.querySelector(".top").offsetHeight+"px"); }
   audTabs(); }
 function urlFor(extra){ const u=new URL(location.href), sp=u.searchParams; VIEW_KEYS.concat(["b","i"]).forEach(k=>sp.delete(k));
-  if(S.g!=="W") sp.set("g",S.g); if(S.type) sp.set("t",S.type); if(S.sort!=="rec") sp.set("s",S.sort); if(S.q.trim()) sp.set("q",S.q.trim());
+  if(S.g!=="M") sp.set("g",S.g); if(S.type) sp.set("t",S.type); if(S.sort!=="rec") sp.set("s",S.sort); if(S.q.trim()) sp.set("q",S.q.trim());
   [...S.f].sort().forEach(x=>sp.append("f",x)); if(S.size) sp.set("z",S.size); if(S.page>1) sp.set("p",S.page);
   if(extra) Object.entries(extra).forEach(([k,v])=>sp.set(k,v)); const qs=sp.toString(); return u.pathname+(qs?"?"+qs:"")+u.hash; }
 const here=()=>location.pathname+location.search+location.hash;
@@ -1196,5 +1217,6 @@ Promise.all([fresh("products.json"), fresh("prices.json"), fresh("drop.json"), f
 });
 </script>
 <script data-goatcounter="https://northlinehouse.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+<script src="storefront.js"></script>
 </body>
 </html>
