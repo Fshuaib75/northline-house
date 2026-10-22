@@ -2,6 +2,12 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-10-22: Codex, codex/inbox-branch-fix
+
+Did: pulled main at 871e2ad and corrected the sourcing review dialog and extension defaults to gh-pages. Added a shared config migration in tools/extension/seal.js: existing Northline main settings move to gh-pages once, retaining the token; custom repos/branches and subsequent explicit overrides stay intact. Both extension settings and popup persist the migration. Settings, popup and review explain the destination. All 25 sourcing/inbox tests pass, including mocked gh-pages reads/writes, migration, custom settings and existing conflict retries.
+Next: Farouk reviews this branch's PR. After merge, regenerate the sourcing review download and reload/update the extension. Send one approved item and confirm it appears in the book's To review tab.
+Watch out: no real inbox/key files were opened or written, and nothing was deployed. Delivery uses one selected branch, not a main mirror: copying pending batches alone cannot synchronize the book's later removals and could reintroduce reviewed items. Old review downloads still default to main; manually change their Branch field to gh-pages or regenerate. Existing sealed batches are untouched. Network verification used synthetic keys and mocked GitHub responses.
+
 ## 2026-10-22: Claude, inbox went to the wrong branch
 
 Did: Farouk's first send from the review page worked, but it sealed 4 items into `inbox.json` on `main` (commit 055aad3). The book loads the inbox from the live site (`fetch("../inbox.json")` in `northline-site/build-files/book-template.txt` in the claude.ai Project), so it reads `gh-pages`, which was empty. On Farouk's go-ahead, copied that one sealed batch, unopened, into `gh-pages` `inbox.json` (commit 459a2c7, deployed).
