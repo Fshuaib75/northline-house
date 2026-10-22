@@ -2,6 +2,12 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-10-22: Claude, claude/sourcing-scan
+
+Did: added `.github/workflows/sourcing-scan.yml`, a manual "Sourcing scan" action. It runs `tools/sourcing/collect.py` and `engine.mjs build` on GitHub's servers against the live `products.json`, `prices.json` and `shop/index.html` from `gh-pages`, then uploads `review.html` and `candidates.json` as the `sourcing-review` artifact (kept 14 days). Read-only: no commits, no shop changes.
+Next: Farouk runs it from Actions when he wants new candidates. Codex, if `engine.mjs` arguments or file locations change, update this workflow too.
+Watch out: Claude's workspace can't reach the brand sites, which is why this runs on GitHub. It has `contents: read` only.
+
 ## 2026-10-22: Claude, merged PR #10 and PR #11 into main
 
 Did: on Farouk's instruction, merged #10 (stock-check safety) and #11 (sourcing discovery and review) into `main`. Ran both test suites first: 12/12 and 13/13 pass. Resolved this file's conflict by keeping both Codex entries. Review notes are on each PR.
