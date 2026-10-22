@@ -2,6 +2,12 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-10-22: Codex, codex/sourcing-learning
+
+Did: added bounded Shopify catalogue discovery for Capone, Aldo and new source Derimod (`tools/sourcing/collect.py`), stock-evidenced normalization and price-aware ranking (`engine.mjs`), owner review/export UI (`review.html`), and approval-preference logistic regression with grouped holdout validation (`ranking.mjs`). A live four-page scan per source examined 3,000 products, found 324 eligible candidates and shortlisted 60 across three brands. Added 13 passing regression tests in `tools/tests/test_sourcing.mjs`; checked browser approve/reject and findings export. No catalogue or sealed files changed.
+Next: Farouk reviews candidates, saves real approval/rejection feedback and routes approved findings through the existing owner inbox flow. Run `python tools/sourcing/collect.py --output /tmp/nl-sources --pages 4`, then `node tools/sourcing/engine.mjs build /tmp/nl-sources /tmp/nl-review`. Train with `node tools/sourcing/engine.mjs train /tmp/nl-model.json feedback.json`; pass that model as the optional final build argument. Owner decides merge/deployment; this is independent of reliability PR #10.
+Watch out: scans are bounded/partial and never infer missing stock. Snapshots older than 48 hours are rejected at build. Weights and classification are estimates; recheck supplier stock, size, material and price before publishing. Review decisions live in memory until exported. No real feedback exists yet: ranking uses rules until at least 50 distinct valid decisions (15 each class), adequate grouped holdout classes and improvement on both Brier score and balanced accuracy. This predicts owner preference, not sales. No automatic publishing, training schedule or paid AI dependency.
+
 ## 2026-10-22: Claude, go-live (PR #6, #8, #9)
 
 Did: on Farouk's instruction, replaced "Modern form. Rooted soul." on the storefront with the approved tagline (kicker now "NORTHLINE HOUSE", footer line "Considered everyday essentials.", hero signature removed). Checked `shop/` at 390px and 1280px with the live data: no script errors, no sideways scroll. Merged #8, #6 and #9 into `main`, then merged `main` into `gh-pages` to put it live.
