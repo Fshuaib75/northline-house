@@ -2,6 +2,12 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-10-22: Codex, codex/bot-reliability
+
+Did: hardened supplier stock checks in `tools/brands/check.py` and `tools/capone/check.py`. Failed reads and unmatched products retain previous records with a stale flag; verified records carry a check timestamp. Incomplete Shopify pagination is rejected instead of being treated as a complete catalogue. Brand-filtered runs retain other brands' records. Added offline regression coverage in `tools/tests/test_stock_safety.py`.
+Next: review the bot reliability PR against main, then run a dry supplier check before deciding whether to deploy to gh-pages. Further engine work should cover product identity, price/margin changes and ranked sourcing recommendations into the owner's approval inbox.
+Watch out: 12 offline tests pass; no live supplier scan or production data write was performed. Stale records preserve last known stock, not a fresh availability guarantee. Existing storefronts still use that last known stock; per-item freshness UI is a follow-up. A run with fewer than one-third freshly verified styles aborts without writing. Image-match misses now require manual verification rather than automatically delisting products. No workflows, sealed files or catalogue data were edited.
+
 ## 2026-10-22: Claude, go-live (PR #6, #8, #9)
 
 Did: on Farouk's instruction, replaced "Modern form. Rooted soul." on the storefront with the approved tagline (kicker now "NORTHLINE HOUSE", footer line "Considered everyday essentials.", hero signature removed). Checked `shop/` at 390px and 1280px with the live data: no script errors, no sideways scroll. Merged #8, #6 and #9 into `main`, then merged `main` into `gh-pages` to put it live.
