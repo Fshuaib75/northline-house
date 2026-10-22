@@ -2,6 +2,12 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-10-22: Claude, inbox went to the wrong branch
+
+Did: Farouk's first send from the review page worked, but it sealed 4 items into `inbox.json` on `main` (commit 055aad3). The book loads the inbox from the live site (`fetch("../inbox.json")` in `northline-site/build-files/book-template.txt` in the claude.ai Project), so it reads `gh-pages`, which was empty. On Farouk's go-ahead, copied that one sealed batch, unopened, into `gh-pages` `inbox.json` (commit 459a2c7, deployed).
+Next: Codex, make `gh-pages` the default branch for the review page dialog (`tools/sourcing/review.html`) and the Chrome extension (`tools/extension/options.js` and `popup.js`, `DEF.branch`). Better still, append each batch to both `gh-pages` and `main`, the way the robot delivery steps do, so the two copies never drift. Add a test that the default is `gh-pages`.
+Watch out: any extension sends made with the default `main` branch never reached the book either. `main` now holds a copy of the same batch; leave it, since the book never reads `main`.
+
 ## 2026-10-22: Codex, codex/inbox-button (PR #14)
 
 Did: opened https://github.com/Fshuaib75/northline-house/pull/14; added Send to review inbox beside Export approved in `tools/sourcing/review.html`. `engine.mjs` embeds the existing `tools/extension/seal.js` into each standalone review, retaining its encryption, append and 409/422 retries. First use asks for repository, branch (extension defaults: Fshuaib75/northline-house/main) and a fine-grained token held only in page memory. Added forget-token control, pending-send guard, same-page repeat-send prevention and a destination/result message. Nine new tests cover encryption/decryption, concurrent append preservation, retry exhaustion, auth failures, approved-only submission, failure recovery and standalone build; all 22 sourcing/inbox tests pass. Browser checked button enablement, first-use dialog and cancel.
