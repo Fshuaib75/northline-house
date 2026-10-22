@@ -100,7 +100,8 @@ export function build(snapshotDir,outDir,modelPath=null,limit=60) {
   const result=rank(all,existingCatalogue(ROOT),read(path.join(ROOT,'prices.json')).params,modelPath?read(modelPath):null,limit);
   result.generated_at=new Date().toISOString();result.sources=sources;result.normalized=all.length;
   fs.mkdirSync(outDir,{recursive:true});fs.writeFileSync(path.join(outDir,'candidates.json'),JSON.stringify(result,null,2));
-  const template=fs.readFileSync(new URL('review.html',import.meta.url),'utf8');
+  const sealCode=fs.readFileSync(new URL('../extension/seal.js',import.meta.url),'utf8');
+  const template=fs.readFileSync(new URL('review.html',import.meta.url),'utf8').replace('/*INBOX_SEAL_CODE*/',()=>sealCode.replace(/<\/script/gi,'<\\/script'));
   fs.writeFileSync(path.join(outDir,'review.html'),template.replace('/*CANDIDATE_DATA*/null',JSON.stringify(result).replace(/</g,'\\u003c')));
   console.log(JSON.stringify({selected:result.candidates.length,eligible:result.eligible,excluded:result.excluded,brands:[...new Set(result.candidates.map(c=>c.item.brand))],model:result.model,sources},null,2));
   return result;
