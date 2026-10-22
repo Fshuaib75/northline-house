@@ -2,6 +2,12 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-10-22: Codex, owner-approved merge of PR #16 and #17
+
+Did: Farouk authorized merging both upgrades into main. Merged inbox fix https://github.com/Fshuaib75/northline-house/pull/16 first; this handoff accompanies sourcing expansion https://github.com/Fshuaib75/northline-house/pull/17 into main. Code matches the previously verified 32-test result; this final commit changes only this log.
+Next: run Sourcing scan on main for a fresh expanded review, update/reload the extension, and confirm an approved item appears in To review. New-brand weekly stock adapters remain follow-up work.
+Watch out: merge authorization covers main only. No deployment to gh-pages, product publication or real inbox writes were performed. Old downloaded reviews and installed extension copies require regeneration/update.
+
 ## 2026-10-22: Codex, codex/sourcing-scale
 
 Did: expanded automated discovery from 3 to 7 supplier sites with a shared allowlist (tools/sourcing/sources.json): Marjin, Les Benjamins, Basic&Co. and Libas added. Verified public products feeds and TRY via cart.js on all seven. Libas preserves explicitly allowed vendor brands instead of labelling everything Libas. Increased default scan to 8 pages/source and shortlist to 200; workflow exposes a bounded 1-500 review limit. Added exact supplier gender-tag support, conservative English clothing classification, child/outerwear exclusions, category/audience filters, brand/category/audience balancing, runtime currency checks and repeated-page detection. 29 Node tests plus 3 Python tests pass.
