@@ -1,0 +1,72 @@
+{
+  "derimod": {
+    "brand": "Derimod",
+    "base": "https://derimod.com.tr",
+    "vendors": {
+      "Derimod": "Derimod",
+      "Derimod D-Pack": "Derimod",
+      "Derimod Studio": "Derimod"
+    }
+  },
+  "aldo": {
+    "brand": "Aldo",
+    "base": "https://www.aldoshoes.com.tr",
+    "vendors": {
+      "ALDO": "Aldo"
+    }
+  },
+  "capone": {
+    "brand": "Capone",
+    "base": "https://www.caponeoutfitters.com.tr",
+    "vendors": {
+      "Capone Outfitters": "Capone",
+      "Capone": "Capone",
+      "Ippocampo": "Ippocampo"
+    }
+  },
+  "marjin": {
+    "brand": "Marjin",
+    "base": "https://www.marjin.com.tr",
+    "vendors": {
+      "Marjin": "Marjin"
+    }
+  },
+  "lesbenjamins": {
+    "brand": "Les Benjamins",
+    "base": "https://lesbenjamins.com",
+    "vendors": {
+      "LES BENJAMINS": "Les Benjamins",
+      "LES BENJAMINS CLASSICS": "Les Benjamins"
+    }
+  },
+  "basicandco": {
+    "brand": "Basic&Co.",
+    "base": "https://basicand.co",
+    "vendors": {
+      "Basic&Co.": "Basic&Co."
+    },
+    "audience": "Women"
+  },
+  "libas": {
+    "brand": "Libas (multi-brand)",
+    "base": "https://www.libas.com.tr",
+    "vendors": {
+      "Belstaff": "Belstaff",
+      "Ugg": "Ugg",
+      "Dondup": "Dondup",
+      "Paoloni": "Paoloni",
+      "Santoni": "Santoni",
+      "Pantanetti": "Pantanetti",
+      "Polo Ralph Lauren": "Polo Ralph Lauren",
+      "Liu Jo": "Liu Jo",
+      "Rene Derhy": "Rene Derhy",
+      "Gianni Chiarini": "Gianni Chiarini",
+      "Bogner": "Bogner",
+      "Paloma Barcelo": "Paloma Barcelo",
+      "Semicouture": "Semicouture",
+      "Elia Maurizi": "Elia Maurizi",
+      "New Balance": "New Balance",
+      "Hetrego": "Hetrego"
+    }
+  }
+}

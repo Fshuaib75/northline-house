@@ -1,4 +1,4 @@
-# Northline: on demand, scan Capone, Aldo and Derimod for new products and build the sourcing review page.
+# Northline: on demand, scan the allowlisted suppliers for new products and build the sourcing review page.
 # Press "Run workflow" under Actions > Sourcing scan. When it finishes, download "sourcing-review" from the
 # run's Artifacts, unzip it and open review.html in a browser. Nothing is published or written to the shop:
 # approved products still go through the owner's inbox.
@@ -9,7 +9,12 @@ on:
     inputs:
       pages:
         description: "Catalogue pages to read per brand (250 products each, 1-20)"
-        default: "4"
+        default: "8"
+        required: true
+
+      limit:
+        description: "Maximum candidates in the review (1-500)"
+        default: "200"
         required: true
 
 permissions:
@@ -55,7 +60,9 @@ jobs:
 
       - name: Build the review page
         working-directory: code
-        run: node tools/sourcing/engine.mjs build "$RUNNER_TEMP/sources" "$RUNNER_TEMP/review" | tee "$RUNNER_TEMP/summary.json"
+        env:
+          REVIEW_LIMIT: ${{ inputs.limit }}
+        run: node tools/sourcing/engine.mjs build "$RUNNER_TEMP/sources" "$RUNNER_TEMP/review" - "$REVIEW_LIMIT" | tee "$RUNNER_TEMP/summary.json"
 
       - name: Summary
         run: |
