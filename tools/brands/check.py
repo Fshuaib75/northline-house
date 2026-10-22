@@ -93,8 +93,10 @@ def tsoft_stock(page):
     m = re.search(r'"variant_stocks":(\{[^}]*\})', page)
     if not m: return None
     stocks = json.loads(m.group(1))
+    if not stocks: return None
     labels = {a: norm_size(b) for a, b in re.findall(r'<a[^>]*\bdata-id="(\d+)"[^>]*>\s*<p>([^<]+)</p>', page)}
     is_size = lambda x: bool(SIZE_RE.match(labels.get(x, "")))
+    if not any(is_size(part) for key in stocks for part in key.split("_")): return None
     colours = {p for k in stocks for p in k.split("_") if not is_size(p)}
     sel = re.search(r'subOne.*?<a[^>]*data-id="(\d+)"[^>]*class="[^"]*\bselected', page, re.S)
     keep = {sel.group(1)} if (sel and len(colours) > 1) else colours
@@ -141,8 +143,9 @@ def quka_stock(page):
     if k < 0: return None
     try: v, _ = json.JSONDecoder().raw_decode(page[k + len("variants:"):].lstrip())
     except Exception: return None
+    if not isinstance(v.get("summary"), dict) or not v["summary"]: return None
     out = set()
-    for name, rec in (v.get("summary") or {}).items():
+    for name, rec in v["summary"].items():
         if isinstance(rec, dict) and rec.get("in_stock"):
             s = norm_size(re.split(r"[-/ ]", str(name))[-1])
             if SIZE_RE.match(s): out.add(s)
@@ -190,16 +193,31 @@ def quka_find(i, base):
 
 # ---------------------------------------------------------------- Shopify (Aldo)
 SHOPIFY = {}
+SHOPIFY_ERRORS = {}
 def shopify_products(base):
+    """Cache only a complete catalogue; a failed later page is not evidence of removal."""
+    if base in SHOPIFY_ERRORS:
+        raise RuntimeError(SHOPIFY_ERRORS[base])
     if base not in SHOPIFY:
         out = []
-        for n in range(1, 40):
-            st, body = get(f"{base}/products.json?limit=250&page={n}")
-            if st != 200: break
-            items = json.loads(body).get("products", [])
-            if not items: break
-            out += items
-        SHOPIFY[base] = out
+        try:
+            for n in range(1, 40):
+                st, body = get(f"{base}/products.json?limit=250&page={n}")
+                if st != 200:
+                    raise ValueError(f"catalogue page {n}: HTTP {st}")
+                payload = json.loads(body)
+                if not isinstance(payload, dict) or not isinstance(payload.get("products"), list):
+                    raise ValueError(f"catalogue page {n}: missing products list")
+                items = payload["products"]
+                if not items:
+                    if not out: raise ValueError("empty supplier catalogue")
+                    SHOPIFY[base] = out
+                    return out
+                out += items
+            raise ValueError("catalogue exceeded pagination limit without an end page")
+        except (ValueError, TypeError) as e:
+            SHOPIFY_ERRORS[base] = str(e)
+            raise RuntimeError(str(e)) from e
     return SHOPIFY[base]
 
 
@@ -219,6 +237,13 @@ def shopify_check(i, base):
 def check(items, prev):
     old = prev.get("styles") or {}
     res, failed = {}, collections.Counter()
+    checked_at = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%MZ")
+
+    def uncertain(i, previous, reason):
+        failed[i["brand"]] += 1
+        if previous:
+            res[i["ref"]] = {**previous, "stale": True, "check_error": reason}
+
     for n, i in enumerate(items):
         kind, base = SITES[i["brand"]]
         p = old.get(i["ref"]) or {}
@@ -226,23 +251,30 @@ def check(items, prev):
         try:
             if kind == "shopify":
                 url, stock = shopify_check(i, base)
-                if url is None and shopify_products(base): res[i["ref"]] = {"on": 0}; continue
+                if url is None:
+                    # Image matching can fail when a supplier replaces its photos.
+                    uncertain(i, p, "Product could not be matched in supplier catalogue")
+                    continue
             else:
                 read = tsoft_stock if kind == "tsoft" else quka_stock
                 page = None
                 if url:
                     st, page = get(url)
                     if st == 404: page = None; url = None
-                    elif st != 200: failed[i["brand"]] += 1; res[i["ref"]] = p; continue   # site trouble: keep last week's
+                    elif st != 200:
+                        uncertain(i, p, f"Product page HTTP {st}")
+                        continue
                 if page is None:
                     url, page = (tsoft_find if kind == "tsoft" else quka_find)(i, base)
                 if page is not None: stock = read(page)
         except Exception as e:
             print("  error", i["ref"], e)
+            uncertain(i, p, "Supplier response could not be read")
+            continue
         if url is None or stock is None:
-            if p.get("url"): res[i["ref"]] = {"on": 0, "url": p["url"]}   # had a page, now gone: no longer listed
-            continue                                                     # never found: not checked
-        res[i["ref"]] = {"on": 1, "url": url, "stock": stock}
+            uncertain(i, p, "Product or stock data could not be verified")
+            continue
+        res[i["ref"]] = {"on": 1, "url": url, "stock": stock, "checked_at": checked_at}
         if n % 20 == 0: print(f"  {n}/{len(items)} checked, {FETCHES} pages fetched")
     return res, failed
 
@@ -258,7 +290,7 @@ def in_stock(i, rec):
 def mark_back(res, prev, today):
     old = prev.get("styles") or {}
     for ref, rec in res.items():
-        if not (rec.get("on") and rec.get("stock")): continue
+        if rec.get("stale") or not (rec.get("on") and rec.get("stock")): continue
         p = old.get(ref)
         if p is not None and (not p.get("on") or p.get("stock") == []): rec["back"] = today
         elif p and p.get("back"):
@@ -279,14 +311,15 @@ def report(items, P, res, prev, failed, when):
     sold = [i for i in shop if r(i) and r(i).get("on") and in_stock(i, r(i)) == []]
     few = [i for i in shop if r(i) and r(i).get("on") and 0 < len(in_stock(i, r(i)) or []) <= 2]
     unknown = [i for i in shop if not r(i)]
-    back = [i for i in items if r(i) and r(i).get("back") == when.strftime("%Y-%m-%d")]
+    stale = [i for i in shop if r(i) and r(i).get("stale")]
+    back = [i for i in items if r(i) and not r(i).get("stale") and r(i).get("back") == when.strftime("%Y-%m-%d")]
     news = []
     if old:
-        ns = [i for i in sold if not (old.get(i["ref"], {}).get("on") and in_stock(i, old.get(i["ref"])) == [])]
+        ns = [i for i in sold if not r(i).get("stale") and not (old.get(i["ref"], {}).get("on") and in_stock(i, old.get(i["ref"])) == [])]
         if ns: news.append(f"**{len(ns)} newly sold out:** " + ", ".join(f"{i['ref']} ({label(i)})" for i in ns))
         if back: news.append(f"**{len(back)} back in stock:** " + ", ".join(f"{i['ref']} ({label(i)})" for i in back))
     lines = lambda xs: "\n".join(f"- `{i['ref']}` {label(i)}" + (f" ([page]({r(i)['url']}))" if r(i) and r(i).get("url") else "") for i in sorted(xs, key=lambda i: (i["brand"], i["model"], i.get("colour") or ""))) or "- none"
-    per = collections.Counter(i["brand"] for i in shop); ok = collections.Counter(i["brand"] for i in shop if r(i))
+    per = collections.Counter(i["brand"] for i in shop); ok = collections.Counter(i["brand"] for i in shop if r(i) and not r(i).get("stale"))
     brand_rows = "\n".join(f"| {b} | {per[b]} | {ok[b]} |" for b in sorted(per))
     body = f"""Checked {when:%d %b %Y, %H:%M} UTC against the brands' own websites.
 
@@ -297,7 +330,11 @@ def report(items, P, res, prev, failed, when):
 The shop and agent page block sizes these brands have sold out, hide a model sold out in every colour (it comes back
 by itself), and show "Back in stock" for {BACK_DAYS} days. Brands not listed here aren't checked yet: confirm sizes
 before payment for those.
-{"" if not failed else chr(10) + "**Some pages didn't load this week** (" + ", ".join(f"{b}: {n}" for b, n in failed.items()) + "): last week's stock was kept for them." + chr(10)}
+{"" if not failed else chr(10) + "**Some pages didn't load this week** (" + ", ".join(f"{b}: {n}" for b, n in failed.items()) + "): last known stock was kept where available; new unresolved products remain unchecked." + chr(10)}
+### Not verified this run — last known stock retained ({len(stale)})
+These records are not fresh stock confirmations. Check the supplier before accepting payment.
+{lines(stale)}
+
 ### Sold out in every size ({len(sold)})
 {lines(sold)}
 
@@ -346,7 +383,7 @@ def main():
     except Exception: prev = {}
     print(f"{len(items)} styles to check")
     res, failed = check(items, prev)
-    found = [i for i in items if i["ref"] in res]
+    found = [i for i in items if i["ref"] in res and not res[i["ref"]].get("stale")]
     if items and len(found) < len(items) / 3:
         sys.exit(f"Only {len(found)} of {len(items)} styles were found on the brands' sites: something changed. Nothing was written.")
     when = datetime.datetime.now(datetime.timezone.utc)
@@ -355,6 +392,10 @@ def main():
     print(summary); print(); print(body)
     if news: print("\n".join(news))
     print(f"\n{FETCHES} pages fetched")
+    # A brand-filtered run must not erase records belonging to other brands.
+    if only:
+        selected = {i["ref"] for i in items}
+        res = {**{k: v for k, v in prev.get("styles", {}).items() if k not in selected}, **res}
     if DRY:
         os.makedirs("probe-out", exist_ok=True)
         json.dump({"checked": when.strftime("%Y-%m-%dT%H:%MZ"), "styles": res}, open("probe-out/brands.json", "w"), indent=1)
