@@ -66,6 +66,13 @@
     throw new Error("inbox.json kept changing while saving. Try again in a minute.");
   }
 
-  const api = { seal, gh, readPublic, sendToInbox, utf8b64, unb64utf8 };
+  // Migrate the old Northline default once; preserve deliberate later overrides.
+  function inboxConfig(saved = {}) {
+    const cfg = { repo: "Fshuaib75/northline-house", branch: "gh-pages", token: "", ...saved };
+    if (!cfg.inboxBranchVersion && cfg.repo.toLowerCase() === "fshuaib75/northline-house" && cfg.branch === "main") cfg.branch = "gh-pages";
+    return { ...cfg, inboxBranchVersion: 1 };
+  }
+
+  const api = { inboxConfig, seal, gh, readPublic, sendToInbox, utf8b64, unb64utf8 };
   root.NLSeal = api; if (typeof module !== "undefined") module.exports = api;
 })(typeof globalThis !== "undefined" ? globalThis : this);

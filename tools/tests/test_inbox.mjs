@@ -53,3 +53,37 @@ test('failed delivery preserves approval, permits retry and keeps export enabled
 });
 
 test('build embeds the shared seal implementation in a standalone review',()=>{const dir=fs.mkdtempSync(path.join(os.tmpdir(),'nl-inbox-test-'));try{fs.writeFileSync(path.join(dir,'derimod.json'),JSON.stringify({source:'derimod',base:'https://derimod.com.tr',currency:'TRY',observed_at:new Date().toISOString(),products:[],complete:false,errors:[]}));build(dir,path.join(dir,'out'));const html=fs.readFileSync(path.join(dir,'out/review.html'),'utf8');assert.ok(html.includes(source));assert.ok(!html.includes('/*INBOX_SEAL_CODE*/'));assert.ok(!html.includes('/*CANDIDATE_DATA*/'));for(const m of html.matchAll(/<script>([\s\S]*?)<\/script>/g))new vm.Script(m[1]);}finally{fs.rmSync(dir,{recursive:true,force:true});}});
+
+test('review and extension defaults point at the live inbox',()=>{
+ const html=fs.readFileSync(new URL('../sourcing/review.html',import.meta.url),'utf8');
+ assert.match(html,/id="inboxBranch" value="gh-pages"/);
+ for(const file of ['options.js','popup.js']){
+  const code=fs.readFileSync(new URL('../extension/'+file,import.meta.url),'utf8');
+  assert.match(code,/branch: "gh-pages"/);
+  assert.match(code,/NLSeal\.inboxConfig\(/);
+  new vm.Script(code);
+ }
+});
+test('saved default main migrates once while custom destinations and credentials survive',()=>{
+ const api=runtime(()=>{throw Error('unexpected network');});
+ assert.equal(api.inboxConfig().branch,'gh-pages');
+ const old={repo:'Fshuaib75/northline-house',branch:'main',token:'test-only'};
+ const migrated=api.inboxConfig(old);
+ assert.equal(migrated.branch,'gh-pages');assert.equal(migrated.token,old.token);assert.equal(old.branch,'main');
+ assert.equal(migrated.inboxBranchVersion,1);
+ assert.equal(api.inboxConfig({...migrated,branch:'main'}).branch,'main');
+ assert.equal(api.inboxConfig({...old,repo:'example/custom'}).branch,'main');
+ assert.equal(api.inboxConfig({...old,branch:'staging'}).branch,'staging');
+});
+test('default inbox delivery reads and writes gh-pages only',async()=>{
+ let writes=0;
+ const api=runtime(async(url,init)=>{
+  if(init.method==='PUT'){
+   writes++;const body=JSON.parse(init.body);assert.equal(body.branch,'gh-pages');
+   return new Response(JSON.stringify({commit:{sha:'saved'}}));
+  }
+  assert.ok(url.includes('?ref=gh-pages&'));
+  return new Response(JSON.stringify({sha:'test-sha',content:b64(JSON.stringify(url.includes('inbox-pub.json')?{jwk}:{batches:[]}))}));
+ });
+ await api.sendToInbox(api.inboxConfig({token:'test-only'}),[item]);assert.equal(writes,1);
+});
