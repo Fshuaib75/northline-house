@@ -2,11 +2,23 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-10-22: Claude, merged PR #10 and PR #11 into main
+
+Did: on Farouk's instruction, merged #10 (stock-check safety) and #11 (sourcing discovery and review) into `main`. Ran both test suites first: 12/12 and 13/13 pass. Resolved this file's conflict by keeping both Codex entries. Review notes are on each PR.
+Next: Codex, (1) add an expiry to stale stock records: hide a product (`on: 0`) after 2 unverified weekly runs in a row and list it in the report; (2) once Derimod products are approved into the catalogue, add Derimod to the weekly stock check in `tools/brands/check.py`; (3) close PR #7. Farouk, decide when `main` goes live on `gh-pages`.
+Watch out: Farouk approved Derimod as a sourcing brand (22 Oct 2026). Nothing from #10 or #11 is live yet: the robots in `.github/workflows/` run from `main` code but write to `gh-pages`, so #10's safer checks take effect from the next scheduled run.
+
 ## 2026-10-22: Codex, codex/sourcing-learning (PR #11)
 
 Did: opened https://github.com/Fshuaib75/northline-house/pull/11; added bounded Shopify catalogue discovery for Capone, Aldo and new source Derimod (`tools/sourcing/collect.py`), stock-evidenced normalization and price-aware ranking (`engine.mjs`), owner review/export UI (`review.html`), and approval-preference logistic regression with grouped holdout validation (`ranking.mjs`). A live four-page scan per source examined 3,000 products, found 324 eligible candidates and shortlisted 60 across three brands. Added 13 passing regression tests in `tools/tests/test_sourcing.mjs`; checked browser approve/reject and findings export. No catalogue or sealed files changed.
 Next: Farouk reviews candidates, saves real approval/rejection feedback and routes approved findings through the existing owner inbox flow. Run `python tools/sourcing/collect.py --output /tmp/nl-sources --pages 4`, then `node tools/sourcing/engine.mjs build /tmp/nl-sources /tmp/nl-review`. Train with `node tools/sourcing/engine.mjs train /tmp/nl-model.json feedback.json`; pass that model as the optional final build argument. Owner decides merge/deployment; this is independent of reliability PR #10.
 Watch out: scans are bounded/partial and never infer missing stock. Snapshots older than 48 hours are rejected at build. Weights and classification are estimates; recheck supplier stock, size, material and price before publishing. Review decisions live in memory until exported. No real feedback exists yet: ranking uses rules until at least 50 distinct valid decisions (15 each class), adequate grouped holdout classes and improvement on both Brier score and balanced accuracy. This predicts owner preference, not sales. No automatic publishing, training schedule or paid AI dependency.
+
+## 2026-10-22: Codex, codex/bot-reliability (PR #10)
+
+Did: hardened supplier stock checks in `tools/brands/check.py` and `tools/capone/check.py`. Failed reads and unmatched products retain previous records with a stale flag; verified records carry a check timestamp. Incomplete Shopify pagination is rejected instead of being treated as a complete catalogue. Brand-filtered runs retain other brands' records. Added offline regression coverage in `tools/tests/test_stock_safety.py`.
+Next: review draft PR https://github.com/Fshuaib75/northline-house/pull/10 against main, then run a dry supplier check before deciding whether to deploy to gh-pages. Further engine work should cover product identity, price/margin changes and ranked sourcing recommendations into the owner's approval inbox.
+Watch out: 12 offline tests pass; no live supplier scan or production data write was performed. Stale records preserve last known stock, not a fresh availability guarantee. Existing storefronts still use that last known stock; per-item freshness UI is a follow-up. A run with fewer than one-third freshly verified styles aborts without writing. Image-match misses now require manual verification rather than automatically delisting products. No workflows, sealed files or catalogue data were edited.
 
 ## 2026-10-22: Claude, go-live (PR #6, #8, #9)
 

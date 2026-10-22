@@ -41,12 +41,18 @@ def store_products():
         st, body = get(f"{STORE}/products.json?limit=250&page={page}")
         if st != 200:
             sys.exit(f"Capone's product list didn't load (page {page}, status {st}). Nothing was changed.")
-        items = json.loads(body).get("products", [])
+        try:
+            payload = json.loads(body)
+            if not isinstance(payload, dict) or not isinstance(payload.get("products"), list):
+                raise ValueError("missing products list")
+            items = payload["products"]
+        except (ValueError, TypeError):
+            sys.exit(f"Capone catalogue page {page} was malformed. Nothing was changed.")
         if not items:
-            break
+            return out
         out += items
         time.sleep(1.5)                          # be gentle with Capone's site
-    return out
+    sys.exit("Capone catalogue exceeded pagination limit without an end page. Nothing was changed.")
 
 
 # photo file names: <article>_<colour code>_<photo number>[_<upload id>].jpg, e.g. 530-K795-FDG-01-0000_K444_2_799d….jpg
