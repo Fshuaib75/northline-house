@@ -2,6 +2,12 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-10-22: Claude, claude/inbox-button-handoff
+
+Did: logged Farouk's request below, and clarified rule 4 in `AGENTS.md`: adding a sealed batch to `inbox.json` with the existing seal tools is allowed when the owner asks. Reading, editing or removing sealed files is still not.
+Next: Codex, add a **Send to review inbox** button to `tools/sourcing/review.html`, next to "Export approved". It should seal the approved items with the same lock and code as the Chrome extension (`tools/extension/seal.js`, public key from `inbox-pub.json`) and append the batch to `inbox.json` through the GitHub API, using the same repo and branch settings as the extension (`options.js`, default branch `main`), so they appear in the book's To review tab with no command line. Use the extension's token approach (fine-grained token, `northline-house` only, Contents read and write); ask for it on first use and don't store it beyond the browser session unless Farouk opts in. Handle the 409/422 conflict retry the way `seal.js` does. Keep "Export approved" as the fallback. Add a test, and a line in the review page saying where the items went.
+Watch out: `book/index.html` is password-encrypted (staticrypt), so neither agent can read which branch the book loads `inbox.json` from; matching the extension is the safe choice, and Farouk should confirm one test item shows up in To review. The review page is opened as a downloaded local file, so check the GitHub API calls work from a `file://` page in Chrome. Nothing should publish: items only land in the inbox, and the book stays the approval step. Until this ships, Farouk can send Claude his exported file to seal by hand.
+
 ## 2026-10-22: Claude, claude/sourcing-scan
 
 Did: added `.github/workflows/sourcing-scan.yml`, a manual "Sourcing scan" action. It runs `tools/sourcing/collect.py` and `engine.mjs build` on GitHub's servers against the live `products.json`, `prices.json` and `shop/index.html` from `gh-pages`, then uploads `review.html` and `candidates.json` as the `sourcing-review` artifact (kept 14 days). Read-only: no commits, no shop changes.
