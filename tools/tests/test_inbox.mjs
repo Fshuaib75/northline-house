@@ -32,7 +32,7 @@ test('review template and embedded scripts parse with the shared seal code',()=>
 function reviewRuntime(send){
  class Node{constructor(){this.value='';this.disabled=false;this.children=[];this.textContent='';}append(...n){this.children.push(...n);}prepend(...n){this.children.unshift(...n);}setAttribute(){}replaceChildren(){this.children=[];}addEventListener(){}showModal(){this.open=true;}close(){this.open=false;}}
  const nodes=new Map(),get=id=>{if(!nodes.has(id))nodes.set(id,new Node());return nodes.get(id);};
- const candidate=id=>({id,item:{ref:id,brand:'Test',model:'Test',sizes:['42'],imgs:[],img:'',colour:'Black',tl:10,kg:1},evidence:{title:'Test',observed_at:new Date().toISOString()},estimate:{price:100,profit:10,landed:80,agent:10},reasons:[],score:.5,method:'rules'});
+ const candidate=id=>({id,item:{cat:id==='approved'?'shoes':'bags',for:id==='approved'?'Men':'Women',ref:id,brand:'Test',model:'Test',sizes:['42'],imgs:[],img:'',colour:'Black',tl:10,kg:1},evidence:{title:'Test',observed_at:new Date().toISOString()},estimate:{price:100,profit:10,landed:80,agent:10},reasons:[],score:.5,method:'rules'});
  const data={candidates:[candidate('approved'),candidate('rejected')],eligible:2,model:'rules',sources:[]};
  const html=fs.readFileSync(new URL('../sourcing/review.html',import.meta.url),'utf8');const script=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].at(-1)[1].replace('/*CANDIDATE_DATA*/null',JSON.stringify(data));
  const ctx=vm.createContext({document:{getElementById:get,createElement:()=>new Node()},crypto:webcrypto,NLSeal:{sendToInbox:send},setTimeout,URL,Blob});vm.runInContext(script,ctx);return {ctx,get,run:s=>vm.runInContext(s,ctx)};
@@ -86,4 +86,15 @@ test('default inbox delivery reads and writes gh-pages only',async()=>{
   return new Response(JSON.stringify({sha:'test-sha',content:b64(JSON.stringify(url.includes('inbox-pub.json')?{jwk}:{batches:[]}))}));
  });
  await api.sendToInbox(api.inboxConfig({token:'test-only'}),[item]);assert.equal(writes,1);
+});
+
+
+test('review category and audience filters combine without losing approvals',()=>{
+ const r=reviewRuntime(async()=>{});
+ assert.equal(r.get('grid').children.length,2);
+ r.get('category').value='shoes';r.get('category').onchange();assert.equal(r.get('grid').children.length,1);
+ r.run("decisions.set('approved',{decision:'approve'});draw()");
+ r.get('audience').value='Women';r.get('audience').onchange();assert.equal(r.get('grid').children.length,0);
+ assert.equal(r.get('export').disabled,false);
+ r.get('category').value='';r.get('category').onchange();assert.equal(r.get('grid').children.length,1);
 });

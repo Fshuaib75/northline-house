@@ -9,16 +9,21 @@ const ROOT=fileURLToPath(new URL('../../',import.meta.url));
 const read=p=>JSON.parse(fs.readFileSync(p,'utf8'));
 const low=s=>String(s||'').toLocaleLowerCase('tr');
 const clean=s=>String(s||'').replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim();
-export const SOURCES={derimod:{brand:'Derimod',base:'https://derimod.com.tr',vendors:['Derimod','Derimod D-Pack','Derimod Studio']},aldo:{brand:'Aldo',base:'https://www.aldoshoes.com.tr',vendors:['ALDO']},capone:{brand:'Capone',base:'https://www.caponeoutfitters.com.tr',vendors:['Capone Outfitters','Capone','Ippocampo']}};
+export const SOURCES=read(new URL('./sources.json',import.meta.url));
 const urlKey=u=>{try{const x=new URL(u);return x.origin+x.pathname.replace(/\/$/,'');}catch{return '';}};
 const imageKey=u=>{try{return decodeURIComponent(new URL(u).pathname).replace(/_\d+x\d*(?=\.)/,'');}catch{return '';}};
 function category(text) {
   if(/çanta|canta|\bbag\b|backpack|clutch|tote/.test(text))return 'bags';
   if(/terlik|sandalet|loafer|makosen|sneaker|babet|ayakkabı|ayakkabi|flip.flop/.test(text))return 'shoes';
-  if(/gömlek|pantolon|elbise|tunik|abaya|ferace|hijab|eşarp|şal|tişört|bluz|takım/.test(text))return 'clothing';
+  if(/gömlek|pantolon|elbise|tunik|abaya|ferace|hijab|eşarp|şal|tişört|bluz|takım|\bshirts?\b|\bt-shirts?\b|\btees\b|\bpants\b|\bdresses\b|\bskirts?\b|\batlet\b|\betek\b/.test(text))return 'clothing';
   return null; // Unsupported categories require a reader and shipping model before inclusion.
 }
-function person(text) {if(/kadın|kadin|women|bayan/.test(text))return 'Women';if(/erkek|\bmen\b/.test(text))return 'Men';return null;}
+function person(text,tags) {
+  const words=tags.map(low);
+  const women=/kadın|kadin|\bwomen\b|bayan/.test(text)||words.some(t=>['kadın','kadin','women','woman'].includes(t));
+  const men=/erkek|\bmen\b/.test(text)||words.some(t=>['erkek','men','man'].includes(t));
+  return women===men?null:women?'Women':'Men';
+}
 function safeImage(url) {try{const u=new URL(url);return u.protocol==='https:'&&!u.username&&!u.password?u.href:null;}catch{return null;}}
 export function normalize(snapshot, now=Date.now()) {
   const source=SOURCES[snapshot.source];
@@ -28,9 +33,14 @@ export function normalize(snapshot, now=Date.now()) {
   if(!Array.isArray(snapshot.products))throw Error('Invalid products list');
   const output=[];
   for(const p of snapshot.products) {
-    if(!source.vendors.some(v=>low(v)===low(p.vendor)))continue;
-    const brand=low(p.vendor)==='ippocampo'?'Ippocampo':source.brand;
-    const text=low(`${p.title} ${p.product_type}`),cat=category(text),who=person(text);
+    const vendor=Object.entries(source.vendors).find(([v])=>low(v)===low(p.vendor));
+    if(!vendor)continue;
+    const brand=vendor[1],tags=Array.isArray(p.tags)?p.tags:String(p.tags||'').split(',').map(t=>t.trim());
+    const text=low(`${p.title} ${p.product_type}`);
+    // Child sizing and heavy outerwear need their own shipping/classification rules.
+    if(/bebek|çocuk|cocuk|\bkids?\b|\bbaby\b|\bceket\b|\bmont\b|\bkaban\b|\bjacket|\bcoat|\bbomber/.test(text))continue;
+    const cat=category(text),who=person(text,tags)||source.audience;
+
     if(!cat||!who||!p.id||!p.handle||!/^[a-zA-Z0-9-]+$/.test(p.handle))continue;
     const options=p.options||[],colourOption=options.find(o=>/^(renk|color|colour)$/i.test(o.name)),sizeOption=options.find(o=>/^(beden|size|numara)$/i.test(o.name));
     const colours=new Map();
@@ -63,7 +73,8 @@ export function normalize(snapshot, now=Date.now()) {
   }
   return output;
 }
-export function rank(candidates, existing, params, model=null, limit=60) {
+export function rank(candidates, existing, params, model=null, limit=200) {
+  if(!Number.isInteger(limit)||limit<1||limit>500)throw Error('Review limit must be an integer from 1 to 500');
   for(const k of ['rate','perKg','handling','minProfit','profitPct'])if(!Number.isFinite(params?.[k])||params[k]<0)throw Error(`Missing/invalid pricing parameter: ${k}`);
   if(params.rate<=0)throw Error('Exchange rate must be positive');
   const refs=new Set(existing.map(i=>i.ref)),pages=new Set(existing.map(i=>urlKey(i.page)).filter(Boolean)),images=new Set(existing.flatMap(i=>[i.img,...i.imgs||[]]).map(imageKey).filter(Boolean));
@@ -80,9 +91,19 @@ export function rank(candidates, existing, params, model=null, limit=60) {
         ...(estimate.price>65000?['Above the usual ₦65k review threshold']:[]),...(estimate.profit<5000?['Profit below ₦5,000']:[])]});
   }
   eligible.sort((a,b)=>b.score-a.score||a.id.localeCompare(b.id));
-  // Round-robin across brands: a large supplier cannot occupy every review slot.
-  const groups=new Map();for(const c of eligible){if(!groups.has(c.item.brand))groups.set(c.item.brand,[]);groups.get(c.item.brand).push(c);}
-  const selected=[];while(selected.length<limit&&[...groups.values()].some(g=>g.length)){for(const g of groups.values())if(g.length&&selected.length<limit)selected.push(g.shift());}
+  // Fair share per brand, rotating its categories and audiences within that share.
+  const groups=new Map();
+  for(const c of eligible){
+    if(!groups.has(c.item.brand))groups.set(c.item.brand,new Map());
+    const group=groups.get(c.item.brand),key=c.item.cat+':'+c.item.for;
+    if(!group.has(key))group.set(key,[]);group.get(key).push(c);
+  }
+  const queues=[...groups.values()].map(g=>[...g.values()]);
+  const selected=[];
+  while(selected.length<limit&&queues.some(q=>q.length))for(const queue of queues){
+    if(!queue.length||selected.length>=limit)continue;
+    const bucket=queue.shift();selected.push(bucket.shift());if(bucket.length)queue.push(bucket);
+  }
   return {candidates:selected,eligible:eligible.length,excluded,model:validModel(model)?'learned':'rules'};
 }
 function existingCatalogue(root) {
@@ -90,11 +111,11 @@ function existingCatalogue(root) {
   if(!match)throw Error('Embedded catalogue could not be read; refusing to skip deduplication');
   return [...JSON.parse(match[1]),...read(path.join(root,'products.json'))];
 }
-export function build(snapshotDir,outDir,modelPath=null,limit=60) {
+export function build(snapshotDir,outDir,modelPath=null,limit=200) {
   const all=[],sources=[];
   for(const key of Object.keys(SOURCES)) {
     const p=path.join(snapshotDir,key+'.json');if(!fs.existsSync(p))continue;
-    const s=read(p);all.push(...normalize(s));sources.push({source:key,products:s.products.length,complete:s.complete,errors:s.errors});
+    const s=read(p);if(s.products.length||!s.errors?.length)all.push(...normalize(s));sources.push({source:key,products:s.products.length,complete:s.complete,errors:s.errors});
   }
   if(!sources.length)throw Error('No supplier snapshots found');
   const result=rank(all,existingCatalogue(ROOT),read(path.join(ROOT,'prices.json')).params,modelPath?read(modelPath):null,limit);
@@ -108,7 +129,7 @@ export function build(snapshotDir,outDir,modelPath=null,limit=60) {
 }
 function cli(args) {
   const [command,...rest]=args;
-  if(command==='build') {if(rest.length<2)throw Error('build SNAPSHOT_DIR OUTPUT_DIR [MODEL_JSON]');build(rest[0],rest[1],rest[2]);}
+  if(command==='build') {if(rest.length<2)throw Error('build SNAPSHOT_DIR OUTPUT_DIR [MODEL_JSON|-] [LIMIT 1-500]');build(rest[0],rest[1],rest[2]==='-'?null:rest[2],rest[3]===undefined?200:Number(rest[3]));}
   else if(command==='train') {if(rest.length<2)throw Error('train OUTPUT_MODEL FEEDBACK_JSON...');const [output,...files]=rest;const rows=files.flatMap(p=>read(p).decisions||[]);const model=train(rows);fs.writeFileSync(output,JSON.stringify(model,null,2));console.log(JSON.stringify(model,null,2));}
   else console.log('Northline sourcing engine\nCollect: python tools/sourcing/collect.py --output /tmp/nl-sources --pages 4\nReview: node tools/sourcing/engine.mjs build /tmp/nl-sources /tmp/nl-review [model.json]\nLearn: node tools/sourcing/engine.mjs train /tmp/nl-model.json feedback.json...\nOpen review.html; approve/reject then download review findings and feedback. Findings use the owner inbox schema; publishing remains owner-controlled.');
 }

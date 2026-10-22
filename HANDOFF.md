@@ -2,6 +2,12 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-10-22: Codex, codex/sourcing-scale
+
+Did: expanded automated discovery from 3 to 7 supplier sites with a shared allowlist (tools/sourcing/sources.json): Marjin, Les Benjamins, Basic&Co. and Libas added. Verified public products feeds and TRY via cart.js on all seven. Libas preserves explicitly allowed vendor brands instead of labelling everything Libas. Increased default scan to 8 pages/source and shortlist to 200; workflow exposes a bounded 1-500 review limit. Added exact supplier gender-tag support, conservative English clothing classification, child/outerwear exclusions, category/audience filters, brand/category/audience balancing, runtime currency checks and repeated-page detection. 29 Node tests plus 3 Python tests pass.
+Next: review the sourcing-scale PR against main, built on inbox fix PR #16; merge #16 first so its changes drop out of this PR, then review/merge. Run Sourcing scan to generate fresh candidates. Owner reviews products, saves learning feedback and explicitly sends approvals through the inbox. Add stock-check adapters for newly approved brands before relying on automated weekly coverage.
+Watch out: live bounded scan examined 12,035 supplier records, found 1,078 eligible colour-level candidates after working-catalogue deduplication/price checks, shortlisted 200 across Capone, Les Benjamins, Aldo, Marjin, Derimod, Basic&Co., Ippocampo and Rene Derhy (97 shoes, 79 clothing, 24 bags). Most Libas items exceeded the unchanged N100,000 estimated-sale ceiling; only one qualified. Supplier scans are partial except Basic&Co.; no absence/stock removals inferred. Generated review delivered separately with gh-pages default from #16. No sealed files, catalogue data or live branch changed. ML still needs real labelled feedback; no new predictive claims. The workflow uses live catalogue/pricing; this local scan used the working checkout's catalogue/pricing.
+
 ## 2026-10-22: Codex, codex/inbox-branch-fix
 
 Did: pulled main at 871e2ad and corrected the sourcing review dialog and extension defaults to gh-pages. Added a shared config migration in tools/extension/seal.js: existing Northline main settings move to gh-pages once, retaining the token; custom repos/branches and subsequent explicit overrides stay intact. Both extension settings and popup persist the migration. Settings, popup and review explain the destination. All 25 sourcing/inbox tests pass, including mocked gh-pages reads/writes, migration, custom settings and existing conflict retries.
