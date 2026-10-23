@@ -2,6 +2,12 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-10-23: Codex, authorized upload — draft PR #18 and #19
+
+Did: on Farouk's explicit authorization, uploaded codex/expanded-weekly-stock (source, tests and this log) to Fshuaib75/northline-house and opened draft PR https://github.com/Fshuaib75/northline-house/pull/18 against main. Separately uploaded codex/animated-storefront and opened draft PR https://github.com/Fshuaib75/northline-house/pull/19 against main. Prior upload-approval blockers are resolved by that authorization. Validation and remaining checks are documented in each PR and the implementation entries below.
+Next: owner reviews the two draft PRs independently. Do not merge either PR without a new instruction. When eventually merging, preserve both branches' HANDOFF entries if this shared file conflicts.
+Watch out: Trendyol remains assisted open-tab capture only; no unattended marketplace scanning/API integration was added. Neither PR was merged, no gh-pages deployment was performed, and no production catalogue, stock or sealed files were changed. Current focus remains selling and marketing existing products; Originals is a future direction.
+
 ## 2026-10-23: Codex, codex/expanded-weekly-stock — delivery status
 
 Did: refreshed this handoff at Farouk's request. Current priority is the website, sales and marketing of existing products; Northline Originals (abayas, jalabs and linens) remains a future direction. The completed weekly-stock and assisted Trendyol work is committed locally on codex/expanded-weekly-stock (implementation commit a6976a1). Validation remains 58 passing tests and live sample checks for Derimod, Marjin, Basic&Co. and Les Benjamins; details follow below.
