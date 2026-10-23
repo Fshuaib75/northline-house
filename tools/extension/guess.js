@@ -108,7 +108,7 @@
     return map[h] || ""; }
   const SIZE_DEFAULT = { W: ["36", "37", "38", "39", "40", "41"], M: ["40", "41", "42", "43", "44", "45"], B: ["0-3m", "3-6m", "6-9m", "9-12m", "12-18m", "18-24m"], BG: ["One size"], CL: ["S", "M", "L", "XL"] };
   // Turkish baby/clothing sizes → the site's labels
-  function cleanSizes(list, line, kind) {
+  function cleanSizes(list, line, kind, fallback = true) {
     const out = [];
     for (let s of list || []) { s = String(s).trim();
       let m = s.match(/^(\d{1,2})\s*-\s*(\d{1,2})\s*(ay|m|months?)$/i); if (m) s = `${m[1]}-${m[2]}m`;
@@ -117,7 +117,7 @@
       if (/^(std|standart|tek beden|one size)$/i.test(s)) s = "One size";
       s = s.replace(",", ".");
       if (!out.includes(s)) out.push(s); }
-    if (!out.length) return line === "CL" && kind === "hijab" ? ["One size"] : (SIZE_DEFAULT[line] || ["One size"]).slice();
+    if (!out.length) return fallback ? (line === "CL" && kind === "hijab" ? ["One size"] : (SIZE_DEFAULT[line] || ["One size"]).slice()) : [];
     return out;
   }
   // Price estimate with your book's settings (prices.json → params). The book still sets the final price: this is a preview.

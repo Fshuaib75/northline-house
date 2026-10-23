@@ -1,5 +1,6 @@
 # Northline: every Monday, after the Capone check, check the other brands' own websites for sizes in stock
-# (Slazenger, Ziya, Tergan, Sivarro, Aldo). Writes brands.json (the shop and agent page use it to block sold-out sizes)
+# Includes the Shopify suppliers/vendors allowlisted in tools/sourcing/sources.json.
+# Writes brands.json (the shop and agent page use it to block sold-out sizes)
 # and updates the "Other brands weekly check" issue, with a comment (so an email) when something changed.
 name: Other brands weekly check
 

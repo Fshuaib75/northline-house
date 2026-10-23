@@ -3,7 +3,8 @@
 The Capone check (tools/capone) covers Capone. This one covers the other brands whose own websites show stock per size:
   - T-Soft shops: Slazenger, Ziya, Tergan
   - Qukasoft shop: Sivarro
-  - Shopify shop: Aldo
+  - Shopify suppliers: the shared sourcing allowlist, including Aldo, Derimod, Marjin, Basic&Co., Les Benjamins
+    and the explicitly listed Libas vendors; Ippocampo is checked at Capone's store.
 For each style it finds the brand's product page (once; the link is remembered), reads which sizes are in stock, and
 writes brands.json in the same shape as capone.json, so the shop and agent page block sold-out sizes, hide models sold
 out in every colour and show "Back in stock" badges for these brands too. The report goes to the GitHub issue
@@ -15,7 +16,8 @@ DeFacto, LC Waikiki. Their styles are simply not in brands.json, which the pages
   python tools/brands/check.py           run in the gh-pages checkout: writes brands.json and posts the report
   python tools/brands/check.py --dry     prints the report only (development runs)
 """
-import collections, datetime, gzip, json, os, re, sys, time, urllib.error, urllib.parse, urllib.request
+import collections, datetime, gzip, hashlib, json, os, re, sys, time, urllib.error, urllib.parse, urllib.request
+from pathlib import Path
 
 UA = "Mozilla/5.0 (compatible; NorthlineCatalogueCheck/1.0)"
 DRY = "--dry" in sys.argv
@@ -30,6 +32,12 @@ SITES = {   # brand -> (platform, shop address)
     "Sivarro": ("qukasoft", "https://www.sivarro.com"),
     "Aldo": ("shopify", "https://www.aldoshoes.com.tr"),
 }
+# Discovery and weekly checks share the same explicit supplier/vendor allowlist.
+SUPPLIERS = json.loads((Path(__file__).resolve().parents[1] / "sourcing/sources.json").read_text(encoding="utf-8"))
+for supplier in SUPPLIERS.values():
+    for brand in supplier["vendors"].values():
+        if brand != "Capone":  # Capone has its own scheduled checker.
+            SITES.setdefault(brand, ("shopify", supplier["base"]))
 FETCHES = 0
 
 
@@ -194,6 +202,7 @@ def quka_find(i, base):
 # ---------------------------------------------------------------- Shopify (Aldo)
 SHOPIFY = {}
 SHOPIFY_ERRORS = {}
+SHOPIFY_PAGES = {}
 def shopify_products(base):
     """Cache only a complete catalogue; a failed later page is not evidence of removal."""
     if base in SHOPIFY_ERRORS:
@@ -221,16 +230,90 @@ def shopify_products(base):
     return SHOPIFY[base]
 
 
+def product_link(value, base):
+    """Only a known supplier's plain product URL can select a direct read."""
+    try:
+        u, origin = urllib.parse.urlsplit(value or ""), urllib.parse.urlsplit(base)
+        if u.scheme != "https" or u.netloc != origin.netloc or u.username or u.password: return None
+        if not re.fullmatch(r"/products/[A-Za-z0-9-]+/?", u.path): return None
+        return base + u.path.rstrip("/")
+    except ValueError:
+        return None
+
+
+def stock_size(value):
+    text = str(value or "").strip().replace(",", ".")
+    if text.casefold() in ("standart", "std", "tek beden", "one size", "o/s"): return "One size"
+    named = {"extra small":"XS", "small":"S", "medium":"M", "large":"L", "extra large":"XL"}
+    if text.casefold() in named: return named[text.casefold()]
+    if re.fullmatch(r"\d{2}(?:\.5)?|XXS|XS|S|M|L|XL|XXL|XXXL|[2-5]XL", text, re.I): return text.upper()
+    return None
+
+
+def shopify_stock(i, q):
+    """Return stock for this colour only; ambiguous/missing evidence is unknown."""
+    options = q.get("options") or []
+    size = next((o.get("position") for o in options if str(o.get("name", "")).casefold() in ("beden", "size", "numara")), None)
+    colour = next((o.get("position") for o in options if str(o.get("name", "")).casefold() in ("renk", "color", "colour")), None)
+    variants = q.get("variants")
+    if not isinstance(variants, list) or not variants: return None
+    if colour:
+        values = {str(v.get(f"option{colour}") or "") for v in variants}
+        if "" in values: return None
+        if len(values) > 1:
+            # Sourcing refs carry a digest of the exact original colour option.
+            digest = str(i.get("ref", "")).rsplit("-", 1)[-1]
+            matches = {c for c in values if hashlib.sha256(c.encode()).hexdigest()[:8].upper() == digest}
+            if not matches:
+                keys = {fname(u) for u in photos(i)}
+                images = [im for im in q.get("images", []) if fname(im.get("src", "")) in keys]
+                ids = {im["id"] for im in images if im.get("id") is not None}
+                vids = {vid for im in images for vid in im.get("variant_ids", [])}
+                matches = {str(v.get(f"option{colour}")) for v in variants if v.get("id") in vids or (v.get("featured_image") or {}).get("id") in ids}
+            if len(matches) != 1: return None
+            variants = [v for v in variants if str(v.get(f"option{colour}")) in matches]
+    if any(not isinstance(v.get("available"), bool) for v in variants): return None
+    if not size:
+        # A bag without a size option is a single item; clothing must expose its sizes.
+        if i.get("cat") != "bags": return None
+        return ["One size"] if any(v["available"] for v in variants) else []
+    labels = [(stock_size(v.get(f"option{size}")), v["available"]) for v in variants]
+    if any(label is None for label, _ in labels): return None
+    catalogue_labels = {stock_size(s): str(s) for s in i.get("sizes", []) if stock_size(s)}
+    return sorted({catalogue_labels.get(label, label) for label, available in labels if available})
+
+
 def shopify_check(i, base):
-    stems = {re.sub(r"_\d+\.\w+$", "", fname(u)) for u in photos(i)}
-    for q in shopify_products(base):
-        srcs = [im["src"] for im in q.get("images", [])]
-        if not any(re.sub(r"_\d+\.\w+$", "", fname(s)) in stems for s in srcs): continue
-        names = [o.get("name", "").lower() for o in q.get("options", [])]
-        k = next((n + 1 for n, x in enumerate(names) if x in ("beden", "size", "numara")), 1)
-        out = sorted({norm_size(v.get(f"option{k}")) for v in q.get("variants", []) if v.get("available")})
-        return f"{base}/products/{q['handle']}", [s for s in out if SIZE_RE.match(s) or s == "One size"]
-    return None, None
+    vendor_map = next((s["vendors"] for s in SUPPLIERS.values() if s["base"] == base), {})
+    allowed = {v.casefold() for v, brand in vendor_map.items() if brand == i["brand"]}
+    def vendor_ok(q): return str(q.get("vendor", "")).casefold() in allowed
+    direct = product_link(i.get("page"), base)
+    if direct:
+        if direct not in SHOPIFY_PAGES:
+            status, body = get(direct + ".json")
+            if status != 200: raise ValueError(f"Supplier product HTTP {status}")
+            q = json.loads(body).get("product")
+            if not isinstance(q, dict) or not q.get("id"): raise ValueError("Missing supplier product data")
+            if any(not isinstance(v.get("available"), bool) for v in q.get("variants", [])):
+                # Shopify product JSON supplies identity/options; Ajax supplies availability.
+                status, body = get(direct + ".js")
+                if status != 200: raise ValueError(f"Supplier availability HTTP {status}")
+                ajax = json.loads(body)
+                if not isinstance(ajax, dict) or str(ajax.get("id")) != str(q["id"]): raise ValueError("Availability product identity mismatch")
+                availability = {str(v.get("id")): v.get("available") for v in ajax.get("variants", [])}
+                for v in q.get("variants", []): v["available"] = availability.get(str(v.get("id")))
+            SHOPIFY_PAGES[direct] = q
+        q = SHOPIFY_PAGES[direct]
+        if not vendor_ok(q) or direct.rsplit("/", 1)[-1] != q.get("handle"): return None, None
+        # Generated sourcing refs identify the supplier product, even if photos change.
+        ref_match = re.search(r"-(\d+)-[A-F0-9]{8}$", str(i.get("ref", "")))
+        if ref_match and ref_match.group(1) != str(q["id"]): return None, None
+        return direct, shopify_stock(i, q)
+    stems = {fname(u) for u in photos(i)}
+    matches = [q for q in shopify_products(base) if vendor_ok(q) and any(fname(im.get("src", "")) in stems for im in q.get("images", []))]
+    if len(matches) != 1: return None, None
+    q = matches[0]
+    return f"{base}/products/{q['handle']}", shopify_stock(i, q)
 
 
 # ---------------------------------------------------------------- the check

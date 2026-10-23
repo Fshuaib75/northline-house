@@ -34,8 +34,8 @@ function fill(p) {
   $("heel").value = cat === "shoes" ? G.guessHeel(text) : "";
   $("model").value = G.guessModel(p.title, cat, kind);
   $("colour").value = col.colour; $("fam").value = col.fam;
-  $("sizes").value = G.cleanSizes(p.sizes, G.lineOf(cat, who), kind).join(", ");
-  const tryish = !p.currency || /TRY|TL|₺/i.test(p.currency);
+  $("sizes").value = G.cleanSizes(p.sizes, G.lineOf(cat, who), kind, false).join(", ");
+  const tryish = p.marketplace ? /^(TRY|TL|₺)$/i.test(p.currency) : !p.currency || /TRY|TL|₺/i.test(p.currency);
   $("tl").value = p.price && tryish ? p.price : "";
   $("desc").value = "";
   photos = (p.images || []).slice(0, 8); keep = new Set(photos.slice(0, 6)); drawPhotos();
@@ -43,6 +43,7 @@ function fill(p) {
   const from = (p.source || []).join(", ");
   status(`${brand || p.host} · ${p.title ? p.title.slice(0, 70) : "no title found"}${from ? " · read from " + from : ""}`);
   if (p.price && !tryish) $("err").hidden = false, $("err").textContent = `The page price is in ${p.currency}: type the lira price yourself.`;
+  if (p.marketplace_note) { $("err").hidden = false; $("err").textContent = p.marketplace_note; }
   if (!p.title && !photos.length) status("Couldn’t find product details on this page. Fill the fields by hand, or open the product’s own page.", "warn");
   $("form").hidden = false; upd();
 }
@@ -80,8 +81,8 @@ function upd() {
     <small>Preview with your book’s settings${params ? "" : " (defaults: settings not loaded)"}. The book sets the final price.</small>`;
 }
 ["tl", "kg", "kind", "cat"].forEach(id => $(id).addEventListener("input", upd));
-$("cat").addEventListener("change", () => { catChanged(); $("sizes").value = G.cleanSizes([], G.lineOf($("cat").value, $("who").value), $("kind").value).join(", "); upd(); });
-$("who").addEventListener("change", () => { const cat = $("cat").value; if (cat === "shoes") $("sizes").value = G.cleanSizes([], G.lineOf(cat, $("who").value)).join(", "); });
+$("cat").addEventListener("change", () => { catChanged(); $("sizes").value = ""; upd(); });
+$("who").addEventListener("change", () => { $("sizes").value = ""; });
 ["brand", "colour"].forEach(id => $(id).addEventListener("input", autoRef));
 $("colour").addEventListener("change", () => { const g = G.guessColour($("colour").value, ""); if (g.fam && !$("fam").value) $("fam").value = g.fam; });
 $("ref").addEventListener("input", () => { refTouched = true; dupCheck(); });
@@ -93,6 +94,7 @@ function buildItem() {
     kind: $("kind").value, heel: cat === "shoes" ? $("heel").value : "", tl: num($("tl").value),
     img: kept[0] || "", imgs: kept, sizes: $("sizes").value.split(",").map(s => s.trim()).filter(Boolean), page: page ? page.url : "" };
   if (cat !== "shoes") it.for = who;
+  if (page && page.marketplace) { it.marketplace = page.marketplace; it.supplier_seller = page.seller || "Confirm on supplier page"; }
   const k = num($("kg").value); if (k) it.kg = k;
   const miss = [!it.model && "model name", !it.brand && "brand", !it.tl && "lira price", !it.img && "at least one photo", !it.fam && "colour group", !it.sizes.length && "sizes", !it.ref && "reference"].filter(Boolean);
   return { it, miss };
