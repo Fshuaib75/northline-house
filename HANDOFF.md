@@ -2,6 +2,12 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-10-23: Codex, codex/animated-storefront — lighter hero copy (#19)
+
+Did: reduced the text on all three hero slides at Farouk's request. Shortened the opening description, removed the bag/footwear paragraphs and removed image slogans and duplicate image links. Headlines and the primary collection buttons remain. Updated draft PR https://github.com/Fshuaib75/northline-house/pull/19.
+Next: owner reviews the quieter hero layout. Owner decides merge/deployment.
+Watch out: PR stays draft and unmerged. Trendyol remains assisted open-tab capture only; no catalogue, sealed files or deployment changes.
+
 ## 2026-10-23: Codex, codex/animated-storefront — Claude review fixes (#19)
 
 Did: fixed the bag slide's inset rectangle with a full-panel cover crop. Replaced the branded footwear image with the same catalogue product's supplier detail angle (716-922-FDG-01-00001_K342_6.jpg), keeping the toe visible and removing the backdrop seam and readable insole wordmark. Removed the oversized mobile crop, used the Line accent colour and revised the repeated footwear headline. Rebased onto main at 58a1bbd, preserving the weekly-stock handoff entries. Updated draft PR https://github.com/Fshuaib75/northline-house/pull/19 with source, image and this log under the owner's existing upload authorization.
