@@ -1,0 +1,85 @@
+# Northline: on demand, scan the allowlisted suppliers for new products and build the sourcing review page.
+# Press "Run workflow" under Actions > Sourcing scan. When it finishes, download "sourcing-review" from the
+# run's Artifacts, unzip it and open review.html in a browser. Nothing is published or written to the shop:
+# approved products still go through the owner's inbox.
+name: Sourcing scan
+
+on:
+  workflow_dispatch:
+    inputs:
+      pages:
+        description: "Catalogue pages to read per brand (250 products each, 1-20)"
+        default: "8"
+        required: true
+
+      limit:
+        description: "Maximum candidates in the review (1-500)"
+        default: "200"
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sourcing-scan
+  cancel-in-progress: false
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: code
+      - uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: site
+          sparse-checkout: |
+            products.json
+            prices.json
+            shop/index.html
+          sparse-checkout-cone-mode: false
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Use the live catalogue and prices
+        run: cp site/products.json site/prices.json code/ && cp site/shop/index.html code/shop/index.html
+
+      - name: Read the brands' catalogues
+        working-directory: code
+        env:
+          PAGES: ${{ inputs.pages }}
+        run: python tools/sourcing/collect.py --output "$RUNNER_TEMP/sources" --pages "$PAGES"
+
+      - name: Build the review page
+        working-directory: code
+        env:
+          REVIEW_LIMIT: ${{ inputs.limit }}
+        run: node tools/sourcing/engine.mjs build "$RUNNER_TEMP/sources" "$RUNNER_TEMP/review" - "$REVIEW_LIMIT" | tee "$RUNNER_TEMP/summary.json"
+
+      - name: Summary
+        run: |
+          {
+            echo "## Sourcing scan"
+            echo
+            echo "Download **sourcing-review** below, unzip it and open \`review.html\`."
+            echo
+            echo '```json'
+            cat "$RUNNER_TEMP/summary.json"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sourcing-review
+          path: |
+            ${{ runner.temp }}/review/review.html
+            ${{ runner.temp }}/review/candidates.json
+          retention-days: 14

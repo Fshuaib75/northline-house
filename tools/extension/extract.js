@@ -93,6 +93,19 @@
   if (!out.colour) { const c = [...document.querySelectorAll('[class*="color" i],[class*="renk" i]')].map(e => txt(e.textContent)).find(t => t && t.length < 30 && /^(renk|colou?r)?\s*:?\s*[\p{L} ]+$/iu.test(t));
     if (c) out.colour = c.replace(/^(renk|colou?r)\s*:?\s*/i, ""); }
   out.images = out.images.slice(0, 12);
+  if (/(^|\.)trendyol\.com$/i.test(location.hostname)) {
+    out.marketplace = "Trendyol";
+    const offers = [].concat(p && p.offers || []);
+    const sellers = [...new Set(offers.map(o => typeof o.seller === "string" ? txt(o.seller) : txt(o.seller && o.seller.name)).filter(Boolean))];
+    out.seller = sellers.length === 1 ? sellers[0] : "";
+    out.marketplace_note = "Trendyol listing: confirm the selected seller, colour, sizes and final TRY price before sending. Coupon and basket prices can differ.";
+    // A price range or several sellers does not identify one purchasable offer.
+    if (offers.length !== 1 || sellers.length !== 1 || /AggregateOffer/i.test(String(offers[0] && offers[0]["@type"] || ""))) {
+      out.price = null; out.sizes = [];
+      out.marketplace_note += " Seller/offer is ambiguous: enter the selected seller's price and available sizes manually.";
+    }
+    out.source.push("Trendyol open-page review (not an automated stock check)");
+  }
   if (!out.source.length) out.source.push("page scan");
   return out;
 })();

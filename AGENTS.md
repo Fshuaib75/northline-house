@@ -40,7 +40,7 @@ If a task needs a file in the other agent's lane, write it in `HANDOFF.md` and l
 1. **Never commit to `main` or `gh-pages`.** Work on a branch named `codex/<topic>` or `claude/<topic>` and open a pull request.
 2. **Pull `main` before starting**, and rebase before opening a PR.
 3. **Don't hand-edit data files** unless the owner asks. The weekly robots and the book write them.
-4. **Never touch sealed files**: `private.json`, `inbox.json`, `inbox-key.json`, `inbox-pub.json`. They're encrypted, and only the owner's book opens them.
+4. **Never read, edit or remove sealed files**: `private.json`, `inbox.json`, `inbox-key.json`, `inbox-pub.json`. They're encrypted, and only the owner's book opens them. The one allowed write is adding a new sealed batch to `inbox.json` with `tools/seal-inbox.mjs` or `tools/extension/seal.js`, when the owner asks.
 5. **Never put secrets in the repo.** Tokens live in GitHub Actions secrets.
 6. **No invented facts.** No fake reviews, fake stock counts or made-up numbers on the site or in posts.
 7. **Brand:** follow `brand/BRAND-SHEET.md` and use the logos in `brand/`. Don't redraw the wordmark.

@@ -1,6 +1,6 @@
 // Popup: read the open product page, prefill the inbox fields, preview the price, queue items, send them sealed.
 const G = NLGuess, $ = id => document.getElementById(id);
-const DEF = { repo: "Fshuaib75/northline-house", branch: "main", token: "" };
+const DEF = { repo: "Fshuaib75/northline-house", branch: "gh-pages", token: "" };
 const CAT_LABEL = { shoes: "Shoes", bags: "Bags", baby: "Baby clothes", clothing: "Clothing (abayas, hijabs…)" };
 const KIND_LABEL = { slide: "Slide", sandal: "Sandal", flipflop: "Flip-flop", loafer: "Loafer / flat", sneaker: "Sneaker", shoulder: "Shoulder bag", crossbody: "Crossbody", handbag: "Handbag", tote: "Tote",
   clutch: "Clutch", backpack: "Backpack", waist: "Waist bag", dress: "Dress", set: "Set", top: "Top", bodysuit: "Bodysuit", abaya: "Abaya", hijab: "Hijab / scarf", shirt: "Shirt", trousers: "Trousers / skirt", other: "Other" };
@@ -14,7 +14,7 @@ const whoList = cat => cat === "baby" ? ["Girl", "Boy"] : ["Women", "Men"];
 
 async function init() {
   const st = await chrome.storage.local.get(["cfg", "queue"]);
-  cfg = Object.assign({}, DEF, st.cfg || {}); queue = st.queue || []; drawQueue();
+  cfg = NLSeal.inboxConfig(st.cfg); await chrome.storage.local.set({ cfg }); queue = st.queue || []; drawQueue();
   NLSeal.readPublic(cfg, "prices.json").then(j => { if (j) { params = j.params || null; known = new Set([...Object.keys(j.prices || {}), ...Object.keys(j.next || {})]); } upd(); }).catch(() => {});
   opts($("cat"), G.CATS, c => CAT_LABEL[c]); opts($("fam"), ["", ...G.FAMS], f => f || "Choose…"); opts($("heel"), G.HEELS, h => h || "Not shoes / not sure");
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
@@ -34,8 +34,8 @@ function fill(p) {
   $("heel").value = cat === "shoes" ? G.guessHeel(text) : "";
   $("model").value = G.guessModel(p.title, cat, kind);
   $("colour").value = col.colour; $("fam").value = col.fam;
-  $("sizes").value = G.cleanSizes(p.sizes, G.lineOf(cat, who), kind).join(", ");
-  const tryish = !p.currency || /TRY|TL|₺/i.test(p.currency);
+  $("sizes").value = G.cleanSizes(p.sizes, G.lineOf(cat, who), kind, false).join(", ");
+  const tryish = p.marketplace ? /^(TRY|TL|₺)$/i.test(p.currency) : !p.currency || /TRY|TL|₺/i.test(p.currency);
   $("tl").value = p.price && tryish ? p.price : "";
   $("desc").value = "";
   photos = (p.images || []).slice(0, 8); keep = new Set(photos.slice(0, 6)); drawPhotos();
@@ -43,6 +43,7 @@ function fill(p) {
   const from = (p.source || []).join(", ");
   status(`${brand || p.host} · ${p.title ? p.title.slice(0, 70) : "no title found"}${from ? " · read from " + from : ""}`);
   if (p.price && !tryish) $("err").hidden = false, $("err").textContent = `The page price is in ${p.currency}: type the lira price yourself.`;
+  if (p.marketplace_note) { $("err").hidden = false; $("err").textContent = p.marketplace_note; }
   if (!p.title && !photos.length) status("Couldn’t find product details on this page. Fill the fields by hand, or open the product’s own page.", "warn");
   $("form").hidden = false; upd();
 }
@@ -80,8 +81,8 @@ function upd() {
     <small>Preview with your book’s settings${params ? "" : " (defaults: settings not loaded)"}. The book sets the final price.</small>`;
 }
 ["tl", "kg", "kind", "cat"].forEach(id => $(id).addEventListener("input", upd));
-$("cat").addEventListener("change", () => { catChanged(); $("sizes").value = G.cleanSizes([], G.lineOf($("cat").value, $("who").value), $("kind").value).join(", "); upd(); });
-$("who").addEventListener("change", () => { const cat = $("cat").value; if (cat === "shoes") $("sizes").value = G.cleanSizes([], G.lineOf(cat, $("who").value)).join(", "); });
+$("cat").addEventListener("change", () => { catChanged(); $("sizes").value = ""; upd(); });
+$("who").addEventListener("change", () => { $("sizes").value = ""; });
 ["brand", "colour"].forEach(id => $(id).addEventListener("input", autoRef));
 $("colour").addEventListener("change", () => { const g = G.guessColour($("colour").value, ""); if (g.fam && !$("fam").value) $("fam").value = g.fam; });
 $("ref").addEventListener("input", () => { refTouched = true; dupCheck(); });
@@ -93,6 +94,7 @@ function buildItem() {
     kind: $("kind").value, heel: cat === "shoes" ? $("heel").value : "", tl: num($("tl").value),
     img: kept[0] || "", imgs: kept, sizes: $("sizes").value.split(",").map(s => s.trim()).filter(Boolean), page: page ? page.url : "" };
   if (cat !== "shoes") it.for = who;
+  if (page && page.marketplace) { it.marketplace = page.marketplace; it.supplier_seller = page.seller || "Confirm on supplier page"; }
   const k = num($("kg").value); if (k) it.kg = k;
   const miss = [!it.model && "model name", !it.brand && "brand", !it.tl && "lira price", !it.img && "at least one photo", !it.fam && "colour group", !it.sizes.length && "sizes", !it.ref && "reference"].filter(Boolean);
   return { it, miss };
@@ -107,7 +109,7 @@ $("add").onclick = async () => {
 
 function drawQueue() {
   $("queueBox").hidden = !queue.length; $("qCount").textContent = queue.length ? `(${queue.length})` : "";
-  $("send").textContent = `Send ${queue.length} to review inbox`; $("send").hidden = false;
+  $("send").textContent = `Send ${queue.length} to review inbox`; $("sendHint").textContent = `Destination: ${cfg.repo} · ${cfg.branch}. The Northline book reads gh-pages.`; $("send").hidden = false;
   $("queue").innerHTML = queue.map((q, i) => { const e = G.estimate(q.tl, q.kg || (q.cat === "clothing" && G.KG[q.kind]) || G.KG[q.cat], params);
     return `<div class="qi"><img src="${esc(q.img)}" alt="" referrerpolicy="no-referrer"><div><b>${esc(q.model)} · ${esc(q.colour)}</b><small>${esc(q.brand)} · ₺${q.tl}${e ? " → ≈ " + N(e.price) : ""} · ${esc(q.ref)}</small></div><button class="x" data-i="${i}" aria-label="Remove">✕</button></div>`; }).join("");
 }
@@ -126,7 +128,7 @@ $("send").onclick = async () => {
     const r = await NLSeal.sendToInbox(cfg, queue);
     const n = queue.length; queue = []; await chrome.storage.local.set({ queue }); drawQueue();
     const [owner, repo] = cfg.repo.split("/");
-    status(`Sent ${n} item${n === 1 ? "" : "s"} to your review inbox (${r.waiting} batch${r.waiting === 1 ? "" : "es"} waiting).`, "good");
+    status(`Sent ${n} item${n === 1 ? "" : "s"} to ${cfg.repo} · ${cfg.branch} (${r.waiting} batch${r.waiting === 1 ? "" : "es"} waiting).`, "good");
     $("sendHint").innerHTML = `Open your book → To review in a minute or two (the site takes a moment to update): <a href="https://${owner.toLowerCase()}.github.io/${repo}/book/" target="_blank">open book</a>.`;
     $("queueBox").hidden = false; $("queue").innerHTML = ""; $("send").hidden = true;
   } catch (e) { $("sendHint").textContent = e.message; status("Not sent. Your list is kept.", "bad"); }
