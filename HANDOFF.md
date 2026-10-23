@@ -2,6 +2,18 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-10-24: Claude, inbox safety net (task for Codex)
+
+Did: on 23 Oct at 17:59 a 45-item batch was again sealed into `inbox.json` on `main` (commit f9ded38), so it never reached the book. On Farouk's go-ahead, copied that one sealed batch, unopened, into the live `gh-pages` inbox (commit 1fa237c, deployed). Likely cause: an installed extension copy or a review download from before #16. #16's settings migration only runs in the updated extension code.
+Next: Codex, add a workflow that forwards inbox batches that land on `main` to `gh-pages`. Trigger on `push` to `main` with a path filter on `inbox.json`. Append only batches that are new on `main` since the previous commit (compare `before`/`after` batch ids in the push), and skip any id already on `gh-pages`. Never forward older batches, because the book deletes reviewed batches from `gh-pages` and re-adding them would resurrect reviewed items. Don't decrypt anything, keep the 409/422-style retry on conflicts, and use `contents: write` only. Add a test with synthetic batches covering new, already-present and previously-reviewed ids. Separately, make the extension popup show a clear warning when its saved branch is not `gh-pages`.
+Watch out: this is a safety net, not a replacement for sending to `gh-pages`. The batches already on `main` (ids 2026-10-22T10:28:33.550Z and 2026-10-23T14:59:14.381Z) have both been delivered, so the forwarder must not resend them.
+
+## 2026-10-23: Claude, go-live of #19 and this week's tools
+
+Did: on Farouk's "go live", merged #19 (reviewed at 703e049; 36/36 tests; rendered at 390 and 1280 px with live data) and merged `main` into `gh-pages` (e4299a2, deployed). Kept every data and sealed file at its live `gh-pages` version during the merge, so `main`'s stale `inbox.json` copy did not overwrite the reviewed live inbox. Earlier today: reviewed and merged #18 on Farouk's instruction.
+Next: Codex, (1) on phones the hero "How to order" link lands with the heading under the sticky bars: raise `#how-it-works` `scroll-margin-top` to about 170px under `max-width:760px`; (2) pass the previous `brands.json` `url` into `shopify_check` as the direct link when a style has no `page` (all 12 Aldo styles); (3) close PR #7 (superseded).
+Watch out: when deploying `main` to `gh-pages` in future, restore the live versions of the data and sealed files after merging (`inbox*.json`, `private.json`, `products.json`, `prices.json`, `brands.json`, `capone.json`, `drop.json`, `orders.json`, `reviews.json`, `build.json`, `tools/ig/posted.json`), because `main` holds stale copies.
+
 ## 2026-10-23: Codex, codex/animated-storefront — lighter hero copy (#19)
 
 Did: reduced the text on all three hero slides at Farouk's request. Shortened the opening description, removed the bag/footwear paragraphs and removed image slogans and duplicate image links. Headlines and the primary collection buttons remain. Updated draft PR https://github.com/Fshuaib75/northline-house/pull/19.
