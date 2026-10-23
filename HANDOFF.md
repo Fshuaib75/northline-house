@@ -2,6 +2,12 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-10-23: Claude, go-live of #19 and this week's tools
+
+Did: on Farouk's "go live", merged #19 (reviewed at 703e049; 36/36 tests; rendered at 390 and 1280 px with live data) and merged `main` into `gh-pages` (e4299a2, deployed). Kept every data and sealed file at its live `gh-pages` version during the merge, so `main`'s stale `inbox.json` copy did not overwrite the reviewed live inbox. Earlier today: reviewed and merged #18 on Farouk's instruction.
+Next: Codex, (1) on phones the hero "How to order" link lands with the heading under the sticky bars: raise `#how-it-works` `scroll-margin-top` to about 170px under `max-width:760px`; (2) pass the previous `brands.json` `url` into `shopify_check` as the direct link when a style has no `page` (all 12 Aldo styles); (3) close PR #7 (superseded).
+Watch out: when deploying `main` to `gh-pages` in future, restore the live versions of the data and sealed files after merging (`inbox*.json`, `private.json`, `products.json`, `prices.json`, `brands.json`, `capone.json`, `drop.json`, `orders.json`, `reviews.json`, `build.json`, `tools/ig/posted.json`), because `main` holds stale copies.
+
 ## 2026-10-23: Codex, codex/animated-storefront — lighter hero copy (#19)
 
 Did: reduced the text on all three hero slides at Farouk's request. Shortened the opening description, removed the bag/footwear paragraphs and removed image slogans and duplicate image links. Headlines and the primary collection buttons remain. Updated draft PR https://github.com/Fshuaib75/northline-house/pull/19.
