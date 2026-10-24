@@ -2,6 +2,30 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-10-24: Claude, review of Codex's 24 Oct handoff (PR #22)
+
+Did: merged `main` into this branch and kept both sets of entries. Checked Codex's note that pushes made with `GITHUB_TOKEN` don't trigger a Pages deploy: in this repo they do. The weekly-check robot commits 570dec1 (12 Oct), c3b1d13 and 2580679 (19 Oct) each have a Pages deployment, so the merged safety net (#21, `.github/workflows/inbox-forward.yml`) reaches the book.
+Next: Codex, the forwarding workflow is merged (#21), so drop the workflow part of local `codex/inbox-safety-net`, rebase on `main`, and keep only the extension's persistent wrong-branch warning. Upload `codex/agent-sharing-accuracy` and `codex/sculpted-clay-hero` as separate draft PRs when Farouk approves. For the hero: product pixels must come from the real supplier photos (cut out and composited), with only the setting generated, so no buckle, colour or shape on the hero differs from what customers receive.
+Watch out: the live hero (#19) went live on 23 Oct. The sculpted-clay hero would replace it, so it needs the same preview at 390 and 1280 px before any go-live.
+
+## 2026-10-24: Codex, codex/handoff-status-oct24 — approved documentation upload
+
+Did: prepared a documentation-only branch from main on Farouk's explicit approval to upload HANDOFF.md and open a draft PR. Includes the hero implementation and verification notes below; the hero source and images remain on the separate local codex/sculpted-clay-hero branch.
+Next: review this draft documentation PR against main. Hero source upload and publishing are separate steps; no merge or deployment performed.
+Watch out: this PR changes HANDOFF.md only. References to local implementation commits below describe work saved locally, not code included in this PR. Trendyol remains assisted open-tab capture only.
+
+## 2026-10-24: Codex, codex/sculpted-clay-hero — handoff verification
+
+Did: checked the saved implementation at e3fcdef against this log, fetched origin/main (still b4c8b34; no incoming main commits), and reran all four storefront motion tests successfully. Confirmed all three WebP references, one collection CTA per slide, explicit light CTA text, and the 170px mobile ordering anchor offset. The three assets total 306,098 bytes. This session changes documentation only.
+Next: review the local hero branch, then upload/open a PR against main when authorized; no PR, upload, merge or deployment has been performed for this branch. Previous browser QA verified the everyday hero at desktop width and in a 390px iframe. Still check the bag and footwear crops on phones, physical-device swiping, and compare generated product details with supplier originals before publishing.
+Watch out: this branch was created from main, so the detailed handoff entries on the other unmerged local branches are not included here. Separate saved work: codex/inbox-safety-net at 13bd325 (delta forwarding and persistent wrong-branch warning; GITHUB_TOKEN append does not trigger Pages publishing) and codex/agent-sharing-accuracy at 4b1885b (exact sizes and approved tagline). Preserve those branches and their own handoffs; they are not part of this hero commit. Aldo direct-link fallback and closing superseded PR #7 remain follow-ups. Trendyol remains assisted open-tab capture only. Catalogue and sealed files remain untouched.
+
+## 2026-10-24: Codex, codex/sculpted-clay-hero
+
+Did: fetched main and created this separate branch from b4c8b34. Applied the owner-selected sculpted-clay direction to all three shop hero panels, using generated campaign scenes based on existing product references. Added three optimized hero-clay-*.webp assets (about 300 KB total), short headlines and one shopping link per slide. Desktop uses full-width imagery; mobile uses a compact copy row and right-aligned image crop. Fixed CTA contrast and mobile ordering anchor offset. Existing carousel behavior and collection URLs retained. Four motion tests pass; desktop and 390px iframe visually checked.
+Next: owner reviews the local branch before upload/PR and deployment. No upload, merge or deployment performed.
+Watch out: images are AI-styled campaign scenes, not untouched supplier photographs; catalogue product photos remain unchanged. Originals remain a future direction. No data/sealed files touched. Agent-sharing and inbox-safety-net work stays on its separate branches. Generation used the built-in image tool: warm ivory plaster alcove, curved stone plinth, small terracotta vessel, directional window light and realistic contact shadows, empty left side, no text; each prompt requested preservation of its existing sandal, model/tote or square-toe slide detail reference.
+
 ## 2026-10-24: Claude, claude/inbox-forward (inbox safety net)
 
 Did: Farouk handed the safety-net task back to Claude, so Claude built it. `.github/workflows/inbox-forward.yml` runs on every push to `main` that changes `inbox.json`. `tools/inbox/forward.mjs` copies only batches that are new in that push (in `after`, not in `before`) to `gh-pages` `inbox.json`, skips ids already live, and records every forwarded id in `gh-pages` `inbox-forwarded.json` so a re-run can never resurrect a reviewed batch. Nothing is decrypted, and the run is a no-op on an all-zero `before`. Pushes retry 5 times from a fresh `gh-pages` on a race. Tests: `tools/tests/test_inbox_forward.mjs`, 8 cases. All 44 Node tests pass. A replay against this week's real history forwards Thursday's 45-item send and nothing else, and a full simulation of the workflow steps against a synthetic origin forwarded once, then did nothing on a re-run after review.
