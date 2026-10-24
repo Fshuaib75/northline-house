@@ -20,7 +20,7 @@ concurrency:
 jobs:
   test:
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 120
     steps:
       - uses: actions/checkout@v4
         with:
@@ -47,11 +47,20 @@ jobs:
           pip install --quiet torch torchvision --index-url https://download.pytorch.org/whl/cpu
           pip install --quiet open_clip_torch pillow
 
+      - name: Whole store catalogue (products.json plus the list built into the shop page)
+        run: |
+          node -e '
+            const fs=require("fs"); const html=fs.readFileSync("site/shop/index.html","utf8");
+            const m=html.match(/let ALL = (\[.*?\]);\n/s); const built=m?JSON.parse(m[1]):[];
+            const all=new Map([...built,...JSON.parse(fs.readFileSync("site/products.json","utf8"))].map(i=>[i.ref,i]));
+            fs.writeFileSync(process.argv[1],JSON.stringify([...all.values()]));
+            console.log(`${all.size} styles in the store (${built.length} built into the page)`);' "$RUNNER_TEMP/store.json"
+
       - name: Keyword verdicts
-        run: node code/tools/sourcing/keyword-check.mjs site/products.json "$RUNNER_TEMP/keywords.json"
+        run: node code/tools/sourcing/keyword-check.mjs "$RUNNER_TEMP/store.json" "$RUNNER_TEMP/keywords.json"
 
       - name: Score every photo
-        run: python code/tools/sourcing/vision.py --products site/products.json --keywords "$RUNNER_TEMP/keywords.json" --out "$RUNNER_TEMP/report"
+        run: python code/tools/sourcing/vision.py --products "$RUNNER_TEMP/store.json" --keywords "$RUNNER_TEMP/keywords.json" --out "$RUNNER_TEMP/report" --images 4
 
       - name: Save results to the photo-model-report branch
         working-directory: ${{ runner.temp }}/report

@@ -38,6 +38,12 @@ class VisionHelpers(unittest.TestCase):
         self.assertEqual(V.photo_verdict(0.34), "check")
         self.assertEqual(V.photo_verdict(0.35), "calm")
 
+    def test_person_probability_and_person_free(self):
+        self.assertGreater(V.person_probability([0.20, 0.21], [0.30, 0.22]), 0.99)
+        self.assertLess(V.person_probability([0.30], [0.20, 0.21]), 0.01)
+        imgs = [{"url": "a", "person": 0.9}, {"url": "b", "person": 0.1}, {"url": "c"}]
+        self.assertEqual([i["url"] for i in V.person_free(imgs)], ["b", "c"])
+
 
 if __name__ == "__main__":
     unittest.main()
