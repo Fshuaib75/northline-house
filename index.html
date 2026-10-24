@@ -763,7 +763,7 @@ $("grid").addEventListener("click",e=>{
     copy(`${i.model}${i.colour?" · "+i.colour:""} · ${N(i.price)}\nOrder here: ${shopUrl(i.ref)}`); return;
   }
   if(e.target.closest(".cap")){
-    copy(`${i.model}${i.colour?" · "+i.colour:""}\n${i.desc?i.desc[0].toUpperCase()+i.desc.slice(1)+"\n":""}${N(i.price)}\nSizes ${sizesOf(i)[0]}${sizesOf(i).length>1?"–"+sizesOf(i)[sizesOf(i).length-1]:""} · DM to order`);
+    copy(`${i.model}${i.colour?" · "+i.colour:""}\n${i.desc?i.desc[0].toUpperCase()+i.desc.slice(1)+"\n":""}${N(i.price)}\n${[sizeLine(i),"DM to order"].filter(Boolean).join(" · ")}`);
   }
 });
 
@@ -831,7 +831,12 @@ function photoBox(x,im,X,Y,w,h,r){ x.save(); rrect(x,X,Y,w,h,r); x.clip(); x.fil
 function wrap(x,t,maxW,maxLines){ const words=String(t).split(/\s+/), out=[]; let cur="";
   for(const wd of words){ const nx=cur?cur+" "+wd:wd; if(x.measureText(nx).width<=maxW||!cur) cur=nx; else { out.push(cur); cur=wd; } } if(cur) out.push(cur);
   if(out.length>maxLines){ out.length=maxLines; let l=out[maxLines-1]; while(x.measureText(l+"…").width>maxW&&l.length) l=l.slice(0,-1); out[maxLines-1]=l+"…"; } return out; }
-const sizeLine=i=>{ const z=sizesOf(i); return (i.g==="BG"||(z.length===1&&z[0]==="One size"))?"":i.g==="B"?`Ages ${z[0]} to ${z[z.length-1]}`:`Sizes ${z[0]}${z.length>1?"–"+z[z.length-1]:""}`; };
+const sizeLine=i=>{
+  const z=[...new Set(sizesOf(i).filter(s=>inStock(i,s)))];
+  if(!z.length) return "Currently sold out";
+  if(z.length===1&&z[0]==="One size") return "";
+  return `${i.g==="B"?"Ages":"Sizes"} ${z.join(", ")}`;
+};
 async function stDraw(){ const i=ST.i, post=ST.fmt==="post", W=1080, H=post?1080:1920, cv=$("stCanvas"); cv.width=W; cv.height=H; const x=cv.getContext("2d"), showP=$("stPrice").checked;
   try{ await Promise.all(["400 72px Newsreader","italic 400 30px Newsreader","500 100px Jost","400 36px Jost"].map(f=>document.fonts.load(f))); }catch(e){}
   // the May look: soft white page, cream photo backdrop, charcoal text, muted black frame
@@ -844,10 +849,10 @@ async function stDraw(){ const i=ST.i, post=ST.fmt==="post", W=1080, H=post?1080
     y+=80; x.font="400 72px Newsreader, Georgia, serif"; x.fillStyle=INK; x.fillText(wrap(x,i.model,960,1)[0],60,y);
     if(i.colour){ y+=56; x.font="400 36px Jost, sans-serif"; x.fillStyle=MUTED; x.fillText(wrap(x,i.colour,960,1)[0],60,y); }
     if(showP){ y+=112; x.font="500 100px Jost, sans-serif"; x.fillStyle=INK; x.fillText(N(i.price),60,y); }
-    const sl=sizeLine(i); if(sl){ y+=56; x.font="400 34px Jost, sans-serif"; x.fillStyle=MUTED; x.fillText(sl,60,y); }
+    const sl=sizeLine(i); if(sl){ y+=56; x.font="400 34px Jost, sans-serif"; x.fillStyle=MUTED; x.fillText(sl,60,y,960); }
     const cta="Message me to order", cy=Math.max(y+48,1712); x.font="500 40px Jost, sans-serif"; const cw=x.measureText(cta).width+80;
     x.fillStyle=INK; x.fillRect(60,cy,cw,88); x.fillStyle=BG; x.fillText(cta,100,cy+58);
-    x.font="italic 400 30px Newsreader, Georgia, serif"; x.fillStyle=MUTED; x.textAlign="center"; x.fillText("Modern form. Rooted soul.",W/2,1884); x.textAlign="left";
+    x.font="italic 400 30px Newsreader, Georgia, serif"; x.fillStyle=MUTED; x.textAlign="center"; x.fillText("Considered everyday essentials.",W/2,1884); x.textAlign="left";
   } else {
     photoBox(x,ST.img,0,0,W,780,0);
     x.font="400 28px Jost, sans-serif"; x.fillStyle=MUTED; x.fillText(i.brand,56,840);

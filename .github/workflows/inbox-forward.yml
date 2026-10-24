@@ -1,0 +1,60 @@
+# Northline inbox safety net. The owner's book reads the review inbox from gh-pages (the live site). If a sealed
+# batch is sent to inbox.json on main by mistake (an old extension copy or an old review page), this copies that
+# batch to gh-pages so it still reaches To review. Only batches that are new in this push are copied. Nothing is
+# decrypted. inbox-forwarded.json on gh-pages records every forwarded id, so none is ever sent twice, even on a re-run.
+# See tools/inbox/forward.mjs.
+name: Inbox safety net
+
+on:
+  push:
+    branches: [main]
+    paths: [inbox.json]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: inbox-forward            # own queue: a shared one could drop a pending run. Push races are retried below.
+  cancel-in-progress: false
+
+jobs:
+  forward:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: code
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: site
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Copy new batches to the live inbox
+        working-directory: site
+        env:
+          BEFORE: ${{ github.event.before }}
+          AFTER: ${{ github.sha }}
+        run: |
+          git config user.name "Northline inbox safety net"
+          git config user.email "actions@users.noreply.github.com"
+          for attempt in 1 2 3 4 5; do
+            git fetch -q origin gh-pages && git reset -q --hard origin/gh-pages
+            out=$(node ../code/tools/inbox/forward.mjs --before "$BEFORE" --after "$AFTER" --repo ../code --live inbox.json --ledger inbox-forwarded.json)
+            echo "$out"
+            case "$out" in added=0*) exit 0;; esac
+            git add inbox.json inbox-forwarded.json
+            git commit -qm "Review inbox: forwarded from main (${out%% *})"
+            if git push -q origin HEAD:gh-pages; then
+              echo "### Inbox safety net" >> "$GITHUB_STEP_SUMMARY"
+              echo "Forwarded to the live inbox: $out" >> "$GITHUB_STEP_SUMMARY"
+              exit 0
+            fi
+            sleep $((attempt * 5))          # someone else saved gh-pages at the same moment: start again from the new state
+          done
+          echo "gh-pages kept changing; batches not forwarded" >&2
+          exit 1
