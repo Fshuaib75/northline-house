@@ -13,8 +13,8 @@ on:
         required: true
 
       limit:
-        description: "Maximum candidates in the review (1-500)"
-        default: "200"
+        description: "Maximum candidates in the review (1-500). At most 5 per brand; only minimal styles."
+        default: "30"
         required: true
 
 permissions:

@@ -4,6 +4,7 @@ import {createHash} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 import {createRequire} from 'node:module';
 import {FEATURES, VERSION, features, baseline, predict, validModel, train} from './ranking.mjs';
+import {minimalCheck} from './minimal.mjs';
 const require=createRequire(import.meta.url), G=require('../extension/guess.js');
 const ROOT=fileURLToPath(new URL('../../',import.meta.url));
 const read=p=>JSON.parse(fs.readFileSync(p,'utf8'));
@@ -73,16 +74,19 @@ export function normalize(snapshot, now=Date.now()) {
   }
   return output;
 }
-export function rank(candidates, existing, params, model=null, limit=200) {
+// Defaults keep the review short: 30 candidates, at most 5 from any one brand (owner decision, 24 Oct 2026).
+export function rank(candidates, existing, params, model=null, limit=30, perBrand=5) {
   if(!Number.isInteger(limit)||limit<1||limit>500)throw Error('Review limit must be an integer from 1 to 500');
+  if(!(perBrand===Infinity||Number.isInteger(perBrand)&&perBrand>=1))throw Error('Per-brand limit must be a whole number from 1');
   for(const k of ['rate','perKg','handling','minProfit','profitPct'])if(!Number.isFinite(params?.[k])||params[k]<0)throw Error(`Missing/invalid pricing parameter: ${k}`);
   if(params.rate<=0)throw Error('Exchange rate must be positive');
   const refs=new Set(existing.map(i=>i.ref)),pages=new Set(existing.map(i=>urlKey(i.page)).filter(Boolean)),images=new Set(existing.flatMap(i=>[i.img,...i.imgs||[]]).map(imageKey).filter(Boolean));
-  const seen=new Set(),eligible=[],excluded={known:0,duplicate:0,expensive:0};
+  const seen=new Set(),eligible=[],excluded={known:0,duplicate:0,expensive:0,notMinimal:0};
   for(const candidate of candidates) {
     const {item}=candidate;
     if(refs.has(item.ref)||pages.has(urlKey(item.page))||[item.img,...item.imgs].some(u=>images.has(imageKey(u)))){excluded.known++;continue;}
     if(seen.has(candidate.id)){excluded.duplicate++;continue;}seen.add(candidate.id);
+    if(!minimalCheck(item,candidate.evidence?.title).ok){excluded.notMinimal++;continue;}
     const estimate=G.estimate(item.tl,item.kg,params);
     if(!estimate||estimate.price>100000){excluded.expensive++;continue;}
     const x=features(item,estimate),useML=validModel(model),score=useML?predict(model,x):baseline(x);
@@ -98,11 +102,11 @@ export function rank(candidates, existing, params, model=null, limit=200) {
     const group=groups.get(c.item.brand),key=c.item.cat+':'+c.item.for;
     if(!group.has(key))group.set(key,[]);group.get(key).push(c);
   }
-  const queues=[...groups.values()].map(g=>[...g.values()]);
-  const selected=[];
-  while(selected.length<limit&&queues.some(q=>q.length))for(const queue of queues){
-    if(!queue.length||selected.length>=limit)continue;
-    const bucket=queue.shift();selected.push(bucket.shift());if(bucket.length)queue.push(bucket);
+  const queues=[...groups.values()].map(g=>[...g.values()]).map(q=>Object.assign(q,{taken:0}));
+  const selected=[],open=q=>q.length&&q.taken<perBrand;
+  while(selected.length<limit&&queues.some(open))for(const queue of queues){
+    if(!open(queue)||selected.length>=limit)continue;
+    const bucket=queue.shift();selected.push(bucket.shift());queue.taken++;if(bucket.length)queue.push(bucket);
   }
   return {candidates:selected,eligible:eligible.length,excluded,model:validModel(model)?'learned':'rules'};
 }
@@ -111,7 +115,7 @@ function existingCatalogue(root) {
   if(!match)throw Error('Embedded catalogue could not be read; refusing to skip deduplication');
   return [...JSON.parse(match[1]),...read(path.join(root,'products.json'))];
 }
-export function build(snapshotDir,outDir,modelPath=null,limit=200) {
+export function build(snapshotDir,outDir,modelPath=null,limit=30) {
   const all=[],sources=[];
   for(const key of Object.keys(SOURCES)) {
     const p=path.join(snapshotDir,key+'.json');if(!fs.existsSync(p))continue;
@@ -129,7 +133,7 @@ export function build(snapshotDir,outDir,modelPath=null,limit=200) {
 }
 function cli(args) {
   const [command,...rest]=args;
-  if(command==='build') {if(rest.length<2)throw Error('build SNAPSHOT_DIR OUTPUT_DIR [MODEL_JSON|-] [LIMIT 1-500]');build(rest[0],rest[1],rest[2]==='-'?null:rest[2],rest[3]===undefined?200:Number(rest[3]));}
+  if(command==='build') {if(rest.length<2)throw Error('build SNAPSHOT_DIR OUTPUT_DIR [MODEL_JSON|-] [LIMIT 1-500]');build(rest[0],rest[1],rest[2]==='-'?null:rest[2],rest[3]===undefined?30:Number(rest[3]));}
   else if(command==='train') {if(rest.length<2)throw Error('train OUTPUT_MODEL FEEDBACK_JSON...');const [output,...files]=rest;const rows=files.flatMap(p=>read(p).decisions||[]);const model=train(rows);fs.writeFileSync(output,JSON.stringify(model,null,2));console.log(JSON.stringify(model,null,2));}
   else console.log('Northline sourcing engine\nCollect: python tools/sourcing/collect.py --output /tmp/nl-sources --pages 4\nReview: node tools/sourcing/engine.mjs build /tmp/nl-sources /tmp/nl-review [model.json]\nLearn: node tools/sourcing/engine.mjs train /tmp/nl-model.json feedback.json...\nOpen review.html; approve/reject then download review findings and feedback. Findings use the owner inbox schema; publishing remains owner-controlled.');
 }
