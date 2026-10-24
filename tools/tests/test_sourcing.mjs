@@ -89,3 +89,8 @@ test('photo check: loud photos are left out, borderline ones flagged, best whole
 test('keyword rule catches jewelled, beaded and sequinned',()=>{
  for(const t of ['Square-toe jewelled slide','Boncuklu Terlik','Payetli Babet','Sequinned flat'])assert.ok(!minimalCheck({cat:'shoes',model:t,colour:'Black',fam:'Black'},'').ok,t);
 });
+test('photo check: a candidate the model could not see is kept and marked',()=>{
+ const base=normalize(snapshot())[0];
+ const r=rank([base],[],params,null,30,5,{[base.id]:{score:null,verdict:'unchecked'}});
+ assert.equal(r.candidates.length,1);assert.ok(r.candidates[0].reasons.some(t=>/Photo not checked/.test(t)));
+});

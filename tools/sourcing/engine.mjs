@@ -98,7 +98,8 @@ export function rank(candidates, existing, params, model=null, limit=30, perBran
     eligible.push({...shown,photo:photo?{score:photo.score,verdict:photo.verdict}:undefined,estimate,features:x,feature_version:VERSION,score,method:useML?'learned approval preference':'margin and stock rules',
       reasons:[`Estimated selling price ₦${estimate.price.toLocaleString('en')}`,`Estimated owner profit ₦${Math.round(estimate.profit).toLocaleString('en')}`,`${item.sizes.length} available size option(s)`,
         ...(estimate.price>65000?['Above the usual ₦65k review threshold']:[]),...(estimate.profit<5000?['Profit below ₦5,000']:[]),
-        ...(photo?.verdict==='check'?[`Photo may be loud: check (${photo.loudest||'photo check'})`]:[])]});
+        ...(photo?.verdict==='check'?[`Photo may be loud: check (${photo.loudest||'photo check'})`]:[]),
+        ...(photo?.verdict==='unchecked'?['Photo not checked (the supplier blocked the download): look closely']:[])]});
   }
   eligible.sort((a,b)=>b.score-a.score||a.id.localeCompare(b.id));
   // Fair share per brand, rotating its categories and audiences within that share.
