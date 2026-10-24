@@ -73,3 +73,19 @@ test('rank leaves out loud styles and counts them',()=>{
  const loud={...base,id:'loud',evidence:{...base.evidence,title:'Erkek Kroko Desenli Terlik'},item:{...base.item,ref:'LOUD'}};
  const r=rank([base,loud],[],params);assert.deepEqual(r.candidates.map(c=>c.id),[base.id]);assert.equal(r.excluded.notMinimal,1);
 });
+test('photo check: loud photos are left out, borderline ones flagged, best whole photo shown first',()=>{
+ const base=normalize(snapshot())[0];
+ const mk=(id,imgs)=>({...base,id,item:{...base.item,ref:id,img:imgs[0],imgs}});
+ const a=mk('a',['https://x.test/a1.jpg','https://x.test/a2.jpg']),b=mk('b',['https://x.test/b1.jpg']),c=mk('c',['https://x.test/c1.jpg']);
+ const photos={a:{score:.8,verdict:'calm',best_photo:'https://x.test/a2.jpg'},b:{score:.1,verdict:'leave_out'},c:{score:.3,verdict:'check',loudest:'a shoe with studs'}};
+ const r=rank([a,b,c],[],params,null,30,5,photos);
+ assert.deepEqual(r.candidates.map(x=>x.id).sort(),['a','c']);assert.equal(r.excluded.loudPhoto,1);
+ const ra=r.candidates.find(x=>x.id==='a');assert.equal(ra.item.img,'https://x.test/a2.jpg');assert.deepEqual(ra.item.imgs,['https://x.test/a2.jpg','https://x.test/a1.jpg']);
+ assert.ok(r.candidates.find(x=>x.id==='c').reasons.some(t=>/may be loud/.test(t)));
+ const unknown={a:{score:.8,verdict:'calm',best_photo:'https://elsewhere.test/x.jpg'}};   // never swap in a photo that isn't the product's
+ assert.equal(rank([a],[],params,null,30,5,unknown).candidates[0].item.img,'https://x.test/a1.jpg');
+ assert.equal(rank([a,b,c],[],params).candidates.length,3);                               // no photo check: keyword rules only
+});
+test('keyword rule catches jewelled, beaded and sequinned',()=>{
+ for(const t of ['Square-toe jewelled slide','Boncuklu Terlik','Payetli Babet','Sequinned flat'])assert.ok(!minimalCheck({cat:'shoes',model:t,colour:'Black',fam:'Black'},'').ok,t);
+});

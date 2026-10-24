@@ -105,25 +105,43 @@ def compare(items, keywords):
     }
 
 
+# Scan thresholds (owner decision, 24 Oct 2026): below LEAVE_OUT the candidate is dropped like a keyword fail;
+# up to CHECK it is shown with a "may be loud" note. Chosen from the live-catalogue test (PR #28).
+LEAVE_OUT, CHECK = 0.20, 0.35
+
+
+def photo_verdict(score):
+    if score is None:
+        return "unchecked"
+    return "leave_out" if score < LEAVE_OUT else "check" if score < CHECK else "calm"
+
+
 # ---------- model and IO ----------
 
-def fetch(url):
-    try:
-        req = urllib.request.Request(url, headers=UA)
-        with urllib.request.urlopen(req, timeout=25) as r:
-            data = r.read(8_000_000)
-        from PIL import Image
-        im = Image.open(io.BytesIO(data)).convert("RGB")
-        im.thumbnail((448, 448))
-        return im
-    except Exception as e:  # a missing photo is reported, never invented
-        return e
+def fetch(url, tries=4):
+    """Download one photo. Some supplier image servers refuse bursts, so retry with growing pauses."""
+    import random
+    import time
+    from PIL import Image
+    err = None
+    for n in range(tries):
+        try:
+            req = urllib.request.Request(url, headers=UA)
+            with urllib.request.urlopen(req, timeout=25) as r:
+                data = r.read(8_000_000)
+            im = Image.open(io.BytesIO(data)).convert("RGB")
+            im.thumbnail((448, 448))
+            return im
+        except Exception as e:  # a missing photo is reported, never invented
+            err = e
+            time.sleep(1.5 * (2 ** n) + random.random())
+    return err
 
 
-def run(products, keywords, out, limit_imgs=6):
+def score_items(items, limit_imgs=6, threads=6):
+    """Score every item's photos. Returns (results, thumbnails, photos requested, photos failed)."""
     import torch
     import open_clip
-    from PIL import Image, ImageDraw
 
     torch.set_num_threads(os.cpu_count() or 2)
     model, _, preprocess = open_clip.create_model_and_transforms(MODEL, pretrained=PRETRAINED)
@@ -143,9 +161,9 @@ def run(products, keywords, out, limit_imgs=6):
             "types": {k: encode_text([p.format(n=n) for p in v]) for k, v in TYPES.items()},
         }
 
-    items = [i for i in products if i.get("cat") in NOUN]
-    jobs = [(i["ref"], u) for i in items for u in (i.get("imgs") or [i.get("img")])[:limit_imgs] if u]
-    with ThreadPoolExecutor(16) as ex:
+    items = [i for i in items if i.get("cat") in NOUN]
+    jobs = sorted({(i["ref"], u) for i in items for u in (i.get("imgs") or [i.get("img")])[:limit_imgs] if u})
+    with ThreadPoolExecutor(threads) as ex:
         pics = dict(zip(jobs, ex.map(lambda j: fetch(j[1]), jobs)))
     failed = sum(isinstance(v, Exception) for v in pics.values())
     print(f"photos: {len(jobs)} requested, {failed} failed", flush=True)
@@ -161,9 +179,9 @@ def run(products, keywords, out, limit_imgs=6):
                 e = model.encode_image(torch.stack([preprocess(im) for _, im in ok]))
             e = e / e.norm(dim=-1, keepdim=True)
             for (u, im), v in zip(ok, e):
-                calm = calm_probability((v @ t["calm"].T).tolist(), (v @ t["loud"].T).tolist())
-                label, probs = photo_type({k: (v @ m.T).tolist() for k, m in t["types"].items()})
                 loud_sims = (v @ t["loud"].T).tolist()
+                calm = calm_probability((v @ t["calm"].T).tolist(), loud_sims)
+                label, probs = photo_type({k: (v @ m.T).tolist() for k, m in t["types"].items()})
                 imgs.append({"url": u, "calm": round(calm, 4), "type": label,
                              "type_probs": {k: round(p, 3) for k, p in probs.items()},
                              "loudest": LOUD[loud_sims.index(max(loud_sims))].format(n=NOUN[item["cat"]])})
@@ -171,12 +189,38 @@ def run(products, keywords, out, limit_imgs=6):
         whole = [im for im in imgs if im["type"] == "whole"]
         best = max(whole, key=lambda im: im["type_probs"]["whole"])["url"] if whole else None
         score = item_score(imgs)
-        results.append({"ref": item["ref"], "brand": item["brand"], "model": item.get("model"),
+        results.append({"ref": item["ref"], "brand": item.get("brand"), "model": item.get("model"),
                         "colour": item.get("colour"), "cat": item["cat"],
                         "score": None if score is None else round(score, 4),
                         "best_whole_photo": best, "main_photo_type": imgs[0]["type"] if imgs else None,
-                        "keyword_ok": keywords.get(item["ref"], {}).get("ok"),
-                        "keyword_reason": keywords.get(item["ref"], {}).get("reason"), "photos": imgs})
+                        "photos": imgs})
+    return results, thumbs, len(jobs), failed
+
+
+def score_candidates(path, out, limit_imgs=4):
+    """Scan step: score the candidate pool from engine.mjs and write {candidate id: photo verdict} for build."""
+    pool = json.load(open(path))
+    items = [{**c["item"], "ref": c["id"]} for c in pool["candidates"]]
+    results, _, requested, failed = score_items(items, limit_imgs)
+    scores = {}
+    for r in results:
+        loud = min(r["photos"], key=lambda im: im["calm"])["loudest"] if r["photos"] else None
+        scores[r["ref"]] = {"score": r["score"], "verdict": photo_verdict(r["score"]),
+                            "best_photo": r["best_whole_photo"], "loudest": loud}
+    json.dump({"model": f"OpenCLIP {MODEL} ({PRETRAINED})", "leave_out_below": LEAVE_OUT, "check_below": CHECK,
+               "photos_requested": requested, "photos_failed": failed, "scores": scores}, open(out, "w"), indent=1)
+    v = [s["verdict"] for s in scores.values()]
+    print(f"photo check: {len(v)} candidates, {v.count('leave_out')} left out, {v.count('check')} to check, "
+          f"{v.count('unchecked')} without photos", flush=True)
+
+
+def run(products, keywords, out, limit_imgs=6):
+    from PIL import Image, ImageDraw
+    results, thumbs, requested, failed = score_items(products, limit_imgs)
+    jobs = range(requested)
+    for r in results:
+        r["keyword_ok"] = keywords.get(r["ref"], {}).get("ok")
+        r["keyword_reason"] = keywords.get(r["ref"], {}).get("reason")
 
     os.makedirs(out, exist_ok=True)
     cmp = compare(results, keywords)
@@ -252,12 +296,16 @@ def run(products, keywords, out, limit_imgs=6):
 
 def main(argv=None):
     a = argparse.ArgumentParser()
-    a.add_argument("--products", required=True)
-    a.add_argument("--keywords", required=True)
+    a.add_argument("--products", help="catalogue test: products.json")
+    a.add_argument("--keywords", help="catalogue test: keyword verdicts")
+    a.add_argument("--candidates", help="scan step: candidate pool from engine.mjs pool")
     a.add_argument("--out", required=True)
     a.add_argument("--images", type=int, default=6)
     args = a.parse_args(argv)
-    run(json.load(open(args.products)), json.load(open(args.keywords)), args.out, args.images)
+    if args.candidates:
+        score_candidates(args.candidates, args.out, min(args.images, 4))
+    else:
+        run(json.load(open(args.products)), json.load(open(args.keywords)), args.out, args.images)
 
 
 if __name__ == "__main__":

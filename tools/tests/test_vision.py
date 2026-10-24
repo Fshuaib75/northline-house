@@ -31,6 +31,13 @@ class VisionHelpers(unittest.TestCase):
         self.assertEqual(c["photo_only_flags"], ["b"])
         self.assertEqual(c["keyword_only_flags"], ["c"])
 
+    def test_photo_verdict_thresholds(self):
+        self.assertEqual(V.photo_verdict(None), "unchecked")
+        self.assertEqual(V.photo_verdict(0.19), "leave_out")
+        self.assertEqual(V.photo_verdict(0.2), "check")
+        self.assertEqual(V.photo_verdict(0.34), "check")
+        self.assertEqual(V.photo_verdict(0.35), "calm")
+
 
 if __name__ == "__main__":
     unittest.main()
