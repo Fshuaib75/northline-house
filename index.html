@@ -834,7 +834,7 @@ function wrap(x,t,maxW,maxLines){ const words=String(t).split(/\s+/), out=[]; le
 const sizeLine=i=>{
   const z=[...new Set(sizesOf(i).filter(s=>inStock(i,s)))];
   if(!z.length) return "Currently sold out";
-  if(z.length===1&&z[0]==="One size") return "";
+  if(i.g==="BG"||(z.length===1&&(z[0]==="One size"||z[0]==="00"))) return "";   // bags and placeholder "00" have no size to show
   return `${i.g==="B"?"Ages":"Sizes"} ${z.join(", ")}`;
 };
 async function stDraw(){ const i=ST.i, post=ST.fmt==="post", W=1080, H=post?1080:1920, cv=$("stCanvas"); cv.width=W; cv.height=H; const x=cv.getContext("2d"), showP=$("stPrice").checked;
