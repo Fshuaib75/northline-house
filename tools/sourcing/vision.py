@@ -151,7 +151,7 @@ def server_key(url):
     """One supplier's image server. Shopify stores share a host, so the store id in the path tells them apart."""
     from urllib.parse import urlparse
     u = urlparse(url)
-    return u.netloc + (u.path.split("/files/")[0] if "/files/" in u.path else "")
+    return u.netloc + (u.path.rsplit("/files/", 1)[0] if "/files/" in u.path else "")
 
 
 def blocked(key, give_up_after=8):
