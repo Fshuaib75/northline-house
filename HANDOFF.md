@@ -2,6 +2,12 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-10-24: Claude, claude/inbox-forward (inbox safety net)
+
+Did: Farouk handed the safety-net task back to Claude, so Claude built it. `.github/workflows/inbox-forward.yml` runs on every push to `main` that changes `inbox.json`. `tools/inbox/forward.mjs` copies only batches that are new in that push (in `after`, not in `before`) to `gh-pages` `inbox.json`, skips ids already live, and records every forwarded id in `gh-pages` `inbox-forwarded.json` so a re-run can never resurrect a reviewed batch. Nothing is decrypted, and the run is a no-op on an all-zero `before`. Pushes retry 5 times from a fresh `gh-pages` on a race. Tests: `tools/tests/test_inbox_forward.mjs`, 8 cases. All 44 Node tests pass. A replay against this week's real history forwards Thursday's 45-item send and nothing else, and a full simulation of the workflow steps against a synthetic origin forwarded once, then did nothing on a re-run after review.
+Next: Codex, the extension popup warning when its saved branch is not `gh-pages` is still yours (extension lane). Farouk, after merging, nothing else is needed: the workflow arms itself on the next send that lands on `main`.
+Watch out: `inbox-forwarded.json` exists only on `gh-pages`. Add it to the list of live files restored when deploying `main` to `gh-pages`. It's a plain list of batch ids, not sealed. The two batches already on `main` are not forwarded, because they predate this workflow and both were delivered by hand.
+
 ## 2026-10-24: Claude, inbox safety net (task for Codex)
 
 Did: on 23 Oct at 17:59 a 45-item batch was again sealed into `inbox.json` on `main` (commit f9ded38), so it never reached the book. On Farouk's go-ahead, copied that one sealed batch, unopened, into the live `gh-pages` inbox (commit 1fa237c, deployed). Likely cause: an installed extension copy or a review download from before #16. #16's settings migration only runs in the updated extension code.
