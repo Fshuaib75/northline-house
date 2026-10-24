@@ -1,0 +1,72 @@
+# Northline photo model test. Scores every live catalogue photo with an open image model (OpenCLIP on CPU, free)
+# and compares it with the keyword minimal rule. Read-only for the shop: it never edits products or the live site.
+# Results (report.json, summary.md and contact sheets) are saved to the `photo-model-report` branch and
+# summarised in a comment on the pull request. See tools/sourcing/vision.py.
+name: Photo model test
+
+on:
+  pull_request:
+    paths: [tools/sourcing/vision.py, tools/sourcing/keyword-check.mjs, .github/workflows/photo-model-test.yml]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: photo-model-test
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: code
+      - uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: site
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/pip
+            ~/.cache/huggingface
+          key: photo-model-${{ runner.os }}-v1
+
+      - name: Install the image model (CPU only)
+        run: |
+          pip install --quiet torch torchvision --index-url https://download.pytorch.org/whl/cpu
+          pip install --quiet open_clip_torch pillow
+
+      - name: Keyword verdicts
+        run: node code/tools/sourcing/keyword-check.mjs site/products.json "$RUNNER_TEMP/keywords.json"
+
+      - name: Score every photo
+        run: python code/tools/sourcing/vision.py --products site/products.json --keywords "$RUNNER_TEMP/keywords.json" --out "$RUNNER_TEMP/report"
+
+      - name: Save results to the photo-model-report branch
+        working-directory: ${{ runner.temp }}/report
+        run: |
+          cat summary.md >> "$GITHUB_STEP_SUMMARY"
+          git init -q && git checkout -q -b photo-model-report
+          git config user.name "Northline photo model test"
+          git config user.email "actions@users.noreply.github.com"
+          git add . && git commit -qm "Photo model test results for ${GITHUB_SHA::7}"
+          git push -qf "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" photo-model-report
+
+      - name: Comment on the pull request
+        if: github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          { cat "$RUNNER_TEMP/report/summary.md"; echo; echo "Contact sheets and full report: branch \`photo-model-report\`."; } > comment.md
+          gh pr comment ${{ github.event.pull_request.number }} -R ${{ github.repository }} -F comment.md

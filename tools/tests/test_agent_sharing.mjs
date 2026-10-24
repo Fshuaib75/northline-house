@@ -25,3 +25,10 @@ test('one-size and sold-out products do not produce a false size range',()=>{
   assert.equal(format(bag,{bag:[]}),'Currently sold out');
   assert.equal(format({ref:'shoe',g:'M',sizes:['40']},{shoe:[]}),'Currently sold out');
 });
+
+test('bags and placeholder sizes never show a size line', () => {
+  assert.equal(format({ref:'bag',g:'BG',sizes:['00']}),'');
+  assert.equal(format({ref:'bag2',g:'BG',sizes:['One size']}),'');
+  assert.equal(format({ref:'bag3',g:'BG',sizes:['00']},{bag3:[]}),'Currently sold out');
+  assert.equal(format({ref:'belt',g:'AC',sizes:['85','95','105']},{belt:['95']}),'Sizes 95');
+});

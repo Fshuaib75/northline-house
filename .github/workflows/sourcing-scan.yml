@@ -13,8 +13,8 @@ on:
         required: true
 
       limit:
-        description: "Maximum candidates in the review (1-500)"
-        default: "200"
+        description: "Maximum candidates in the review (1-500). At most 5 per brand; only minimal styles."
+        default: "30"
         required: true
 
 permissions:
@@ -27,7 +27,7 @@ concurrency:
 jobs:
   scan:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
         with:
@@ -58,11 +58,36 @@ jobs:
           PAGES: ${{ inputs.pages }}
         run: python tools/sourcing/collect.py --output "$RUNNER_TEMP/sources" --pages "$PAGES"
 
+      # Photo check (tools/sourcing/vision.py): an open image model looks at each candidate's photos, leaves out
+      # loud ones (stones, sequins, prints, logos the title doesn't mention), flags borderline ones and puts the best
+      # whole-item photo first. If any of this fails, the scan still finishes with the keyword rules alone.
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/pip
+            ~/.cache/huggingface
+          key: photo-model-${{ runner.os }}-v1
+      - name: Install the photo model (CPU only)
+        id: model
+        continue-on-error: true
+        run: |
+          pip install --quiet torch torchvision --index-url https://download.pytorch.org/whl/cpu
+          pip install --quiet open_clip_torch pillow
+      - name: Photo check
+        if: steps.model.outcome == 'success'
+        continue-on-error: true
+        working-directory: code
+        run: |
+          node tools/sourcing/engine.mjs pool "$RUNNER_TEMP/sources" "$RUNNER_TEMP/pool.json"
+          python tools/sourcing/vision.py --candidates "$RUNNER_TEMP/pool.json" --out "$RUNNER_TEMP/photos.json"
+
       - name: Build the review page
         working-directory: code
         env:
           REVIEW_LIMIT: ${{ inputs.limit }}
-        run: node tools/sourcing/engine.mjs build "$RUNNER_TEMP/sources" "$RUNNER_TEMP/review" - "$REVIEW_LIMIT" | tee "$RUNNER_TEMP/summary.json"
+        run: |
+          node tools/sourcing/engine.mjs build "$RUNNER_TEMP/sources" "$RUNNER_TEMP/review" - "$REVIEW_LIMIT" "$RUNNER_TEMP/photos.json" | tee "$RUNNER_TEMP/summary.json"
+          node -e 'const s=require(process.argv[1]);const x=s.excluded;console.log(`::notice title=Sourcing scan::${s.selected} selected from ${s.eligible} eligible. Left out: ${x.notMinimal} by keywords, ${x.loudPhoto} by photo, ${x.known} already stocked. Photo check ${s.photo_check}. Brands: ${s.brands.join(", ")}`)' "$RUNNER_TEMP/summary.json"
 
       - name: Summary
         run: |
