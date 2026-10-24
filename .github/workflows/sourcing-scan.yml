@@ -87,7 +87,7 @@ jobs:
           REVIEW_LIMIT: ${{ inputs.limit }}
         run: |
           node tools/sourcing/engine.mjs build "$RUNNER_TEMP/sources" "$RUNNER_TEMP/review" - "$REVIEW_LIMIT" "$RUNNER_TEMP/photos.json" | tee "$RUNNER_TEMP/summary.json"
-          node -e 'const s=require(process.argv[1]);const x=s.excluded;console.log(`::notice title=Sourcing scan::${s.selected} selected from ${s.eligible} eligible. Left out: ${x.notMinimal} by keywords, ${x.loudPhoto} by photo, ${x.known} already stocked. Photo check ${s.photo_check}. Brands: ${s.brands.join(", ")}`)' "$RUNNER_TEMP/summary.json"
+          node -e 'const s=require(process.argv[1]);const x=s.excluded;console.log(`::notice title=Sourcing scan::${s.selected} selected from ${s.eligible} eligible. Left out: ${x.notMinimal} by keywords, ${x.loudPhoto} by photo, ${x.onlyPeoplePhotos} only had photos with people, ${x.known} already stocked. Photo check ${s.photo_check}. Brands: ${s.brands.join(", ")}`)' "$RUNNER_TEMP/summary.json"
 
       - name: Summary
         run: |

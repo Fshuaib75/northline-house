@@ -20,7 +20,8 @@ from concurrent.futures import ThreadPoolExecutor
 
 MODEL, PRETRAINED = "ViT-B-32", "laion2b_s34b_b79k"
 
-NOUN = {"shoes": "shoe", "bags": "bag", "clothing": "piece of clothing", "accessories": "accessory"}
+NOUN = {"shoes": "shoe", "bags": "bag", "clothing": "piece of clothing", "accessories": "accessory",
+        "baby": "piece of baby clothing"}
 CALM = [
     "a photo of a plain minimal {n} in one solid neutral colour",
     "a photo of a simple {n} made of smooth leather with clean lines",
@@ -45,6 +46,18 @@ TYPES = {
     "sole": ["a photo of the bottom sole of a {n}"],
     "back": ["a photo of the back of a {n}"],
 }
+# Owner rule, 24 Oct 2026: store photos show the product only, never a person (no models, no women, no legs or
+# hands). PEOPLE prompts are matched against ALONE ones; above PERSON_LIMIT the photo is treated as showing a person.
+ALONE = ["a product photo of a {n} on its own with no people",
+         "a studio photo of a {n} on a plain background",
+         "a product photo of a pair of {n}s with nobody in the picture"]
+PEOPLE = ["a photo of a woman wearing or holding a {n}",
+          "a photo of a fashion model posing with a {n}",
+          "a photo of a person's legs and feet wearing {n}s",
+          "a photo of a person's hand holding a {n}",
+          "a photo of a man wearing a {n}",
+          "a photo of a child wearing a {n}"]
+PERSON_LIMIT = 0.5
 UA = {"User-Agent": "Mozilla/5.0 (Northline photo check; owner review tool)"}
 
 
@@ -71,6 +84,17 @@ def photo_type(type_sims):
     p = softmax(best)
     probs = dict(zip(labels, p))
     return max(probs, key=probs.get), probs
+
+
+def person_probability(alone_sims, people_sims):
+    """Probability the photo shows a person (or part of one) rather than the product alone."""
+    return 1 - calm_probability(alone_sims, people_sims)
+
+
+def person_free(images, limit=None):
+    """Photos without a person, in their original order."""
+    limit = PERSON_LIMIT if limit is None else limit
+    return [im for im in images if im.get("person", 0) < limit]
 
 
 def item_score(images):
@@ -118,23 +142,52 @@ def photo_verdict(score):
 
 # ---------- model and IO ----------
 
-def fetch(url, tries=4):
-    """Download one photo. Some supplier image servers refuse bursts, so retry with growing pauses."""
-    import random
+import threading
+
+_SERVERS, _LOCK = {}, threading.Lock()
+
+
+def server_key(url):
+    """One supplier's image server. Shopify stores share a host, so the store id in the path tells them apart."""
+    from urllib.parse import urlparse
+    u = urlparse(url)
+    return u.netloc + (u.path.rsplit("/files/", 1)[0] if "/files/" in u.path else "")
+
+
+def blocked(key, give_up_after=8):
+    """A server that has refused every one of its first photos is skipped from then on (e.g. one that blocks GitHub)."""
+    with _LOCK:
+        ok, bad = _SERVERS.get(key, (0, 0))
+    return ok == 0 and bad >= give_up_after
+
+
+def _note(key, success):
+    with _LOCK:
+        ok, bad = _SERVERS.get(key, (0, 0))
+        _SERVERS[key] = (ok + success, bad + (not success))
+
+
+def fetch(url, tries=2):
+    """Download one photo, with one retry. Never invents a photo: failures come back as the error."""
     import time
     from PIL import Image
+    key = server_key(url)
+    if blocked(key):
+        return RuntimeError(f"skipped: {key} refused every photo so far")
     err = None
     for n in range(tries):
         try:
             req = urllib.request.Request(url, headers=UA)
-            with urllib.request.urlopen(req, timeout=25) as r:
+            with urllib.request.urlopen(req, timeout=15) as r:
                 data = r.read(8_000_000)
             im = Image.open(io.BytesIO(data)).convert("RGB")
-            im.thumbnail((448, 448))
+            im.thumbnail((256, 256))   # the model reads 224 px; small copies keep memory low on 1,000-style runs
+            _note(key, True)
             return im
-        except Exception as e:  # a missing photo is reported, never invented
+        except Exception as e:
             err = e
-            time.sleep(1.5 * (2 ** n) + random.random())
+            time.sleep(1 + n)
+    _note(key, False)
     return err
 
 
@@ -159,6 +212,8 @@ def score_items(items, limit_imgs=6, threads=6):
             "calm": encode_text([p.format(n=n) for p in CALM]),
             "loud": encode_text([p.format(n=n) for p in LOUD]),
             "types": {k: encode_text([p.format(n=n) for p in v]) for k, v in TYPES.items()},
+            "alone": encode_text([p.format(n=n) for p in ALONE]),
+            "people": encode_text([p.format(n=n) for p in PEOPLE]),
         }
 
     items = [i for i in items if i.get("cat") in NOUN]
@@ -182,17 +237,22 @@ def score_items(items, limit_imgs=6, threads=6):
                 loud_sims = (v @ t["loud"].T).tolist()
                 calm = calm_probability((v @ t["calm"].T).tolist(), loud_sims)
                 label, probs = photo_type({k: (v @ m.T).tolist() for k, m in t["types"].items()})
+                people_sims = (v @ t["people"].T).tolist()
+                person = person_probability((v @ t["alone"].T).tolist(), people_sims)
                 imgs.append({"url": u, "calm": round(calm, 4), "type": label,
+                             "person": round(person, 4), "person_kind": PEOPLE[people_sims.index(max(people_sims))].format(n=NOUN[item["cat"]]),
                              "type_probs": {k: round(p, 3) for k, p in probs.items()},
                              "loudest": LOUD[loud_sims.index(max(loud_sims))].format(n=NOUN[item["cat"]])})
                 thumbs[u] = im
-        whole = [im for im in imgs if im["type"] == "whole"]
+        whole = [im for im in person_free(imgs) if im["type"] == "whole"]
         best = max(whole, key=lambda im: im["type_probs"]["whole"])["url"] if whole else None
         score = item_score(imgs)
         results.append({"ref": item["ref"], "brand": item.get("brand"), "model": item.get("model"),
                         "colour": item.get("colour"), "cat": item["cat"],
                         "score": None if score is None else round(score, 4),
                         "best_whole_photo": best, "main_photo_type": imgs[0]["type"] if imgs else None,
+                        "people_photos": [im["url"] for im in imgs if im["person"] >= PERSON_LIMIT],
+                        "main_photo_person": bool(imgs) and imgs[0]["person"] >= PERSON_LIMIT,
                         "photos": imgs})
     return results, thumbs, len(jobs), failed
 
@@ -206,7 +266,8 @@ def score_candidates(path, out, limit_imgs=4):
     for r in results:
         loud = min(r["photos"], key=lambda im: im["calm"])["loudest"] if r["photos"] else None
         scores[r["ref"]] = {"score": r["score"], "verdict": photo_verdict(r["score"]),
-                            "best_photo": r["best_whole_photo"], "loudest": loud}
+                            "best_photo": r["best_whole_photo"], "loudest": loud,
+                            "people_photos": r["people_photos"]}
     json.dump({"model": f"OpenCLIP {MODEL} ({PRETRAINED})", "leave_out_below": LEAVE_OUT, "check_below": CHECK,
                "photos_requested": requested, "photos_failed": failed, "scores": scores}, open(out, "w"), indent=1)
     v = [s["verdict"] for s in scores.values()]
@@ -280,6 +341,37 @@ def run(products, keywords, out, limit_imgs=6):
                 d.text((x, y + h - 26), f"{im['type']}{star} {im['type_probs'][im['type']]:.2f}", fill="black")
         canvas.save(os.path.join(out, "5-photo-types.png"))
 
+    # People check (owner rule: product-only photos). Every flagged photo, so each can be checked by eye.
+    def photo_sheet(name, rows, title):
+        rows = rows[:120]
+        if not rows:
+            return
+        cols, w, h = 8, 170, 230
+        canvas = Image.new("RGB", (cols * w, 40 + ((len(rows) + cols - 1) // cols) * h), "white")
+        d = ImageDraw.Draw(canvas)
+        d.text((10, 12), title, fill="black")
+        for n, (r, im) in enumerate(rows):
+            t = thumbs[im["url"]].copy()
+            t.thumbnail((w - 10, h - 60))
+            x, y = (n % cols) * w + 5, 40 + (n // cols) * h
+            canvas.paste(t, (x, y))
+            for k, line in enumerate([f"{r['brand']} {r['model']}"[:26], f"{r['colour']}"[:26],
+                                      f"person {im['person']:.2f}"]):
+                d.text((x, y + h - 56 + 15 * k), line, fill="black")
+        canvas.save(os.path.join(out, name))
+
+    pairs = [(r, im) for r in results for im in r["photos"]]
+    people = sorted([p for p in pairs if p[1]["person"] >= PERSON_LIMIT], key=lambda p: -p[1]["person"])
+    near = sorted([p for p in pairs if 0.25 <= p[1]["person"] < PERSON_LIMIT], key=lambda p: -p[1]["person"])
+    photo_sheet("6-people.png", people, f"Photos showing a person (person >= {PERSON_LIMIT})")
+    photo_sheet("7-people-borderline.png", near, "Borderline: person 0.25-0.50 (check by eye)")
+    main_person = [r["ref"] for r in results if r["main_photo_person"]]
+    no_clean = [r["ref"] for r in results if r["photos"] and not person_free(r["photos"])]
+    report["people"] = {"photos": len(people), "borderline": len(near), "main_photo_person": main_person,
+                        "no_person_free_photo": no_clean,
+                        "items_with_people": sorted({r["ref"] for r, _ in people})}
+    json.dump(report, open(os.path.join(out, "report.json"), "w"), indent=1)
+
     lines = [f"## Photo model test ({report['model']})", "",
              f"- Photos read: {len(jobs) - failed} of {len(jobs)}",
              f"- Styles scored: {cmp['items']}",
@@ -288,7 +380,10 @@ def run(products, keywords, out, limit_imgs=6):
              f"- Ranking agreement (AUC, 0.5 = chance, 1.0 = perfect): {cmp['auc']:.3f}" if cmp["auc"] is not None else "- AUC: n/a",
              f"- Photo-only flags (to check by eye): {len(cmp['photo_only_flags'])}",
              f"- Photo types: {types}",
-             f"- Styles whose main photo is not a whole-item shot: {len(main_not_whole)}"]
+             f"- Styles whose main photo is not a whole-item shot: {len(main_not_whole)}",
+             f"- Photos showing a person: {len(people)} (borderline {len(near)}), in {len(report['people']['items_with_people'])} styles",
+             f"- Styles whose MAIN photo shows a person: {len(main_person)}",
+             f"- Styles with no person-free photo at all: {len(no_clean)}"]
     open(os.path.join(out, "summary.md"), "w").write("\n".join(lines) + "\n")
     print("\n".join(lines))
     return report
