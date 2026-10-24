@@ -75,24 +75,31 @@ export function normalize(snapshot, now=Date.now()) {
   return output;
 }
 // Defaults keep the review short: 30 candidates, at most 5 from any one brand (owner decision, 24 Oct 2026).
-export function rank(candidates, existing, params, model=null, limit=30, perBrand=5) {
+// `photos` (optional) is the photo check from tools/sourcing/vision.py: {candidate id: {score, verdict, best_photo, loudest}}.
+export function rank(candidates, existing, params, model=null, limit=30, perBrand=5, photos={}) {
   if(!Number.isInteger(limit)||limit<1||limit>500)throw Error('Review limit must be an integer from 1 to 500');
   if(!(perBrand===Infinity||Number.isInteger(perBrand)&&perBrand>=1))throw Error('Per-brand limit must be a whole number from 1');
   for(const k of ['rate','perKg','handling','minProfit','profitPct'])if(!Number.isFinite(params?.[k])||params[k]<0)throw Error(`Missing/invalid pricing parameter: ${k}`);
   if(params.rate<=0)throw Error('Exchange rate must be positive');
   const refs=new Set(existing.map(i=>i.ref)),pages=new Set(existing.map(i=>urlKey(i.page)).filter(Boolean)),images=new Set(existing.flatMap(i=>[i.img,...i.imgs||[]]).map(imageKey).filter(Boolean));
-  const seen=new Set(),eligible=[],excluded={known:0,duplicate:0,expensive:0,notMinimal:0};
+  const seen=new Set(),eligible=[],excluded={known:0,duplicate:0,expensive:0,notMinimal:0,loudPhoto:0};
   for(const candidate of candidates) {
     const {item}=candidate;
     if(refs.has(item.ref)||pages.has(urlKey(item.page))||[item.img,...item.imgs].some(u=>images.has(imageKey(u)))){excluded.known++;continue;}
     if(seen.has(candidate.id)){excluded.duplicate++;continue;}seen.add(candidate.id);
     if(!minimalCheck(item,candidate.evidence?.title).ok){excluded.notMinimal++;continue;}
+    const photo=photos?.[candidate.id];
+    if(photo?.verdict==='leave_out'){excluded.loudPhoto++;continue;}
     const estimate=G.estimate(item.tl,item.kg,params);
     if(!estimate||estimate.price>100000){excluded.expensive++;continue;}
     const x=features(item,estimate),useML=validModel(model),score=useML?predict(model,x):baseline(x);
-    eligible.push({...candidate,estimate,features:x,feature_version:VERSION,score,method:useML?'learned approval preference':'margin and stock rules',
+    const best=photo?.best_photo&&item.imgs.includes(photo.best_photo)?photo.best_photo:null;
+    const shown=best?{...candidate,item:{...item,img:best,imgs:[best,...item.imgs.filter(u=>u!==best)]}}:candidate;
+    eligible.push({...shown,photo:photo?{score:photo.score,verdict:photo.verdict}:undefined,estimate,features:x,feature_version:VERSION,score,method:useML?'learned approval preference':'margin and stock rules',
       reasons:[`Estimated selling price ₦${estimate.price.toLocaleString('en')}`,`Estimated owner profit ₦${Math.round(estimate.profit).toLocaleString('en')}`,`${item.sizes.length} available size option(s)`,
-        ...(estimate.price>65000?['Above the usual ₦65k review threshold']:[]),...(estimate.profit<5000?['Profit below ₦5,000']:[])]});
+        ...(estimate.price>65000?['Above the usual ₦65k review threshold']:[]),...(estimate.profit<5000?['Profit below ₦5,000']:[]),
+        ...(photo?.verdict==='check'?[`Photo may be loud: check (${photo.loudest||'photo check'})`]:[]),
+        ...(photo?.verdict==='unchecked'?['Photo not checked (the supplier blocked the download): look closely']:[])]});
   }
   eligible.sort((a,b)=>b.score-a.score||a.id.localeCompare(b.id));
   // Fair share per brand, rotating its categories and audiences within that share.
@@ -115,25 +122,39 @@ function existingCatalogue(root) {
   if(!match)throw Error('Embedded catalogue could not be read; refusing to skip deduplication');
   return [...JSON.parse(match[1]),...read(path.join(root,'products.json'))];
 }
-export function build(snapshotDir,outDir,modelPath=null,limit=30) {
+function snapshots(snapshotDir) {
   const all=[],sources=[];
   for(const key of Object.keys(SOURCES)) {
     const p=path.join(snapshotDir,key+'.json');if(!fs.existsSync(p))continue;
     const s=read(p);if(s.products.length||!s.errors?.length)all.push(...normalize(s));sources.push({source:key,products:s.products.length,complete:s.complete,errors:s.errors});
   }
   if(!sources.length)throw Error('No supplier snapshots found');
-  const result=rank(all,existingCatalogue(ROOT),read(path.join(ROOT,'prices.json')).params,modelPath?read(modelPath):null,limit);
+  return {all,sources};
+}
+// Wider pool for the photo check: up to 15 per brand, so the final 30 (5 per brand) still has room after photo drops.
+export function pool(snapshotDir,outPath) {
+  const {all}=snapshots(snapshotDir);
+  const r=rank(all,existingCatalogue(ROOT),read(path.join(ROOT,'prices.json')).params,null,500,15);
+  fs.writeFileSync(outPath,JSON.stringify({candidates:r.candidates.map(c=>({id:c.id,item:c.item}))}));
+  console.log(`pool: ${r.candidates.length} candidates for the photo check`);
+}
+export function build(snapshotDir,outDir,modelPath=null,limit=30,photosPath=null) {
+  const {all,sources}=snapshots(snapshotDir);
+  const check=photosPath&&fs.existsSync(photosPath)?read(photosPath):null;   // missing photo check: keyword rules only
+  const result=rank(all,existingCatalogue(ROOT),read(path.join(ROOT,'prices.json')).params,modelPath?read(modelPath):null,limit,5,check?.scores||{});
+  result.photo_check=check?{model:check.model,leave_out_below:check.leave_out_below,check_below:check.check_below,photos_failed:check.photos_failed}:null;
   result.generated_at=new Date().toISOString();result.sources=sources;result.normalized=all.length;
   fs.mkdirSync(outDir,{recursive:true});fs.writeFileSync(path.join(outDir,'candidates.json'),JSON.stringify(result,null,2));
   const sealCode=fs.readFileSync(new URL('../extension/seal.js',import.meta.url),'utf8');
   const template=fs.readFileSync(new URL('review.html',import.meta.url),'utf8').replace('/*INBOX_SEAL_CODE*/',()=>sealCode.replace(/<\/script/gi,'<\\/script'));
   fs.writeFileSync(path.join(outDir,'review.html'),template.replace('/*CANDIDATE_DATA*/null',JSON.stringify(result).replace(/</g,'\\u003c')));
-  console.log(JSON.stringify({selected:result.candidates.length,eligible:result.eligible,excluded:result.excluded,brands:[...new Set(result.candidates.map(c=>c.item.brand))],model:result.model,sources},null,2));
+  console.log(JSON.stringify({selected:result.candidates.length,eligible:result.eligible,excluded:result.excluded,brands:[...new Set(result.candidates.map(c=>c.item.brand))],model:result.model,photo_check:result.photo_check?'on':'off',sources},null,2));
   return result;
 }
 function cli(args) {
   const [command,...rest]=args;
-  if(command==='build') {if(rest.length<2)throw Error('build SNAPSHOT_DIR OUTPUT_DIR [MODEL_JSON|-] [LIMIT 1-500]');build(rest[0],rest[1],rest[2]==='-'?null:rest[2],rest[3]===undefined?30:Number(rest[3]));}
+  if(command==='build') {if(rest.length<2)throw Error('build SNAPSHOT_DIR OUTPUT_DIR [MODEL_JSON|-] [LIMIT 1-500] [PHOTO_SCORES_JSON]');build(rest[0],rest[1],rest[2]==='-'?null:rest[2],rest[3]===undefined||rest[3]==='-'?30:Number(rest[3]),rest[4]||null);}
+  else if(command==='pool') {if(rest.length<2)throw Error('pool SNAPSHOT_DIR OUTPUT_JSON');pool(rest[0],rest[1]);}
   else if(command==='train') {if(rest.length<2)throw Error('train OUTPUT_MODEL FEEDBACK_JSON...');const [output,...files]=rest;const rows=files.flatMap(p=>read(p).decisions||[]);const model=train(rows);fs.writeFileSync(output,JSON.stringify(model,null,2));console.log(JSON.stringify(model,null,2));}
   else console.log('Northline sourcing engine\nCollect: python tools/sourcing/collect.py --output /tmp/nl-sources --pages 4\nReview: node tools/sourcing/engine.mjs build /tmp/nl-sources /tmp/nl-review [model.json]\nLearn: node tools/sourcing/engine.mjs train /tmp/nl-model.json feedback.json...\nOpen review.html; approve/reject then download review findings and feedback. Findings use the owner inbox schema; publishing remains owner-controlled.');
 }

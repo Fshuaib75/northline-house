@@ -2,6 +2,12 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-10-24: Claude, claude/photo-model — photo check in the sourcing scan (PR #28)
+
+Did: on Farouk's go-ahead, added `tools/sourcing/vision.py` (OpenCLIP ViT-B-32, open model on CPU, no paid API). Tested on the live catalogue first (photo-model-test workflow; results on branch `photo-model-report`): AUC 0.78 against the keyword rule, and its extra flags were mostly right by eye (sequinned Capone "loafers", jewelled Capone slides, Aldo monogram slide, Hummel logo slides, a printed silk scarf listed as an Aldo "Hijab"). It misses colour and subtle texture, so it runs alongside the keyword rule, not instead of it. In the scan: `engine.mjs pool` (15 per brand) → `vision.py --candidates` → `build` with the scores: below 0.20 left out, 0.20–0.35 marked "Photo may be loud: check", best whole-item photo moved first. If the model can't run, the scan uses keywords alone. Keyword rule now also catches jewelled, beaded and sequinned. Test scan run 40093546934: 30 selected, 10 left out by photo.
+Next: Farouk to say "merge 28". Codex: the photo picker reliably picks whole-item shots (its back/sole labels are weak), which could choose hero and shop photos later.
+Watch out: Capone's image CDN refuses GitHub's runners (photos load in browsers), so Capone candidates show "Photo not checked". 13 live styles the photo model flagged are Farouk's call (stop restocking, or hide). No catalogue or sealed files changed. Trendyol remains assisted open-tab capture only.
+
 ## 2026-10-24: Claude, claude/minimal-sourcing — minimal sourcing, #23 live, hero held back
 
 Did: on Farouk's "build it and go live": (1) PR #26 adds `tools/sourcing/minimal.mjs` and wires it into `rank()`: calm colours only (black, brown, tan/camel, beige/nude, white, grey, plus navy/khaki/olive), no prints, logos, crystals, studs, bows, pearls, satin, glitter, mesh, platforms or metallics (English and Turkish words, whole-word match), solid hijabs keep any colour; reviews default to 30 candidates, at most 5 per brand. (2) Published main to gh-pages (f3ab97f) with #23's agent-sharing fixes, but held back #24's hero: `shop/index.html`, `shop/storefront.css` and the `hero-clay-*.webp` images stay at the previous live versions. (3) Found #23 would print "Sizes 00" on 4 bag captions; fixed in PR #27 (one line in `index.html`, with a test) and in the deploy.

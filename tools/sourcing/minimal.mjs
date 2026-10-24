@@ -14,7 +14,8 @@ const CALM_COLOURS = new Set(['navy', 'khaki', 'olive']);
 const LOUD = [
   ['print', 'printed', 'pattern', 'baskı', 'baskılı', 'desen', 'desenli', 'monogram', 'logo', 'logolu'],
   ['leopard', 'leopar', 'zebra', 'snake', 'yılan', 'croc', 'croco', 'kroko', 'python', 'piton'],
-  ['crystal', 'kristal', 'rhinestone', 'taşlı', 'jewel', 'mücevher', 'embellished', 'süslü'],
+  ['crystal', 'kristal', 'rhinestone', 'taşlı', 'jewel', 'jewelled', 'jeweled', 'mücevher', 'embellished', 'süslü',
+   'beaded', 'boncuk', 'boncuklu', 'sequinned', 'sequined', 'payet', 'payetli'],
   ['stud', 'studded', 'zımba', 'zımbalı', 'trok', 'troklu', 'bow', 'fiyonk', 'fiyonklu', 'pearl', 'inci', 'incili'],
   ['glitter', 'sim', 'simli', 'sequin', 'pul', 'pullu', 'satin', 'saten', 'neon', 'holographic', 'hologram'],
   ['mesh', 'file', 'fileli', 'platform', 'metallic', 'metalik'],
