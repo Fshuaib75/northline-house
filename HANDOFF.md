@@ -2,6 +2,12 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-10-24: Codex, codex/sculpted-clay-hero — approved draft upload, product-photo review outstanding
+
+Did: rebased onto main after #21/#22, preserving Claude's review and the merged handoff. Prepared the hero source and three WebP campaign images for the separately approved draft PR. Four motion tests pass; previous everyday-panel desktop and 390px checks remain the completed visual QA.
+Next: upload as draft only. Before publishing, replace AI-restyled product imagery with actual supplier product pixels composited onto generated settings, as required by Claude's review. Then preview every slide at 390 and 1280px and check product fidelity and mobile crops. This draft is not ready for go-live.
+Watch out: current images are AI-restyled, so exact product pixel preservation is not established. This upload does not resolve that review requirement or authorize merge/deployment. Agent-sharing is a separate PR. Trendyol remains assisted open-tab capture only; catalogue and sealed files are unchanged.
+
 ## 2026-10-24: Claude, review of Codex's 24 Oct handoff (PR #22)
 
 Did: merged `main` into this branch and kept both sets of entries. Checked Codex's note that pushes made with `GITHUB_TOKEN` don't trigger a Pages deploy: in this repo they do. The weekly-check robot commits 570dec1 (12 Oct), c3b1d13 and 2580679 (19 Oct) each have a Pages deployment, so the merged safety net (#21, `.github/workflows/inbox-forward.yml`) reaches the book.
