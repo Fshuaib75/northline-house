@@ -1,0 +1,37 @@
+# Fetch supplier photos at full size for design work (hero slides, packaging). Manual only. Saves the photos to the
+# `fetched-images` branch so they can be checked by eye before anything is published. Never touches the live site.
+name: Fetch supplier photos
+
+on:
+  workflow_dispatch:
+    inputs:
+      urls:
+        description: "Photo links, separated by spaces"
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Download
+        env:
+          URLS: ${{ inputs.urls }}
+        run: |
+          mkdir out && cd out
+          n=0
+          for u in $URLS; do
+            case "$u" in https://*) ;; *) echo "skipped (not https): $u"; continue;; esac
+            n=$((n+1)); name=$(printf '%02d' $n)-$(basename "${u%%\?*}")
+            if curl -fsSL --max-time 30 -A "Mozilla/5.0 (Northline design fetch)" -o "$name" "$u"; then echo "ok  $name  $u"; else echo "FAILED  $u"; fi
+            echo "$name $u" >> sources.txt
+          done
+      - name: Save to the fetched-images branch
+        working-directory: out
+        run: |
+          git init -q && git checkout -q -b fetched-images
+          git config user.name "Northline photo fetch" && git config user.email "actions@users.noreply.github.com"
+          git add . && git commit -qm "Fetched supplier photos" && git push -qf "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" fetched-images
