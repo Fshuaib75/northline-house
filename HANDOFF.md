@@ -2,6 +2,12 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-10-24: Codex, codex/merge-handoff-oct24 — merged, building paused
+
+Did: on Farouk's explicit instruction, merged agent-sharing PR #23 (7b3fd77291f4fe87b2abfac5f4305bddf0954aa7) and sculpted-clay hero PR #24 (5cabbc285b8c75792fd313284356d58763e53dff) into main. Resolved the HANDOFF conflict by preserving both entries and retained the agent-sharing source/test in the hero branch's merge. This final documentation update follows those merges. No deployment to gh-pages performed.
+Next: STOP BUILDING per Farouk. No further implementation, imagery changes or deployment until a new instruction. The rebased local codex/inbox-safety-net contains only the persistent extension warning, its test and handoff; it was not uploaded or merged.
+Watch out: merging #24 does not resolve the previously documented product-pixel fidelity requirement. Current hero images are AI-restyled campaign scenes; original supplier product pixels and all-slide 390/1280px review remain outstanding before go-live. Prior sharing and carousel suites passed four tests each; the warning regression passed. Trendyol remains assisted open-tab capture only. No catalogue or sealed files changed.
+
 ## 2026-10-24: Codex, codex/sculpted-clay-hero — approved draft upload, product-photo review outstanding
 
 Did: rebased onto main after #21/#22, preserving Claude's review and the merged handoff. Prepared the hero source and three WebP campaign images for the separately approved draft PR. Four motion tests pass; previous everyday-panel desktop and 390px checks remain the completed visual QA.
