@@ -142,23 +142,52 @@ def photo_verdict(score):
 
 # ---------- model and IO ----------
 
-def fetch(url, tries=4):
-    """Download one photo. Some supplier image servers refuse bursts, so retry with growing pauses."""
-    import random
+import threading
+
+_SERVERS, _LOCK = {}, threading.Lock()
+
+
+def server_key(url):
+    """One supplier's image server. Shopify stores share a host, so the store id in the path tells them apart."""
+    from urllib.parse import urlparse
+    u = urlparse(url)
+    return u.netloc + (u.path.split("/files/")[0] if "/files/" in u.path else "")
+
+
+def blocked(key, give_up_after=8):
+    """A server that has refused every one of its first photos is skipped from then on (e.g. one that blocks GitHub)."""
+    with _LOCK:
+        ok, bad = _SERVERS.get(key, (0, 0))
+    return ok == 0 and bad >= give_up_after
+
+
+def _note(key, success):
+    with _LOCK:
+        ok, bad = _SERVERS.get(key, (0, 0))
+        _SERVERS[key] = (ok + success, bad + (not success))
+
+
+def fetch(url, tries=2):
+    """Download one photo, with one retry. Never invents a photo: failures come back as the error."""
     import time
     from PIL import Image
+    key = server_key(url)
+    if blocked(key):
+        return RuntimeError(f"skipped: {key} refused every photo so far")
     err = None
     for n in range(tries):
         try:
             req = urllib.request.Request(url, headers=UA)
-            with urllib.request.urlopen(req, timeout=25) as r:
+            with urllib.request.urlopen(req, timeout=15) as r:
                 data = r.read(8_000_000)
             im = Image.open(io.BytesIO(data)).convert("RGB")
             im.thumbnail((256, 256))   # the model reads 224 px; small copies keep memory low on 1,000-style runs
+            _note(key, True)
             return im
-        except Exception as e:  # a missing photo is reported, never invented
+        except Exception as e:
             err = e
-            time.sleep(1.5 * (2 ** n) + random.random())
+            time.sleep(1 + n)
+    _note(key, False)
     return err
 
 
