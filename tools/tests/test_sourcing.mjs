@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {normalize,rank,SOURCES} from '../sourcing/engine.mjs';
+import {minimalCheck} from '../sourcing/minimal.mjs';
 import {train,validModel,FEATURES,baseline} from '../sourcing/ranking.mjs';
 const params={rate:30,perKg:12000,handling:1500,minProfit:4000,profitPct:15};
 const snapshot=()=>({source:'derimod',base:'https://derimod.com.tr',currency:'TRY',observed_at:new Date().toISOString(),products:[{id:123,title:'Erkek Siyah Deri Terlik',product_type:'Terlik',vendor:'Derimod',handle:'test-slide',options:[{name:'Renk',position:1},{name:'Beden',position:2}],images:[{id:1,src:'https://cdn.example.com/a.jpg',variant_ids:[4]}],variants:[{id:4,option1:'Siyah',option2:'42',available:true,price:'500',sku:'S1',featured_image:{id:1}},{id:5,option1:'Siyah',option2:'43',available:false,price:'500',sku:'S2'}]}]});
@@ -38,9 +39,37 @@ test('exact supplier gender tags support English clothing without inventing an a
 test('review limit is bounded and fair shares rotate brand, category and audience',()=>{
  const original=normalize(snapshot())[0];
  const rows=Array.from({length:240},(_,n)=>({...original,id:'candidate-'+n,product_key:'product-'+n,item:{...original.item,ref:'REF-'+n,brand:n<220?'Large':'Small',cat:n%2?'bags':'shoes',for:n%3?'Women':'Men'}}));
- const r=rank(rows,[],params,null,12);assert.equal(r.candidates.length,12);
+ const r=rank(rows,[],params,null,12,Infinity);assert.equal(r.candidates.length,12);
  assert.equal(r.candidates.filter(c=>c.item.brand==='Small').length,6);
  assert.equal(new Set(r.candidates.filter(c=>c.item.brand==='Large').map(c=>c.item.cat+':'+c.item.for)).size,4);
- assert.equal(rank(rows,[],params).candidates.length,200);
+ assert.equal(rank(rows,[],params,null,200,Infinity).candidates.length,200);
  for(const limit of [0,501,-1,2.5,NaN])assert.throws(()=>rank(rows,[],params,null,limit));
+});
+
+test('default review is short: 30 at most, and no brand takes more than 5',()=>{
+ const original=normalize(snapshot())[0];
+ const rows=Array.from({length:120},(_,n)=>({...original,id:'c-'+n,product_key:'p-'+n,item:{...original.item,ref:'R-'+n,brand:'Brand '+(n%10),cat:n%2?'bags':'shoes'}}));
+ const r=rank(rows,[],params);assert.equal(r.candidates.length,30);
+ const per=new Map();r.candidates.forEach(c=>per.set(c.item.brand,(per.get(c.item.brand)||0)+1));assert.ok([...per.values()].every(n=>n<=5));
+ assert.equal(rank(rows.filter(c=>c.item.brand==='Brand 1'),[],params).candidates.length,5);
+ assert.throws(()=>rank(rows,[],params,null,30,0));
+});
+test('minimal filter: calm colours and plain details pass, loud ones are left out',()=>{
+ const ok=(title,colour,fam,cat='shoes',model='Leather slide')=>minimalCheck({cat,model,colour,fam},title).ok;
+ assert.ok(ok('Erkek Siyah Deri Terlik','Black','Black'));
+ assert.ok(ok('Kadın Altın Tokalı Süet Terlik','Brown','Brown'));          // small gold-tone hardware is fine
+ assert.ok(ok('Erkek Lacivert Deri Sandalet','Navy','Blue'));
+ assert.ok(ok('Kadın Haki Süet Terlik','Khaki','Green & khaki'));
+ for(const [t,c,f] of [['Kadın Taşlı Saten Terlik','Black','Black'],['Kroko Desenli Erkek Terlik','Brown','Brown'],['Kadın Simli Terlik','Gold','Metallic'],
+   ['Kadın Fileli Babet','Black','Black'],['Kadın Platform Terlik','Black','Black'],['Kadın Fiyonklu Babet','Beige','Beige & nude'],['Logolu Erkek Terlik','Black','Black'],
+   ['Kadın Kırmızı Terlik','Red','Red & burgundy'],['Kadın Gümüş Sandalet','Silver','Metallic'],['Leopar Çanta','Print','Print & multi']]) assert.ok(!ok(t,c,f),t);
+ assert.ok(ok('Bordo Eşarp','Burgundy','Red & burgundy','clothing','Hijab'));     // a solid hijab keeps its colour
+ assert.ok(!ok('Desenli Eşarp','Burgundy','Red & burgundy','clothing','Hijab'));
+ assert.ok(!ok('Simya Kadın Terlik','Pink','Pink & purple'));                   // colour still applies
+ assert.ok(ok('Simon Erkek Terlik','Black','Black'));                           // whole words only: Simon is not "sim"
+});
+test('rank leaves out loud styles and counts them',()=>{
+ const base=normalize(snapshot())[0];
+ const loud={...base,id:'loud',evidence:{...base.evidence,title:'Erkek Kroko Desenli Terlik'},item:{...base.item,ref:'LOUD'}};
+ const r=rank([base,loud],[],params);assert.deepEqual(r.candidates.map(c=>c.id),[base.id]);assert.equal(r.excluded.notMinimal,1);
 });
