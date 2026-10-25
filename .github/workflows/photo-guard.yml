@@ -1,6 +1,7 @@
 # Northline photo guard (owner rule: product-only photos, never a female body). Daily, after Capone's photo refresh:
 # checks every new store photo, blocks photos showing a person, hides women's and girls' styles left with no
-# product-only photo, and sends every such style to the owner's review inbox (sealed). See tools/photos/guard.py.
+# product-only photo, and sends every such style to the owner's review inbox (sealed). It also reports styles whose
+# photos stop loading (blank cards) or can't be checked. See tools/photos/guard.py.
 # Runs from any branch other than main are dry: they print what would happen and change nothing.
 name: Photo guard
 
@@ -66,7 +67,7 @@ jobs:
             if [ -n "$DRY" ]; then exit 0; fi
             cp photo-checked.json "$RUNNER_TEMP/checked.json"
             if [ "$n" -gt 0 ]; then node ../code/tools/seal-inbox.mjs "$RUNNER_TEMP/findings.json"; fi
-            git add photo-checked.json photo-rules.json shop/index.html index.html prices.json inbox.json
+            git add photo-checked.json photo-rules.json photo-health.json shop/index.html index.html prices.json inbox.json
             git diff --cached --quiet && exit 0
             git commit -qm "Photo guard: $(tail -1 "$RUNNER_TEMP/out.txt")"
             if git push -q origin HEAD:gh-pages; then exit 0; fi
