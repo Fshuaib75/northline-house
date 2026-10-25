@@ -51,7 +51,7 @@ def store(site):
     for ref, r in cap.items():
         if ref in items and r.get("img"):
             items[ref]["imgs"] = list(r["img"])
-            items[ref]["img"] = r["img"][0]
+            items[ref]["img"] = items[ref]["full"] = r["img"][0]    # as the shop's capPhotos does: old links are gone
     prices = load(os.path.join(site, "prices.json"), {})
     on_sale = set(prices.get("prices", {}))
     return [i for ref, i in items.items() if ref in on_sale], prices
