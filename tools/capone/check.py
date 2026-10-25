@@ -11,11 +11,13 @@ GitHub issue ("Capone weekly check"), with a comment, and so an email, when some
   python tools/capone/check.py --dry     prints the report only (development runs)
 """
 import collections, datetime, json, os, re, sys, time, urllib.error, urllib.request
+from urllib.parse import unquote
 
 STORE = "https://www.caponeoutfitters.com.tr"
 CDN = "https://cdn.shopify.com/s/files/1/0566/3732/5374/files/"
 UA = "Mozilla/5.0 (compatible; NorthlineCatalogueCheck/1.0)"
 DRY = "--dry" in sys.argv
+PHOTOS_ONLY = "--photos-only" in sys.argv   # daily: refresh photo links only (see main)
 ISSUE_TITLE = "Capone weekly check"
 LABEL = "capone-check"
 
@@ -55,11 +57,12 @@ def store_products():
     sys.exit("Capone catalogue exceeded pagination limit without an end page. Nothing was changed.")
 
 
-# photo file names: <article>_<colour code>_<photo number>[_<upload id>].jpg, e.g. 530-K795-FDG-01-0000_K444_2_799d….jpg
-NAME = re.compile(r"^(?P<stem>.*_[A-Z]+\d+)_(?P<n>\d+)(?:_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})?\.\w+$")
+# photo file names: <article>_<colour code>[_<photo number>][_<upload id>].jpg, e.g. 530-K795-FDG-01-0000_K444_2_799d….jpg
+# Some main photos have no photo number (605-KB02-…_N01_ef47….jpg): they count as photo 1.
+NAME = re.compile(r"^(?P<stem>.*_[A-Z]+\d+)(?:_(?P<n>\d+))?(?:_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})?\.\w+$")
 def fname(u): return u.split("?")[0].rsplit("/", 1)[-1]
 def parts(u):
-    m = NAME.match(fname(u)); return (m.group("stem"), int(m.group("n"))) if m else (None, None)
+    m = NAME.match(unquote(fname(u))); return (m.group("stem"), int(m.group("n") or 1)) if m else (None, None)
 def width(u, w): return CDN + fname(u) + f"?width={w}"
 
 
@@ -297,6 +300,21 @@ def main():
     try: prev = json.load(open("capone.json"))
     except Exception: prev = {}
     when = datetime.datetime.now(datetime.timezone.utc)
+    if PHOTOS_ONLY and prev.get("styles"):
+        # Daily run: Capone re-uploads photos mid-week, which breaks our links. Refresh photo links only; stock, sold-out
+        # and "back in stock" stay with Monday's full check, so Monday's email still compares week to week.
+        styles, fixed = prev["styles"], 0
+        for ref, r in res.items():
+            old_rec = styles.get(ref)
+            if r.get("on") and r.get("img") and old_rec is not None and old_rec.get("img") != r["img"]:
+                old_rec["img"] = r["img"]; fixed += 1
+            elif r.get("on") and r.get("img") and old_rec is None:
+                styles[ref] = r; fixed += 1
+        print(f"photos only: {fixed} style(s) got fresh photo links")
+        if not DRY:
+            json.dump({"checked": prev.get("checked"), "photos": when.strftime("%Y-%m-%dT%H:%MZ"), "styles": styles},
+                      open("capone.json", "w"), separators=(",", ":"))
+        return
     mark_back(res, prev, when.strftime("%Y-%m-%d"))
     body, news, summary = report(cap, P, res, prev, when)
     print(summary); print(); print(body)
