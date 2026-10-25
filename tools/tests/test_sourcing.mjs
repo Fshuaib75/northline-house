@@ -94,3 +94,12 @@ test('photo check: a candidate the model could not see is kept and marked',()=>{
  const r=rank([base],[],params,null,30,5,{[base.id]:{score:null,verdict:'unchecked'}});
  assert.equal(r.candidates.length,1);assert.ok(r.candidates[0].reasons.some(t=>/Photo not checked/.test(t)));
 });
+test('photo check: photos with people are dropped, and a product with no clean photo is left out',()=>{
+ const base=normalize(snapshot())[0];
+ const mk=(id,imgs)=>({...base,id,item:{...base.item,ref:id,img:imgs[0],imgs}});
+ const a=mk('a',['https://x.test/model.jpg','https://x.test/shoe.jpg']),b=mk('b',['https://x.test/model2.jpg']);
+ const photos={a:{score:.8,verdict:'calm',best_photo:null,people_photos:['https://x.test/model.jpg']},b:{score:.8,verdict:'calm',people_photos:['https://x.test/model2.jpg']}};
+ const r=rank([a,b],[],params,null,30,5,photos);
+ assert.deepEqual(r.candidates.map(x=>x.id),['a']);assert.equal(r.excluded.onlyPeoplePhotos,1);
+ assert.deepEqual(r.candidates[0].item.imgs,['https://x.test/shoe.jpg']);assert.equal(r.candidates[0].item.img,'https://x.test/shoe.jpg');
+});

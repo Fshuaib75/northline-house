@@ -45,6 +45,9 @@ def catalogue():
     lagos_today = (dt.datetime.utcnow() + dt.timedelta(hours=1)).date().isoformat()
     use_next = bool(prices.get("switchAt")) and lagos_today >= prices["switchAt"]
     hidden = set(prices.get("hidden", []))
+    # Owner rule: product-only photos, never a female body (photo-rules.json, tools/photos/no_people.py).
+    blocked = set(load(os.path.join(ROOT, "photo-rules.json"), {}).get("photos", []))
+    clean = lambda urls: [u for u in urls if u and str(u).split("?")[0].rstrip("/").split("/")[-1] not in blocked]
     fresh = load(os.path.join(ROOT, "capone.json"), {}).get("styles", {})   # Capone's current photo links (weekly check)
     out = []
     for i in items:
@@ -52,6 +55,9 @@ def catalogue():
         if c and (not c.get("on") or c.get("stock") == []): continue   # sold out at Capone
         f = c.get("img")
         if f: i["imgs"] = f + [u for u in (i.get("imgs") or []) if u not in f]
+        i["imgs"] = clean(i.get("imgs") or [])
+        for k in ("img", "full"):
+            if i.get(k) and not clean([i[k]]): i[k] = (i["imgs"] or [None])[0]
         p = (prices.get("next", {}) if use_next else {}).get(i["ref"]) or prices.get("prices", {}).get(i["ref"])
         if not p or i["ref"] in hidden or not (i.get("img") or i.get("imgs")): continue
         i["price"] = p[0]; out.append(i)
