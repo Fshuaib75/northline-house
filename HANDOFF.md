@@ -2,6 +2,12 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-10-25: Claude, claude/guard-allowed — photo guard first run, checked by eye
+
+Did: merged #30 (Farouk) and ran the photo guard on main (run 40154872828). It scored the photos not checked before (mostly Capone's fresh links, plus DESA and Elle), now 4,994 photos in `photo-checked.json`, and blocked 91 more. Checked all 91 by eye (fetched full size with the fetch tool): 79 really show a person (legs, hands, models; Hammer Jack and DeFacto boys' shots are male but on styles that keep product-only photos); 12 were product-only (fabric and straw close-ups, Slazenger Luke, Hummel ADA logo, DeFacto pinafore laid flat, LC Waikiki colour-block close-ups, Aldo bag on a mannequin) and were unblocked on gh-pages: score 0 in `photo-checked.json`, listed under `allowed` in `photo-rules.json`. This PR makes the guard ignore `allowed` photos in code too. No style lost all its photos, so nothing new was hidden or sent to the inbox. 310 photos are now blocked in total.
+Next: Farouk: "merge 31". Review the 23 styles in the book's review inbox (sent 25 Oct). The guard and Capone's photo refresh run daily from 26 Oct.
+Watch out: an infographic (Lumberjack foot diagram) and a Sivarro size chart stay blocked; they aren't product photos anyway. Trendyol remains assisted open-tab capture only.
+
 ## 2026-10-25: Claude, claude/photo-guard — photo guard, blank Capone photos fixed, review-inbox safety net
 
 Did (live on gh-pages unless noted):

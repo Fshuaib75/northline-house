@@ -26,6 +26,11 @@ class Guard(unittest.TestCase):
         _, hide2, notes2 = G.decide([W, M, OK, GIRL], checked, rules)           # next day: nothing sent twice
         self.assertEqual((hide2, notes2), ([], []))
 
+    def test_allowed_photos_are_never_blocked(self):
+        rules, hide, notes = G.decide([W], {"w1.jpg": 0.99, "w2.jpg": 0.9}, {"photos": ["w2.jpg"], "best": {}, "allowed": ["w2.jpg"]})
+        self.assertNotIn("w2.jpg", rules["photos"])
+        self.assertEqual((hide, notes), ([], []))
+
     def test_unchecked_photo_waits(self):
         _, hide, notes = G.decide([W], {"w1.jpg": 0.99}, {"photos": [], "best": {}})   # w2 not scored yet
         self.assertEqual((hide, notes), ([], []))

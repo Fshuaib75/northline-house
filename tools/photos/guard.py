@@ -76,8 +76,10 @@ def plan(items, checked):
 
 def decide(items, checked, rules, limit=NP.PERSON_LIMIT):
     """Returns (rules, hide, notices). Pure: tested in tools/tests/test_photo_guard.py."""
+    allowed = set(rules.get("allowed", []))            # checked by eye as product-only: never blocked
     blocked = set(rules.get("photos", []))
     blocked |= {k for k, s in checked.items() if s is not None and s >= limit}
+    blocked -= allowed
     best = dict(rules.get("best", {}))
     hide, notices = [], []
     for i in items:
