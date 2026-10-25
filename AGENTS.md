@@ -30,7 +30,7 @@ Each agent stays in its lane, so the two never edit the same file at the same ti
 |---|---|---|
 | Site code | **Codex** | `index.html`, `shop/`, `book/`, `orders/`, `me/`, `photo-check/`, `tools/*-patch.py`, `tools/extension/` |
 | Brand and content | **Claude** | `brand/`, `tools/packaging/`, docs, captions, Instagram copy |
-| Data | **Robots and the owner's book** | `products.json`, `prices.json`, `brands.json`, `capone.json`, `drop.json`, `orders.json`, `reviews.json`, `inbox-forwarded.json` (gh-pages only) |
+| Data | **Robots and the owner's book** | `products.json`, `prices.json`, `brands.json`, `capone.json`, `drop.json`, `orders.json`, `reviews.json`, `inbox-forwarded.json`, `photo-checked.json` (gh-pages only); `photo-rules.json` (photo guard) |
 | Shared | Both, one at a time | `AGENTS.md`, `CLAUDE.md`, `HANDOFF.md`, `.github/workflows/`, `tools/ig/` |
 
 If a task needs a file in the other agent's lane, write it in `HANDOFF.md` and leave the file alone.
