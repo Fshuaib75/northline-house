@@ -1,0 +1,16 @@
+{
+ "note": "Styles whose photos don't load (blank) or couldn't be checked, since when, and which were sent to the review inbox (tools/photos/guard.py).",
+ "blank": {
+  "BN26-BGE": "2026-10-25",
+  "793-TAN-2": "2026-10-25",
+  "KB02-BLK": "2026-10-25",
+  "KB02-MNK": "2026-10-25"
+ },
+ "unchecked": {
+  "DF-D8939AXWT34": "2026-10-25"
+ },
+ "reported": {
+  "blank": [],
+  "unchecked": []
+ }
+}
