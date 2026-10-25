@@ -48,6 +48,8 @@ class VisionHelpers(unittest.TestCase):
         k = V.server_key("https://cdn.shopify.com/s/files/1/0566/3732/5374/files/a.jpg?v=1")
         self.assertEqual(k, "cdn.shopify.com/s/files/1/0566/3732/5374")
         self.assertNotEqual(k, V.server_key("https://cdn.shopify.com/s/files/1/0799/4225/4626/files/b.jpg"))
+        self.assertNotEqual(V.server_key("https://static.ticimax.cloud/5412/uploads/urunresimleri/a.jpg"),
+                            V.server_key("https://static.ticimax.cloud/72015/uploads/urunresimleri/b.jpg"))
         for _ in range(8):
             V._note(k, False)
         self.assertTrue(V.blocked(k))

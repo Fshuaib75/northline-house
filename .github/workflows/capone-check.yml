@@ -1,11 +1,12 @@
-# Northline: every Monday, check every Capone style against Capone's own site: current photo links, sizes in stock,
+# Northline: every Monday, check every Capone style (and every other day, refresh its photo links only) against Capone's own site: current photo links, sizes in stock,
 # and colours Capone no longer lists. Writes capone.json (the shop uses its photo links) and updates the
 # "Capone weekly check" issue, with a comment (so an email) when something changed since last week.
 name: Capone weekly check
 
 on:
   schedule:
-    - cron: "47 4 * * 1"        # Mondays 05:47 in Lagos
+    - cron: "47 4 * * 1"        # Mondays 05:47 in Lagos: full check (photos, stock, sold out) and the email
+    - cron: "17 5 * * 0,2-6"    # other days 06:17 in Lagos: photo links only, no email (Capone re-uploads mid-week)
   workflow_dispatch:              # runs started from any branch but main only print the report
 
 permissions:
@@ -37,7 +38,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DRY: ${{ github.ref != 'refs/heads/main' && '--dry' || '' }}
-        run: python ../code/tools/capone/check.py $DRY
+          MODE: ${{ github.event.schedule == '17 5 * * 0,2-6' && '--photos-only' || '' }}
+        run: python ../code/tools/capone/check.py $DRY $MODE
 
       - name: Put the new photo links online
         if: github.ref == 'refs/heads/main'
@@ -46,7 +48,7 @@ jobs:
           git config user.name "Northline Capone check"
           git config user.email "actions@users.noreply.github.com"
           git add capone.json
-          git commit -m "Capone weekly check" || exit 0
+          git commit -m "Capone ${{ github.event.schedule == '17 5 * * 0,2-6' && 'daily photo links' || 'weekly check' }}" || exit 0
           git pull --rebase origin gh-pages
           git push origin HEAD:gh-pages
           git push origin HEAD:main || true

@@ -1,0 +1,76 @@
+# Northline photo guard (owner rule: product-only photos, never a female body). Daily, after Capone's photo refresh:
+# checks every new store photo, blocks photos showing a person, hides women's and girls' styles left with no
+# product-only photo, and sends every such style to the owner's review inbox (sealed). See tools/photos/guard.py.
+# Runs from any branch other than main are dry: they print what would happen and change nothing.
+name: Photo guard
+
+on:
+  schedule:
+    - cron: "47 5 * * *"          # daily 06:47 in Lagos, after Capone's photo links are refreshed
+  workflow_dispatch:
+  push:
+    branches: ["claude/photo-guard"]
+    paths: ["tools/photos/**", ".github/workflows/photo-guard.yml"]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: photo-guard
+  cancel-in-progress: false
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: code
+      - uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: site
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/pip
+            ~/.cache/huggingface
+          key: photo-model-${{ runner.os }}-v1
+      - name: Install the photo model (CPU only)
+        run: |
+          pip install --quiet torch torchvision --index-url https://download.pytorch.org/whl/cpu
+          pip install --quiet open_clip_torch pillow
+
+      - name: Check, block, hide and report
+        working-directory: site
+        env:
+          DRY: ${{ github.ref != 'refs/heads/main' && '--dry' || '' }}
+        run: |
+          git config user.name "Northline photo guard"
+          git config user.email "actions@users.noreply.github.com"
+          for attempt in 1 2 3 4 5; do
+            git fetch -q origin gh-pages && git reset -q --hard origin/gh-pages
+            [ -f "$RUNNER_TEMP/checked.json" ] && cp "$RUNNER_TEMP/checked.json" photo-checked.json   # scores from attempt 1
+            python ../code/tools/photos/guard.py --site . --findings "$RUNNER_TEMP/findings.json" $DRY | tee "$RUNNER_TEMP/out.txt"
+            n=$(python -c 'import json,sys;print(len(json.load(open(sys.argv[1]))["items"]))' "$RUNNER_TEMP/findings.json")
+            refs=$(python -c 'import json,sys;print(" ".join(i["ref"] for i in json.load(open(sys.argv[1]))["items"]))' "$RUNNER_TEMP/findings.json")
+            echo "::notice title=Photo guard::$(tail -1 "$RUNNER_TEMP/out.txt"). Review inbox: ${refs:-none}"
+            if [ -n "$DRY" ]; then exit 0; fi
+            cp photo-checked.json "$RUNNER_TEMP/checked.json"
+            if [ "$n" -gt 0 ]; then node ../code/tools/seal-inbox.mjs "$RUNNER_TEMP/findings.json"; fi
+            git add photo-checked.json photo-rules.json shop/index.html index.html prices.json inbox.json
+            git diff --cached --quiet && exit 0
+            git commit -qm "Photo guard: $(tail -1 "$RUNNER_TEMP/out.txt")"
+            if git push -q origin HEAD:gh-pages; then exit 0; fi
+            sleep $((attempt * 10))          # the book or another robot saved at the same moment: start again from it
+          done
+          echo "gh-pages kept changing; nothing saved" >&2
+          exit 1
