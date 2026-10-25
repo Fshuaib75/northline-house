@@ -82,7 +82,7 @@ export function rank(candidates, existing, params, model=null, limit=30, perBran
   for(const k of ['rate','perKg','handling','minProfit','profitPct'])if(!Number.isFinite(params?.[k])||params[k]<0)throw Error(`Missing/invalid pricing parameter: ${k}`);
   if(params.rate<=0)throw Error('Exchange rate must be positive');
   const refs=new Set(existing.map(i=>i.ref)),pages=new Set(existing.map(i=>urlKey(i.page)).filter(Boolean)),images=new Set(existing.flatMap(i=>[i.img,...i.imgs||[]]).map(imageKey).filter(Boolean));
-  const seen=new Set(),eligible=[],excluded={known:0,duplicate:0,expensive:0,notMinimal:0,loudPhoto:0};
+  const seen=new Set(),eligible=[],excluded={known:0,duplicate:0,expensive:0,notMinimal:0,loudPhoto:0,onlyPeoplePhotos:0};
   for(const candidate of candidates) {
     const {item}=candidate;
     if(refs.has(item.ref)||pages.has(urlKey(item.page))||[item.img,...item.imgs].some(u=>images.has(imageKey(u)))){excluded.known++;continue;}
@@ -93,8 +93,11 @@ export function rank(candidates, existing, params, model=null, limit=30, perBran
     const estimate=G.estimate(item.tl,item.kg,params);
     if(!estimate||estimate.price>100000){excluded.expensive++;continue;}
     const x=features(item,estimate),useML=validModel(model),score=useML?predict(model,x):baseline(x);
-    const best=photo?.best_photo&&item.imgs.includes(photo.best_photo)?photo.best_photo:null;
-    const shown=best?{...candidate,item:{...item,img:best,imgs:[best,...item.imgs.filter(u=>u!==best)]}}:candidate;
+    // Owner rule: product-only photos, never a person. Drop photos the check saw a person in; no clean photo, no candidate.
+    const people=new Set(photo?.people_photos||[]),clean=item.imgs.filter(u=>!people.has(u));
+    if(!clean.length){excluded.onlyPeoplePhotos++;continue;}
+    const best=photo?.best_photo&&clean.includes(photo.best_photo)?photo.best_photo:clean[0];
+    const shown=best!==item.img||clean.length!==item.imgs.length?{...candidate,item:{...item,img:best,imgs:[best,...clean.filter(u=>u!==best)]}}:candidate;
     eligible.push({...shown,photo:photo?{score:photo.score,verdict:photo.verdict}:undefined,estimate,features:x,feature_version:VERSION,score,method:useML?'learned approval preference':'margin and stock rules',
       reasons:[`Estimated selling price ₦${estimate.price.toLocaleString('en')}`,`Estimated owner profit ₦${Math.round(estimate.profit).toLocaleString('en')}`,`${item.sizes.length} available size option(s)`,
         ...(estimate.price>65000?['Above the usual ₦65k review threshold']:[]),...(estimate.profit<5000?['Profit below ₦5,000']:[]),
