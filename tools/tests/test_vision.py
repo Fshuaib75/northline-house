@@ -38,6 +38,25 @@ class VisionHelpers(unittest.TestCase):
         self.assertEqual(V.photo_verdict(0.34), "check")
         self.assertEqual(V.photo_verdict(0.35), "calm")
 
+    def test_person_probability_and_person_free(self):
+        self.assertGreater(V.person_probability([0.20, 0.21], [0.30, 0.22]), 0.99)
+        self.assertLess(V.person_probability([0.30], [0.20, 0.21]), 0.01)
+        imgs = [{"url": "a", "person": 0.9}, {"url": "b", "person": 0.1}, {"url": "c"}]
+        self.assertEqual([i["url"] for i in V.person_free(imgs)], ["b", "c"])
+
+    def test_blocked_server_is_skipped_after_repeated_refusals(self):
+        k = V.server_key("https://cdn.shopify.com/s/files/1/0566/3732/5374/files/a.jpg?v=1")
+        self.assertEqual(k, "cdn.shopify.com/s/files/1/0566/3732/5374")
+        self.assertNotEqual(k, V.server_key("https://cdn.shopify.com/s/files/1/0799/4225/4626/files/b.jpg"))
+        for _ in range(8):
+            V._note(k, False)
+        self.assertTrue(V.blocked(k))
+        other = V.server_key("https://example.test/x.jpg")
+        V._note(other, True)
+        for _ in range(20):
+            V._note(other, False)
+        self.assertFalse(V.blocked(other))   # a server that worked once keeps being tried
+
 
 if __name__ == "__main__":
     unittest.main()
