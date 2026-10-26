@@ -4,6 +4,8 @@ Newest entry first. Rules and format are in `AGENTS.md`.
 
 ## 2026-10-26: Codex, codex/book-learning-loop — private decision capture
 
+Draft PR: [#34](https://github.com/Fshuaib75/northline-house/pull/34), against main; not merged or deployed.
+
 Did: rebased onto main's book-source commit `17ccfb9` and built part (a) in `tools/book/book.template.html`. Successful inbox approvals/dismissals capture ranking VERSION 1 rows; accepting a gone item and publishing a manual hide record late rejects. Price decisions use the proposed cost. Provenance and stable IDs survive inbox resealing; retries deduplicate. Rows retain `grp` (or ref) for the grouped holdout, including later actions on a recorded ref. Added Export decisions, documentation in `tools/book/README.md`, and `tools/book/decisions.test.mjs`. No catalogue, sealed root file, live book or gh-pages changes.
 
 Storage: only this origin's `localStorage["nl-decisions-v1"]`, AES-GCM encrypted with the book password using the existing PBKDF2 helper. No rows/features are uploaded. Export is **private plaintext JSON**: `decisions` is readable by `engine.mjs train`; `unconfirmed` holds interrupted/failed action snapshots and is ignored by training. Never commit exports. The existing remembered password shares the browser profile; this does not protect from an unlocked book or same-origin scripts. No cross-device sync or password migration: export before clearing data/changing password.
