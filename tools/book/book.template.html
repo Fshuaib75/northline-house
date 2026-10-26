@@ -451,9 +451,9 @@ let stars = new Set(), over = {}, pending = {}, privOver = {};   // over = lira 
 const KEY="nl-capone-v7";
 const LS={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}}, set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}, raw(k){try{return localStorage.getItem(k)||""}catch(e){return ""}}, rawSet(k,v){try{v?localStorage.setItem(k,v):localStorage.removeItem(k)}catch(e){}}};
 function load(){ const old=LS.get("nl-capone-v6",null)||LS.get("nl-capone-v5",null)||{}; const j=LS.get(KEY,null)||{stars:old.stars,menPrice:old.menPrice};
-  if(j.stars) stars=new Set(j.stars); pending={...(j.menPrice||{}), ...(j.pending||{})}; hidePending=j.hidePending||{}; mergeOver(); }
-function save(){ LS.set(KEY,{stars:[...stars], pending, hidePending}); }
-let hidePending={}, hidden=new Set();   // styles pulled from the agent site (e.g. sold out)
+  if(j.stars) stars=new Set(j.stars); pending={...(j.menPrice||{}), ...(j.pending||{})}; hidePending=j.hidePending||{}; supplyHidePending=j.supplyHidePending||{}; mergeOver(); }
+function save(){ LS.set(KEY,{stars:[...stars], pending, hidePending, supplyHidePending}); }
+let hidePending={}, supplyHidePending={}, hidden=new Set();   // keep supply hides distinct across failed saves/reloads
 function mergeHidden(){ hidden=new Set((published&&published.hidden)||[]); Object.entries(hidePending).forEach(([k,v])=>{ v?hidden.add(k):hidden.delete(k); }); }
 function mergeOver(){ over={...privOver}; Object.entries(pending).forEach(([k,v])=>{ if(v>0) over[k]=v; else delete over[k]; }); }
 const fmtN = n => "₦" + Math.round(n).toLocaleString("en-NG");
@@ -607,7 +607,7 @@ grid.addEventListener("click",e=>{
   const ed=e.target.closest("[data-edit]"); if(ed){ startEdit(ed.dataset.edit); return; }
   const b=e.target.closest(".star"); if(b){ const h=b.dataset.h; stars.has(h)?stars.delete(h):stars.add(h); b.setAttribute("aria-pressed",stars.has(h)); save(); count(); if(S.star) render(); return; }
   const ph=e.target.closest(".ph[data-g]"); if(ph){ const r=DATA.find(x=>x.id===ph.dataset.g); if(r) openGal(label(r), photos(r)); return; }
-  const hb=e.target.closest("[data-hide]"); if(hb){ const ref=hb.dataset.hide; hidePending[ref]=!hidden.has(ref); mergeHidden(); save(); render(); toast(hidden.has(ref)?"Hidden here. Press Publish to take it off the agent site.":"Will show again after you press Publish."); return; }
+  const hb=e.target.closest("[data-hide]"); if(hb){ const ref=hb.dataset.hide; hidePending[ref]=!hidden.has(ref); delete supplyHidePending[ref]; mergeHidden(); save(); render(); toast(hidden.has(ref)?"Hidden here. Press Publish to take it off the agent site.":"Will show again after you press Publish."); return; }
   const rm=e.target.closest("[data-rm]"); if(rm){ const ref=rm.dataset.rm; if(armed!==ref){ armed=ref; render(); setTimeout(()=>{ if(armed===ref){armed=null; render();} },4000); return; } armed=null; removeProduct(ref); }
 });
 grid.addEventListener("change",e=>{ const id=e.target.dataset.ov; if(!id) return; const v=parseFloat(e.target.value); pending[id]= v>0 ? v : 0; mergeOver(); save(); render(); toast(v>0?"Saved here. Press Publish so agents get the new price.":"Back to the catalogue price. Press Publish to update agents."); });
@@ -713,13 +713,21 @@ async function decisionPrepare(rows){
     await decisionWrite(data,pass);
   });
 }
+let decisionsMissed=0;
+function decisionMissed(count){
+  decisionsMissed+=count;
+  document.getElementById("decisionNote").textContent=`${decisionsMissed} decision${decisionsMissed===1?"":"s"} not recorded this session. Your actions can still save. Check your book password, item costs and browser storage. Export a private backup; unconfirmed snapshots are excluded from training.`;
+}
 async function prepareReviewHistory(makeRows){
-  try{ return await decisionPrepare(makeRows()); }
-  catch(e){ toast("Decision history could not be saved: "+e.message); throw new Error("history"); }
+  const rows=[];
+  // Capture is advisory: one invalid item must not lose its neighbours or block an action.
+  for(const makeRow of makeRows){ try{ rows.push(makeRow()); }catch(e){ decisionMissed(1); } }
+  try{ const commit=await decisionPrepare(rows); commit.count=rows.length; return commit; }
+  catch(e){ decisionMissed(rows.length); return async()=>{}; }
 }
 async function decisionFinish(commit){
   try{ await commit(); }
-  catch(e){ document.getElementById("decisionNote").textContent="The action saved, but decision confirmation failed. Keep this browser's data and export a backup: unconfirmed snapshots are excluded from training."; }
+  catch(e){ decisionMissed(commit.count||1); }
 }
 document.getElementById("decisionExport").onclick=async()=>{
   try{
@@ -862,9 +870,9 @@ async function publishPrices(reviewHides=[]){
   const publishingHides={...hidePending};
   const params={}; PARAMS.forEach(k=>params[k]=S[k]);
   try{
-    const commitHistory=await prepareReviewHistory(()=>Object.entries(publishingHides)
-      .filter(([ref,hide])=>hide&&!reviewHides.includes(ref)&&!(published?.hidden||[]).includes(ref))
-      .map(([ref])=>decisionRow({ref},"reject",`book:hide:${ref}:${published?.updated||BUILD}`,"late_hide")));
+    const commitHistory=await prepareReviewHistory(Object.entries(publishingHides)
+      .filter(([ref,hide])=>hide&&!supplyHidePending[ref]&&!reviewHides.includes(ref)&&!(published?.hidden||[]).includes(ref))
+      .map(([ref])=>()=>decisionRow({ref},"reject",`book:hide:${ref}:${published?.updated||BUILD}`,"late_hide")));
     const touched=Object.keys(pending).length>0;
     if(touched){   // what you pay is private: store it encrypted with the book password
       let pass=LS.raw("nl-pass") || document.getElementById("aPass").value || prompt("Book password (keeps what you pay private)") || "";
@@ -877,7 +885,7 @@ async function publishPrices(reviewHides=[]){
     }
     const body=await saveJson("prices.json", cur=>{ const h=new Set((cur&&cur.hidden)||[]); Object.entries(publishingHides).forEach(([k,v])=>{ v?h.add(k):h.delete(k); }); hidden=h;   // merge with what is live, so hides made elsewhere are kept
       return {updated:new Date().toISOString(), params, menPrice:{}, locked:Object.keys(over), hidden:[...h], prices:priceMap("old"), ...(NC?{switchAt:NC.from, next:priceMap("new")}:{})}; }, null, "Update agent prices");
-    Object.entries(publishingHides).forEach(([ref,hide])=>{ if(hidePending[ref]===hide) delete hidePending[ref]; }); save();
+    Object.entries(publishingHides).forEach(([ref,hide])=>{ if(hidePending[ref]===hide){ delete hidePending[ref]; delete supplyHidePending[ref]; } }); save();
     await decisionFinish(commitHistory);
     published=body; mergeHidden(); render(); toast("Published. Agents see it within about a minute.");
     btn.disabled=false; btn.textContent="Publish these prices to agent site"; return true;
@@ -1024,10 +1032,8 @@ async function inboxApply(mode){
   const btn=byId(mode==="dismiss"?"inboxDrop":"inboxApply"), was=btn.textContent; btn.disabled=true; btn.textContent=mode==="dismiss"?"Dismissing…":"Applying…";
   INB.busy=true;
   try{
-    const commitHistory=await prepareReviewHistory(()=>picked.map(x=>{
-      const late=mode==="approve"&&x.t==="gone";
-      return decisionRow(x,late||mode==="dismiss"?"reject":"approve",`book:review:${x.decision_origin||x.batch}:${x.t}:${x.ref}:${mode}`,late?"late_hide":"review");
-    }));
+    const commitHistory=await prepareReviewHistory(picked.filter(x=>x.t==="new").map(x=>()=>
+      decisionRow(x,mode==="dismiss"?"reject":"approve",`book:review:${x.decision_origin||x.batch}:${x.t}:${x.ref}:${mode}`)));
     let news=[];
     if(mode==="approve"){
       news=picked.filter(x=>x.t==="new"&&!DATA.some(r=>r.ref===x.ref));
@@ -1042,7 +1048,7 @@ async function inboxApply(mode){
         mergeAdded();
       }
       picked.filter(x=>x.t==="price").forEach(x=>{ pending[x.ref]=x.now; });
-      picked.filter(x=>x.t==="gone").forEach(x=>{ hidePending[x.ref]=true; });
+      picked.filter(x=>x.t==="gone").forEach(x=>{ hidePending[x.ref]=true; supplyHidePending[x.ref]=true; });
       mergeOver(); mergeHidden(); save();
       if(!await publishPrices(picked.filter(x=>x.t==="gone").map(x=>x.ref))) throw new Error("publish");
       await decisionFinish(commitHistory);

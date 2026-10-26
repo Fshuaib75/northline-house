@@ -2,6 +2,16 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-10-26: Codex, codex/book-learning-loop — PR #34 review fixes
+
+Did: addressed both issues in [the review](https://github.com/Fshuaib75/northline-house/pull/34#issuecomment-6415450901) on the same [draft PR #34](https://github.com/Fshuaib75/northline-house/pull/34). Decision capture now skips invalid/unwritable rows, counts them in `decisionNote`, and never aborts the owner's action. Valid neighbours still record. Only new-style approvals/dismissals and published **manual** hides become training rows; price and sold-out updates never do. Supply hides retain their provenance in local pending state across failed saves/reloads. Updated template, tests and README; private history remains encrypted in `nl-decisions-v1` with private export only.
+
+Validation: dev build, all **15 tests**, and `git diff --check` pass. Regression coverage includes missing saved password, unknown hide cost, storage failure for all three actions, mixed valid/invalid rows, approve/dismiss of price and gone items (including unknown gone cost), and a failed gone approval followed by Publish. Claude's review reports passing 390px/1366px browser QA on the prior version; Claude will rerun the flows with these fixes. Codex has not claimed a new browser run.
+
+Next: Claude to rerun the review flows; owner decides merge. Part (b) remains pending; consider a shared inbox-public-key-sealed decision backup for cross-device training as the reviewer suggests. No model is published for (c) yet. All training safeguards stay unchanged.
+
+Watch out: this entry supersedes the prior capture semantics—price changes and supply events are **not** taste decisions, and failed capture must **not** block the underlying action. The action's own password/save requirements still apply. No catalogue, sealed root file, live book or gh-pages changed; no merge or deployment.
+
 ## 2026-10-26: Codex, codex/book-learning-loop — private decision capture
 
 Draft PR: [#34](https://github.com/Fshuaib75/northline-house/pull/34), against main; not merged or deployed.

@@ -18,7 +18,7 @@ function setup(){
     document:{getElementById:el},setTimeout:()=>{},
     DATA:structuredClone(sample.items).map(r=>({...r,id:r.ref})),S:config,CONFIG:config,BUILD:'test-build',
     LS:{raw:k=>k==='nl-pass'?'test':'',rawSet:()=>{}},tok:{get:()=>true},toast:s=>notices.push(s),
-    PARAMS:['rate','perKg','handling','minProfit','profitPct'],pending:{},hidePending:{},over:{},
+    PARAMS:['rate','perKg','handling','minProfit','profitPct'],pending:{},hidePending:{},supplyHidePending:{},over:{},
     published:{hidden:[],updated:'initial',prices:{}},hidden:new Set(),NC:null,addedMeta:[],privateCosts:{},
     INB:{items:[],batches:[{id:'batch'}]},byId:el,
     tl:r=>r.tl||0,kgOf:r=>r.kg||.5,mergeOver:()=>{},mergeHidden:()=>{},save:()=>{},render:()=>{},stats:()=>{},
@@ -55,16 +55,15 @@ test('encrypted journal, deduplication, password failures, pending exclusion and
   assert.equal((await t.rows()).entries.late.row.product_key,row.product_key);
   assert.equal(train([(await t.rows()).entries.one.row]).active,false);
 });
-test('approve all inbox types, stable retry IDs, late gone reject and no public decision payload',async()=>{
+test('mixed approvals record only new styles, keep stable retry IDs and no public decision payload',async()=>{
   const t=setup();t.c.INB.items=sample.inbox.map(x=>({...x,on:true,batch:'batch',source:'weekly robot'}));
   await t.c.inboxApply('approve');
   let entries=Object.values((await t.rows()).entries);
-  assert.equal(entries.filter(e=>e.confirmed).length,5,t.notices.join('; '));
-  assert.equal(entries.filter(e=>e.row.reason==='late_hide'&&e.row.decision==='reject').length,1);
-  const changed=entries.find(e=>e.row.ref==='TEST-M02-BRN').row;
-  assert.deepEqual(changed.features,Array.from(t.c.decisionFeatures({...sample.items[2],cat:'shoes'},1600,.5,config)));
+  assert.equal(entries.filter(e=>e.confirmed).length,3,t.notices.join('; '));
+  assert.ok(entries.every(e=>e.row.decision==='approve'&&e.row.reason==='review'));
+  assert.ok(!entries.some(e=>['TEST-M02-BRN','TEST-W02-RED'].includes(e.row.ref)));
   await t.c.inboxApply('approve');
-  assert.equal(Object.values((await t.rows()).entries).filter(e=>e.confirmed).length,5);
+  assert.equal(Object.values((await t.rows()).entries).filter(e=>e.confirmed).length,3);
   assert.ok(t.writes.every(p=>['prices.json','private.json','products.json','inbox.json'].includes(p)));
 });
 test('dismiss commits only after cleanup; failed approve and storage failure do not become training rows',async()=>{
@@ -75,8 +74,8 @@ test('dismiss commits only after cleanup; failed approve and storage failure do 
   await t.c.inboxApply('approve');
   assert.ok(Object.values((await t.rows()).entries).every(e=>!e.confirmed));
   t.c.localStorage.setItem=()=>{throw Error('quota');};t.writes.length=0;
-  await t.c.inboxApply('approve');assert.equal(t.writes.length,0);
-  assert.ok(t.notices.some(s=>s.includes('quota')));
+  await t.c.inboxApply('approve');assert.ok(t.writes.includes('private.json'));
+  assert.match(t.el('decisionNote').textContent,/1 decision not recorded/);
 });
 test('approve survives inbox cleanup failure; dismiss retries deduplicate and preserve provenance',async()=>{
   const t=setup();t.c.INB.items=[{...sample.inbox[0],on:true,source:'sourcing scan',decision_origin:'original',batch:'resealed'}];
@@ -100,7 +99,7 @@ test('confirmation storage failure keeps recoverable snapshots and explains part
   const commit=await t.c.decisionPrepare([row]);t.c.localStorage.setItem=()=>{throw Error('quota');};
   await t.c.decisionFinish(commit);
   assert.equal((await t.rows()).entries.one.confirmed,false);
-  assert.match(t.el('decisionNote').textContent,/action saved/);
+  assert.match(t.el('decisionNote').textContent,/1 decision not recorded/);
 });
 test('export separates trainable decisions from interrupted snapshots and works with an empty inbox',async()=>{
   const t=setup();let downloaded;
@@ -115,12 +114,66 @@ test('export separates trainable decisions from interrupted snapshots and works 
   assert.equal(train(out.decisions).examples,1);
   assert.match(t.el('decisionNote').textContent,/Never share or commit/);
 });
-test('inbox publishing captures unrelated pending hides without counting its gone item twice',async()=>{
+test('inbox publishing captures unrelated manual hides but not its gone item',async()=>{
   const t=setup();t.c.hidePending={'TEST-M01-BLK':true};
   t.c.INB.items=[{...sample.inbox.at(-1),on:true,batch:'batch',source:'weekly robot'}];
   await t.c.inboxApply('approve');
   const rows=Object.values((await t.rows()).entries);
+  assert.equal(rows.length,1);assert.ok(rows.every(e=>e.confirmed&&e.row.decision==='reject'));
+  assert.equal(rows[0].row.ref,'TEST-M01-BLK');
+});
+test('manual hides still publish without a saved password or a known buy price',async()=>{
+  for(const missing of ['password','cost']){
+    const t=setup();t.c.hidePending={'TEST-M01-BLK':true};
+    if(missing==='password')t.c.LS.raw=()=>'';
+    else t.c.DATA.find(r=>r.ref==='TEST-M01-BLK').tl=null;
+    assert.equal(await t.c.publishPrices(),true);
+    assert.ok(t.c.published.hidden.includes('TEST-M01-BLK'));
+    assert.equal(Object.keys((await t.rows()).entries).length,0);
+    assert.match(t.el('decisionNote').textContent,/1 decision not recorded/);
+  }
+});
+test('storage failures never block approve, dismiss or manual publish',async()=>{
+  for(const action of ['approve','dismiss','publish']){
+    const t=setup();t.c.localStorage.setItem=()=>{throw Error('quota');};
+    if(action==='publish'){
+      t.c.hidePending={'TEST-M01-BLK':true};assert.equal(await t.c.publishPrices(),true);
+      assert.ok(t.c.published.hidden.includes('TEST-M01-BLK'));
+    }else{
+      t.c.INB.items=[{...sample.inbox[0],on:true,batch:'batch'}];await t.c.inboxApply(action);
+      assert.ok(t.writes.includes('inbox.json'));
+      if(action==='approve')assert.ok(t.writes.includes('products.json'));
+    }
+    assert.match(t.el('decisionNote').textContent,/1 decision not recorded/);
+    assert.equal(t.store.size,0);
+  }
+});
+test('a bad item is skipped without losing valid neighbours or blocking dismissal',async()=>{
+  const t=setup();t.c.INB.items=sample.inbox.slice(0,3).map((x,i)=>({...x,tl:i===1?null:x.tl,on:true,batch:'batch'}));
+  await t.c.inboxApply('dismiss');
+  const rows=Object.values((await t.rows()).entries);
   assert.equal(rows.length,2);assert.ok(rows.every(e=>e.confirmed&&e.row.decision==='reject'));
+  assert.ok(t.writes.includes('inbox.json'));assert.match(t.el('decisionNote').textContent,/1 decision not recorded/);
+});
+test('price and gone updates never become taste rows for either action, including unknown gone cost',async()=>{
+  for(const mode of ['approve','dismiss']){
+    const t=setup();t.c.DATA.find(r=>r.ref==='TEST-W02-RED').tl=null;
+    t.c.INB.items=sample.inbox.filter(x=>x.t!=='new').map(x=>({...x,on:true,batch:'batch'}));
+    await t.c.inboxApply(mode);
+    assert.ok(t.writes.includes('inbox.json'),t.notices.join('; '));
+    if(mode==='approve')assert.ok(t.c.published.hidden.includes('TEST-W02-RED'));
+    assert.equal(Object.keys((await t.rows()).entries).length,0);
+    assert.equal(t.el('decisionNote').textContent,'');
+  }
+});
+test('a failed sold-out approval followed by Publish remains a supply event',async()=>{
+  const t=setup(), save=t.c.saveJson;
+  t.c.INB.items=[{...sample.inbox.at(-1),on:true,batch:'batch'}];
+  t.c.saveJson=async()=>{throw Error('offline');};await t.c.inboxApply('approve');
+  assert.equal(t.c.supplyHidePending['TEST-W02-RED'],true);
+  t.c.saveJson=save;assert.equal(await t.c.publishPrices(),true);
+  assert.ok(t.c.published.hidden.includes('TEST-W02-RED'));
+  assert.equal(Object.keys((await t.rows()).entries).length,0);
 });
 test('built template is valid JavaScript and keeps the test GitHub write endpoint disabled',()=>{
   const built=fs.readFileSync(new URL('../../_dev/book/index.html',import.meta.url),'utf8');
