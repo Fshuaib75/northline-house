@@ -4,10 +4,15 @@
   "BN26-BGE": "2026-10-25"
  },
  "unchecked": {
-  "DF-D8939AXWT34": "2026-10-25"
+  "DF-D8939AXWT34": "2026-10-25",
+  "870-K853": "2026-10-26"
  },
  "reported": {
-  "blank": [],
-  "unchecked": []
+  "blank": [
+   "BN26-BGE"
+  ],
+  "unchecked": [
+   "DF-D8939AXWT34"
+  ]
  }
 }
