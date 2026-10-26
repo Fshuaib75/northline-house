@@ -29,7 +29,7 @@ Each agent stays in its lane, so the two never edit the same file at the same ti
 
 | Lane | Owner | Paths |
 |---|---|---|
-| Site code | **Codex** | `index.html`, `shop/`, `book/`, `orders/`, `me/`, `photo-check/`, `tools/*-patch.py`, `tools/extension/` |
+| Site code | **Codex** | `index.html`, `shop/`, `book/`, `tools/book/` (the book's source; see its README), `orders/`, `me/`, `photo-check/`, `tools/*-patch.py`, `tools/extension/` |
 | Brand and content | **Claude** | `brand/`, `tools/packaging/`, docs, captions, Instagram copy |
 | Data | **Robots and the owner's book** | `products.json`, `prices.json`, `brands.json`, `capone.json`, `drop.json`, `orders.json`, `reviews.json`, `inbox-forwarded.json`, `photo-checked.json`, `photo-health.json` (gh-pages only); `photo-rules.json` (photo guard) |
 | Shared | Both, one at a time | `AGENTS.md`, `CLAUDE.md`, `HANDOFF.md`, `.github/workflows/`, `tools/ig/` |

@@ -1,2 +1,5 @@
 __pycache__/
 *.pyc
+
+# local test copy of the book (tools/book/dev-build.mjs)
+_dev/
