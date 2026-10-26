@@ -33,6 +33,18 @@ Open `http://localhost:8080/book/`. To review asks for the book password: in the
 
 Test at phone (390 px) and desktop widths. The owner uses the book mostly on his phone.
 
+## Private decision capture
+
+`node --test tools/book/decisions.test.mjs` checks the standalone template's feature vectors against `tools/sourcing/ranking.mjs` and the sourcing estimate, plus successful/failed review saves, retries, encryption and published hides. It uses made-up fixtures and stubbed remote writes only.
+
+Successful approvals and dismissals save VERSION 1 training rows. Approving a sold-out item hides it and records a late reject; manual hides count when Publish succeeds, not when toggled locally. Price-change decisions use the proposed buy price. Missing sizes count as zero coverage; no sizes are invented. Group keys use `grp` or ref, and a later decision reuses that ref's recorded group on this device. Source and original batch identity survive inbox resealing.
+
+History lives only in this origin's `localStorage["nl-decisions-v1"]`, encrypted with the existing book-password AES-GCM/PBKDF2 helper. No history is sent to GitHub or any public data file. The existing book also remembers its password on this device: encryption does **not** protect against someone with access to an unlocked book, same-origin scripts, or the browser profile and saved password. Different browsers/devices do not sync. A changed password cannot open old history; export before changing it or clearing browser data.
+
+**Export decisions** downloads private JSON with `decisions` in the schema `engine.mjs train` reads. The file contains cost-derived features; keep it private and never commit it. A snapshot is encrypted before remote writes and confirmed only after the relevant save succeeds. Failed or interrupted actions remain in `unconfirmed`, which the trainer ignores. If remote writes succeed but local confirmation fails, the book shows a recovery notice; exported unconfirmed snapshots need reconciliation with the actual action before any later training/import. Retrying the same inbox decision uses the same ID. Approvals are confirmed before inbox cleanup so a cleanup failure does not erase a decision that already went live.
+
+This change implements capture (a) only. It does not train or publish a model. Part (b) must resolve how private decisions reach training without exposing the password or features; the top handoff proposes browser training. Preserve the existing 50-row/15-per-class thresholds, grouped holdout, advisory-only use and baseline comparison. Part (c) should sort within sections only after an active model is available.
+
 ## Going live (who does what)
 
 1. **Codex** changes `book.template.html` on a `codex/<topic>` branch and opens a PR to `main`, tested with the dev build.
