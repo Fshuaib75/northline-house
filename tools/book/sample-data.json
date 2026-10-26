@@ -1,0 +1,19 @@
+{
+  "_note": "MADE-UP sample data for testing the book locally. Not real products, not real buy prices. tl = lira price paid (private in the real catalogue).",
+  "items": [
+    {"ref":"TEST-M01-BLK","brand":"Sample Co","cat":"shoes","g":"M","model":"Harbor palm","colour":"Black","fam":"Black","desc":"Leather upper, cushioned footbed","kind":"slide","heel":"Flat","tl":900,"was":null,"onsale":false,"img":"img/sample.png","w":"","page":"https://example.com/harbor-black","stock":"","name":"Harbor palm black","src":"sample","sizes":["40","41","42","43","44"]},
+    {"ref":"TEST-M01-TAN","brand":"Sample Co","cat":"shoes","g":"M","model":"Harbor palm","colour":"Tan","fam":"Tan & camel","desc":"Leather upper, cushioned footbed","kind":"slide","heel":"Flat","tl":900,"was":1100,"onsale":true,"img":"img/sample.png","w":"","page":"https://example.com/harbor-tan","stock":"","name":"Harbor palm tan","src":"sample","sizes":["40","41","42","43"]},
+    {"ref":"TEST-M02-BRN","brand":"Other Brand","cat":"shoes","g":"M","model":"Delta sandal","colour":"Brown","fam":"Brown","desc":"Two straps, buckle","kind":"sandal","heel":"Flat","tl":1450,"was":null,"onsale":false,"img":"img/sample.png","w":"","page":"https://example.com/delta","stock":"","name":"Delta sandal brown tokalı","src":"sample"},
+    {"ref":"TEST-W01-BEJ","brand":"Sample Co","cat":"shoes","g":"W","model":"Lena slide","colour":"Beige","fam":"Beige & nude","desc":"Padded strap","kind":"slide","heel":"Flat","tl":700,"was":null,"onsale":false,"img":"img/sample.png","w":"","page":"https://example.com/lena","stock":"","name":"Lena slide beige","src":"sample"},
+    {"ref":"TEST-W02-RED","brand":"Other Brand","cat":"shoes","g":"W","model":"Mira heel sandal","colour":"Red","fam":"Red & burgundy","desc":"Block heel","kind":"sandal","heel":"Heel","tl":2600,"was":null,"onsale":false,"img":"img/sample.png","w":"","page":"https://example.com/mira","stock":"","name":"Mira sandal red","src":"sample"},
+    {"ref":"TEST-B01-PNK","brand":"Kids Sample","cat":"baby","g":"B","for":"Girl","model":"Daisy set","colour":"Pink","fam":"Pink & purple","desc":"2-piece cotton set","kind":"set","heel":"","tl":350,"was":null,"onsale":false,"img":"img/sample.png","w":"","page":"https://example.com/daisy","stock":"","name":"Daisy set pink","src":"sample","sizes":["6-9m","9-12m","12-18m"]},
+    {"ref":"TEST-BG1-BLK","brand":"Bag Sample","cat":"bags","g":"BG","for":"Women","model":"Arc shoulder bag","colour":"Black","fam":"Black","desc":"Faux leather","kind":"shoulder","heel":"","tl":1200,"was":null,"onsale":false,"img":"img/sample.png","w":"","page":"https://example.com/arc","stock":"","name":"Arc shoulder bag","src":"sample","sizes":["One size"]}
+  ],
+  "inbox": [
+    {"t":"new","ref":"TEST-N01-BLK","grp":"Sample Co|M|TEST-N01","brand":"Sample Co","cat":"shoes","g":"M","model":"Quay palm","colour":"Black","fam":"Black","desc":"Leather, calm finish","kind":"slide","heel":"Flat","tl":950,"img":"../img/sample.png","page":"https://example.com/quay-black","sizes":["40","41","42","43","44"],"src":"weekly robot"},
+    {"t":"new","ref":"TEST-N01-BRN","grp":"Sample Co|M|TEST-N01","brand":"Sample Co","cat":"shoes","g":"M","model":"Quay palm","colour":"Brown","fam":"Brown","desc":"Leather, calm finish","kind":"slide","heel":"Flat","tl":950,"img":"../img/sample.png","page":"https://example.com/quay-brown","sizes":["40","41","42"],"src":"weekly robot"},
+    {"t":"new","ref":"TEST-N02-PNK","brand":"Other Brand","cat":"shoes","g":"W","model":"Glitz platform","colour":"Pink","fam":"Pink & purple","desc":"Rhinestone strap","kind":"sandal","heel":"Platform","tl":3100,"img":"../img/sample.png","page":"https://example.com/glitz","sizes":["36","37","38"],"src":"sourcing scan"},
+    {"t":"price","ref":"TEST-M02-BRN","old":1450,"now":1600},
+    {"t":"gone","ref":"TEST-W02-RED","page":"https://example.com/mira","why":"Product page says sold out"}
+  ]
+}

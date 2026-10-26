@@ -1,0 +1,27 @@
+{
+ "rate": 30,
+ "freight": 9000,
+ "round": 500,
+ "commission": 4000,
+ "whatsapp": "2340000000000",
+ "minProfit": 4000,
+ "profitPct": 15,
+ "snapWithin": 1500,
+ "snapKeep": 2000,
+ "commissionLow": 2000,
+ "lowThreshold": 30000,
+ "babyFreight": 6000,
+ "babyComm": 1500,
+ "perKg": 12000,
+ "handling": 1500,
+ "kg": {
+  "shoes": {"slide": 0.35, "flipflop": 0.3, "sandal": 0.45, "loafer": 0.65, "sneaker": 0.8, "other": 0.6, "_clog": 0.5, "_raised": 0.15},
+  "bags": {"clutch": 0.4, "waist": 0.35, "crossbody": 0.55, "shoulder": 0.8, "handbag": 0.9, "tote": 0.8, "backpack": 0.8, "other": 0.7},
+  "baby": {"bodysuit": 0.12, "top": 0.15, "dress": 0.2, "set": 0.25, "other": 0.2},
+  "clothing": {"abaya": 0.6, "hijab": 0.15, "dress": 0.5, "shirt": 0.3, "trousers": 0.4, "set": 0.6, "top": 0.25, "other": 0.5},
+  "accessories": {"wallet": 0.2, "belt": 0.3, "giftset": 0.5, "other": 0.3}
+ },
+ "newComm": {"off": true, "from": "2026-10-16", "share": 25, "round": 500},
+ "terms": {"deliveryDays": 14, "payment": "bank transfer", "exchanges": false, "cac": "SAMPLE"},
+ "goatcounter": ""
+}

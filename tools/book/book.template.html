@@ -1,0 +1,1039 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="theme-color" content="#0E1B2C">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Northline Sourcing Book</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Figtree:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: sticky control bar over a dense photo grid; sourcing mode adds a cost ledger under each photo, lookbook mode strips it to price. */
+:root{
+  --bg:#F7F5F0; --surface:#FFFFFF; --ink:#0E1B2C; --muted:#5F6873; --line:#E4E1DA; --navy:#0E1B2C; --sky:#4A9FD8; --accent:#1F5F8B; --accent-soft:#E6F1FA; --gold:#B8925A; --gold-ink:#8A6A35; --photo:#EEF2F6; --good:#1E7A55; --warn:#95560F;
+  --display:"Fraunces",Georgia,"Times New Roman",serif;
+  --ui:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){ --bg:#0B1520; --surface:#122030; --ink:#EAF0F6; --muted:#93A0AE; --line:#223246; --navy:#08111B; --sky:#4A9FD8; --accent:#7CC0EE; --accent-soft:#16334C; --gold:#D4B07A; --gold-ink:#D4B07A; --photo:#1A2A3C; --good:#6FCB9C; --warn:#E2A95C; color-scheme:dark }}
+:root[data-theme="dark"]{ --bg:#0B1520; --surface:#122030; --ink:#EAF0F6; --muted:#93A0AE; --line:#223246; --navy:#08111B; --sky:#4A9FD8; --accent:#7CC0EE; --accent-soft:#16334C; --gold:#D4B07A; --gold-ink:#D4B07A; --photo:#1A2A3C; --good:#6FCB9C; --warn:#E2A95C; color-scheme:dark }
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 var(--ui);padding-inline:16px;padding-block:0 48px}
+.wrap{max-width:1320px;margin:0 auto}
+header.top{padding-block:28px 18px;display:flex;flex-wrap:wrap;gap:12px 32px;align-items:end;justify-content:space-between}
+.brand{font-family:var(--display);font-weight:600;font-size:clamp(28px,4vw,44px);letter-spacing:.02em;line-height:1;text-wrap:balance}
+.brand small{display:block;font-family:var(--ui);font-weight:500;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.stats{display:flex;flex-wrap:wrap;gap:8px 28px;font-variant-numeric:tabular-nums}
+.stat b{display:block;font-size:20px;font-weight:600}
+.stat span{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:12px;border-bottom:1px solid var(--line);display:grid;gap:10px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+@media (max-width:760px),(max-height:700px){.bar{position:static}}
+.bar:has(details[open]),.bar.unpin{position:static}   /* an open panel can be taller than the screen: never pin it */
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--surface)}
+.seg button{border:0;background:transparent;color:var(--ink);font:500 13px var(--ui);padding:7px 14px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.chip{border:1px solid var(--line);background:var(--surface);color:var(--ink);font:500 12.5px var(--ui);padding:6px 12px;border-radius:999px;cursor:pointer}
+.chip[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+input[type=search],input[type=number],select{font:14px var(--ui);color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:7px 10px}
+input[type=search]{flex:1 1 220px;min-width:0}
+.money{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;font-size:12.5px;color:var(--muted)}
+.money label{display:inline-flex;gap:6px;align-items:center}
+.money input{width:86px;font-variant-numeric:tabular-nums}
+button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.action{border:1px solid var(--ink);background:var(--ink);color:var(--bg);font:600 13px var(--ui);padding:7px 14px;border-radius:999px;cursor:pointer}
+.ghost{border:1px solid var(--line);background:transparent;color:var(--ink);font:500 13px var(--ui);padding:7px 14px;border-radius:999px;cursor:pointer}
+.note{font-size:12.5px;color:var(--muted);max-width:75ch;margin:10px 0 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:18px 14px;margin-top:18px}
+.card{min-width:0;display:flex;flex-direction:column;gap:8px}
+.ph{position:relative;aspect-ratio:1/1;max-width:100%;background:var(--surface);border-radius:6px;overflow:hidden}
+.ph img{width:100%;height:100%;object-fit:cover;display:block}
+.ph .miss{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:16px;color:var(--muted);font-size:12px}
+.star{position:absolute;top:8px;right:8px;width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--muted);font-size:17px;cursor:pointer;display:grid;place-items:center}
+.star[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.tag{position:absolute;left:8px;top:8px;background:var(--accent);color:#fff;font:600 10.5px var(--ui);letter-spacing:.08em;text-transform:uppercase;padding:3px 7px;border-radius:4px}
+.tag.d{background:var(--ink);color:var(--bg)}
+.meta{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.mname{font-family:var(--display);font-weight:600;font-size:18px;line-height:1.15}
+.mcol{font-size:12px;color:var(--muted);white-space:nowrap}
+.desc{font-size:12.5px;color:var(--muted);min-height:1.45em}
+.ledger{display:grid;grid-template-columns:1fr auto;gap:2px 10px;font-size:12.5px;font-variant-numeric:tabular-nums;border-top:1px solid var(--line);padding-top:7px}
+.ledger dt{color:var(--muted)}
+.glabel{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-right:2px}
+.ledger dd{margin:0;text-align:right}
+.ledger .sell{font-weight:700;font-size:15px}
+.ledger .mg{color:var(--good)}
+.ledger .mg.neg{color:#b3261e;font-weight:700}
+.strike{text-decoration:line-through;color:var(--muted);margin-right:4px}
+.links{display:flex;gap:12px;font-size:12px}
+.links a{color:var(--accent);text-decoration:none;border-bottom:1px solid currentColor}
+.lbprice{font-weight:700;font-size:16px;font-variant-numeric:tabular-nums}
+.empty{padding:48px 0;color:var(--muted);text-align:center}
+body.lb .src-only{display:none!important}
+body:not(.lb) .lb-only{display:none!important}
+.pub{border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:var(--surface);display:grid;gap:6px}
+.pub ol{padding-left:18px}
+.pub a{color:var(--accent)}
+.addgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-top:10px}
+.addgrid .f{display:grid;gap:4px;font-size:12.5px;color:var(--muted)}
+.addgrid input,.addgrid select{width:100%}
+.rm{border:1px solid var(--line);background:transparent;color:#b3261e;font:600 12px var(--ui);padding:4px 10px;border-radius:999px;cursor:pointer}
+details.exp{border:1px solid var(--line);border-radius:8px;padding:8px 12px;background:var(--surface)}
+details.exp summary{cursor:pointer;font-weight:600}
+.men{display:grid;gap:6px;border-top:1px solid var(--line);padding-top:7px;font-size:12.5px}
+.men label{display:flex;gap:6px;align-items:center}
+.men input[type=number]{width:96px}
+.pill{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:4px;border:1px solid var(--line);color:var(--muted)}
+.pill.low{color:var(--warn);border-color:var(--warn)}
+.pill.out{color:var(--muted)}
+.pill.check{color:var(--accent);border-color:var(--accent)}
+.ov{display:flex;gap:6px;align-items:center;font-size:12px;color:var(--muted);grid-column:1/-1;margin-top:3px}
+.ov input{width:92px;padding:4px 8px;font-size:13px}
+.ov.set input{border-color:var(--accent)}
+.ledger .live{font-weight:600}
+.ledger .live.warn{color:var(--warn)}
+.tag.off{background:var(--muted)}
+.stale{background:var(--warn);color:#fff;border-radius:8px;padding:10px 14px;font-weight:600;margin-bottom:10px;display:flex;justify-content:space-between;gap:10px;align-items:center}
+.stale button{background:#fff;color:var(--warn);border:0;border-radius:999px;padding:6px 12px;font-weight:700;cursor:pointer}
+.ph{cursor:zoom-in}
+.pcount{position:absolute;right:8px;bottom:8px;background:rgba(0,0,0,.62);color:#fff;font:600 11px var(--ui);padding:3px 8px;border-radius:999px;pointer-events:none}
+.gal{position:fixed;inset:0;z-index:20;background:#0b0b0c;display:flex;flex-direction:column}
+.gtrack{flex:1;min-height:0;display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior:contain}
+.gtrack::-webkit-scrollbar{display:none}
+.gtrack img{flex:0 0 100%;width:100%;height:100%;object-fit:contain;scroll-snap-align:center;background:#0b0b0c}
+.gbar{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 16px;color:#fff;font:600 14px var(--ui)}
+.gbar.top{padding-top:calc(12px + env(safe-area-inset-top,0px))}
+.gbar.bot{padding-bottom:calc(12px + env(safe-area-inset-bottom,0px))}
+.gbar b{font-family:var(--display);font-size:18px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gbar a,.gbar button{color:#fff;background:transparent;border:1px solid rgba(255,255,255,.4);border-radius:999px;padding:7px 13px;font:600 13px var(--ui);text-decoration:none;cursor:pointer}
+.stn{border:1px dashed var(--line);border-radius:8px;padding:8px 12px;margin-top:10px;font-size:12.5px}
+.stn ol{margin:6px 0 0;padding-left:18px;color:var(--muted)}
+.pics{display:flex;gap:6px;overflow-x:auto;padding:4px 0}
+.pics img{width:64px;height:64px;flex:0 0 auto;object-fit:cover;border-radius:6px;border:2px solid var(--accent);cursor:pointer;background:var(--surface)}
+.pics img.off{opacity:.3;border-color:transparent}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:9px 16px;border-radius:999px;font-weight:600;font-size:13px}
+textarea#copyout{width:100%;min-height:140px;font:12.5px var(--ui);margin-top:10px;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:10px}
+@media (prefers-reduced-motion: no-preference){.card{animation:in .25s ease both}@keyframes in{from{opacity:.4}to{opacity:1}}}
+header.top{background:var(--navy);color:#F7F5F0;box-shadow:0 0 0 100vmax var(--navy);clip-path:inset(0 -100vmax);border-bottom:3px solid var(--sky);margin-bottom:8px}
+header.top .brand small,header.top .stat span{color:#9FB6CC}
+header.top .stat b{color:#fff}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:8px 8px 12px}
+.card>*:not(.ph){padding-inline:4px}
+.ph{border-radius:10px!important;background:var(--photo)!important}
+.tag{background:var(--gold);color:#0E1B2C}
+.tag.d{background:var(--navy);color:#fff}
+.seg button[aria-pressed="true"]{background:var(--navy);color:#fff}
+.action{background:var(--sky)!important;border-color:var(--sky)!important;color:#0E1B2C!important}
+.ledger .sell{color:var(--accent)}
+.inb{display:grid;gap:10px;margin-top:10px}
+.inb h4{margin:6px 0 0;font:700 11.5px var(--ui);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.irow{display:grid;grid-template-columns:auto 64px minmax(0,1fr);gap:10px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:8px;background:var(--bg)}
+.irow img{width:64px;height:64px;object-fit:cover;border-radius:8px;background:var(--photo)}
+.irow .t{font-weight:600}.irow .s{font-size:12.5px;color:var(--muted)}.irow .p{font-size:13px;font-variant-numeric:tabular-nums}
+.irow input{width:20px;height:20px}
+.inb .acts{display:flex;flex-wrap:wrap;gap:8px}
+.ibar{position:sticky;bottom:0;z-index:5;display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 0 12px;background:var(--surface);border-top:1px solid var(--line)}
+.ibar .grow{flex:1 1 auto}
+.ifil{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.ifil button{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:999px;padding:6px 12px;font:600 13px var(--ui);cursor:pointer}
+.ifil button[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
+.ifil select{border:1px solid var(--line);border-radius:999px;padding:6px 10px;font:600 13px var(--ui);background:var(--bg);color:var(--ink)}
+.irow.hid{display:none}
+/* review inbox, grouped: one card per style, its colours as tickable chips underneath */
+.igrp{border:1px solid var(--line);border-radius:12px;background:var(--bg);padding:8px;display:grid;gap:8px}
+.igrp.hid,.ichip.hid{display:none}
+.ihead{display:grid;grid-template-columns:auto 64px minmax(0,1fr);gap:10px;align-items:center;cursor:pointer}
+.ihead img{width:64px;height:64px;object-fit:cover;border-radius:8px;background:var(--photo)}
+.ihead .t{font-weight:600}.ihead .s{font-size:12.5px;color:var(--muted)}.ihead .p{font-size:13px;font-variant-numeric:tabular-nums}
+.ihead input,.ichip input{width:20px;height:20px}
+.ichips{display:flex;flex-wrap:wrap;gap:6px;padding-left:30px}
+.ichip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:3px 10px 3px 4px;background:var(--surface);font-size:12.5px;cursor:pointer}
+.ichip img{width:30px;height:30px;border-radius:50%;object-fit:cover;background:var(--photo)}
+.ichip:has(input:checked){border-color:var(--accent);background:var(--accent-soft)}
+.ichip a{color:var(--accent);font-size:11.5px}
+.ichip .x{color:var(--muted);font-size:11.5px}
+
+/* ===== tabbed book (17 Oct 2026) ===== */
+:root{ --tabh:0px }
+body{padding-inline:0}
+.wrap{padding-inline:16px}
+.app{position:sticky;top:0;z-index:10;background:var(--navy);color:#F7F5F0;border-bottom:2px solid var(--sky)}
+.app-in{max-width:1320px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:24px}
+.mark{display:flex;align-items:baseline;gap:10px;color:inherit;text-decoration:none;font-family:var(--display);font-weight:600;font-size:24px;letter-spacing:.01em}
+.mark small{font:500 13px var(--ui);color:#9FB6CC}
+.tabs{display:flex;gap:4px;flex:1}
+.tabs a{display:inline-flex;align-items:center;gap:8px;color:#C9D6E3;text-decoration:none;font:600 14px var(--ui);padding:9px 14px;border-radius:999px}
+.tabs a:hover{color:#fff;background:rgba(255,255,255,.07)}
+.tabs a[aria-current="page"]{color:#0E1B2C;background:var(--sky)}
+.tabs svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linejoin:round;stroke-linecap:round}
+.badge{min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:var(--gold);color:#0E1B2C;font:700 11.5px/20px var(--ui);text-align:center}
+.pubpill{margin-left:auto;border:0;border-radius:999px;background:var(--gold);color:#0E1B2C;font:700 13.5px var(--ui);padding:9px 16px;cursor:pointer;white-space:nowrap}
+.pubpill:disabled{opacity:.7}
+.panel{max-width:1320px;margin:0 auto;padding-top:18px}
+.panel h2{font:600 30px/1.1 var(--display);margin:6px 0 4px}
+.panel h3{font:600 17px var(--ui);margin:0}
+.lede{color:var(--muted);margin:0 0 16px;max-width:65ch}
+.sheet>summary,#inboxBox>summary,#addBox>summary{display:none}
+.box{border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:16px;margin-bottom:14px;display:block}
+.box>summary{cursor:pointer;font-weight:600}
+.box h3{margin-bottom:8px}
+.boxhead{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:8px}
+.linkbtn{border:0;background:none;color:var(--accent);font:600 13px var(--ui);padding:4px 0;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+input:not([type=checkbox]):not([type=file]):not([type=radio]),select,textarea{font:15px var(--ui);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:9px 12px}
+.addgrid{gap:14px}
+.addgrid .f{font-size:13px}
+#addForm .row{padding-top:6px}
+/* catalogue tools: one compact strip, pinned under the header on wide screens */
+.tools{position:sticky;top:var(--apph,58px);z-index:6;background:var(--bg);padding:10px 0;border-bottom:1px solid var(--line);display:grid;gap:10px}
+.tools .row{flex-wrap:wrap}
+.chips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;-webkit-mask-image:linear-gradient(90deg,#000 92%,transparent)}
+.chips::-webkit-scrollbar{display:none}
+.chips .chip{flex:0 0 auto}
+.more{margin-top:10px}
+.more>summary{cursor:pointer;color:var(--accent);font:600 13px var(--ui);width:max-content}
+.more #famChips{margin-top:8px}
+.glabel,.stat span,.inb h4{text-transform:none;letter-spacing:0;font-size:12.5px}
+.inb h4{font-weight:700;color:var(--ink);font-size:15px;margin-top:14px}
+.starbar{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;margin-top:12px;font-size:13px;color:var(--muted)}
+.staracts{display:inline-flex;flex-wrap:wrap;gap:8px;align-items:center}
+.legend{display:inline-flex;gap:6px;align-items:center}
+.legend i{display:inline-block;width:12px;height:6px;border-radius:2px;margin-left:6px}
+/* cards: flat, photo first, the money split as one bar */
+.card{background:transparent;border:0;padding:0;border-radius:0}
+.card>*:not(.ph){padding-inline:2px}
+.mname{font-size:17px}
+.split{display:flex;height:6px;border-radius:3px;overflow:hidden;background:var(--line);margin-top:2px}
+.split i,.legend i{height:100%}
+.split .c,.legend .c{background:color-mix(in srgb,var(--muted) 45%,transparent)}
+.split .a,.legend .a{background:var(--sky)}
+.split .k,.legend .k{background:var(--gold)}
+.split.loss{outline:1px solid #b3261e}
+.ledger{border-top:0;padding-top:4px}
+.stats{display:flex;flex-wrap:wrap;gap:10px 28px}
+.stat b{font-size:22px}
+.ibar{bottom:var(--tabh)}
+/* phones: tabs move to a bar at the bottom of the screen */
+@media (max-width:760px){
+  :root{--tabh:calc(60px + env(safe-area-inset-bottom,0px))}
+  body{padding-bottom:calc(var(--tabh) + 24px)}
+  .app{position:static}
+  .app-in{padding:10px 16px;gap:12px}
+  .mark{font-size:21px}
+  .tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--navy);border-top:1px solid #223246;padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px));gap:0;justify-content:space-around}
+  .tabs a{flex:1;flex-direction:column;gap:3px;font-size:11.5px;padding:6px 2px;border-radius:12px;position:relative}
+  .tabs a[aria-current="page"]{background:transparent;color:var(--sky)}
+  .tabs a[aria-current="page"] svg{stroke-width:2.4}
+  .tabs .badge{position:absolute;top:0;left:calc(50% + 6px);height:18px;min-width:18px;font-size:10.5px;line-height:18px;padding:0 5px}
+  .tools{position:static}
+  .tools input[type=search]{flex-basis:100%;order:3}
+  .panel h2{font-size:26px}
+  .toast{bottom:calc(var(--tabh) + 14px)}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 12px}
+  .legend{display:none}
+}
+body.lb .app{border-bottom-color:var(--gold)}
+@media (prefers-reduced-motion: reduce){.card{animation:none}}
+/* review fixes after screenshots */
+.legend i{display:inline-block;width:14px;height:8px;border-radius:2px;margin-left:8px}
+.grid{grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
+.tag{text-transform:none;letter-spacing:0;font-size:11.5px}
+.ledger{font-size:13px;gap:3px 12px}
+.ledger dt{min-width:0}
+.ledger dd.live.warn{grid-column:1/-1;text-align:right;margin-top:-2px}
+.links{flex-wrap:wrap;align-items:center;gap:4px 14px}
+.links>span{flex-basis:100%;order:3;font-size:11.5px}
+.links .rm,.links .ghost{order:4;white-space:nowrap;padding:5px 12px;font-size:12.5px}
+@media (max-width:760px){
+  .mark small{display:none}
+  .pubpill{padding:8px 13px;font-size:12.5px}
+  .grid{grid-template-columns:1fr;gap:26px}
+  body.lb .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 12px}
+  .ph{aspect-ratio:4/3}
+  body.lb .ph{aspect-ratio:1/1}
+  .seg button{padding:7px 11px}
+  .tools select{flex:1 1 100%;order:4}
+}
+</style>
+</head>
+<body>
+<header class="app">
+  <div class="app-in">
+    <a class="mark" href="#catalogue" data-tab="catalogue"><span class="src-only">Northline</span><span class="lb-only">NORTHLINE</span><small class="src-only">Sourcing book</small><small class="lb-only">New drop</small></a>
+    <nav class="tabs src-only" id="tabs" aria-label="Sections">
+      <a href="#catalogue" data-tab="catalogue" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z"/></svg>Catalogue</a>
+      <a href="#review" data-tab="review"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v10h-5l-3 3-3-3H4z"/></svg>To review<b class="badge" id="tabBadge" hidden></b></a>
+      <a href="#add" data-tab="add"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v16M4 12h16"/></svg>Add</a>
+      <a href="#prices" data-tab="prices"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19V9M12 19V5M19 19v-7"/></svg>Prices</a>
+    </nav>
+    <button class="pubpill src-only" id="pubPill" type="button" hidden>Publish</button>
+  </div>
+</header>
+<div class="wrap">
+  <div class="stale" id="stale" hidden><span>A newer catalogue is live. Reload so this book matches the agent site.</span><button onclick="location.reload()">Reload</button></div>
+
+  <section class="panel" data-panel="catalogue" aria-label="Catalogue">
+    <div class="tools">
+      <div class="row">
+        <div class="seg" role="group" aria-label="Who for" id="gSeg">
+          <button data-g="M" aria-pressed="true">Men</button>
+          <button data-g="W" aria-pressed="false">Women</button>
+          <button data-g="K" aria-pressed="false">Kids</button>
+        </div>
+        <input type="search" id="q" placeholder="Search brand, model, colour or code">
+        <select id="sort" aria-label="Sort">
+          <option value="rec">Recommended (agent site order)</option>
+          <option value="eff-asc">Cheapest first</option>
+          <option value="eff-desc">Most expensive first</option>
+          <option value="margin-desc" class="src-only">Highest margin first</option>
+          <option value="model">Model A–Z</option>
+        </select>
+        <div class="seg" role="group" aria-label="View">
+          <button id="mSrc" aria-pressed="true">Sourcing</button>
+          <button id="mLb" aria-pressed="false">Lookbook</button>
+        </div>
+      </div>
+      <div class="chips" id="filters" aria-label="Filters">
+      <button class="chip" data-f="kind" data-v="slide" aria-pressed="false">Slides</button>
+      <button class="chip" data-f="kind" data-v="sandal" aria-pressed="false">Sandals</button>
+      <button class="chip" data-f="kind" data-v="loafer" aria-pressed="false">Loafers</button>
+      <button class="chip" data-f="kind" data-v="sneaker" aria-pressed="false">Sneakers</button>
+      <button class="chip" data-f="kind" data-v="flipflop" aria-pressed="false">Flip-flops</button>
+      <button class="chip" data-f="kind" data-v="dress" aria-pressed="false">Dresses</button>
+      <button class="chip" data-f="kind" data-v="set" aria-pressed="false">Sets</button>
+      <button class="chip" data-f="kind" data-v="top" aria-pressed="false">Tops</button>
+      <button class="chip" data-f="kind" data-v="bodysuit" aria-pressed="false">Bodysuits</button>
+      <button class="chip" data-f="kind" data-v="other" aria-pressed="false">Other</button>
+      <button class="chip" data-f="kind" data-v="shoulder" aria-pressed="false">Shoulder bags</button>
+      <button class="chip" data-f="kind" data-v="crossbody" aria-pressed="false">Crossbody</button>
+      <button class="chip" data-f="kind" data-v="handbag" aria-pressed="false">Handbags</button>
+      <button class="chip" data-f="kind" data-v="tote" aria-pressed="false">Totes</button>
+      <button class="chip" data-f="kind" data-v="clutch" aria-pressed="false">Clutches</button>
+      <button class="chip" data-f="kind" data-v="backpack" aria-pressed="false">Backpacks</button>
+      <button class="chip" data-f="kind" data-v="waist" aria-pressed="false">Waist bags</button>
+      <button class="chip" data-f="for" data-v="Women" aria-pressed="false">For women</button>
+      <button class="chip" data-f="for" data-v="Men" aria-pressed="false">For men</button>
+      <button class="chip" data-f="for" data-v="Girl" aria-pressed="false">Girls</button>
+      <button class="chip" data-f="for" data-v="Boy" aria-pressed="false">Boys</button>
+      <button class="chip" data-f="heel" data-v="Flat" aria-pressed="false">Flat</button>
+      <button class="chip" data-f="heel" data-v="Low heel" aria-pressed="false">Low heel</button>
+      <button class="chip" data-f="heel" data-v="Wedge" aria-pressed="false">Wedge</button>
+      <button class="chip" data-f="heel" data-v="Heel" aria-pressed="false">Heel</button>
+      <button class="chip" data-f="heel" data-v="Platform" aria-pressed="false">Platform</button>
+      <button class="chip" data-f="heel" data-v="Closed" aria-pressed="false">Closed toe</button>
+      <button class="chip" id="fBuckle" aria-pressed="false">Buckle</button>
+      <button class="chip src-only" id="fAgent" aria-pressed="true">Same as agent site</button>
+      <button class="chip src-only" id="fSale" aria-pressed="false">On sale</button>
+      <button class="chip" id="fStar" aria-pressed="false">★ Starred</button>
+      <button class="chip src-only" id="fMine" aria-pressed="false">Added by me</button>
+    </div>
+    </div>
+    <details class="more"><summary>Colour and brand</summary><div class="row" id="famChips" aria-label="Colour and brand"></div></details>
+    <div class="starbar">
+      <span id="count"></span>
+      <span class="legend src-only" aria-hidden="true"><i class="c"></i>Landed <i class="a"></i>Agent <i class="k"></i>You keep</span>
+      <span class="staracts">
+        <button class="ghost" id="copyBtn">Copy starred for WhatsApp</button>
+        <button class="ghost src-only" id="dropBtn" title="Agents get these as 'This week' with status images for all of them">Publish starred as this week’s drop</button>
+        <button class="linkbtn" id="clearStars">Clear stars</button>
+      </span>
+    </div>
+    <textarea id="copyout" hidden readonly aria-label="Starred list"></textarea>
+    <p class="note lb-only">Tap ★ in Sourcing view to pick styles, then switch on “★ Starred” here to show only those. Prices shown are your Northline selling prices.</p>
+    <main class="grid" id="grid"></main>
+    <div class="empty" id="empty" hidden>No styles match these filters. Clear a filter or switch Men, Women or Kids.</div>
+  </section>
+
+  <section class="panel src-only" data-panel="review" aria-label="To review" hidden>
+    <h2>To review</h2>
+    <p class="lede" id="inboxSum">New styles, price changes and sold-out styles the weekly robot found.</p>
+    <details class="sheet" id="inboxBox"><summary>To review</summary>
+      <div id="inboxBody" class="inb"><p class="note">Loading what the robot found…</p></div>
+    </details>
+  </section>
+
+  <section class="panel src-only" data-panel="add" aria-label="Add a product" hidden>
+    <h2>Add a product</h2>
+    <p class="lede">Any brand. Your photo or a photo link, plus what you pay. It goes live for agents when you save.</p>
+    <details class="sheet" id="addBox"><summary>Add a product</summary>
+      <details class="box stn"><summary>Add from any shop in one tap (Trendyol, Zara, FLO, e-bebek, brand sites)</summary>
+        <ol>
+          <li><button type="button" class="ghost" id="stnCopy">Copy the Northline button</button> <span id="stnMsg"></span></li>
+          <li>In Chrome: bookmark any page (☆), then edit that bookmark. Name it <b>Northline</b>, delete its address and paste what you copied. Save.</li>
+          <li>On any product page: tap the address bar, type <b>Northline</b> and tap the bookmark (the one with the star). This book opens with the name, price and photos filled in. Check them, pick the section and type, then Save.</li>
+        </ol>
+        <textarea id="stnCode" hidden readonly style="width:100%;min-height:60px;font-size:11px"></textarea>
+      </details>
+      <div id="aPicsWrap" hidden style="margin-top:12px"><span class="note" style="margin:0">Photos from the shop. Tap a photo to leave it out; the first one kept is the main photo.</span><div id="aPics" class="pics"></div></div>
+      <form id="addForm" class="addgrid" autocomplete="off">
+        <label class="f">Photos from your phone (pick several)<input type="file" id="aFile" accept="image/*" multiple></label>
+        <label class="f">…or photo link<input id="aImg" placeholder="https://… (long-press a product photo → Copy image address)"></label>
+        <label class="f">Name<input id="aName" required placeholder="e.g. Slazenger Ridge slide"></label>
+        <label class="f">Brand<input id="aBrand" required placeholder="e.g. Slazenger, Gezer, DeFacto"></label>
+        <label class="f">Section<select id="aG"><option value="W">Women’s shoes</option><option value="M">Men’s shoes</option><option value="B">Baby</option><option value="BG">Bags</option><option value="CL">Clothing (abayas, hijabs…)</option></select></label>
+        <label class="f">Type<select id="aKind"><option value="slide">Slide</option><option value="sandal">Sandal</option><option value="loafer">Loafer</option><option value="sneaker">Sneaker</option><option value="flipflop">Flip-flop</option><option value="dress">Dress</option><option value="set">Set</option><option value="top">Top</option><option value="bodysuit">Bodysuit</option><option value="shoulder">Shoulder bag</option><option value="crossbody">Crossbody bag</option><option value="handbag">Handbag</option><option value="tote">Tote</option><option value="clutch">Clutch</option><option value="backpack">Backpack</option><option value="waist">Waist bag</option><option value="abaya">Abaya</option><option value="hijab">Hijab / scarf</option><option value="shirt">Shirt</option><option value="trousers">Trousers / skirt</option><option value="other">Other</option></select></label>
+        <label class="f" id="aForWrap" hidden>For<select id="aFor"><option>Girl</option><option>Boy</option><option>Women</option><option>Men</option><option value="">Unisex</option></select></label>
+        <label class="f">Colour<input id="aColour" placeholder="e.g. Black"></label>
+        <label class="f">Colour group<select id="aFam"></select></label>
+        <label class="f">You pay ₺ (per pair / piece)<input type="number" id="aTl" min="1" step="0.01" required></label>
+        <label class="f">Sizes (optional)<input id="aSizes" placeholder="e.g. 36,37,38,39,40 or 6-9m,9-12m"></label>
+        <label class="f">Short description (optional)<input id="aDesc" placeholder="e.g. Faux leather, cushioned footbed"></label>
+        <label class="f">Where you buy it (optional, private)<input id="aSrc" placeholder="Store or product link"></label>
+        <label class="f" id="aPassWrap">Book password (keeps your costs private)<input type="password" id="aPass" autocomplete="off"></label><p class="f note" id="aPassSaved" hidden>Your book password is saved on this phone. <button type="button" class="linkbtn" id="aPassChange">Use a different one</button></p>
+        <div class="row" style="grid-column:1/-1"><button class="action" id="aSave" type="submit">Save and publish</button><button class="ghost" id="aCancel" type="button" hidden>Cancel edit</button><span class="note" id="aQuote" style="margin:0"></span></div>
+      </form>
+    </details>
+  </section>
+
+  <section class="panel src-only" data-panel="prices" aria-label="Prices" hidden>
+    <h2>Prices</h2>
+    <div class="box" id="pub">
+      <div class="boxhead"><h3>Agent site</h3><button class="action" id="pubBtn">Publish these prices to agent site</button></div>
+      <p class="note" id="pubStatus" style="margin:0"></p>
+      <p class="note" id="pubDiff" style="margin:6px 0 0"></p>
+    </div>
+    <div class="box">
+      <h3>Your numbers</h3>
+      <p class="note" style="margin:0 0 10px">Changes here preview on every card straight away. Agents only see them after you publish.</p>
+      <div class="money src-only">
+      <label>₦ per ₺ <input type="number" id="rate" step="0.5" min="1"></label>
+      <label>Freight ₦ per kg <input type="number" id="perKg" step="500" min="0"></label>
+      <label>Handling ₦ per item <input type="number" id="handling" step="250" min="0"></label>
+      <label>Min profit ₦ <input type="number" id="minProfit" step="500" min="0"></label>
+      <label>Profit % of landed <input type="number" id="profitPct" step="1" min="0"></label>
+    </div>
+    </div>
+    <div class="box">
+      <h3>This phone</h3>
+      <p class="note" id="phoneStatus" style="margin:0 0 8px"></p>
+      <button class="linkbtn" id="passForget" type="button" hidden>Forget the book password on this phone</button>
+      <details id="tokBox"><summary id="tokSum">Connect your GitHub key (one time)</summary>
+        <ol class="note" style="margin:6px 0">
+          <li>Open <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">github.com/settings/personal-access-tokens/new</a></li>
+          <li>Name it <b>northline-prices</b>, set expiry to 1 year.</li>
+          <li>Repository access: <b>Only select repositories</b> → <b>northline-house</b>.</li>
+          <li>Permissions → Repository permissions → <b>Contents: Read and write</b>. Generate, copy, paste below.</li>
+        </ol>
+        <div class="row"><input type="password" id="tok" placeholder="github_pat_…" autocomplete="off" style="flex:1 1 220px;min-width:0"><button class="ghost" id="tokSave">Save key on this phone</button><button class="ghost" id="tokForget">Remove key</button></div>
+      </details>
+    </div>
+    <div class="box">
+      <h3>Catalogue</h3>
+      <div class="stats" id="stats"></div>
+    </div>
+    <details class="box"><summary>How prices are worked out</summary><p class="note">“You pay” is the price on the source site when added (Capone and DeFacto: their own sites; other brands: n11 listing price, 2 Oct 2026). If you actually buy it for a different price (e.g. on Trendyol), type that under “Paid a different price?” on the item and press Publish: agents get the new price and what you pay stays encrypted. “Same as agent site” (on by default) shows exactly what agents see; switch it off to also see styles that have no price yet. Landed cost = lira price × ₦ rate + freight by weight (₦ per kg × the item’s shipping weight, shown next to “Landed cost”) + a handling fee per item. Default weights: slides 0.35 kg, flip-flops 0.3, sandals 0.45, clogs 0.5, loafers 0.65, sneakers 0.8, heels/platforms +0.15; bags 0.35–0.9; baby 0.12–0.25. Baby pieces earn agents ₦1,500. Selling price = landed cost + agent’s commission (₦2,000 if the item sells for ₦30,000 or less, otherwise ₦4,000) + your profit (the larger of the minimum profit and the % of landed cost), rounded up to ₦500, then dropped to a round ₦5,000 figure when that’s within ₦1,500 and you still keep at least ₦2,000. The earlier plan of paying agents 25% of the margin from 16 Oct is dropped.</p></details>
+  </section>
+</div>
+<div class="gal" id="gal" hidden role="dialog" aria-modal="true" aria-label="Photos">
+  <div class="gbar top"><b id="gtitle"></b><button id="gclose">✕ Close</button></div>
+  <div class="gtrack" id="gtrack"></div>
+  <div class="gbar bot"><span id="gcount"></span><span><button id="gprev" aria-label="Previous photo">‹</button> <button id="gnext" aria-label="Next photo">›</button></span><a id="gsave" target="_blank" rel="noopener">Open photo to save</a></div>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+const DATA = __DATA__;
+const CONFIG = __CONFIG__;
+const PARAMS = ["rate","perKg","handling","minProfit","profitPct"];
+const BUILD="__BUILD__";
+// same order as the agent site and shop: Men / Women / Kids → Shoes / Clothing / Bags → type
+const audOf=r=>r.g==="M"?"M":r.g==="W"?"W":r.g==="B"?"K":(r.for==="Men"?"M":(r.for==="Girl"||r.for==="Boy")?"K":"W");
+const secOf=r=>r.g==="BG"?"Bags":(r.g==="CL"||r.g==="B")?"Clothing":"Shoes";
+const KIND_ORDER={Shoes:["slide","sandal","flipflop","loafer","sneaker","other"],Clothing:["abaya","hijab","dress","set","top","shirt","trousers","bodysuit","other"],Bags:["shoulder","handbag","crossbody","tote","clutch","backpack","waist","other"]};
+const typeKey=r=>{ const sec=secOf(r), ks=KIND_ORDER[sec], k=ks.includes(r.kind)?r.kind:"other"; return ["Shoes","Clothing","Bags"].indexOf(sec)*100+ks.indexOf(k); };
+const S = {mode:"src", g:"M", q:"", kind:new Set(), heel:new Set(), for:new Set(), buckle:false, sale:false, star:false, mine:false, agentOnly:true, sort:"rec", fam:new Set(), brand:new Set()};
+PARAMS.forEach(k=>S[k]=CONFIG[k]);
+let stars = new Set(), over = {}, pending = {}, privOver = {};   // over = lira you actually pay, per style (effective); pending = edits not yet published
+const KEY="nl-capone-v7";
+const LS={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}}, set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}, raw(k){try{return localStorage.getItem(k)||""}catch(e){return ""}}, rawSet(k,v){try{v?localStorage.setItem(k,v):localStorage.removeItem(k)}catch(e){}}};
+function load(){ const old=LS.get("nl-capone-v6",null)||LS.get("nl-capone-v5",null)||{}; const j=LS.get(KEY,null)||{stars:old.stars,menPrice:old.menPrice};
+  if(j.stars) stars=new Set(j.stars); pending={...(j.menPrice||{}), ...(j.pending||{})}; hidePending=j.hidePending||{}; mergeOver(); }
+function save(){ LS.set(KEY,{stars:[...stars], pending, hidePending}); }
+let hidePending={}, hidden=new Set();   // styles pulled from the agent site (e.g. sold out)
+function mergeHidden(){ hidden=new Set((published&&published.hidden)||[]); Object.entries(hidePending).forEach(([k,v])=>{ v?hidden.add(k):hidden.delete(k); }); }
+function mergeOver(){ over={...privOver}; Object.entries(pending).forEach(([k,v])=>{ if(v>0) over[k]=v; else delete over[k]; }); }
+const fmtN = n => "₦" + Math.round(n).toLocaleString("en-NG");
+const fmtT = n => "₺" + Number(n).toLocaleString("tr-TR",{minimumFractionDigits:2,maximumFractionDigits:2});
+const tl = r => over[r.id] || r.tl || 0;
+const catOf = r => r.cat || "shoes";
+const liveOf = r => (published && ((NEW_ON && published.next && published.next[r.ref]) || (published.prices && published.prices[r.ref]))) || null;
+function priceWith(cost,C){ let sell=Math.ceil((cost+C+Math.max(S.minProfit,S.profitPct/100*cost))/CONFIG.round)*CONFIG.round;
+  const mark=Math.floor(sell/5000)*5000; if(mark && sell-mark<=CONFIG.snapWithin && mark-cost-C>=CONFIG.snapKeep) sell=mark; return sell; }
+// shipping weight (kg): item override, else by category and type; freight = ₦/kg × kg + handling per item
+function kgOf(r){ if(r.kg) return r.kg; const cat=r.cat||"shoes", t=CONFIG.kg[cat]||CONFIG.kg.shoes; let w=t[r.kind]??t.other;
+  if(cat==="shoes"){ if(r.heel==="Closed"&&r.kind==="slide") w=t._clog; if(["Platform","Wedge","Heel"].includes(r.heel)) w+=t._raised; } return Math.round(w*100)/100; }
+// ---- commission rules. Old: fixed ₦4,000 / ₦2,000 (≤ ₦30k) / baby ₦1,500. New (from CONFIG.newComm.from, Nigeria time):
+// your profit stays the same, agent gets 25% of the margin rounded UP to ₦500, price = landed + profit + agent, rounded up to ₦500.
+const NC = (CONFIG.newComm && !CONFIG.newComm.off) ? CONFIG.newComm : null;   // newComm.off: the 25%-of-margin plan is postponed; set off to false and pick a new "from" to bring it back
+const todayNG = () => new Date(Date.now()+3600e3).toISOString().slice(0,10);
+const NEW_ON = !!(NC && todayNG()>=NC.from);
+const swDay = NC ? new Date(NC.from+"T12:00:00Z").toLocaleDateString("en-GB",{day:"numeric",month:"short",timeZone:"UTC"}) : "";
+function quoteNew(t,cat,w){ if(!t||!NC) return null; w=w||kgOf({cat}); const cost=t*S.rate+S.perKg*w+S.handling, profit=Math.max(S.minProfit,S.profitPct/100*cost);
+  const C=Math.ceil(profit*NC.share/(100-NC.share)/NC.round-1e-9)*NC.round, sell=Math.ceil((cost+profit+C)/CONFIG.round-1e-9)*CONFIG.round;
+  return {cost, sell, comm:C, margin:sell-cost, net:sell-cost-C, kg:w}; }
+const quote = (t,cat,w) => NEW_ON ? quoteNew(t,cat,w) : quoteOld(t,cat,w);
+const priceOld = r => quoteOld(tl(r), catOf(r), kgOf(r));
+const priceNew = r => quoteNew(tl(r), catOf(r), kgOf(r));
+function quoteOld(t,cat,w){ if(!t) return null; w=w||kgOf({cat});
+  if(cat==="baby"){ const cost=t*S.rate+S.perKg*w+S.handling, C=CONFIG.babyComm, sell=priceWith(cost,C); return {cost,sell,comm:C,margin:sell-cost,net:sell-cost-C,kg:w}; }
+  const cost=t*S.rate+S.perKg*w+S.handling; let C=CONFIG.commissionLow, sell=priceWith(cost,C); if(sell>CONFIG.lowThreshold){ C=CONFIG.commission; sell=priceWith(cost,C); }
+  return {cost, sell, comm:C, margin:sell-cost, net:sell-cost-C, kg:w}; }
+const price = r => quote(tl(r), catOf(r), kgOf(r));
+const pic = r => !r.img ? "" : /^https?:/.test(r.img) ? r.img : "../"+r.img;
+const thumb = r => r.img ? pic(r) + (r.w ? r.w+"700" : "") : "";
+const big = r => r.img ? pic(r) + (r.w ? r.w+"2000" : "") : "";
+const photos = r => (r.imgs && r.imgs.length>1) ? r.imgs.map(u=>u+(r.w?r.w+"1200":"")) : (r.img ? [big(r)] : []);
+const esc = s => String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function label(r){ return r.model + (r.colour? " · "+r.colour : ""); }
+const STOCK = {low:"Low stock online", out:"Out of stock online", check:"Stock not shown"};
+const KIND = {slide:"Slide",sandal:"Sandal",loafer:"Loafer",sneaker:"Sneaker",flipflop:"Flip-flop",dress:"Dress",set:"Set",top:"Top",bodysuit:"Bodysuit",shoulder:"Shoulder bag",crossbody:"Crossbody bag",handbag:"Handbag",tote:"Tote",clutch:"Clutch",backpack:"Backpack",waist:"Waist bag",other:"Other"};
+function filtered(){
+  const q = S.q.trim().toLowerCase();
+  let out = DATA.filter(r=>{
+    if(audOf(r)!==S.g) return false;
+    if(S.kind.size && !S.kind.has(r.kind)) return false;
+    if(S.heel.size && !S.heel.has(r.heel)) return false;
+    if(S.for.size && !S.for.has(r.for)) return false;
+    if(S.buckle && !/tok|buckle/i.test(r.name+" "+r.desc)) return false;
+    if(S.sale && !r.onsale) return false;
+    if(S.mine && !r.added) return false;
+    if(S.agentOnly && published && !liveOf(r)) return false;
+    if(S.fam.size && !S.fam.has(r.fam||"Other")) return false;
+    if(S.brand.size && !S.brand.has(r.brand)) return false;
+    if(S.star && !stars.has(r.id)) return false;
+    if(q){ const hay=(r.brand+" "+r.model+" "+r.ref+" "+r.colour+" "+(r.fam||"")+" "+r.desc+" "+r.name+" "+r.heel+" "+r.kind+" "+(r.for||"")).toLowerCase(); if(!q.split(/\s+/).every(t=>hay.includes(t))) return false; }
+    return true;
+  });
+  const sell = r => { const p=price(r); return p ? p.sell : (r.livePrice||0); };   // same order as the agent site: by selling price
+  const val = r => sell(r) || 1e9;
+  const by = {"eff-asc":(a,b)=>val(a)-val(b),"eff-desc":(a,b)=>sell(b)-sell(a),"margin-desc":(a,b)=>((price(b)||{net:-1e9}).net)-((price(a)||{net:-1e9}).net),"model":(a,b)=>a.model.localeCompare(b.model)||val(a)-val(b)}[S.sort];
+  const sorted = S.sort==="rec" ? recSort(out, sell) : out.sort(by), pos=new Map(sorted.map((x,n)=>[x,n]));
+  return S.sort==="model" ? sorted : sorted.slice().sort((a,b)=>typeKey(a)-typeKey(b)||pos.get(a)-pos.get(b));
+}
+// same "Recommended" order as the agent site and shop: ₦20k–50k and multi-photo styles first, brands and models spread evenly
+function recSort(l, sell){
+  const SWEET={W:[18000,45000],M:[18000,45000],B:[8000,30000],BG:[30000,70000],CL:[20000,70000]};
+  const tierOf=r=>{ const b=SWEET[r.g]||SWEET.W, p=sell(r); let t=(p>=b[0]&&p<=b[1])?0:(p<b[0]||p<=b[1]*1.35)?1:(p<=b[1]*1.8)?2:3; const z=r.sizes||[]; if(z.length&&z.length<=2&&z[0]!=="One size") t++; return t; };
+  const fresh=r=>r.added&&(Date.now()-new Date(r.added).getTime())<14*864e5?1:0, pics=r=>(r.imgs||[]).length>1?1:0;
+  const spread=arr=>{ const n=new Map(); return arr.map((x,k)=>{ const c=n.get(x.model)||0; n.set(x.model,c+1); return [x,c,k]; }).sort((a,b)=>a[1]-b[1]||a[2]-b[2]).map(z=>z[0]); };
+  const priced=l.filter(r=>sell(r)), rest=l.filter(r=>!sell(r)), tiers=new Map();
+  priced.forEach(r=>{ const t=tierOf(r); if(!tiers.has(t)) tiers.set(t,[]); tiers.get(t).push(r); });
+  return [...tiers.keys()].sort((a,b)=>a-b).flatMap(t=>{ const byBrand=new Map();
+    tiers.get(t).slice().sort((a,b)=>fresh(b)-fresh(a)||pics(b)-pics(a)||sell(a)-sell(b)).forEach(r=>{ if(!byBrand.has(r.brand)) byBrand.set(r.brand,[]); byBrand.get(r.brand).push(r); });
+    return [...byBrand.values()].map(spread).flatMap(q=>q.map((x,k)=>[x,(k+0.5)/Math.pow(q.length,0.6)])).sort((a,b)=>a[1]-b[1]).map(z=>z[0]); }).concat(rest);
+}
+function card(r){
+  const p = price(r), starred = stars.has(r.id);
+  const img = r.img ? `<img loading="lazy" alt="${esc(r.model+" "+(r.colour||""))}" src="${esc(thumb(r))}" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'miss',textContent:'Photo did not load.'}))">` : `<div class="miss">No photo yet.</div>`;
+  const live = liveOf(r);
+  const tag = hidden.has(r.ref) ? `<span class="tag off src-only">Hidden from agents</span>` : (published && !live) ? `<span class="tag off src-only">Not on agent site</span>` : r.onsale ? `<span class="tag src-only">On sale</span>` : (r.added ? `<span class="tag d src-only">Added by you</span>` : "");
+  const was = r.was && r.was>r.tl ? `<span class="strike">${fmtT(r.was)}</span>` : "";
+  const unit = (r.cat==="baby"||r.cat==="bags") ? "piece" : "pair";
+  const liveRow = live ? `<dt>Agents see</dt><dd class="live ${p&&live[0]!==p.sell?"warn":""}">${fmtN(live[0])}${p&&live[0]!==p.sell?" · publish to update":""}</dd>` : "";
+  const ovRow = r.added ? "" : `<label class="ov ${over[r.id]?"set":""}">${r.tl?"Paid a different price? ₺":"Your price per "+unit+" ₺"} <input type="number" min="0" step="0.01" inputmode="decimal" data-ov="${esc(r.id)}" value="${over[r.id]||""}" placeholder="${r.tl?Number(r.tl).toFixed(2):""}"></label>`;
+  const ledger = p ? `${splitBar(p)}<dl class="ledger src-only">
+      <dt>You pay</dt><dd>${was}${fmtT(tl(r))}</dd>
+      <dt>Landed cost <span style="opacity:.7">(${p.kg} kg)</span></dt><dd>${fmtN(p.cost)}</dd>
+      <dt>Sell at</dt><dd class="sell">${fmtN(p.sell)}</dd>
+      <dt>Margin / ${unit}</dt><dd class="mg ${p.margin<0?"neg":""}">${fmtN(p.margin)}</dd>
+      <dt>You keep after agent ${fmtN(p.comm)}</dt><dd class="mg ${p.net<0?"neg":""}">${fmtN(p.net)}</dd>
+      ${!NEW_ON&&NC?(()=>{ const n=priceNew(r); return n?`<dt>From ${swDay}</dt><dd>${fmtN(n.sell)} · agent ${fmtN(n.comm)} · you ${fmtN(n.net)}</dd>`:""; })():""}
+      ${liveRow}${ovRow}
+    </dl>` : (r.added && r.livePrice ? `<dl class="ledger src-only"><dt>Live price</dt><dd class="sell">${fmtN(r.livePrice)}</dd><dt>Cost</dt><dd>Enter book password in “Add a product” to see</dd></dl>` : `<dl class="ledger src-only"><dt>Price</dt><dd>Not set</dd>${liveRow}${ovRow}</dl>`);
+  const men = "";
+  const src = r.page ? `<a href="${esc(r.page)}" target="_blank" rel="noopener">${esc(r.brand)} page</a>` : "";
+  const rm = r.added ? `<button class="ghost src-only" data-edit="${esc(r.ref)}" style="padding:4px 10px;font-size:12px">Edit</button><button class="rm src-only" data-rm="${esc(r.ref)}">${armed===r.ref?"Tap again to remove":"Remove"}</button>` : ((live||hidden.has(r.ref)) ? `<button class="rm src-only" data-hide="${esc(r.ref)}" style="color:var(--ink)">${hidden.has(r.ref)?"Show to agents":"Hide from agents"}</button>` : "");
+  return `<article class="card">
+    <div class="ph" data-g="${esc(r.id)}">${img}${tag}${(r.imgs||[]).length>1?`<span class="pcount">More photos ›</span>`:""}<button class="star" data-h="${esc(r.id)}" aria-pressed="${starred}" aria-label="Star ${esc(label(r))}">★</button></div>
+    <div class="meta"><span class="mname">${esc(r.model)}</span><span class="mcol">${esc(r.colour||"")}</span></div>
+    <div class="desc">${esc([KIND[r.kind]||r.kind, r.for, r.heel&&r.heel!=="Flat"?r.heel.toLowerCase():"", r.desc].filter(Boolean).join(" · "))}</div>
+    ${ledger}${men}
+    <div class="lbprice lb-only">${p?fmtN(p.sell):(r.livePrice?fmtN(r.livePrice):"Price on request")}</div>
+    <div class="links src-only">${r.img?`<a href="${esc(big(r))}" target="_blank" rel="noopener">Full photo</a>`:""}${src}<span style="color:var(--muted)">${esc(r.brand)} · ${esc(r.ref)}</span>${rm}</div>
+    <div class="links lb-only">${r.img?`<a href="${esc(big(r))}" target="_blank" rel="noopener">Full photo</a>`:""}</div>
+  </article>`;
+}
+// one bar per card: how the selling price splits into landed cost, the agent's commission and what you keep
+function splitBar(p){ const t=Math.max(p.sell,1), c=Math.min(Math.max(p.cost,0),t), a=Math.max(0,Math.min(p.comm,t-c)), k=Math.max(0,t-c-a), pc=v=>(v/t*100).toFixed(1)+"%";
+  return `<div class="split src-only${p.net<0?" loss":""}" role="img" aria-label="Landed ${fmtN(p.cost)}, agent ${fmtN(p.comm)}, you keep ${fmtN(p.net)}"><i class="c" style="width:${pc(c)}"></i><i class="a" style="width:${pc(a)}"></i><i class="k" style="width:${pc(k)}"></i></div>`; }
+function stats(){
+  const n = g => DATA.filter(r=>r.g===g).length;
+  const fb = DATA.filter(r=>r.g==="W" && r.heel==="Flat" && /tok/i.test(r.name)).sort((a,b)=>a.tl-b.tl)[0];
+  document.getElementById("stats").innerHTML =
+    `<div class="stat"><b>${n("W")}</b><span>Women’s</span></div>
+     <div class="stat"><b>${n("M")}</b><span>Men’s</span></div>
+     <div class="stat"><b>${n("B")}</b><span>Baby</span></div>
+     <div class="stat"><b>${n("BG")}</b><span>Bags</span></div>
+     <div class="stat"><b>${DATA.filter(r=>r.added).length}</b><span>Added by you</span></div>`;
+}
+function count(){ const n=filtered().length; document.getElementById("count").textContent = `${n} style${n===1?"":"s"}${stars.size?`, ${stars.size} starred`:""}`; document.querySelector(".staracts").hidden=!stars.size; }
+const FAM_ORDER=["Black","Brown","Tan & camel","Beige & nude","White","Metallic","Red & burgundy","Pink & purple","Blue","Green & khaki","Orange & yellow","Grey","Print & multi","Other"];
+function famChips(){
+  const pool=DATA.filter(r=>audOf(r)===S.g), fams=new Set(pool.map(r=>r.fam||"Other")), brands=[...new Set(pool.map(r=>r.brand))].sort();
+  let h=`<span class="glabel">Colour</span>`+FAM_ORDER.filter(f=>fams.has(f)).map(f=>`<button class="chip" data-fam="${f}" aria-pressed="${S.fam.has(f)}">${f}</button>`).join("");
+  if(brands.length>1) h+=`<span class="glabel">Brand</span>`+brands.map(x=>`<button class="chip" data-brand="${esc(x)}" aria-pressed="${S.brand.has(x)}">${esc(x)}</button>`).join("");
+  document.getElementById("famChips").innerHTML=h;
+  document.querySelectorAll("#filters [data-f]").forEach(c=>{ c.hidden=!pool.some(r=>r[c.dataset.f]===c.dataset.v); });
+  document.getElementById("fBuckle").hidden = S.g==="K";
+  document.getElementById("fSale").hidden = !pool.some(r=>r.onsale);
+  document.getElementById("fMine").hidden = !DATA.some(r=>r.added);
+}
+let armed=null, published=null;
+let render=function(){
+  famChips();
+  const list = filtered();
+  document.getElementById("grid").innerHTML = list.map(card).join("");
+  document.getElementById("empty").hidden = list.length>0;
+  count(); if(published) pubStatus();
+};
+function toast(t){ const el=document.getElementById("toast"); el.textContent=t; el.hidden=false; clearTimeout(toast._t); toast._t=setTimeout(()=>el.hidden=true,2600); }
+function setMode(m){ S.mode=m; if(m==="lb") showTab("catalogue",true); document.body.classList.toggle("lb", m==="lb"); document.getElementById("mSrc").setAttribute("aria-pressed", m==="src"); document.getElementById("mLb").setAttribute("aria-pressed", m==="lb"); if(m==="lb" && S.sort==="margin-desc"){S.sort="eff-asc";document.getElementById("sort").value="eff-asc";} render(); }
+
+load();
+PARAMS.forEach(k=>{ const el=document.getElementById(k); el.value=S[k]; el.addEventListener("input",()=>{ const v=parseFloat(el.value); if(!isNaN(v)&&v>=0){S[k]=v; save(); render(); aQuote();} }); });
+document.getElementById("gSeg").addEventListener("click",e=>{ const b=e.target.closest("button"); if(!b) return; S.g=b.dataset.g; S.fam.clear(); S.brand.clear(); ["kind","heel","for"].forEach(k=>S[k].clear()); document.querySelectorAll("#filters [data-f]").forEach(c=>c.setAttribute("aria-pressed","false")); document.querySelectorAll("#gSeg button").forEach(x=>x.setAttribute("aria-pressed", x===b)); render(); });
+document.getElementById("mSrc").onclick=()=>setMode("src");
+document.getElementById("mLb").onclick=()=>setMode("lb");
+document.getElementById("q").addEventListener("input",e=>{S.q=e.target.value; render();});
+document.getElementById("sort").addEventListener("change",e=>{S.sort=e.target.value; render();});
+document.querySelectorAll("#filters [data-f]").forEach(b=>b.addEventListener("click",()=>{ const set=S[b.dataset.f], v=b.dataset.v; set.has(v)?set.delete(v):set.add(v); b.setAttribute("aria-pressed", set.has(v)); render(); }));
+[["fBuckle","buckle"],["fSale","sale"],["fStar","star"],["fMine","mine"],["fAgent","agentOnly"]].forEach(([id,k])=>{ const b=document.getElementById(id); b.onclick=()=>{ S[k]=!S[k]; b.setAttribute("aria-pressed",S[k]); render(); }; });
+const grid=document.getElementById("grid");
+grid.addEventListener("click",e=>{
+  const ed=e.target.closest("[data-edit]"); if(ed){ startEdit(ed.dataset.edit); return; }
+  const b=e.target.closest(".star"); if(b){ const h=b.dataset.h; stars.has(h)?stars.delete(h):stars.add(h); b.setAttribute("aria-pressed",stars.has(h)); save(); count(); if(S.star) render(); return; }
+  const ph=e.target.closest(".ph[data-g]"); if(ph){ const r=DATA.find(x=>x.id===ph.dataset.g); if(r) openGal(label(r), photos(r)); return; }
+  const hb=e.target.closest("[data-hide]"); if(hb){ const ref=hb.dataset.hide; hidePending[ref]=!hidden.has(ref); mergeHidden(); save(); render(); toast(hidden.has(ref)?"Hidden here. Press Publish to take it off the agent site.":"Will show again after you press Publish."); return; }
+  const rm=e.target.closest("[data-rm]"); if(rm){ const ref=rm.dataset.rm; if(armed!==ref){ armed=ref; render(); setTimeout(()=>{ if(armed===ref){armed=null; render();} },4000); return; } armed=null; removeProduct(ref); }
+});
+grid.addEventListener("change",e=>{ const id=e.target.dataset.ov; if(!id) return; const v=parseFloat(e.target.value); pending[id]= v>0 ? v : 0; mergeOver(); save(); render(); toast(v>0?"Saved here. Press Publish so agents get the new price.":"Back to the catalogue price. Press Publish to update agents."); });
+// this week's drop: starred styles become a 'This week' row on the agent site and shop
+document.getElementById("dropBtn").onclick=async()=>{
+  if(!tok.get()){ document.getElementById("tokBox").open=true; toast("Connect your GitHub key first"); return; }
+  const refs=DATA.filter(r=>stars.has(r.id)&&liveOf(r)&&!hidden.has(r.ref)).map(r=>r.ref);
+  if(!refs.length){ toast("Star some styles that are on the agent site first"); return; }
+  try{ await saveJson("drop.json", ()=>({week:new Date().toISOString().slice(0,10), refs:refs.slice(0,24)}), null, `This week's drop (${Math.min(refs.length,24)} styles)`);
+    toast(`Drop published: ${Math.min(refs.length,24)} styles. Agents see it within about a minute.`); }catch(e){ toast(errMsg(e)); } };
+document.getElementById("clearStars").onclick=()=>{ if(!stars.size) return; stars.clear(); save(); render(); toast("Stars cleared"); };
+document.getElementById("copyBtn").onclick=()=>{
+  const picks = DATA.filter(r=>stars.has(r.id));
+  if(!picks.length){ toast("Star a few styles first"); return; }
+  const text = (S.mode==="lb" ? "NORTHLINE · New drop\n\n" : "Northline picks\n\n") + picks.map(r=>{ const p=price(r); return S.mode==="lb" ? `${label(r)} — ${p?fmtN(p.sell):"price on request"}` : `${label(r)} (${r.ref}) — pay ${tl(r)?fmtT(tl(r)):"?"} · sell ${p?fmtN(p.sell):"?"} · you keep ${p?fmtN(p.net):"?"}${r.page?"\n"+r.page:""}`; }).join("\n");
+  const out=document.getElementById("copyout"); out.value=text;
+  if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(()=>toast("Copied"),()=>{ out.hidden=false; out.select(); toast("Select all and copy"); }); }
+  else { out.hidden=false; out.select(); toast("Select all and copy"); }
+};
+document.getElementById("famChips").addEventListener("click",e=>{ const c=e.target.closest(".chip"); if(!c) return; const [set,v]=c.dataset.fam?[S.fam,c.dataset.fam]:[S.brand,c.dataset.brand]; set.has(v)?set.delete(v):set.add(v); render(); });
+
+
+// ---------- photo gallery: swipe through every photo of a style ----------
+const G=id=>document.getElementById(id);
+function openGal(title, urls){ G("gtitle").textContent=title; G("gtrack").innerHTML=urls.map(u=>`<img src="${esc(u)}" alt="" onerror="this.remove();galUpd()">`).join(""); G("gal").hidden=false; G("gtrack").scrollLeft=0; galUpd(); document.body.style.overflow="hidden"; }
+function closeGal(){ G("gal").hidden=true; G("gtrack").innerHTML=""; document.body.style.overflow=""; }
+function galUpd(){ const t=G("gtrack"), imgs=t.querySelectorAll("img"), k=Math.max(0,Math.min(Math.round(t.scrollLeft/(t.clientWidth||1)),imgs.length-1)); G("gcount").textContent=imgs.length?`${k+1} / ${imgs.length}`:"No photos"; G("gsave").href=imgs[k]?imgs[k].src:"#"; }
+G("gtrack").addEventListener("scroll",()=>{ clearTimeout(galUpd.t); galUpd.t=setTimeout(galUpd,60); });
+G("gprev").onclick=()=>{ const t=G("gtrack"); t.scrollBy({left:-t.clientWidth,behavior:"smooth"}); };
+G("gnext").onclick=()=>{ const t=G("gtrack"); t.scrollBy({left:t.clientWidth,behavior:"smooth"}); };
+G("gclose").onclick=closeGal;
+document.addEventListener("keydown",e=>{ if(G("gal").hidden) return; if(e.key==="Escape") closeGal(); if(e.key==="ArrowRight") G("gnext").click(); if(e.key==="ArrowLeft") G("gprev").click(); });
+
+// ---------- GitHub (live site) ----------
+const GH="https://api.github.com/repos/Fshuaib75/northline-house/contents/";
+const tok={get(){return LS.raw("nl-gh-token")}, set(v){LS.rawSet("nl-gh-token",v)}};
+const H=()=>({"Authorization":"Bearer "+tok.get(),"Accept":"application/vnd.github+json"});
+const b64=s=>btoa(unescape(encodeURIComponent(s)));
+const unb64=s=>decodeURIComponent(escape(atob(s.replace(/\n/g,""))));
+async function ghGet(path){ const r=await fetch(GH+path+"?ref=gh-pages&t="+Date.now(),{headers:H(),cache:"no-store"}); if(r.status===404) return null; if(r.status===401||r.status===403) throw new Error("key"); if(!r.ok) throw new Error("net"); return r.json(); }
+async function ghPut(path,content64,message,sha){ const r=await fetch(GH+path,{method:"PUT",headers:{...H(),"Content-Type":"application/json"},body:JSON.stringify({message,content:content64,branch:"gh-pages",...(sha?{sha}:{})})}); if(r.status===401||r.status===403) throw new Error("key"); if(r.status===409) throw new Error("conflict"); if(!r.ok) throw new Error("save"); return r.json(); }
+async function ghJson(path,fallback){ const f=await ghGet(path); return {sha:f?f.sha:undefined, data:f?JSON.parse(unb64(f.content)):fallback}; }
+const errMsg=e=>e.message==="key"?"GitHub refused the key. Check it has Contents: Read and write on northline-house.":e.message==="pass"?"Wrong book password.":e.message==="conflict"?"Something else saved at the same moment. Try again.":"Couldn’t save. Check your connection and try again.";
+
+// ---------- private costs: AES-GCM with the book password ----------
+const u8=b=>new Uint8Array(b); const toB=a=>{ let s=""; a.forEach(x=>s+=String.fromCharCode(x)); return btoa(s); }; const fromB=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+async function keyFrom(pass,salt){ const km=await crypto.subtle.importKey("raw",new TextEncoder().encode(pass),"PBKDF2",false,["deriveKey"]); return crypto.subtle.deriveKey({name:"PBKDF2",salt,iterations:150000,hash:"SHA-256"},km,{name:"AES-GCM",length:256},false,["encrypt","decrypt"]); }
+async function seal(obj,pass){ const salt=crypto.getRandomValues(u8(16)), iv=crypto.getRandomValues(u8(12)); const ct=u8(await crypto.subtle.encrypt({name:"AES-GCM",iv},await keyFrom(pass,salt),new TextEncoder().encode(JSON.stringify(obj)))); return {v:1,salt:toB(salt),iv:toB(iv),ct:toB(ct)}; }
+async function unseal(box,pass){ try{ const pt=await crypto.subtle.decrypt({name:"AES-GCM",iv:fromB(box.iv)},await keyFrom(pass,fromB(box.salt)),fromB(box.ct)); return JSON.parse(new TextDecoder().decode(pt)); }catch(e){ throw new Error("pass"); } }
+
+// ---------- added products ----------
+let addedMeta=[], privateCosts={};
+function mergeAdded(){
+  for(let i=DATA.length-1;i>=0;i--) if(DATA[i].added) DATA.splice(i,1);
+  const live=(published&&published.prices)||{};
+  addedMeta.forEach(m=>{ const c=privateCosts[m.ref]||{}; DATA.push({...m, id:m.ref, added:true, tl:c.tl||0, page:c.src||"", w:"", name:m.model, stock:"", livePrice:(live[m.ref]||[])[0]||0}); });
+}
+async function loadAdded(){
+  try{ const r=await fetch("../products.json?t="+Date.now(),{cache:"no-store"}); addedMeta = r.ok ? await r.json() : []; }catch(e){ addedMeta=[]; }
+  const pass=LS.raw("nl-pass");
+  if(pass){ try{ const r=await fetch("../private.json?t="+Date.now(),{cache:"no-store"}); if(r.ok) privateCosts=await unseal(await r.json(),pass); }catch(e){} }
+  privOver={}; Object.entries(privateCosts).forEach(([k,v])=>{ if(v&&v.over&&v.tl>0) privOver[k]=v.tl; }); mergeOver();
+  mergeAdded(); stats(); render();
+}
+const famSel=document.getElementById("aFam"); famSel.innerHTML=FAM_ORDER.filter(f=>f!=="Other").map(f=>`<option>${f}</option>`).join("")+`<option value="">Other</option>`;
+famSel.value="";
+const FAM_GUESS=[["Black",/black|siyah/],["Brown",/brown|choc|kahve/],["Tan & camel",/tan|camel|taba|cognac/],["Beige & nude",/beige|nude|bej|cream|sand|ecru|stone/],["White",/white|beyaz|ivory/],["Metallic",/gold|silver|bronze|metal/],["Red & burgundy",/red|burgundy|bordo|wine|kırmızı/],["Pink & purple",/pink|rose|purple|lilac|lila|fuchsia|pembe/],["Blue",/blue|navy|denim|mavi|lacivert/],["Green & khaki",/green|khaki|olive|mint|yeşil|haki/],["Orange & yellow",/orange|yellow|mustard|sarı|turuncu/],["Grey",/grey|gray|gri|anthracite/],["Print & multi",/print|multi|leopard|zebra|pattern|desen/]];
+document.getElementById("aColour").addEventListener("input",e=>{ const v=e.target.value.toLowerCase(); const hit=FAM_GUESS.find(([f,re])=>re.test(v)); famSel.value=hit?hit[0]:""; });
+document.getElementById("aPass").value=LS.raw("nl-pass");
+const aG=document.getElementById("aG"), aKind=document.getElementById("aKind");
+const KINDS={CL:["abaya","hijab","dress","set","shirt","trousers","top","other"], B:["dress","set","top","bodysuit","other"], BG:["shoulder","crossbody","handbag","tote","clutch","backpack","waist","other"], W:["slide","sandal","flipflop","loafer","sneaker","other"], M:["slide","sandal","flipflop","loafer","sneaker","other"]};
+const catFor=g=>g==="B"?"baby":g==="BG"?"bags":g==="CL"?"clothing":"shoes";
+function syncForm(){ const g=aG.value; document.getElementById("aForWrap").hidden=!(g==="B"||g==="BG"||g==="CL"); [...aKind.options].forEach(o=>o.hidden=!KINDS[g].includes(o.value)); if(!KINDS[g].includes(aKind.value)) aKind.value=KINDS[g][0]; const f=document.getElementById("aFor"); [...f.options].forEach(o=>o.hidden = g==="B" ? ["Women","Men"].includes(o.value) : ["Girl","Boy"].includes(o.value)); if(f.selectedOptions[0]&&f.selectedOptions[0].hidden) f.value = g==="B"?"Girl":"Women"; aQuote(); }
+function aQuote(){ const t=parseFloat(document.getElementById("aTl").value); const q=quote(t, catFor(aG.value), kgOf({cat:catFor(aG.value), kind:aKind.value})); const n=NEW_ON?null:quoteNew(t, catFor(aG.value), kgOf({cat:catFor(aG.value), kind:aKind.value})); document.getElementById("aQuote").textContent = q ? `Agents will see ${fmtN(q.sell)} · agent earns ${fmtN(q.comm)} · you keep ${fmtN(q.net)}`+(n?` (from ${swDay}: ${fmtN(n.sell)} · agent ${fmtN(n.comm)} · you ${fmtN(n.net)})`:"") : ""; }
+aG.addEventListener("change",syncForm); aKind.addEventListener("change",aQuote); document.getElementById("aTl").addEventListener("input",aQuote);
+function slug(s){ return (s||"").toUpperCase().normalize("NFD").replace(/[^A-Z0-9]+/g,"").slice(0,10)||"ITEM"; }
+async function shrink(file){ const img=await createImageBitmap(file); const max=1100, k=Math.min(1,max/Math.max(img.width,img.height)); const c=document.createElement("canvas"); c.width=Math.round(img.width*k); c.height=Math.round(img.height*k); c.getContext("2d").drawImage(img,0,0,c.width,c.height); const blob=await new Promise(res=>c.toBlob(res,"image/jpeg",0.82)); const buf=u8(await blob.arrayBuffer()); return toB(buf); }
+async function saveJson(path,mutate,fallback,message){ for(let i=0;i<2;i++){ const {sha,data}=await ghJson(path,fallback); const next=mutate(data); try{ await ghPut(path,b64(JSON.stringify(next)),message,sha); return next; }catch(e){ if(e.message!=="conflict"||i) throw e; } } }
+let editRef=null;   // set while an added product is being edited in the form
+function resetEdit(){ editRef=null; document.getElementById("aSave").textContent="Save and publish"; document.getElementById("aCancel").hidden=true; }
+function startEdit(ref){
+  const r=DATA.find(x=>x.ref===ref&&x.added), m=addedMeta.find(x=>x.ref===ref);
+  if(!r||!m){ toast("Couldn’t find that product"); return; }
+  editRef=ref; document.getElementById("addForm").reset();
+  aG.value=r.g||"W"; syncForm(); aKind.value=r.kind||KINDS[aG.value][0];
+  if(m.for) document.getElementById("aFor").value=m.for;
+  document.getElementById("aName").value=r.model||""; document.getElementById("aBrand").value=r.brand||"";
+  document.getElementById("aColour").value=r.colour||""; famSel.value=r.fam||"";
+  document.getElementById("aTl").value=r.tl||""; document.getElementById("aSizes").value=(m.sizes||[]).join(", ");
+  document.getElementById("aDesc").value=r.desc||""; document.getElementById("aSrc").value=r.page||"";
+  document.getElementById("aPass").value=LS.raw("nl-pass");
+  pickImgs=(m.imgs&&m.imgs.length?m.imgs:[m.img]).filter(Boolean).map(u=>({u,on:true})); drawPics(); aQuote();
+  document.getElementById("aSave").textContent="Save changes"; document.getElementById("aCancel").hidden=false;
+  const box=document.getElementById("addBox"); box.open=true; box.scrollIntoView({behavior:"smooth"});
+  toast(`Editing ${r.model}. Change anything, then press Save changes.`);
+}
+document.getElementById("aCancel").onclick=()=>{ document.getElementById("addForm").reset(); famSel.value=""; pickImgs=[]; drawPics(); document.getElementById("aPass").value=LS.raw("nl-pass"); syncForm(); resetEdit(); };
+document.getElementById("addForm").addEventListener("submit", async e=>{
+  e.preventDefault();
+  if(!tok.get()){ document.getElementById("tokBox").open=true; toast("Connect your GitHub key first (in Agent site prices)"); return; }
+  const pass=document.getElementById("aPass").value; if(!pass){ toast("Enter your book password"); return; }
+  const files=[...document.getElementById("aFile").files].slice(0,10), link=document.getElementById("aImg").value.trim();
+  const keep=pickImgs.filter(x=>x.on).map(x=>x.u), linkOk=!pickImgs.length&&/^https?:\/\//.test(link);
+  if(!files.length && !keep.length && !linkOk){ toast("Add a photo or a photo link"); return; }
+  const g=aG.value, cat=catFor(g), t=parseFloat(document.getElementById("aTl").value), q=quote(t,cat,kgOf({cat,kind:aKind.value}));
+  if(!q){ toast("Enter what you pay in lira"); return; }
+  const brand=document.getElementById("aBrand").value.trim(), model=document.getElementById("aName").value.trim();
+  const editing=editRef, ref=editing||`${slug(brand).slice(0,4)}-${slug(model).slice(0,6)}-${Date.now().toString(36).slice(-4).toUpperCase()}`;
+  const btn=document.getElementById("aSave"); btn.disabled=true; btn.textContent="Saving…";
+  try{
+    // check password against existing private file first (so we never overwrite it with a different password)
+    const priv=await ghJson("private.json",null); let costs={};
+    if(priv.data) costs=await unseal(priv.data,pass);
+    const photos=keep.slice(), stamp=Date.now().toString(36).slice(-4);
+    for(let k=0;k<files.length;k++){
+      const path=editing?`img/${ref}-${stamp}${k+1}.jpg`:(k?`img/${ref}-${k+1}.jpg`:`img/${ref}.jpg`);
+      btn.textContent=`Uploading photo ${k+1} of ${files.length}…`;
+      await ghPut(path, await shrink(files[k]), `Photo for ${model}`); photos.push(path);
+    }
+    if(linkOk) photos.unshift(link);
+    if(!photos.length) throw new Error("save");
+    btn.textContent="Saving…";
+    const old=editing?(addedMeta.find(x=>x.ref===ref)||{}):{};
+    const meta={...old,ref,brand,cat,g,model,colour:document.getElementById("aColour").value.trim(),fam:famSel.value,desc:document.getElementById("aDesc").value.trim(),kind:aKind.value,heel:old.heel||"",img:photos[0],
+      sizes:document.getElementById("aSizes").value.split(",").map(s=>s.trim()).filter(Boolean)};
+    delete meta.imgs; if(photos.length>1) meta.imgs=photos.slice(0,10);
+    if((g==="B"||g==="BG"||g==="CL") && document.getElementById("aFor").value) meta.for=document.getElementById("aFor").value;
+    if(g==="BG" && !meta.sizes.length) meta.sizes=["One size"];
+    costs[ref]={...(costs[ref]||{}), tl:t, src:document.getElementById("aSrc").value.trim(), added:(costs[ref]&&costs[ref].added)||new Date().toISOString()};
+    await ghPut("private.json", b64(JSON.stringify(await seal(costs,pass))), `Private costs for ${model}`, priv.sha);
+    addedMeta=await saveJson("products.json", list=>{ list=list||[]; const i=list.findIndex(x=>x.ref===ref); if(i<0) return [...list,meta]; const c=list.slice(); c[i]=meta; return c; }, [], `${editing?"Edit":"Add"} ${model}`);
+    await saveJson("prices.json", p=>{ p=p||{prices:{}}; p.prices=p.prices||{}; const qo=quoteOld(t,cat,kgOf({cat,kind:aKind.value})), qn=quoteNew(t,cat,kgOf({cat,kind:aKind.value})); p.prices[ref]=[qo.sell,qo.comm]; if(qn){ p.next=p.next||{}; p.next[ref]=[qn.sell,qn.comm]; p.switchAt=NC.from; } p.updated=new Date().toISOString(); return p; }, null, `Price for ${model}`);
+    privateCosts=costs; LS.rawSet("nl-pass",pass); if(published){ published.prices=published.prices||{}; published.next=published.next||{}; published.prices[ref]=[quoteOld(t,cat,kgOf({cat,kind:aKind.value})).sell,quoteOld(t,cat,kgOf({cat,kind:aKind.value})).comm]; const qn=quoteNew(t,cat,kgOf({cat,kind:aKind.value})); if(qn) published.next[ref]=[qn.sell,qn.comm]; }
+    mergeAdded(); stats(); render(); e.target.reset(); famSel.value=""; pickImgs=[]; drawPics(); document.getElementById("aPass").value=pass; resetEdit(); syncForm();
+    toast(`${editing?"Updated":"Added"} ${model} at ${fmtN(q.sell)}. Agents see it within about a minute.`);
+  }catch(err){ toast(errMsg(err)); }
+  btn.disabled=false; btn.textContent=editRef?"Save changes":"Save and publish";
+});
+async function removeProduct(ref){
+  if(!tok.get()){ toast("Connect your GitHub key first"); return; }
+  try{
+    addedMeta=await saveJson("products.json", list=>(list||[]).filter(x=>x.ref!==ref), [], `Remove ${ref}`);
+    await saveJson("prices.json", p=>{ if(p&&p.prices) delete p.prices[ref]; if(p&&p.next) delete p.next[ref]; return p; }, null, `Remove price ${ref}`);
+    if(published&&published.prices) delete published.prices[ref]; if(published&&published.next) delete published.next[ref];
+    mergeAdded(); stats(); render(); toast("Removed from the agent site");
+  }catch(err){ toast(errMsg(err)); }
+}
+
+// ---------- publish prices ----------
+function priceMap(rule){ const out={}, isNew=rule==="new", live=(published&&(isNew?published.next:published.prices))||{}, f=isNew?priceNew:priceOld;
+  DATA.forEach(r=>{ if(hidden.has(r.ref)) return; const p=f(r); if(p && r.img) out[r.ref]=[p.sell,p.comm]; else if(r.added && live[r.ref]) out[r.ref]=live[r.ref]; });
+  return out; }
+function pubStatus(){
+  const s=document.getElementById("pubStatus"), d=document.getElementById("pubDiff");
+  document.getElementById("tokSum").textContent = tok.get() ? "GitHub key connected on this phone" : "Connect your GitHub key (one time)";
+  if(!published){ s.textContent="Couldn’t read the live prices yet."; d.textContent=""; return; }
+  const when=new Date(published.updated).toLocaleString("en-GB",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"});
+  const P=published.params||{}; s.textContent=`Live since ${when}: ₦${P.rate}/₺, freight ₦${(P.perKg??CONFIG.perKg).toLocaleString("en-NG")}/kg + ₦${(P.handling??CONFIG.handling).toLocaleString("en-NG")} per item, profit ${P.profitPct}% (min ₦${(P.minProfit||0).toLocaleString("en-NG")}).`;
+  const now=priceMap("old"), live=published.prices||{}, nowN=NC?priceMap("new"):{}, liveN=published.next||{}; let changed=0, added=0, removed=0;
+  Object.keys(now).forEach(k=>{ if(!live[k]) added++; else if(live[k][0]!==now[k][0] || (NC && (!liveN[k] || !nowN[k] || liveN[k][0]!==nowN[k][0] || liveN[k][1]!==nowN[k][1]))) changed++; }); Object.keys(live).forEach(k=>{ if(!now[k]) removed++; });
+  d.textContent = (changed||added||removed) ? `Not published yet: ${changed} price change${changed===1?"":"s"}${added?`, ${added} new`:""}${removed?`, ${removed} removed`:""}.` : "Agent site matches what you see here.";
+}
+async function loadPublished(){
+  try{ const r=await fetch("../prices.json?t="+Date.now(),{cache:"no-store"}); if(!r.ok) throw 0; published=await r.json();
+    // Always start from the live settings, so the book opens showing exactly what agents see. Edits are a preview until Publish.
+    const P=published.params||{}; PARAMS.forEach(k=>{ if(typeof P[k]==="number"){ S[k]=P[k]; const el=document.getElementById(k); if(el) el.value=P[k]; } });
+    mergeHidden();
+    if(published.menPrice && typeof published.menPrice==="object") Object.entries(published.menPrice).forEach(([k,v])=>{ if(!(k in pending)) pending[k]=v; }); mergeOver();
+  }catch(e){ published=null; }
+  mergeAdded(); render();
+}
+async function publishPrices(){
+  if(!tok.get()){ document.getElementById("tokBox").open=true; toast("Connect your GitHub key first"); return; }
+  // never publish from an out-of-date book: it would overwrite newer prices and hidden styles
+  try{ const bj=await (await fetch("../build.json?t="+Date.now(),{cache:"no-store"})).json(); if(bj.build && bj.build!==BUILD){ document.getElementById("stale").hidden=false; toast("A newer catalogue is live. Reload this page, then publish."); return; } }catch(e){}
+  const btn=document.getElementById("pubBtn"); btn.disabled=true; btn.textContent="Publishing…";
+  const params={}; PARAMS.forEach(k=>params[k]=S[k]);
+  try{
+    const touched=Object.keys(pending).length>0;
+    if(touched){   // what you pay is private: store it encrypted with the book password
+      let pass=LS.raw("nl-pass") || document.getElementById("aPass").value || prompt("Book password (keeps what you pay private)") || "";
+      if(!pass) throw new Error("needpass");
+      const priv=await ghJson("private.json",null); let costs={}; if(priv.data) costs=await unseal(priv.data,pass);
+      Object.keys(costs).forEach(k=>{ if(costs[k]&&costs[k].over) delete costs[k]; });
+      Object.entries(over).forEach(([k,v])=>{ costs[k]={tl:v, over:true, at:new Date().toISOString()}; });
+      await ghPut("private.json", b64(JSON.stringify(await seal(costs,pass))), "Update what I pay", priv.sha);
+      LS.rawSet("nl-pass",pass); privateCosts=costs; privOver={...over}; pending={}; save();
+    }
+    const body=await saveJson("prices.json", cur=>{ const h=new Set((cur&&cur.hidden)||[]); Object.entries(hidePending).forEach(([k,v])=>{ v?h.add(k):h.delete(k); }); hidden=h;   // merge with what is live, so hides made elsewhere are kept
+      return {updated:new Date().toISOString(), params, menPrice:{}, locked:Object.keys(over), hidden:[...h], prices:priceMap("old"), ...(NC?{switchAt:NC.from, next:priceMap("new")}:{})}; }, null, "Update agent prices");
+    hidePending={}; save();
+    published=body; render(); toast("Published. Agents see it within about a minute.");
+    btn.disabled=false; btn.textContent="Publish these prices to agent site"; return true;
+  }catch(e){ toast(e.message==="needpass"?"Enter your book password to publish your own prices":errMsg(e)); }
+  btn.disabled=false; btn.textContent="Publish these prices to agent site"; return false;
+}
+document.getElementById("pubBtn").onclick=publishPrices;
+
+// ---------- review inbox ----------
+// The weekly robot seals what it finds with the PUBLIC key (inbox-pub.json). Only this book can open it: the private key sits in
+// inbox-key.json, encrypted with the book password. So the robot never needs the password, and nobody else can read lira prices.
+const byId=id=>document.getElementById(id);
+const INB={key:null, batches:[], items:[]};
+const RSA={name:"RSA-OAEP",hash:"SHA-256"};
+async function inboxSetup(){
+  const pass=LS.raw("nl-pass")||byId("aPass").value; if(!tok.get()){ byId("tokBox").open=true; toast("Connect your GitHub key first"); return; } if(!pass){ toast("Enter your book password in “Add a product” first"); byId("addBox").open=true; return; }
+  try{
+    const priv=await ghJson("private.json",null); if(priv.data) await unseal(priv.data,pass);   // checks the password before locking anything with it
+    const kp=await crypto.subtle.generateKey({...RSA,modulusLength:2048,publicExponent:new Uint8Array([1,0,1])},true,["encrypt","decrypt"]);
+    const pubJwk=await crypto.subtle.exportKey("jwk",kp.publicKey), privJwk=await crypto.subtle.exportKey("jwk",kp.privateKey);
+    const k=await ghJson("inbox-key.json",null); await ghPut("inbox-key.json", b64(JSON.stringify(await seal({jwk:privJwk},pass))), "Review inbox: private key (encrypted)", k.sha);
+    const pb=await ghJson("inbox-pub.json",null); await ghPut("inbox-pub.json", b64(JSON.stringify({v:1,alg:"RSA-OAEP-256+A256GCM",jwk:pubJwk})), "Review inbox: public key", pb.sha);
+    await saveJson("inbox.json", cur=>cur&&cur.batches?cur:{batches:[]}, {batches:[]}, "Review inbox: start");
+    LS.rawSet("nl-pass",pass); toast("Review inbox is ready"); setTimeout(inboxLoad,1500);
+  }catch(e){ toast(errMsg(e)); }
+}
+async function openBatch(b){ const raw=await crypto.subtle.decrypt(RSA,INB.key,fromB(b.k)); const aes=await crypto.subtle.importKey("raw",raw,"AES-GCM",false,["decrypt"]);
+  return JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({name:"AES-GCM",iv:fromB(b.iv)},aes,fromB(b.ct)))); }
+// Ask for the book password right here (no detour through “Add a product”). It is checked against the inbox lock before it is saved on this phone.
+function inboxAsk(msg,again){
+  const body=byId("inboxBody");
+  body.innerHTML=`<p class="note">${msg}</p><div class="acts" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><input type="password" id="inboxPw" placeholder="Book password" autocomplete="current-password" style="font:14px var(--ui);color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:9px 10px;flex:1 1 200px;min-width:0"><button class="action" id="inboxUnlock">Unlock</button></div>`+(again?`<div class="acts" style="margin-top:14px"><button class="ghost" id="inboxReset">Start the inbox over…</button></div><p class="note" style="font-size:12px">Only if you changed the book password. Starting over replaces the lock, so anything waiting in the inbox can no longer be opened.</p>`:"");
+  const go=async()=>{
+    const pw=byId("inboxPw").value; if(!pw){ toast("Type your book password"); return; }
+    const btn=byId("inboxUnlock"); btn.disabled=true; btn.textContent="Checking…";
+    try{
+      const r=await fetch("../inbox-key.json?t="+Date.now(),{cache:"no-store"}); if(!r.ok) throw new Error("net");
+      await unseal(await r.json(),pw);          // throws “pass” when wrong
+      LS.rawSet("nl-pass",pw); phoneStatus(); inboxLoad();
+    }catch(e){ btn.disabled=false; btn.textContent="Unlock"; toast(e.message==="pass"?"Wrong book password":"Couldn’t reach the site. Check your connection."); }
+  };
+  byId("inboxUnlock").onclick=go; byId("inboxPw").onkeydown=e=>{ if(e.key==="Enter") go(); };
+  if(again) byId("inboxReset").onclick=()=>{ if(confirm("Start the inbox over? Anything waiting in it will become unreadable.")) inboxSetup(); };
+}
+async function inboxLoad(){
+  const body=byId("inboxBody"), pass=LS.raw("nl-pass"); body.innerHTML=`<p class="note">Loading…</p>`;
+  const get=async f=>{ try{ const r=await fetch("../"+f+"?t="+Date.now(),{cache:"no-store"}); return r.ok?await r.json():null; }catch(e){ return null; } };
+  const pub=await get("inbox-pub.json");
+  if(!pub){ body.innerHTML=`<p class="note">Not set up yet. One tap creates a lock the weekly robot can close but only this book (with your password) can open. Needs your GitHub key and book password, once.</p><div class="acts"><button class="action" id="inboxSetup">Set up the review inbox</button></div>`; byId("inboxSetup").onclick=inboxSetup; return; }
+  if(!pass){ inboxAsk("Enter your book password to open the inbox. It is kept on this phone only.",false); return; }
+  try{ const kbox=await get("inbox-key.json"); const {jwk}=await unseal(kbox,pass); INB.key=await crypto.subtle.importKey("jwk",jwk,RSA,false,["decrypt"]); }
+  catch(e){ inboxAsk("That password didn’t open the inbox. Type it again.",true); return; }
+  const inbox=await get("inbox.json")||{batches:[]}; INB.batches=inbox.batches||[]; INB.items=[];
+  INB.bad=0; for(const b of INB.batches){ try{ const d=await openBatch(b); (d.items||[]).forEach(x=>INB.items.push({...x, batch:b.id, on:false})); }catch(e){ INB.bad++; } }
+  const known=new Set(DATA.map(r=>r.ref));
+  INB.items=INB.items.filter(x=>x.t!=="new"||!known.has(x.ref));            // already in the catalogue
+  INB.items=INB.items.filter(x=>x.t==="new"||known.has(x.ref));             // changes only for styles we still carry
+  inboxDraw(inbox);
+}
+const IF={who:"all",brand:""};
+const lastOf=a=>a&&a.length?a[a.length-1]:undefined;   // Array.at() is missing on older phones
+function iWho(x){ const r=x.t==="new"?x:DATA.find(d=>d.ref===x.ref)||{}; return (r.cat==="baby"||r.g==="B")?"baby":r.g==="M"?"men":r.g==="W"?"women":"other"; }
+function iBrand(x){ return x.t==="new"?(x.brand||""):((DATA.find(d=>d.ref===x.ref)||{}).brand||""); }
+function iShown(x){ return (IF.who==="all"||iWho(x)===IF.who)&&(!IF.brand||iBrand(x)===IF.brand); }
+function inboxCount(){ const it=INB.items, n=it.filter(x=>x.on).length, sh=it.filter(iShown).length;
+  byId("inboxApply").textContent=`Approve ticked (${n})`; byId("inboxApply").disabled=!n; byId("inboxDrop").disabled=!n;
+  byId("inboxShown").textContent=`${sh} shown · ${n} ticked`; }
+// ---- grouping: all colours of one style together (robot may send x.grp; otherwise brand + section + model) ----
+const iRec=x=>x.t==="new"?x:(DATA.find(d=>d.ref===x.ref)||{});
+// product code from the ref when it has one (CAP-20612-BLK, DESA-SKS0782-TAN, DF-D8070AXNV44, 003-N43); sites that give each colour its own number (Ziya, LCW, Elle, Bambi) fall back to the model name
+function iCode(ref){ ref=String(ref||""); let m=ref.match(/^DF-([A-Z]\d{4}[A-Z]{2})/); if(m) return "DF-"+m[1]; if(/^(ZIYA|LCW|ELLE|BMB)-/.test(ref)) return "";
+  m=ref.split("-"); return m.length>=3?m[0]+"-"+m[1]:m.length===2&&!/^[A-Z]+$/.test(m[0])?m[0]:""; }
+function iKey(x){ const r=iRec(x); if(x.grp) return x.grp; const c=iCode(x.ref); return [r.brand||"",r.g||"",c||String(r.model||x.ref).trim().toLowerCase()].join("|"); }
+const WHO_ORDER={men:0,women:1,baby:2,other:3};
+function iGroups(t){ const m=new Map(); INB.items.forEach((x,n)=>{ if(x.t!==t) return; const k=iKey(x); if(!m.has(k)) m.set(k,[]); m.get(k).push(n); });
+  return [...m.entries()].map(([k,ns])=>({k,ns:ns.sort((a,b)=>String(iRec(INB.items[a]).colour||"").localeCompare(String(iRec(INB.items[b]).colour||""))) }))
+    .sort((A,B)=>{ const a=INB.items[A.ns[0]], b=INB.items[B.ns[0]], ra=iRec(a), rb=iRec(b);
+      return (WHO_ORDER[iWho(a)]-WHO_ORDER[iWho(b)]) || String(ra.brand||"").localeCompare(String(rb.brand||"")) || String(ra.model||"").localeCompare(String(rb.model||"")); }); }
+function inboxFilter(){
+  document.querySelectorAll("#inboxBody .ichip").forEach(el=>el.classList.toggle("hid",!iShown(INB.items[+el.dataset.i])));
+  document.querySelectorAll("#inboxBody .igrp").forEach(g=>{ const ns=g.dataset.ns.split(",").map(Number), vis=ns.filter(n=>iShown(INB.items[n]));
+    g.classList.toggle("hid",!vis.length); const c=g.querySelector("input[data-gk]"); c.checked=vis.length&&vis.every(n=>INB.items[n].on); c.indeterminate=!c.checked&&vis.some(n=>INB.items[n].on); });
+  document.querySelectorAll("#inboxBody h4[data-g]").forEach(h=>{ const t=h.dataset.g, items=INB.items.filter(x=>x.t===t&&iShown(x)), styles=new Set(items.map(iKey)).size;
+    h.hidden=!items.length; h.querySelector("i").textContent = t==="new" ? `${styles} style${styles===1?"":"s"} · ${items.length} colour${items.length===1?"":"s"}` : items.length; });
+  document.querySelectorAll("#ifWho button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.w===IF.who))); inboxCount(); }
+function inboxDraw(inbox){
+  const body=byId("inboxBody"), it=INB.items, last=(lastOf(INB.batches)||{}).created;
+  const nStyles=new Set(it.filter(x=>x.t==="new").map(iKey)).size, nOther=it.filter(x=>x.t!=="new").length;
+  byId("inboxSum").textContent = it.length ? `${nStyles?nStyles+" new style"+(nStyles===1?"":"s"):""}${nStyles&&nOther?" + ":""}${nOther?nOther+" change"+(nOther===1?"":"s"):""} waiting for you` : "Nothing waiting.";
+  const bad=INB.bad?`<p class="note" style="color:var(--warn)">${INB.bad} robot batch${INB.bad>1?"es":""} couldn’t be opened with this book’s key. Tell Claude; nothing is lost.</p>`:"";
+  if(!it.length){ body.innerHTML=bad+`<p class="note">Nothing to review${last?` (last robot run ${new Date(last).toLocaleDateString("en-GB",{day:"numeric",month:"short"})})`:""}. The robot checks the brand sites every week.</p>`; return; }
+  const quoteOf=x=>{ const r=iRec(x); if(x.t==="new") return quote(x.tl,x.cat||"shoes",kgOf(x)); if(x.t==="price") return quote(x.now,catOf(r),kgOf(r)); return null; };
+  const rng=a=>{ a=a.filter(v=>v>0); if(!a.length) return "?"; const lo=Math.min(...a), hi=Math.max(...a); return lo===hi?fmtN(lo):fmtN(lo)+"–"+fmtN(hi).slice(1); };
+  const rngT=a=>{ a=a.filter(v=>v>0); if(!a.length) return "?"; const lo=Math.min(...a), hi=Math.max(...a); return lo===hi?fmtT(lo):fmtT(lo)+"–"+fmtT(hi); };
+  const chip=n=>{ const x=it[n], r=iRec(x), img=x.t==="new"?x.img:(r.id?thumb(r):""), col=r.colour||x.ref;
+    let extra=""; if(x.t==="new"){ const sz=x.sizes&&x.sizes.length?(x.sizes.length>2?esc(x.sizes[0])+"–"+esc(lastOf(x.sizes)):x.sizes.map(esc).join(", ")):""; extra=(sz?`<span class="x">${sz}</span>`:"")+(x.page?` <a href="${esc(x.page)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">page</a>`:""); }
+    if(x.t==="price") extra=`<span class="x">${fmtT(x.old)} → ${fmtT(x.now)}${(r.id&&over[r.id])?" · own price set":""}</span>`;
+    if(x.t==="gone") extra=x.page?` <a href="${esc(x.page)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">page</a>`:"";
+    return `<label class="ichip" data-i="${n}"><input type="checkbox" data-i="${n}" ${x.on?"checked":""}><img src="${esc(img||"")}" alt="" loading="lazy" onerror="this.style.visibility='hidden'"><span>${esc(col)}</span>${extra}</label>`; };
+  const head=(t,ns)=>{ const xs=ns.map(n=>it[n]), x=xs[0], r=iRec(x), qs=xs.map(quoteOf), img=x.t==="new"?x.img:(r.id?thumb(r):"");
+    const nc=ns.length, cols=`${nc} colour${nc===1?"":"s"}`;
+    let sub="", pr="";
+    if(t==="new"){ const q2=NEW_ON?[]:xs.map(y=>(quoteNew(y.tl,y.cat||"shoes",kgOf(y))||{}).sell||0);
+      sub=[cols, KIND[x.kind]||x.kind, x.heel&&x.heel!=="Flat"?x.heel.toLowerCase():"", x.desc].filter(Boolean).map(esc).join(" · ");
+      pr=`${rngT(xs.map(y=>y.tl))} → agents see ${rng(qs.map(q=>q?q.sell:0))}${q2.some(v=>v)?` (from ${swDay}: ${rng(q2)})`:""}`; }
+    if(t==="price"){ sub=`${cols} · price changed on the brand site`; pr=`agents would see ${rng(qs.map(q=>q?q.sell:0))} (now ${rng(xs.map(y=>(liveOf(iRec(y))||[0])[0]))})`; }
+    if(t==="gone"){ sub=`${cols} · ${esc(x.why||"Sold out or removed on the brand site")}`; pr="Hide from agents and the shop"; }
+    return `<label class="ihead"><input type="checkbox" data-gk="${ns.join(",")}" aria-label="Tick all colours"><img src="${esc(img||"")}" alt="" loading="lazy" onerror="this.style.visibility='hidden'"><span><span class="t">${esc(r.brand||"")} · ${esc(r.model||x.ref)}</span><br><span class="s">${sub}</span><br><span class="p">${pr}</span></span></label>`; };
+  const group=(t,title)=>{ const gs=iGroups(t); if(!gs.length) return "";
+    return `<h4 data-g="${t}">${title} · <i></i></h4>`+gs.map(g=>`<div class="igrp" data-ns="${g.ns.join(",")}">${head(t,g.ns)}<div class="ichips">${g.ns.map(chip).join("")}</div></div>`).join(""); };
+  const cnt=w=>new Set(it.filter(x=>iWho(x)===w).map(iKey)).size, brands=[...new Set(it.map(iBrand).filter(Boolean))].sort();
+  if(IF.brand&&!brands.includes(IF.brand)) IF.brand="";
+  const whoBtn=(w,l)=>w==="all"||cnt(w)?`<button type="button" data-w="${w}" aria-pressed="${IF.who===w}">${l}${w==="all"?"":" "+cnt(w)}</button>`:"";
+  body.innerHTML = bad + `<div class="ifil" id="ifWho">${whoBtn("all","All")}${whoBtn("men","Men")}${whoBtn("women","Women")}${whoBtn("baby","Baby")}
+      <select id="ifBrand" aria-label="Brand"><option value="">All brands</option>${brands.map(b=>`<option${b===IF.brand?" selected":""}>${esc(b)}</option>`).join("")}</select></div>
+    <div class="acts"><button class="ghost" type="button" id="inboxTick">Tick all shown</button><button class="ghost" type="button" id="inboxAll">Untick all</button></div>`
+    + group("new","New styles") + group("price","Price changes") + group("gone","Sold out or removed")
+    + `<div class="ibar"><span class="note grow" id="inboxShown" style="margin:0"></span><button class="ghost" type="button" id="inboxDrop">Dismiss ticked</button><button class="action" type="button" id="inboxApply">Approve ticked</button></div>
+    <p class="note">Each style shows once with its colours underneath. Tick the box by the style to take <b>all its colours</b>, or tick single colours. Then <b>Approve</b>: those go live. <b>Dismiss</b> removes ticked ones for good. Anything you don’t tick stays here for later.</p>`;
+  const sync=()=>{ body.querySelectorAll("input[data-i]").forEach(c=>c.checked=it[+c.dataset.i].on); inboxFilter(); };
+  body.querySelectorAll("input[data-i]").forEach(c=>c.onchange=()=>{ it[+c.dataset.i].on=c.checked; inboxFilter(); });
+  body.querySelectorAll("input[data-gk]").forEach(c=>c.onchange=()=>{ c.dataset.gk.split(",").map(Number).forEach(n=>{ if(iShown(it[n])) it[n].on=c.checked; }); sync(); });
+  byId("ifWho").querySelectorAll("button").forEach(b=>b.onclick=()=>{ IF.who=b.dataset.w; inboxFilter(); });
+  byId("ifBrand").onchange=e=>{ IF.brand=e.target.value; inboxFilter(); };
+  byId("inboxTick").onclick=()=>{ it.forEach(x=>{ if(iShown(x)) x.on=true; }); sync(); };
+  byId("inboxAll").onclick=()=>{ it.forEach(x=>x.on=false); sync(); };
+  byId("inboxApply").onclick=()=>inboxApply("approve");
+  byId("inboxDrop").onclick=()=>{ const n=it.filter(x=>x.on).length; if(confirm(`Dismiss ${n} ticked item${n>1?"s":""}? They won’t be suggested again.`)) inboxApply("dismiss"); };
+  inboxFilter();
+}
+// Re-lock the items you haven't decided on yet, with the PUBLIC key, so they stay in the inbox for later.
+async function inboxReseal(items){
+  const pub=await (await fetch("../inbox-pub.json?t="+Date.now(),{cache:"no-store"})).json();
+  const key=await crypto.subtle.importKey("jwk",pub.jwk,RSA,false,["encrypt"]);
+  const raw=crypto.getRandomValues(new Uint8Array(32)), iv=crypto.getRandomValues(new Uint8Array(12)), created=new Date().toISOString();
+  const aes=await crypto.subtle.importKey("raw",raw,"AES-GCM",false,["encrypt"]);
+  const plain=new TextEncoder().encode(JSON.stringify({source:"kept for later",created,items}));
+  return {id:created, created, count:items.length, k:toB(u8(await crypto.subtle.encrypt(RSA,key,raw))), iv:toB(iv), ct:toB(u8(await crypto.subtle.encrypt({name:"AES-GCM",iv},aes,plain)))};
+}
+async function inboxApply(mode){
+  const pass=LS.raw("nl-pass"); if(!tok.get()){ byId("tokBox").open=true; toast("Connect your GitHub key first"); return; }
+  const picked=INB.items.filter(x=>x.on); if(!picked.length){ toast("Tick at least one item first"); return; }
+  const btn=byId(mode==="dismiss"?"inboxDrop":"inboxApply"), was=btn.textContent; btn.disabled=true; btn.textContent=mode==="dismiss"?"Dismissing…":"Applying…";
+  try{
+    let news=[];
+    if(mode==="approve"){
+      news=picked.filter(x=>x.t==="new"&&!DATA.some(r=>r.ref===x.ref));
+      if(news.length){
+        const priv=await ghJson("private.json",null); let costs={}; if(priv.data) costs=await unseal(priv.data,pass);
+        news.forEach(x=>{ costs[x.ref]={tl:x.tl, src:x.page||"", added:new Date().toISOString(), via:"inbox"}; });
+        await ghPut("private.json", b64(JSON.stringify(await seal(costs,pass))), `Private costs for ${news.length} new styles`, priv.sha); privateCosts=costs;
+        const day=new Date().toISOString().slice(0,10);
+        const metas=news.map(x=>({ref:x.ref,brand:x.brand,cat:x.cat||"shoes",g:x.g,model:x.model,colour:x.colour||"",fam:x.fam||"",desc:x.desc||"",kind:x.kind||"other",heel:x.heel||"",img:x.img,added:day,
+          ...(x.imgs&&x.imgs.length>1?{imgs:x.imgs}:{}),...(x.sizes&&x.sizes.length?{sizes:x.sizes}:{}),...(x.for?{for:x.for}:{}),...(x.kg?{kg:x.kg}:{})}));
+        addedMeta=await saveJson("products.json", list=>[...(list||[]).filter(m=>!metas.some(n=>n.ref===m.ref)), ...metas], [], `Add ${news.length} styles from the review inbox`);
+        mergeAdded();
+      }
+      picked.filter(x=>x.t==="price").forEach(x=>{ pending[x.ref]=x.now; });
+      picked.filter(x=>x.t==="gone").forEach(x=>{ hidePending[x.ref]=true; });
+      mergeOver(); mergeHidden(); save();
+      if(!await publishPrices()) throw new Error("publish");
+    }
+    const ids=new Set(INB.batches.map(b=>b.id));
+    const keep=INB.items.filter(x=>!x.on).map(({on,batch,...x})=>x);
+    const fresh=keep.length?await inboxReseal(keep):null;
+    await saveJson("inbox.json", cur=>({batches:[...((cur&&cur.batches)||[]).filter(b=>!ids.has(b.id)), ...(fresh?[fresh]:[])]}), {batches:[]}, mode==="dismiss"?"Review inbox: dismissed some":"Review inbox: reviewed");
+    stats(); render();
+    toast(mode==="dismiss"?`Dismissed ${picked.length}. ${keep.length} still waiting.`:`Done: ${news.length} new, ${picked.length-news.length} changes live. ${keep.length} still waiting.`);
+    setTimeout(inboxLoad,1200);
+  }catch(e){ if(e.message!=="publish") toast(errMsg(e)); btn.disabled=false; btn.textContent=was; }
+}
+// unpin the top bar while any panel in it is open (fallback for browsers without :has)
+document.querySelectorAll(".bar details").forEach(d=>d.addEventListener("toggle",()=>{ const bar=document.querySelector(".bar"); bar.classList.toggle("unpin",!!bar.querySelector("details[open]")); }));
+// ---------- tabs: Catalogue / To review / Add / Prices ----------
+const TABS=["catalogue","review","add","prices"];
+const setAppH=()=>document.documentElement.style.setProperty("--apph",document.querySelector(".app").offsetHeight+"px"); setAppH(); window.addEventListener("resize",setAppH);
+function showTab(t,keepScroll){ if(!TABS.includes(t)||(t!=="catalogue"&&S.mode==="lb")) t="catalogue";
+  document.querySelectorAll("[data-panel]").forEach(p=>p.hidden=p.dataset.panel!==t);
+  document.querySelectorAll("[data-tab]").forEach(x=>x.dataset.tab===t&&x.closest("#tabs")?x.setAttribute("aria-current","page"):x.removeAttribute("aria-current"));
+  if(t==="review"&&!byId("inboxBox").open) byId("inboxBox").open=true;
+  if(t==="add"&&!byId("addBox").open) byId("addBox").open=true;
+  if(t==="prices") phoneStatus();
+  if(location.hash!=="#"+t&&!/^#add=/.test(location.hash)) history.replaceState(null,"","#"+t);
+  if(!keepScroll) window.scrollTo(0,0); }
+document.querySelectorAll("[data-tab]").forEach(x=>x.addEventListener("click",e=>{ e.preventDefault(); showTab(x.dataset.tab); }));
+window.addEventListener("hashchange",()=>{ const t=location.hash.slice(1); if(TABS.includes(t)) showTab(t); });
+// when the book opens a panel by itself (connect your key, edit a product, a product sent from a shop), go to its tab
+const panelOf=el=>el.closest("[data-panel]").dataset.panel;
+new MutationObserver(ms=>ms.forEach(m=>{ const el=m.target; if(el.open&&el.closest("[data-panel]").hidden) showTab(panelOf(el),true); })).observe(document.querySelector(".wrap"),{attributes:true,attributeFilter:["open"],subtree:true});
+// publish button in the header whenever something is not on the agent site yet
+new MutationObserver(()=>{ const t=byId("pubDiff").textContent, pill=byId("pubPill"), n=(t.match(/\d+/g)||[]).reduce((x,y)=>x+ +y,0);
+  pill.hidden=!/^Not published/.test(t); pill.textContent=n?`Publish ${n} change${n===1?"":"s"}`:"Publish"; pill.title=t; }).observe(byId("pubDiff"),{childList:true,characterData:true,subtree:true});
+byId("pubPill").onclick=async()=>{ const p=byId("pubPill"); p.disabled=true; p.textContent="Publishing…"; await publishPrices(); p.disabled=false; };
+// count on the To review tab: from the sealed batches before you unlock, from the real list after
+function setBadge(n){ const b=byId("tabBadge"); b.hidden=!(n>0); b.textContent=n>99?"99+":String(n||""); }
+fetch("../inbox.json?t="+Date.now(),{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{ if(j&&!INB.items.length) setBadge((j.batches||[]).reduce((x,b)=>x+(b.count||0),0)); }).catch(()=>{});
+new MutationObserver(()=>{ if(INB.key) setBadge(INB.items.length); }).observe(byId("inboxSum"),{childList:true,characterData:true,subtree:true});
+// book password and GitHub key: shown and managed in one place
+function phoneStatus(){ const has=!!LS.raw("nl-pass"), key=!!tok.get();
+  byId("phoneStatus").textContent=`${key?"GitHub key connected.":"No GitHub key yet: you need one to publish."} ${has?"Book password saved.":"Book password not saved yet: To review asks for it once."}`;
+  byId("passForget").hidden=!has; byId("aPassWrap").hidden=has; byId("aPassSaved").hidden=!has; }
+byId("passForget").onclick=()=>{ LS.rawSet("nl-pass",""); byId("aPass").value=""; phoneStatus(); toast("Book password removed from this phone"); };
+byId("aPassChange").onclick=()=>{ byId("aPassWrap").hidden=false; byId("aPassSaved").hidden=true; byId("aPass").value=""; byId("aPass").focus(); };
+["tokSave","tokForget"].forEach(id=>byId(id).addEventListener("click",()=>setTimeout(phoneStatus,0)));
+byId("inboxBox").addEventListener("toggle",()=>{ if(byId("inboxBox").open) inboxLoad(); });
+document.getElementById("tokSave").onclick=()=>{ const v=document.getElementById("tok").value.trim(); if(!v.startsWith("github_pat_")&&!v.startsWith("ghp_")){ toast("That doesn’t look like a GitHub key"); return; } tok.set(v); document.getElementById("tok").value=""; document.getElementById("tokBox").open=false; pubStatus(); toast("Key saved on this phone"); };
+document.getElementById("tokForget").onclick=()=>{ tok.set(""); pubStatus(); toast("Key removed"); };
+// ---------- Send to Northline: import a product sent from any shop page ----------
+const STN=__STN__;
+let pickImgs=[];
+function drawPics(){ const w=document.getElementById("aPicsWrap"), box=document.getElementById("aPics"); w.hidden=!pickImgs.length;
+  box.innerHTML=pickImgs.map((x,n)=>`<img src="${esc(/^https?:/.test(x.u)?x.u:"../"+x.u)}" data-n="${n}" class="${x.on?"":"off"}" alt="" onerror="this.remove()">`).join("");
+  const first=pickImgs.find(x=>x.on); if(first && !document.getElementById("aFile").files.length) document.getElementById("aImg").value=first.u; }
+document.getElementById("aPics").addEventListener("click",e=>{ const n=e.target.dataset&&e.target.dataset.n; if(n==null) return; pickImgs[+n].on=!pickImgs[+n].on; drawPics(); });
+document.getElementById("stnCopy").onclick=()=>{ const ta=document.getElementById("stnCode"); ta.value=STN;
+  const ok=()=>{ document.getElementById("stnMsg").textContent="Copied. Now do step 2."; };
+  if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(STN).then(ok,()=>{ ta.hidden=false; ta.select(); document.getElementById("stnMsg").textContent="Select all and copy"; });
+  else { ta.hidden=false; ta.select(); } };
+const GUESS_KIND=[[/parmak aras|flip/i,"flipflop"],[/sandalet|sandal/i,"sandal"],[/terlik|slide|sabo|clog/i,"slide"],[/sneaker|spor ayakkab/i,"sneaker"],[/loafer|babet|makosen/i,"loafer"],[/omuz/i,"shoulder"],[/çapraz|capraz|crossbody/i,"crossbody"],[/clutch|portföy|portfoy/i,"clutch"],[/sırt|sirt|backpack/i,"backpack"],[/bel çanta|bel canta|waist/i,"waist"],[/el çanta|el canta|kol çanta|handbag/i,"handbag"],[/elbise|dress/i,"dress"],[/takım|takim|set/i,"set"],[/body|zıbın|zibin/i,"bodysuit"]];
+function importFromHash(){ const m=location.hash.match(/^#add=([\w-]+)/); if(!m) return;
+  history.replaceState(null,"",location.pathname+location.search);
+  let j; try{ let b=m[1].replace(/-/g,"+").replace(/_/g,"/"); while(b.length%4) b+="="; j=JSON.parse(decodeURIComponent(escape(atob(b)))); }catch(e){ toast("Couldn’t read that product. Try the button again."); return; }
+  const name=j.n||"", low=name.toLowerCase();
+  const g=/çanta|canta|bag/i.test(low)?"BG":/bebek|baby/i.test(low)?"B":/erkek|men\b/i.test(low)?"M":"W";
+  aG.value=g; syncForm();
+  const k=GUESS_KIND.find(([re,kk])=>re.test(low)&&KINDS[g].includes(kk)); if(k) aKind.value=k[1];
+  document.getElementById("aName").value=name; document.getElementById("aBrand").value=j.b||"";
+  if(j.p) document.getElementById("aTl").value=Math.round(j.p*100)/100;
+  document.getElementById("aSrc").value=j.u||"";
+  const col=(name.match(/siyah|beyaz|bej|krem|kahve|kahverengi|taba|vizon|lacivert|mavi|kırmızı|bordo|pembe|lila|mor|yeşil|haki|gri|sarı|turuncu|altın|gümüş|ten|ekru|black|white|beige|brown|tan|navy|blue|red|pink|green|khaki|grey|gold|silver/i)||[])[0]||"";
+  const ac=document.getElementById("aColour"); ac.value=col?col[0].toUpperCase()+col.slice(1):""; ac.dispatchEvent(new Event("input"));
+  pickImgs=(j.i||[]).map(u=>({u,on:true})); drawPics(); syncForm();
+  setMode("src"); const box=document.getElementById("addBox"); box.open=true; box.scrollIntoView({behavior:"smooth"});
+  toast(`Got “${name.slice(0,40)}” with ${pickImgs.length} photo${pickImgs.length===1?"":"s"}. Check it and Save.`);
+}
+syncForm(); stats(); render(); loadPublished().then(loadAdded); phoneStatus(); { const t=location.hash.slice(1); if(TABS.includes(t)) showTab(t,true); } importFromHash();
+window.addEventListener("hashchange",importFromHash);
+fetch("../build.json?t="+Date.now(),{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{ if(j&&j.build&&j.build!==BUILD) document.getElementById("stale").hidden=false; }).catch(()=>{});
+</script>
+</body>
+</html>
