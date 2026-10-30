@@ -10,12 +10,12 @@ const html=fs.readFileSync(new URL('book.template.html',import.meta.url),'utf8')
 const sample=JSON.parse(fs.readFileSync(new URL('sample-data.json',import.meta.url),'utf8'));
 const config=JSON.parse(fs.readFileSync(new URL('sample-config.json',import.meta.url),'utf8'));
 const section=(start,end)=>html.slice(html.indexOf(start),html.indexOf(end,html.indexOf(start)));
-function setup(){
+export function setup(){
   const store=new Map(), elements=new Map(), writes=[], notices=[];
   const el=id=>{if(!elements.has(id))elements.set(id,{value:'',textContent:'',disabled:false});return elements.get(id);};
   const c=vm.createContext({crypto:webcrypto,TextEncoder,TextDecoder,Uint8Array,btoa,atob,Blob,URL,console,
     localStorage:{getItem:k=>store.get(k)||null,setItem:(k,v)=>store.set(k,v)},
-    document:{getElementById:el},setTimeout:()=>{},
+    document:{getElementById:el},setTimeout:()=>{},clearTimeout:()=>{},
     DATA:structuredClone(sample.items).map(r=>({...r,id:r.ref})),S:config,CONFIG:config,BUILD:'test-build',
     LS:{raw:k=>k==='nl-pass'?'test':'',rawSet:()=>{}},tok:{get:()=>true},toast:s=>notices.push(s),
     PARAMS:['rate','perKg','handling','minProfit','profitPct'],pending:{},hidePending:{},supplyHidePending:{},over:{},

@@ -349,8 +349,9 @@ body.lb .app{border-bottom-color:var(--gold)}
   <section class="panel src-only" data-panel="review" aria-label="To review" hidden>
     <h2>To review</h2>
     <p class="lede" id="inboxSum">New styles, price changes and sold-out styles the weekly robot found.</p>
-    <div class="acts"><button class="ghost" type="button" id="decisionExport">Export decisions</button></div>
-    <p class="note" id="decisionNote">Decision history stays encrypted on this device. Export a private backup before clearing browser data. Exports contain cost-derived data; never share or commit them.</p>
+    <div class="acts"><button class="ghost" type="button" id="decisionExport">Export decisions</button><button class="ghost" type="button" id="modelRetrain">Retrain</button></div>
+    <p class="note" id="modelStatus" role="status">Model: unlock To review to restore and train.</p>
+    <p class="note" id="decisionNote">Decision history is encrypted on this device and backed up sealed when connected. Check sync status before clearing browser data. Exports contain cost-derived data; never share or commit them.</p>
     <details class="sheet" id="inboxBox"><summary>To review</summary>
       <div id="inboxBody" class="inb"><p class="note">Loading what the robot found…</p></div>
     </details>
@@ -726,7 +727,7 @@ async function prepareReviewHistory(makeRows){
   catch(e){ decisionMissed(rows.length); return async()=>{}; }
 }
 async function decisionFinish(commit){
-  try{ await commit(); }
+  try{ await commit(); scheduleLearning(); }
   catch(e){ decisionMissed(commit.count||1); }
 }
 document.getElementById("decisionExport").onclick=async()=>{
@@ -740,6 +741,115 @@ document.getElementById("decisionExport").onclick=async()=>{
     document.getElementById("decisionNote").textContent=`Exported ${out.decisions.length} decisions and ${out.unconfirmed.length} unconfirmed snapshots. This file contains private cost-derived data. Never share or commit it.`;
   }catch(e){ toast(e.message==="pass"?"Wrong password for this device's decision history.":e.message); }
 };
+
+// ---------- book ranking: exact standalone port of tools/sourcing/ranking.mjs ----------
+const BookRanking=(()=>{
+// Approval preference model, not a demand or sales forecast. No dependencies or network.
+const VERSION = 1;
+const FEATURES = ['priceFit','profit','sizeCoverage','freightEfficiency','neutral','shoes','bags','clothing'];
+const clamp = n => Math.max(0, Math.min(1, n));
+function features(item, estimate) {
+  return [clamp(1-Math.max(0,estimate.price-50000)/100000), clamp(estimate.profit/20000),
+    item.cat==='bags'?1:clamp(item.sizes.length/6), clamp(1-estimate.freightShare),
+    ['Black','Brown','Tan & camel','Beige & nude','White','Grey'].includes(item.fam)?1:0,
+    ...['shoes','bags','clothing'].map(cat=>Number(item.cat===cat))];
+}
+function baseline(x) { return clamp(.35*x[0]+.25*x[1]+.20*x[2]+.15*x[3]+.05*x[4]); }
+const sigmoid = z => 1/(1+Math.exp(-Math.max(-35,Math.min(35,z))));
+function predict(model,x) { return sigmoid(model.weights[0]+x.reduce((s,v,i)=>s+v*model.weights[i+1],0)); }
+function validFeatures(x) { return Array.isArray(x)&&x.length===FEATURES.length&&x.every(v=>Number.isFinite(v)&&v>=0&&v<=1); }
+function validModel(m) { return m?.version===VERSION&&m?.active===true&&Array.isArray(m.weights)&&m.weights.length===FEATURES.length+1&&m.weights.every(Number.isFinite); }
+function hash(text) { let h=2166136261;for(const c of text)h=Math.imul(h^c.charCodeAt(0),16777619);return h>>>0; }
+function metrics(rows, score) {
+  let loss=0,tp=0,tn=0,p=0,n=0;
+  for(const r of rows) { const s=score(r.x);loss+=(s-r.y)**2;if(r.y){p++;tp+=s>=.5;}else{n++;tn+=s<.5;} }
+  return {brier:loss/rows.length,balancedAccuracy:(tp/p+tn/n)/2,positive:p,negative:n};
+}
+function train(feedback) {
+  const unique=new Map();
+  for(const row of feedback) {
+    if(!row.id||!row.product_key||!['approve','reject'].includes(row.decision)||row.feature_version!==VERSION||!validFeatures(row.features)) continue;
+    unique.set(row.id,{id:row.id,group:row.product_key,x:row.features,y:Number(row.decision==='approve')});
+  }
+  const rows=[...unique.values()], counts={positive:rows.filter(r=>r.y).length,negative:rows.filter(r=>!r.y).length};
+  const inactive = reason=>({version:VERSION,active:false,reason,examples:rows.length,...counts,features:FEATURES});
+  if(rows.length<50||Math.min(counts.positive,counts.negative)<15)return inactive('Need at least 50 unique decisions, including 15 approvals and 15 rejections.');
+  // Keep every colour/variant of a product on the same side of the holdout.
+  const test=rows.filter(r=>hash(r.group)%5===0), fit=rows.filter(r=>hash(r.group)%5!==0);
+  if([test,fit].some(rs=>rs.filter(r=>r.y).length<5||rs.filter(r=>!r.y).length<5))return inactive('Need more independent products in both classes for a grouped holdout.');
+  const weights=Array(FEATURES.length+1).fill(0);
+  for(let epoch=0;epoch<1000;epoch++) {
+    const gradient=weights.map(()=>0);
+    for(const row of fit){const x=[1,...row.x],error=predict({weights},row.x)-row.y;x.forEach((v,i)=>gradient[i]+=error*v);}
+    weights.forEach((_,i)=>weights[i]-=.2*(gradient[i]/fit.length+(i?.01*weights[i]:0)));
+  }
+  const learned=metrics(test,x=>predict({weights},x)), rules=metrics(test,baseline);
+  const active=learned.brier<rules.brier&&learned.balancedAccuracy>rules.balancedAccuracy+.02;
+  return {version:VERSION,active,weights,features:FEATURES,examples:rows.length,training:fit.length,holdout:test.length,
+    metrics:{learned,baseline:rules},reason:active?'Improved held-out approval ranking; advisory only.':'Baseline retained: model did not improve both held-out metrics.'};
+}
+
+return {train,validFeatures,VERSION};
+})();
+// ---------- learning sync ----------
+let learningTimer, learningRunning=false, learningAgain=false;
+function scheduleLearning(){ clearTimeout(learningTimer); learningTimer=setTimeout(runLearning,1200); }
+function learningStatus(s){ document.getElementById("modelStatus").textContent=s; }
+function learningRows(data){ return Object.values(data.entries).filter(e=>e.confirmed).map(e=>e.row); }
+function validDecision(r){ return r&&typeof r.id==="string"&&typeof r.product_key==="string"&&["approve","reject"].includes(r.decision)&&r.feature_version===BookRanking.VERSION&&BookRanking.validFeatures(r.features); }
+async function syncDecisions(pass){
+  // Re-read on conflicts; never overwrite another device's batches or silently ignore a broken backup.
+  for(let attempt=0;attempt<3;attempt++){
+    const remote=await ghJson("decisions.json",{batches:[]});
+    if(!Array.isArray(remote.data?.batches)) throw new Error("Invalid backup");
+    const rows=new Map();
+    for(const batch of remote.data.batches){
+      const payload=await openBatch(batch);
+      if(!Array.isArray(payload.items)||!payload.items.every(validDecision)) throw new Error("Invalid decision batch");
+      for(const row of payload.items) rows.set(row.id,row);
+    }
+    const local=await decisionLock(async()=>{
+      const data=await decisionRead(pass);
+      for(const row of rows.values()) data.entries[row.id]={row,confirmed:true};
+      await decisionWrite(data,pass);
+      return learningRows(data).filter(validDecision);
+    });
+    const fresh=local.filter(r=>!rows.has(r.id));
+    if(!fresh.length) return local.sort((a,b)=>a.id.localeCompare(b.id));
+    const batch=await inboxReseal(fresh);
+    batch.id=crypto.randomUUID();
+    try{
+      await ghPut("decisions.json",b64(JSON.stringify({batches:[...remote.data.batches,batch]})),"Back up sealed decisions",remote.sha);
+      return local.sort((a,b)=>a.id.localeCompare(b.id));
+    }catch(e){ if(e.message!=="conflict"||attempt===2) throw e; }
+  }
+}
+async function runLearning(){
+  if(learningRunning){ learningAgain=true; return; }
+  learningRunning=true;
+  try{
+    const pass=LS.raw("nl-pass");
+    if(!pass||!INB.key){ learningStatus("Model: unlock To review to restore and train."); return; }
+    if(!tok.get()){ learningStatus("Model: connect GitHub to restore, back up and train."); return; }
+    learningStatus("Model: syncing private decisions…");
+    const rows=await syncDecisions(pass), model=BookRanking.train(rows);
+    // Insufficient data never publishes a model. All consumers must honour active:false.
+    if(model.examples<50||model.positive<15||model.negative<15){
+      learningStatus(`Model: ${model.examples} of 50 decisions so far. ${model.reason}`); return;
+    }
+    const previous=await ghJson("model.json",null);
+    const comparable=previous.data?Object.fromEntries(Object.entries(previous.data).filter(([k])=>k!=="trained_at")):null;
+    let trainedAt=previous.data?.trained_at;
+    if(JSON.stringify(comparable)!==JSON.stringify(model)){
+      trainedAt=new Date().toISOString();
+      // The only public payload: the ranker's fresh output plus the training date.
+      await ghPut("model.json",b64(JSON.stringify({...model,trained_at:trainedAt})),"Update advisory sourcing model",previous.sha);
+    }
+    learningStatus(model.active?`Model active: beats the baseline on held-out decisions, trained ${trainedAt}. Advisory only.`:`Model inactive: ${model.reason}`);
+  }catch(e){ learningStatus("Model: sync or training failed. Your action is unaffected; keep this device's history and use Retrain to retry."); }
+  finally{ learningRunning=false; if(learningAgain){ learningAgain=false; scheduleLearning(); } }
+}
+document.getElementById("modelRetrain").onclick=()=>{ clearTimeout(learningTimer); void runLearning(); };
 
 // ---------- added products ----------
 let addedMeta=[], privateCosts={};
@@ -944,6 +1054,7 @@ async function inboxLoad(){
   INB.items=INB.items.filter(x=>x.t!=="new"||!known.has(x.ref));            // already in the catalogue
   INB.items=INB.items.filter(x=>x.t==="new"||known.has(x.ref));             // changes only for styles we still carry
   inboxDraw(inbox);
+  scheduleLearning();
 }
 const IF={who:"all",brand:""};
 const lastOf=a=>a&&a.length?a[a.length-1]:undefined;   // Array.at() is missing on older phones
