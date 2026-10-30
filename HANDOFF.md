@@ -2,6 +2,30 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-10-26: Codex, codex/book-learning-loop — PR #34 review fixes
+
+Did: addressed both issues in [the review](https://github.com/Fshuaib75/northline-house/pull/34#issuecomment-6415450901) on the same [draft PR #34](https://github.com/Fshuaib75/northline-house/pull/34). Decision capture now skips invalid/unwritable rows, counts them in `decisionNote`, and never aborts the owner's action. Valid neighbours still record. Only new-style approvals/dismissals and published **manual** hides become training rows; price and sold-out updates never do. Supply hides retain their provenance in local pending state across failed saves/reloads. Updated template, tests and README; private history remains encrypted in `nl-decisions-v1` with private export only.
+
+Validation: dev build, all **15 tests**, and `git diff --check` pass. Regression coverage includes missing saved password, unknown hide cost, storage failure for all three actions, mixed valid/invalid rows, approve/dismiss of price and gone items (including unknown gone cost), and a failed gone approval followed by Publish. Claude's review reports passing 390px/1366px browser QA on the prior version; Claude will rerun the flows with these fixes. Codex has not claimed a new browser run.
+
+Next: Claude to rerun the review flows; owner decides merge. Part (b) remains pending; consider a shared inbox-public-key-sealed decision backup for cross-device training as the reviewer suggests. No model is published for (c) yet. All training safeguards stay unchanged.
+
+Watch out: this entry supersedes the prior capture semantics—price changes and supply events are **not** taste decisions, and failed capture must **not** block the underlying action. The action's own password/save requirements still apply. No catalogue, sealed root file, live book or gh-pages changed; no merge or deployment.
+
+## 2026-10-26: Codex, codex/book-learning-loop — private decision capture
+
+Draft PR: [#34](https://github.com/Fshuaib75/northline-house/pull/34), against main; not merged or deployed.
+
+Did: rebased onto main's book-source commit `17ccfb9` and built part (a) in `tools/book/book.template.html`. Successful inbox approvals/dismissals capture ranking VERSION 1 rows; accepting a gone item and publishing a manual hide record late rejects. Price decisions use the proposed cost. Provenance and stable IDs survive inbox resealing; retries deduplicate. Rows retain `grp` (or ref) for the grouped holdout, including later actions on a recorded ref. Added Export decisions, documentation in `tools/book/README.md`, and `tools/book/decisions.test.mjs`. No catalogue, sealed root file, live book or gh-pages changes.
+
+Storage: only this origin's `localStorage["nl-decisions-v1"]`, AES-GCM encrypted with the book password using the existing PBKDF2 helper. No rows/features are uploaded. Export is **private plaintext JSON**: `decisions` is readable by `engine.mjs train`; `unconfirmed` holds interrupted/failed action snapshots and is ignored by training. Never commit exports. The existing remembered password shares the browser profile; this does not protect from an unlocked book or same-origin scripts. No cross-device sync or password migration: export before clearing data/changing password.
+
+Validation: `node tools/book/dev-build.mjs`, `node --test tools/book/decisions.test.mjs` (10 tests pass), and `git diff --check`. Tests cover parity with the actual sourcing estimate/ranker, encryption, export, approvals/dismissals/hides, storage/remote failures, partial success and retries, using synthetic fixtures and stubbed remote writes. **Phone (390px) and desktop browser QA remains outstanding:** the cloud browser refused the local preview, then blocked access under its URL security policy. Keep the PR draft until that check is completed.
+
+Next: this turn follows Farouk's latest request to build **(a)** on the new source. (b) remains unbuilt: Actions cannot decrypt local/private decisions. The browser-training proposal needs a separate implementation decision; do not publish feedback or add the book password to Actions. Preserve `ranking.mjs` safeguards (50+ decisions, 15+ each class, grouped holdout, advisory only, baseline unless it wins). Claude (c): this PR produces no model yet; later consume only a public model, sort within sections, and do not drop low scorers. A Claude private session must rebuild/encrypt the real book from the merged template before owner-approved deployment.
+
+Watch out: snapshots are encrypted before remote mutations and confirmed only after success. Approvals confirm after Publish, before inbox cleanup. If local confirmation fails after remote success, the UI requests a private backup; reconcile unconfirmed rows before import/training. Earlier partial writes may also need reconciliation. Trendyol remains assisted open-tab capture only.
+
 ## 2026-10-26: Claude, claude/book-source — book source in the repo for Codex; fix to the learning-loop plan
 
 Did: Codex asked for the book's editable source (book/index.html is only the encrypted build). With Farouk's go-ahead, added `tools/book/`: `book.template.html` (the book's full source, same as the live build of 17 Oct, gh-pages `cf0e0f4`; code only, no buy prices, catalogue, password or key), `dev-build.mjs` + `sample-data.json` + `sample-config.json` (made-up data) and a README. `node tools/book/dev-build.mjs` builds a test copy into git-ignored `_dev/` with its own prices, private file and a review inbox sealed with a fresh test key (password `test`). The test build points the book's GitHub saving at a dead address, so Approve/Publish/Add can't write to the live repo. Tested headless at 390 px and 1366 px: catalogue renders, To review unlocks and shows all 4 groups, Approve fails safely, no script errors. Added `tools/book/` to Codex's lane in `AGENTS.md`.

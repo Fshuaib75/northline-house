@@ -349,6 +349,8 @@ body.lb .app{border-bottom-color:var(--gold)}
   <section class="panel src-only" data-panel="review" aria-label="To review" hidden>
     <h2>To review</h2>
     <p class="lede" id="inboxSum">New styles, price changes and sold-out styles the weekly robot found.</p>
+    <div class="acts"><button class="ghost" type="button" id="decisionExport">Export decisions</button></div>
+    <p class="note" id="decisionNote">Decision history stays encrypted on this device. Export a private backup before clearing browser data. Exports contain cost-derived data; never share or commit them.</p>
     <details class="sheet" id="inboxBox"><summary>To review</summary>
       <div id="inboxBody" class="inb"><p class="note">Loading what the robot found…</p></div>
     </details>
@@ -449,9 +451,9 @@ let stars = new Set(), over = {}, pending = {}, privOver = {};   // over = lira 
 const KEY="nl-capone-v7";
 const LS={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}}, set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}, raw(k){try{return localStorage.getItem(k)||""}catch(e){return ""}}, rawSet(k,v){try{v?localStorage.setItem(k,v):localStorage.removeItem(k)}catch(e){}}};
 function load(){ const old=LS.get("nl-capone-v6",null)||LS.get("nl-capone-v5",null)||{}; const j=LS.get(KEY,null)||{stars:old.stars,menPrice:old.menPrice};
-  if(j.stars) stars=new Set(j.stars); pending={...(j.menPrice||{}), ...(j.pending||{})}; hidePending=j.hidePending||{}; mergeOver(); }
-function save(){ LS.set(KEY,{stars:[...stars], pending, hidePending}); }
-let hidePending={}, hidden=new Set();   // styles pulled from the agent site (e.g. sold out)
+  if(j.stars) stars=new Set(j.stars); pending={...(j.menPrice||{}), ...(j.pending||{})}; hidePending=j.hidePending||{}; supplyHidePending=j.supplyHidePending||{}; mergeOver(); }
+function save(){ LS.set(KEY,{stars:[...stars], pending, hidePending, supplyHidePending}); }
+let hidePending={}, supplyHidePending={}, hidden=new Set();   // keep supply hides distinct across failed saves/reloads
 function mergeHidden(){ hidden=new Set((published&&published.hidden)||[]); Object.entries(hidePending).forEach(([k,v])=>{ v?hidden.add(k):hidden.delete(k); }); }
 function mergeOver(){ over={...privOver}; Object.entries(pending).forEach(([k,v])=>{ if(v>0) over[k]=v; else delete over[k]; }); }
 const fmtN = n => "₦" + Math.round(n).toLocaleString("en-NG");
@@ -605,7 +607,7 @@ grid.addEventListener("click",e=>{
   const ed=e.target.closest("[data-edit]"); if(ed){ startEdit(ed.dataset.edit); return; }
   const b=e.target.closest(".star"); if(b){ const h=b.dataset.h; stars.has(h)?stars.delete(h):stars.add(h); b.setAttribute("aria-pressed",stars.has(h)); save(); count(); if(S.star) render(); return; }
   const ph=e.target.closest(".ph[data-g]"); if(ph){ const r=DATA.find(x=>x.id===ph.dataset.g); if(r) openGal(label(r), photos(r)); return; }
-  const hb=e.target.closest("[data-hide]"); if(hb){ const ref=hb.dataset.hide; hidePending[ref]=!hidden.has(ref); mergeHidden(); save(); render(); toast(hidden.has(ref)?"Hidden here. Press Publish to take it off the agent site.":"Will show again after you press Publish."); return; }
+  const hb=e.target.closest("[data-hide]"); if(hb){ const ref=hb.dataset.hide; hidePending[ref]=!hidden.has(ref); delete supplyHidePending[ref]; mergeHidden(); save(); render(); toast(hidden.has(ref)?"Hidden here. Press Publish to take it off the agent site.":"Will show again after you press Publish."); return; }
   const rm=e.target.closest("[data-rm]"); if(rm){ const ref=rm.dataset.rm; if(armed!==ref){ armed=ref; render(); setTimeout(()=>{ if(armed===ref){armed=null; render();} },4000); return; } armed=null; removeProduct(ref); }
 });
 grid.addEventListener("change",e=>{ const id=e.target.dataset.ov; if(!id) return; const v=parseFloat(e.target.value); pending[id]= v>0 ? v : 0; mergeOver(); save(); render(); toast(v>0?"Saved here. Press Publish so agents get the new price.":"Back to the catalogue price. Press Publish to update agents."); });
@@ -655,6 +657,89 @@ const u8=b=>new Uint8Array(b); const toB=a=>{ let s=""; a.forEach(x=>s+=String.f
 async function keyFrom(pass,salt){ const km=await crypto.subtle.importKey("raw",new TextEncoder().encode(pass),"PBKDF2",false,["deriveKey"]); return crypto.subtle.deriveKey({name:"PBKDF2",salt,iterations:150000,hash:"SHA-256"},km,{name:"AES-GCM",length:256},false,["encrypt","decrypt"]); }
 async function seal(obj,pass){ const salt=crypto.getRandomValues(u8(16)), iv=crypto.getRandomValues(u8(12)); const ct=u8(await crypto.subtle.encrypt({name:"AES-GCM",iv},await keyFrom(pass,salt),new TextEncoder().encode(JSON.stringify(obj)))); return {v:1,salt:toB(salt),iv:toB(iv),ct:toB(ct)}; }
 async function unseal(box,pass){ try{ const pt=await crypto.subtle.decrypt({name:"AES-GCM",iv:fromB(box.iv)},await keyFrom(pass,fromB(box.salt)),fromB(box.ct)); return JSON.parse(new TextDecoder().decode(pt)); }catch(e){ throw new Error("pass"); } }
+
+// ---------- private decision history (standalone book; parity-tested against ranking.mjs) ----------
+const DECISION_KEY="nl-decisions-v1";
+let decisionQueue=Promise.resolve();
+function decisionLock(fn){
+  if(globalThis.navigator?.locks) return navigator.locks.request(DECISION_KEY,fn);
+  const next=decisionQueue.then(fn); decisionQueue=next.catch(()=>{}); return next;
+}
+function decisionFeatures(item,cost,kg,params){
+  // VERSION 1 uses the sourcing estimate, not the book's legacy commission rule.
+  const P=Object.assign({rate:30,perKg:12000,handling:1500,minProfit:4000,profitPct:15},params);
+  if(!(cost>0&&kg>0)) throw new Error("Decision history needs this item's buy price and weight. Unlock the book and try again.");
+  const freight=kg*P.perKg, landed=cost*P.rate+freight+P.handling;
+  const profit=Math.max(P.minProfit,landed*P.profitPct/100);
+  let agent=0; for(let k=0;k<6;k++) agent=Math.ceil(.25*(profit+agent)/500)*500;
+  const price=Math.ceil((landed+profit+agent)/500)*500, clamp=n=>Math.max(0,Math.min(1,n));
+  const f=[clamp(1-Math.max(0,price-50000)/100000),clamp((price-landed-agent)/20000),item.cat==="bags"?1:clamp((item.sizes||[]).length/6),clamp(1-freight/landed),["Black","Brown","Tan & camel","Beige & nude","White","Grey"].includes(item.fam)?1:0,...["shoes","bags","clothing"].map(c=>Number(item.cat===c))];
+  if(!f.every(Number.isFinite)) throw new Error("Decision history needs valid pricing settings.");
+  return f;
+}
+function decisionRow(x,decision,id,reason="review"){
+  const original=DATA.find(r=>r.ref===x.ref)||{}, item={...original,...x};
+  item.cat=item.cat||"shoes";
+  const cost=x.t==="price"?x.now:x.t==="new"?x.tl:tl({...item,id:item.id||item.ref});
+  return {id,ref:item.ref,product_key:item.grp||item.ref,decision,feature_version:1,features:decisionFeatures(item,cost,kgOf(item),S),source:x.source||x.src||"book",brand:item.brand||"",cat:item.cat,g:item.g||"",fam:item.fam||"",date:new Date().toISOString(),reason};
+}
+async function decisionRead(pass){
+  const raw=localStorage.getItem(DECISION_KEY);
+  const data=raw?await unseal(JSON.parse(raw),pass):{version:1,entries:{}};
+  if(data.version!==1||!data.entries||typeof data.entries!=="object") throw new Error("Decision history could not be opened. Keep this device's data and recover its backup.");
+  return data;
+}
+async function decisionWrite(data,pass){
+  // Do not use LS.set: it swallows quota/security failures.
+  localStorage.setItem(DECISION_KEY,JSON.stringify(await seal(data,pass)));
+}
+async function decisionPrepare(rows){
+  if(!rows.length) return async()=>{};
+  const pass=LS.raw("nl-pass")||document.getElementById("aPass").value;
+  if(!pass) throw new Error("Unlock the review inbox to save private decision history first.");
+  await decisionLock(async()=>{
+    const data=await decisionRead(pass);
+    rows.forEach(row=>{
+      // Added public metadata does not retain grp; recover it privately for later price/hide decisions.
+      if(row.product_key===row.ref){ const prior=Object.values(data.entries).find(e=>e.confirmed&&e.row.ref===row.ref); if(prior) row.product_key=prior.row.product_key; }
+      if(!data.entries[row.id]?.confirmed) data.entries[row.id]={row,confirmed:false};
+    });
+    await decisionWrite(data,pass);
+  });
+  // Reserve encrypted snapshots before remote writes. Only successful actions become training rows.
+  return ()=>decisionLock(async()=>{
+    const data=await decisionRead(pass);
+    rows.forEach(row=>{ data.entries[row.id]={row:data.entries[row.id]?.row||row,confirmed:true}; });
+    await decisionWrite(data,pass);
+  });
+}
+let decisionsMissed=0;
+function decisionMissed(count){
+  decisionsMissed+=count;
+  document.getElementById("decisionNote").textContent=`${decisionsMissed} decision${decisionsMissed===1?"":"s"} not recorded this session. Your actions can still save. Check your book password, item costs and browser storage. Export a private backup; unconfirmed snapshots are excluded from training.`;
+}
+async function prepareReviewHistory(makeRows){
+  const rows=[];
+  // Capture is advisory: one invalid item must not lose its neighbours or block an action.
+  for(const makeRow of makeRows){ try{ rows.push(makeRow()); }catch(e){ decisionMissed(1); } }
+  try{ const commit=await decisionPrepare(rows); commit.count=rows.length; return commit; }
+  catch(e){ decisionMissed(rows.length); return async()=>{}; }
+}
+async function decisionFinish(commit){
+  try{ await commit(); }
+  catch(e){ decisionMissed(commit.count||1); }
+}
+document.getElementById("decisionExport").onclick=async()=>{
+  try{
+    const pass=LS.raw("nl-pass")||document.getElementById("aPass").value;
+    if(!pass) throw new Error("Unlock the review inbox before exporting.");
+    const data=await decisionLock(()=>decisionRead(pass)), entries=Object.values(data.entries);
+    const out={version:1,generated_at:new Date().toISOString(),decisions:entries.filter(e=>e.confirmed).map(e=>e.row),unconfirmed:entries.filter(e=>!e.confirmed).map(e=>e.row)};
+    const url=URL.createObjectURL(new Blob([JSON.stringify(out,null,2)],{type:"application/json"})), a=document.createElement("a");
+    a.href=url; a.download="northline-private-decisions-"+new Date().toISOString().slice(0,10)+".json"; a.click(); setTimeout(()=>URL.revokeObjectURL(url),1000);
+    document.getElementById("decisionNote").textContent=`Exported ${out.decisions.length} decisions and ${out.unconfirmed.length} unconfirmed snapshots. This file contains private cost-derived data. Never share or commit it.`;
+  }catch(e){ toast(e.message==="pass"?"Wrong password for this device's decision history.":e.message); }
+};
 
 // ---------- added products ----------
 let addedMeta=[], privateCosts={};
@@ -777,13 +862,17 @@ async function loadPublished(){
   }catch(e){ published=null; }
   mergeAdded(); render();
 }
-async function publishPrices(){
+async function publishPrices(reviewHides=[]){
   if(!tok.get()){ document.getElementById("tokBox").open=true; toast("Connect your GitHub key first"); return; }
   // never publish from an out-of-date book: it would overwrite newer prices and hidden styles
   try{ const bj=await (await fetch("../build.json?t="+Date.now(),{cache:"no-store"})).json(); if(bj.build && bj.build!==BUILD){ document.getElementById("stale").hidden=false; toast("A newer catalogue is live. Reload this page, then publish."); return; } }catch(e){}
   const btn=document.getElementById("pubBtn"); btn.disabled=true; btn.textContent="Publishing…";
+  const publishingHides={...hidePending};
   const params={}; PARAMS.forEach(k=>params[k]=S[k]);
   try{
+    const commitHistory=await prepareReviewHistory(Object.entries(publishingHides)
+      .filter(([ref,hide])=>hide&&!supplyHidePending[ref]&&!reviewHides.includes(ref)&&!(published?.hidden||[]).includes(ref))
+      .map(([ref])=>()=>decisionRow({ref},"reject",`book:hide:${ref}:${published?.updated||BUILD}`,"late_hide")));
     const touched=Object.keys(pending).length>0;
     if(touched){   // what you pay is private: store it encrypted with the book password
       let pass=LS.raw("nl-pass") || document.getElementById("aPass").value || prompt("Book password (keeps what you pay private)") || "";
@@ -794,15 +883,16 @@ async function publishPrices(){
       await ghPut("private.json", b64(JSON.stringify(await seal(costs,pass))), "Update what I pay", priv.sha);
       LS.rawSet("nl-pass",pass); privateCosts=costs; privOver={...over}; pending={}; save();
     }
-    const body=await saveJson("prices.json", cur=>{ const h=new Set((cur&&cur.hidden)||[]); Object.entries(hidePending).forEach(([k,v])=>{ v?h.add(k):h.delete(k); }); hidden=h;   // merge with what is live, so hides made elsewhere are kept
+    const body=await saveJson("prices.json", cur=>{ const h=new Set((cur&&cur.hidden)||[]); Object.entries(publishingHides).forEach(([k,v])=>{ v?h.add(k):h.delete(k); }); hidden=h;   // merge with what is live, so hides made elsewhere are kept
       return {updated:new Date().toISOString(), params, menPrice:{}, locked:Object.keys(over), hidden:[...h], prices:priceMap("old"), ...(NC?{switchAt:NC.from, next:priceMap("new")}:{})}; }, null, "Update agent prices");
-    hidePending={}; save();
-    published=body; render(); toast("Published. Agents see it within about a minute.");
+    Object.entries(publishingHides).forEach(([ref,hide])=>{ if(hidePending[ref]===hide){ delete hidePending[ref]; delete supplyHidePending[ref]; } }); save();
+    await decisionFinish(commitHistory);
+    published=body; mergeHidden(); render(); toast("Published. Agents see it within about a minute.");
     btn.disabled=false; btn.textContent="Publish these prices to agent site"; return true;
-  }catch(e){ toast(e.message==="needpass"?"Enter your book password to publish your own prices":errMsg(e)); }
+  }catch(e){ if(e.message!=="history") toast(e.message==="needpass"?"Enter your book password to publish your own prices":errMsg(e)); }
   btn.disabled=false; btn.textContent="Publish these prices to agent site"; return false;
 }
-document.getElementById("pubBtn").onclick=publishPrices;
+document.getElementById("pubBtn").onclick=()=>publishPrices();
 
 // ---------- review inbox ----------
 // The weekly robot seals what it finds with the PUBLIC key (inbox-pub.json). Only this book can open it: the private key sits in
@@ -849,7 +939,7 @@ async function inboxLoad(){
   try{ const kbox=await get("inbox-key.json"); const {jwk}=await unseal(kbox,pass); INB.key=await crypto.subtle.importKey("jwk",jwk,RSA,false,["decrypt"]); }
   catch(e){ inboxAsk("That password didn’t open the inbox. Type it again.",true); return; }
   const inbox=await get("inbox.json")||{batches:[]}; INB.batches=inbox.batches||[]; INB.items=[];
-  INB.bad=0; for(const b of INB.batches){ try{ const d=await openBatch(b); (d.items||[]).forEach(x=>INB.items.push({...x, batch:b.id, on:false})); }catch(e){ INB.bad++; } }
+  INB.bad=0; for(const b of INB.batches){ try{ const d=await openBatch(b); (d.items||[]).forEach(x=>INB.items.push({...x, source:x.source||x.src||d.source||"inbox", decision_origin:x.decision_origin||b.id, batch:b.id, on:false})); }catch(e){ INB.bad++; } }
   const known=new Set(DATA.map(r=>r.ref));
   INB.items=INB.items.filter(x=>x.t!=="new"||!known.has(x.ref));            // already in the catalogue
   INB.items=INB.items.filter(x=>x.t==="new"||known.has(x.ref));             // changes only for styles we still carry
@@ -936,10 +1026,14 @@ async function inboxReseal(items){
   return {id:created, created, count:items.length, k:toB(u8(await crypto.subtle.encrypt(RSA,key,raw))), iv:toB(iv), ct:toB(u8(await crypto.subtle.encrypt({name:"AES-GCM",iv},aes,plain)))};
 }
 async function inboxApply(mode){
+  if(INB.busy) return;
   const pass=LS.raw("nl-pass"); if(!tok.get()){ byId("tokBox").open=true; toast("Connect your GitHub key first"); return; }
   const picked=INB.items.filter(x=>x.on); if(!picked.length){ toast("Tick at least one item first"); return; }
   const btn=byId(mode==="dismiss"?"inboxDrop":"inboxApply"), was=btn.textContent; btn.disabled=true; btn.textContent=mode==="dismiss"?"Dismissing…":"Applying…";
+  INB.busy=true;
   try{
+    const commitHistory=await prepareReviewHistory(picked.filter(x=>x.t==="new").map(x=>()=>
+      decisionRow(x,mode==="dismiss"?"reject":"approve",`book:review:${x.decision_origin||x.batch}:${x.t}:${x.ref}:${mode}`)));
     let news=[];
     if(mode==="approve"){
       news=picked.filter(x=>x.t==="new"&&!DATA.some(r=>r.ref===x.ref));
@@ -954,18 +1048,22 @@ async function inboxApply(mode){
         mergeAdded();
       }
       picked.filter(x=>x.t==="price").forEach(x=>{ pending[x.ref]=x.now; });
-      picked.filter(x=>x.t==="gone").forEach(x=>{ hidePending[x.ref]=true; });
+      picked.filter(x=>x.t==="gone").forEach(x=>{ hidePending[x.ref]=true; supplyHidePending[x.ref]=true; });
       mergeOver(); mergeHidden(); save();
-      if(!await publishPrices()) throw new Error("publish");
+      if(!await publishPrices(picked.filter(x=>x.t==="gone").map(x=>x.ref))) throw new Error("publish");
+      await decisionFinish(commitHistory);
     }
     const ids=new Set(INB.batches.map(b=>b.id));
-    const keep=INB.items.filter(x=>!x.on).map(({on,batch,...x})=>x);
+    const selected=new Set(picked);
+    const keep=INB.items.filter(x=>!selected.has(x)).map(({on,batch,...x})=>x);
     const fresh=keep.length?await inboxReseal(keep):null;
     await saveJson("inbox.json", cur=>({batches:[...((cur&&cur.batches)||[]).filter(b=>!ids.has(b.id)), ...(fresh?[fresh]:[])]}), {batches:[]}, mode==="dismiss"?"Review inbox: dismissed some":"Review inbox: reviewed");
+    if(mode==="dismiss") await decisionFinish(commitHistory);
     stats(); render();
     toast(mode==="dismiss"?`Dismissed ${picked.length}. ${keep.length} still waiting.`:`Done: ${news.length} new, ${picked.length-news.length} changes live. ${keep.length} still waiting.`);
     setTimeout(inboxLoad,1200);
-  }catch(e){ if(e.message!=="publish") toast(errMsg(e)); btn.disabled=false; btn.textContent=was; }
+  }catch(e){ if(!["publish","history"].includes(e.message)) toast(errMsg(e)); btn.disabled=false; btn.textContent=was; }
+  finally{ INB.busy=false; }
 }
 // unpin the top bar while any panel in it is open (fallback for browsers without :has)
 document.querySelectorAll(".bar details").forEach(d=>d.addEventListener("toggle",()=>{ const bar=document.querySelector(".bar"); bar.classList.toggle("unpin",!!bar.querySelector("details[open]")); }));
