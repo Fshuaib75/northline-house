@@ -180,7 +180,7 @@ def caption(i):
     desc = (i.get("desc") or "").replace(", confirm size before payment", "").replace("confirm size before payment", "").strip(" ,")
     lines = [f"{i['model']}" + (f" · {i['colour']}" if i.get("colour") else ""), desc[:1].upper() + desc[1:] if desc else "",
              "", f"{naira(i['price'])}" + (f" · {sizes_line(i)}" if sizes_line(i) else ""),
-             "Delivered anywhere in Nigeria within 14 days of payment.", "",
+             "Delivered across Nigeria within 14 days of payment. Delivery from our Abuja pickup point to your door is paid on delivery.", "",
              "To order: tap the link in our bio or send us a WhatsApp message (number in bio). We confirm your size before you pay.", "",
              f"Ref {i['ref']} · {i['brand']}", "", "#northlinehouse " + TAGS[audience(i)]]
     return "\n".join(l for l in lines if l is not None).replace("\n\n\n", "\n\n")
@@ -204,7 +204,7 @@ def publish(image_url, text, story_url=None):
             time.sleep(6)
         out[kind] = graph(f"/{uid}/media_publish", {"creation_id": c}).get("id")
     if os.environ.get("FB_PAGE_ID"):
-        try: out["facebook"] = graph(f"/{os.environ['FB_PAGE_ID']}/photos", {"url": image_url, "caption": text + f"\n\nShop: {SHOP}"}).get("id")
+        try: out["facebook"] = graph(f"/{os.environ['FB_PAGE_ID']}/photos", {"url": image_url, "caption": text + f"\n\nShop: {SHOP}?a=FB"}).get("id")
         except Exception as e: print("facebook post failed:", e)
     return out
 

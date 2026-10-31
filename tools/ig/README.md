@@ -2,7 +2,7 @@
 
 Every day at 18:30 Lagos time, GitHub posts one style to **@northline_house**. Each post is a feed photo (1080×1350) plus a story (1080×1920), and both go up automatically.
 - **Which style:** this week's drop comes first, then styles you added recently, then best-value styles (₦18k–45k). It alternates Men and Women, and skips anything posted in the last 60 days or hidden from agents.
-- **Look:** Sky & Ink, the same as the site: product photo, name, colour, sizes, price, "Order: link in bio".
+- **Look:** the May earth palette with the peak-line wordmark: product photo, name, colour, sizes, price, "Order: link in bio".
 - **Caption:** the description, price, sizes, delivery promise, how to order and hashtags.
 - **Optional:** with `FB_PAGE_ID` set, it also posts to the Facebook Page.
 
@@ -26,7 +26,7 @@ Files: `.github/workflows/ig-autopost.yml` (the schedule), `tools/ig/autopost.py
 6. **Test it.** Go to Actions → Instagram daily post → Run workflow.
    - With "Preview only" ticked, the images and caption appear under the run's **Artifacts**.
    - Untick it to post for real.
-7. **Bio:** put the shop link `https://northlinehouse.shop/shop/` in the Instagram bio, plus your WhatsApp number.
+7. **Bio:** put the shop link `https://northlinehouse.shop/shop/?a=IG` in the Instagram bio, plus your WhatsApp number. The `?a=IG` makes every order from Instagram arrive as "Agent: IG", so you can count them (no commission is owed on IG, FB or DIRECT).
 
 Never paste the token into a chat, a file or the repo. It belongs only in GitHub Secrets.
 
