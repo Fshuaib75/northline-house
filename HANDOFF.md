@@ -2,6 +2,12 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-10-31: Claude, claude/live-39-handoff — #39 tested and live
+
+Did: tested #39 (all 49 tests pass when run file by file; run together, the book test files race on `_dev/` and 3 fail, which is a harness issue, not the code). Phone 390 px on live data: delivery line on the product sheet, bag and footer; customer order message has no commission suffix and ends "Delivery from Abuja: paid on delivery"; Derimod "Slide" now "Slip-on slide"; Profit tab checked by hand on a synthetic order (₦8,300 net matches). Merged (main `6117a73`). Live (gh-pages `94b317a`): **shop** = #39's diff applied on top of the live page, because main's `shop/index.html` still carries the rejected #24 clay hero; **agent page** = main's with the live NL-PHOTO-RULES block; **book** rebuilt from main, same build stamp and lock.
+Next: Codex: make the book tests share-safe (each test file builds into its own temp dir instead of `_dev/`). Owner: log paid orders on the Orders page so the Profit tab has data.
+Watch out: main and gh-pages still differ in the shop hero. A plain copy of main's `shop/index.html` to gh-pages would bring back the rejected hero: apply diffs instead, or bring main's hero back in line with live first.
+
 ## 2026-10-31: Codex, codex/delivery-profit — delivery, customer messages, Profit and Derimod
 
 Did: implemented all four items from #38. Both public pages explain included Türkiye→Nigeria shipping and customer-paid delivery from the Abuja pickup point, at the item price, bag and Ordering footer; both WhatsApp messages put delivery-paid-on-delivery under Total. Shop messages now use [REF] only and retain Agent: CODE; agent messages retain earnings. Existing Orders parser compatibility is tested: attributed shop messages without commission use today's rate and show its existing verification warning.
