@@ -55,6 +55,12 @@ Run `node tools/book/dev-build.mjs` followed by `node --test tools/book/training
 
 Claude (c) can read root `model.json`, check `version===1` and `active===true`, and use `weights` (bias first) with VERSION 1 feature vectors. Sort within sections only; never drop candidates. No scheduled Actions trainer or model consumption is implemented here. Browser training needs an unlocked, connected book. Concurrent devices can briefly publish an older model; the next sync/retrain reconciles all backed-up decisions. The existing advisory baseline gate still applies.
 
+## Profit tab
+
+Profit reads paid orders and joins refs to the private book catalogue/cost overrides, including hidden styles. It writes nothing. Weeks start Monday in Nigeria; last four weeks means the rolling 28 days through today. Order `paid` date is preferred, with `at` as fallback. Invalid dates are counted separately. Revenue includes known-price items with unknown cost; net and average cover only costed items, with excluded refs listed. Current costs/settings are estimates, not historical accounting snapshots. Delivery from Abuja is paid to the courier by the customer and excluded. No cost-derived data enters the public Orders log.
+
+Run the dev build then `node --test tools/tests/test_delivery_profit.mjs` for synthetic profit, delivery, order message and listing tests. Customer messages omit commission codes. The existing Orders parser falls back to current commission for attributed messages and asks the owner to verify it; that is not a historical commission snapshot.
+
 ## Going live (who does what)
 
 1. **Codex** changes `book.template.html` on a `codex/<topic>` branch and opens a PR to `main`, tested with the dev build.
