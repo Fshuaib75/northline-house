@@ -2,6 +2,18 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-10-31: Codex, codex/delivery-profit — delivery, customer messages, Profit and Derimod
+
+Did: implemented all four items from #38. Both public pages explain included Türkiye→Nigeria shipping and customer-paid delivery from the Abuja pickup point, at the item price, bag and Ordering footer; both WhatsApp messages put delivery-paid-on-delivery under Total. Shop messages now use [REF] only and retain Agent: CODE; agent messages retain earnings. Existing Orders parser compatibility is tested: attributed shop messages without commission use today's rate and show its existing verification warning.
+
+Profit in `tools/book/book.template.html` reads paid orders and joins private catalogue/cost overrides, including hidden styles. Nigeria Monday-to-today and rolling 28-day summaries show paid orders, units, revenue, costed net/average, top styles and unknown-cost refs separately. Delivery is excluded. No profit writes or persistence. Current cost/settings estimates are explicitly labelled; these are not historical accounting snapshots. Added README documentation.
+
+Listing quality: display cleanup on shop/agent pages fixes duplicate terminal punctuation and generic Derimod names from kind and explicitly known material; no material is guessed from brand. Future sourcing normalization uses the same helper. Stored carts refresh names from current listings. Existing public catalogue/price data are unchanged. Both NL-PHOTO-RULES blocks were checked unchanged.
+
+Validation: dev build, 63 tests across delivery/profit, sourcing, book learning/capture, agent sharing and storefront motion, plus `git diff --check`. New tests include synthetic paid/hidden/unknown-cost items, private cost overrides, missing commissions, Nigeria week/28-day boundaries, unpaid/cancelled/future exclusions, customer-message parsing and listing generation. Public and synthetic-built scripts compile. No new browser visual QA claimed: Claude should check the fifth book tab and delivery copy at phone/desktop widths before publishing.
+
+Next: review draft against main; owner merges; Claude rebuilds/encrypts the real book privately and deploys only with owner approval. No live book, sealed root file, orders data, prices.json or gh-pages changed. No real profit figures invented. If historical profit is needed later, capture private cost/settings snapshots per paid order; this tab currently uses current costs. Without a commission in a customer message, verify the stored commission in Orders before marking it paid.
+
 ## 2026-10-31: Claude, claude/delivery-profit-brief — delivery wording, order message, Profit tab (brief for Codex)
 
 Did: #36 rebuilt into the live book (gh-pages `2aa45b9`). Phone test of the live shop (390 px): agent link → product → size → bag → WhatsApp works; the agent code carries into the order; a shoe can't be added without a size; the form needs name, phone and address; GoatCounter records via/view/add/order. Found 17 live styles selling below cost after supplier price rises: hid the 8 DESA women's slides on Farouk's go-ahead (gh-pages `ca3bdf9`, `hidden` + prices removed, as the book does). The 9 Aldo men's price changes reach the book with Monday's delivery. Part (c) is PR #37 (robot ranks `pending` with `model.json`).

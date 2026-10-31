@@ -1,4 +1,14 @@
 import fs from 'node:fs';
+function listingQuality(item){
+  let model=item.model||"", desc=(item.desc||"").replace(/([.!?])\1+$/,"$1");
+  if(/^derimod$/i.test(item.brand||"")&&/^(slide|sandal|shoe|bag|terlik|sandalet)$/i.test(model.trim())){
+    const text=[item.material,item.title,item.name,item.desc].filter(Boolean).join(" ").toLowerCase();
+    const material=/\b(faux leather|suni deri|synthetic leather)\b/.test(text)?"Faux leather":/\b(leather|deri)\b/.test(text)?"Leather":/\b(suede|süet)\b/.test(text)?"Suede":"";
+    const kind={slide:"slide",sandal:"sandal",loafer:"loafer",sneaker:"sneaker",crossbody:"crossbody bag",shoulder:"shoulder bag",handbag:"handbag",tote:"tote bag"}[item.kind]||model.toLowerCase();
+    model=material?material+" "+kind:kind==="slide"?"Slip-on slide":kind.charAt(0).toUpperCase()+kind.slice(1);
+  }
+  return {...item,model,desc};
+}
 import path from 'node:path';
 import {createHash} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
@@ -67,6 +77,7 @@ export function normalize(snapshot, now=Date.now()) {
         model:G.guessModel(p.title,cat,kind),colour:c.colour,fam:c.fam,kind,heel:G.guessHeel(p.title),
         desc:'Confirm size, material and delivery before payment.',tl:Number(variants[0].price),kg:G.KG[kind]||G.KG[cat],
         img:imgs[0],imgs:imgs.slice(0,8),sizes,page:`${source.base}/products/${p.handle}`};
+      const listing=listingQuality({...item,title:p.title}); item.model=listing.model; item.desc=listing.desc;
       output.push({id:`${snapshot.source}:${p.id}:${digest}`,product_key:`${snapshot.source}:${p.id}`,item,
         evidence:{observed_at:snapshot.observed_at,title:clean(p.title),supplier:source.base,product_id:String(p.id),
           skus:variants.map(v=>v.sku).filter(Boolean),currency:'TRY',weight_estimated:true,classification:'suggested; owner review required'}});
