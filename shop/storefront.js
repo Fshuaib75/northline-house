@@ -80,7 +80,8 @@
   if ('IntersectionObserver' in window) {
     new IntersectionObserver(entries => { visible = entries[0].isIntersecting; schedule(); }, { threshold: .15 }).observe(hero);
   }
-  show(0);
+  // Start on a random slide each visit so returning customers see something different first.
+  show(Math.floor(Math.random() * slides.length));
 
   // Reveal only below-the-fold editorial sections; catalogue items remain immediate.
   if ('IntersectionObserver' in window && !reduced.matches) {
