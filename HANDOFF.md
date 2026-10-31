@@ -8,6 +8,7 @@ Did: Farouk asked for the hero to rotate on its own. The carousel in `shop/store
 Next: Codex: nothing needed; keep these rules if you rework the hero. Main and gh-pages `storefront.js` were identical before this change, so copying main's file to gh-pages is safe.
 Watch out: this was Codex's lane; edited at the owner's request while Codex had no open branch on the file.
 Also (owner asked): the hero starts on a random slide each visit; the 7 "↗" text arrows in `shop/index.html` (hero buttons, For him/For her/Bags/Clothing) are now an inline SVG (`.nl-arrow`), because iPhones drew U+2197 as a blue emoji. Use the SVG for new arrows, not the character.
+
 ## 2026-10-31: Claude, claude/live-39-handoff — #39 tested and live
 
 Did: tested #39 (all 49 tests pass when run file by file; run together, the book test files race on `_dev/` and 3 fail, which is a harness issue, not the code). Phone 390 px on live data: delivery line on the product sheet, bag and footer; customer order message has no commission suffix and ends "Delivery from Abuja: paid on delivery"; Derimod "Slide" now "Slip-on slide"; Profit tab checked by hand on a synthetic order (₦8,300 net matches). Merged (main `6117a73`). Live (gh-pages `94b317a`): **shop** = #39's diff applied on top of the live page, because main's `shop/index.html` still carries the rejected #24 clay hero; **agent page** = main's with the live NL-PHOTO-RULES block; **book** rebuilt from main, same build stamp and lock.
