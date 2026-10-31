@@ -6,14 +6,26 @@ import path from 'node:path';
 import {execFileSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
 import {webcrypto} from 'node:crypto';
-import {scanCandidates} from '../sourcing/engine.mjs';
+import {scanCandidates as scan} from '../sourcing/engine.mjs';
+const params={rate:30,perKg:12000,handling:1500,minProfit:4000,profitPct:15};
+const scanCandidates=(c,e=[],p={})=>scan(c,e,p,params);
 import {enqueueScan} from '../sourcing/queue.mjs';
-const candidates=Array.from({length:700},(_,i)=>({id:'candidate-'+i,product_key:'style-'+Math.floor(i/2),item:{t:'new',ref:'TEST-'+i,brand:'One brand',cat:'shoes',tl:99999,model:'Glitter neon slide',colour:'Pink',sizes:['42'],img:'https://example.test/'+i,imgs:['https://example.test/'+i]}}));
-test('all valid discoveries reach the inbox without price, preference, photo verdict or per-brand caps',()=>{
-  const rows=scanCandidates(candidates,[],{'candidate-0':{verdict:'leave_out',people_photos:['https://example.test/0']}});
-  assert.equal(rows.length,700);assert.equal(rows[0].img,'');assert.match(rows[0].review_notes,/product-only/);
-  assert.equal(rows[0].grp,rows[1].grp);assert.equal(rows[0].source,'sourcing scan');
+const candidates=Array.from({length:700},(_,i)=>({id:'candidate-'+i,product_key:'style-'+Math.floor(i/2),item:{t:'new',ref:'TEST-'+i,brand:'One brand',cat:'shoes',tl:900,kg:.5,model:'Leather slide',colour:'Black',fam:'Black',sizes:['42'],img:'https://example.test/'+i,imgs:['https://example.test/'+i]}}));
+test('700 qualifying discoveries from one brand have no count or per-brand cap',()=>{
+  const rows=scanCandidates(candidates);
+  assert.equal(rows.length,700);assert.equal(rows[0].grp,rows[1].grp);assert.equal(rows[0].source,'sourcing scan');
   assert.equal(scanCandidates([...candidates,candidates[0]],[{ref:'TEST-1'}]).length,699);
+});
+test('owner style, product-only photo, photo verdict and 100k rules stay in force',()=>{
+  const base=candidates[0];
+  for(const item of [{...base.item,model:'Glitter slide'},{...base.item,colour:'Pink',fam:'Pink & purple'},{...base.item,model:'Platform slide'},{...base.item,tl:100000},{...base.item,imgs:[],img:''}])assert.equal(scanCandidates([{...base,item}]).length,0);
+  assert.equal(scanCandidates([base],[],{[base.id]:{people_photos:[base.item.img]}}).length,0);
+  assert.equal(scanCandidates([base],[],{[base.id]:{verdict:'leave_out'}}).length,0);
+  const clean={...base,item:{...base.item,imgs:[base.item.img,'https://example.test/clean']}};
+  const result=scanCandidates([clean],[],{[base.id]:{people_photos:[base.item.img],best_photo:base.item.img}});
+  assert.equal(result.length,1);assert.equal(result[0].img,'https://example.test/clean');
+  assert.deepEqual(result[0].imgs,['https://example.test/clean']);
+  assert.throws(()=>scan([base],[],{},undefined),/pricing settings/);
 });
 const keys=await webcrypto.subtle.generateKey({name:'RSA-OAEP',hash:'SHA-256',modulusLength:2048,publicExponent:new Uint8Array([1,0,1])},true,['encrypt','decrypt']);
 const jwk=await webcrypto.subtle.exportKey('jwk',keys.publicKey);
@@ -26,7 +38,7 @@ test('sealed append preserves concurrent batches, retries conflicts and deduplic
   let remote={batches:[{id:'old',ct:'old'}]},puts=0;
   const api={getFile:async name=>({text:JSON.stringify(name==='inbox-pub.json'?{jwk}:remote),sha:'sha'}),putFile:async(name,text)=>{
     assert.equal(name,'inbox.json');puts++;
-    assert.ok(!text.includes('99999')&&!text.includes('TEST-0'));
+    assert.ok(!text.includes('\"tl\":900')&&!text.includes('TEST-0'));
     if(puts===1){remote.batches.push({id:'concurrent',ct:'other'});return {conflict:true};}
     remote=JSON.parse(text);return {ok:true};
   }};

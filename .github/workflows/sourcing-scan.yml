@@ -50,7 +50,7 @@ jobs:
           PAGES: ${{ inputs.pages }}
         run: python tools/sourcing/collect.py --output "$RUNNER_TEMP/sources" --pages "$PAGES"
 
-      # Photo checks annotate every candidate and remove people photos; no item is dropped.
+      # Standing style/photo rules apply; no count caps or model-score exclusions.
       - uses: actions/cache@v4
         with:
           path: |

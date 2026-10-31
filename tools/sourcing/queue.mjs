@@ -28,7 +28,7 @@ async function main(){
   const dir=process.argv[2];if(!dir)throw Error('queue.mjs SNAPSHOT_DIR [PHOTO_SCORES_JSON]');
   const {all,sources}=snapshots(dir),photoFile=process.argv[3];
   const photos=photoFile&&fs.existsSync(photoFile)?JSON.parse(fs.readFileSync(photoFile,'utf8')).scores||{}:{};
-  const items=scanCandidates(all,existingCatalogue(ROOT),photos);
+  const items=scanCandidates(all,existingCatalogue(ROOT),photos,JSON.parse(fs.readFileSync(path.join(ROOT,'prices.json'),'utf8')).params);
   const dry=process.env.GITHUB_REF!=='refs/heads/main';
   let result={queued:0};
   if(!dry){

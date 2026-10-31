@@ -2,6 +2,16 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-10-31: Codex, codex/book-only-review — all six Claude review fixes on #43
+
+Did: addressed [Claude's six-point review](https://github.com/Fshuaib75/northline-house/pull/43#issuecomment-6545219740) on [draft #43](https://github.com/Fshuaib75/northline-house/pull/43), same branch. (1) Scan restores canonical minimalCheck, loud-photo exclusions, removal of people photos/drop when no clean photo remains, and the estimated ₦100k ceiling using actual live pricing settings. No count/per-brand cap or learned-score cutoff. (2) Restored inbox filters for new refs already carried and price/gone refs no longer carried. (3) Men → Women → Kids → other before best-colour score; colours remain grouped. (4) Exact standalone minimalCheck port makes loud/non-minimal styles Unlikely regardless of a model's score. (5) Only new styles have match tags; price changes show current live agent price minus new landed cost and current commission, with bold “Loses ₦X per pair: hide or reprice” when negative; unavailable data is explicit, sold-out rows have no tag. (6) New chips show only label and one reason, with one global explanation; matches are computed once per new item before sorting, never in the comparator.
+
+Validation: manual dev build; all 91 Node tests pass together across matching/rendering, scan queue, shared sealing, capture/training, paid-order profit and sourcing. Tests cover the sample Glitz platform under a strongly approving model, exact minimal-rule port parity, both restored filters through inboxLoad, audience-before-score ordering, colour/selection preservation, one calculation per new item, current-price profit/loss and missing-data cases, concise chip rendering, standing scan rules and 700 qualifying candidates from one brand. `git diff --check` passes. No new browser QA claimed; Claude's prior phone QA was on the earlier revision.
+
+Next: Claude rechecks #43 (including concise chips and price-change warnings at phone width); owner decides merge, then Claude privately rebuilds/encrypts the live book. Keep #43 draft. No live scan or deployment run; no catalogue, real sealed file, cost export, public model or gh-pages changes.
+
+Watch out: this supersedes the earlier “never drop” interpretation: never drop **by score**, while standing style/photo/price and bookkeeping filters remain. Feature hints and profit checks stay inside the book and are not stored or published. Existing source fetch limits, sealed delivery, conflict retries, dry non-main runs and test-build isolation remain. Hero changes/#44 are outside this fix.
+
 ## 2026-10-31: Codex, codex/book-only-review — match tags and one review inbox
 
 Did: every To review chip now shows Strong match / Maybe / Unlikely and factual price-band/colour/size hints. Loads gh-pages `model.json`; valid active VERSION 1 models use canonical prediction, otherwise canonical baseline. Missing metadata gets explicit neutral baseline assumptions, never invented prices. New/Price/Gone sections sort whole style groups by their strongest colour's score, ties by group key, keeping colours together. No score hides or drops rows; removed the old automatic skips for known new refs/unknown changed refs. Match values/features stay in book memory. Existing manual audience/brand filters remain.

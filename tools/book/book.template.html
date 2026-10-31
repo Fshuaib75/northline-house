@@ -144,7 +144,7 @@ header.top .stat b{color:#fff}
 .irow.hid{display:none}
 /* review inbox, grouped: one card per style, its colours as tickable chips underneath */
 .igrp{border:1px solid var(--line);border-radius:12px;background:var(--bg);padding:8px;display:grid;gap:8px}
-.match{font:600 12px var(--ui);padding:4px 7px;border-radius:7px;background:var(--surface);white-space:normal}.match small{display:block;font-weight:400}
+.match,.profit-check{font:600 12px var(--ui);padding:4px 7px;border-radius:7px;background:var(--surface);white-space:normal}
 .igrp.hid,.ichip.hid{display:none}
 .ihead{display:grid;grid-template-columns:auto 64px minmax(0,1fr);gap:10px;align-items:center;cursor:pointer}
 .ihead img{width:64px;height:64px;object-fit:cover;border-radius:8px;background:var(--photo)}
@@ -800,6 +800,44 @@ function train(feedback) {
 
 return {train,validFeatures,VERSION,baseline,predict,validModel};
 })();
+const BookMinimal=(()=>{
+// Northline's minimal look, as a sourcing rule. Owner decision, 24 Oct 2026: "more minimal sourcing".
+// A candidate is kept only if its colour is calm and nothing in its supplier title, model or colour names a loud
+// detail. Small gold-tone hardware, simple buckles, plain leather, suede and nubuck are fine.
+// Hijabs and other head coverings keep any solid colour (a burgundy hijab is a staple), but still no prints.
+
+const low = s => String(s || '').toLocaleLowerCase('tr');
+
+// Colour families from tools/extension/guess.js that read as quiet.
+const CALM_FAMILIES = new Set(['Black', 'Brown', 'Tan & camel', 'Beige & nude', 'White', 'Grey']);
+// Inside louder families, these named colours are still classic neutrals.
+const CALM_COLOURS = new Set(['navy', 'khaki', 'olive']);
+
+// English and Turkish words for details the brand doesn't carry. Matched as whole words or word starts.
+const LOUD = [
+  ['print', 'printed', 'pattern', 'baskı', 'baskılı', 'desen', 'desenli', 'monogram', 'logo', 'logolu'],
+  ['leopard', 'leopar', 'zebra', 'snake', 'yılan', 'croc', 'croco', 'kroko', 'python', 'piton'],
+  ['crystal', 'kristal', 'rhinestone', 'taşlı', 'jewel', 'jewelled', 'jeweled', 'mücevher', 'embellished', 'süslü',
+   'beaded', 'boncuk', 'boncuklu', 'sequinned', 'sequined', 'payet', 'payetli'],
+  ['stud', 'studded', 'zımba', 'zımbalı', 'trok', 'troklu', 'bow', 'fiyonk', 'fiyonklu', 'pearl', 'inci', 'incili'],
+  ['glitter', 'sim', 'simli', 'sequin', 'pul', 'pullu', 'satin', 'saten', 'neon', 'holographic', 'hologram'],
+  ['mesh', 'file', 'fileli', 'platform', 'metallic', 'metalik'],
+].flat();
+const LOUD_RE = new RegExp(`(^|[^\\p{L}])(${LOUD.join('|')})(?=[^\\p{L}]|$)`, 'u');
+const HEAD_COVERING = /hijab|eşarp|şal|başörtü|türban|bone/u;
+
+function minimalCheck(item, title = '') {
+  const text = low([title, item?.model, item?.colour].join(' '));
+  const loud = text.match(LOUD_RE);
+  if (loud) return {ok: false, reason: `Not minimal: "${loud[2]}"`};
+  if (item?.cat === 'clothing' && HEAD_COVERING.test(text)) return {ok: true, reason: ''};
+  const colour = low(item?.colour);
+  if (CALM_FAMILIES.has(item?.fam) || CALM_COLOURS.has(colour)) return {ok: true, reason: ''};
+  return {ok: false, reason: `Not minimal: ${item?.colour || 'unknown'} colour`};
+}
+
+return {minimalCheck};
+})();
 // ---------- learning sync ----------
 let learningTimer, learningRunning=false, learningAgain=false;
 function scheduleLearning(){ clearTimeout(learningTimer); learningTimer=setTimeout(runLearning,1200); }
@@ -1114,6 +1152,9 @@ async function inboxLoad(){
   const inbox=await get("inbox.json")||{batches:[]}; INB.batches=inbox.batches||[]; INB.items=[];
   INB.bad=0; for(const b of INB.batches){ try{ const d=await openBatch(b); (d.items||[]).forEach(x=>INB.items.push({...x, source:x.source||x.src||d.source||"inbox", decision_origin:x.decision_origin||b.id, batch:b.id, on:false})); }catch(e){ INB.bad++; } }
   await loadAdded(); // resolve private costs before computing tags for existing styles
+  const known=new Set(DATA.map(r=>r.ref));
+  INB.items=INB.items.filter(x=>x.t!=="new"||!known.has(x.ref));
+  INB.items=INB.items.filter(x=>x.t==="new"||known.has(x.ref));
   MATCH_MODEL=await get("model.json"); // live gh-pages model; unavailable/invalid means baseline
   inboxDraw(inbox);
   scheduleLearning();
@@ -1129,8 +1170,11 @@ function inboxCount(){ const it=INB.items, n=it.filter(x=>x.on).length, sh=it.fi
 // ---- grouping: all colours of one style together (robot may send x.grp; otherwise brand + section + model) ----
 const iRec=x=>x.t==="new"?x:(DATA.find(d=>d.ref===x.ref)||{});
 let MATCH_MODEL=null;
+const MATCHES=new Map();
 function itemMatch(x){
-  const r={...iRec(x),...x}, hints=[];
+  const r={...iRec(x),...x};
+  const rule=BookMinimal.minimalCheck(r,[r.title,r.name,r.desc].filter(Boolean).join(" "));
+  if(!rule.ok) return {score:0,label:"Unlikely",why:rule.reason.replace("Not minimal: ","Style rule: "),method:"Style rules"};
   let f,missing=false;
   try{
     if(x.t!=="new"&&!DATA.some(r=>r.ref===x.ref)) throw Error("Unknown style");
@@ -1142,23 +1186,30 @@ function itemMatch(x){
   }
   const learned=!missing&&BookRanking.validModel(MATCH_MODEL);
   const score=learned?BookRanking.predict(MATCH_MODEL,f):BookRanking.baseline(f);
-  if(missing) hints.push("Cost or weight unavailable; neutral baseline assumptions");
-  else if(f[0]>=.8) hints.push("Within the baseline price band");
-  else if(f[0]<.4) hints.push("Higher price band");
-  if(f[4]) hints.push("Calm colour");
-  if(f[2]>=.75) hints.push("Good size coverage");
-  if(!hints.length) hints.push("Mixed price, profit and stock signals");
-  return {score,label:score>=.65?"Strong match":score>=.4?"Maybe":"Unlikely",why:hints.join(" · "),method:learned?"Learned preference":"Baseline"};
+  const why=missing?"Cost unavailable":f[4]&&f[0]>=.8?"Calm colour, your price band":f[4]?"Calm colour":f[0]<.4?"Higher price band":f[2]>=.75?"Good size coverage":"Mixed signals";
+  return {score,label:score>=.65?"Strong match":score>=.4?"Maybe":"Unlikely",why,method:learned?"Learned preference":"Baseline"};
 }
-function matchTag(x){ const m=itemMatch(x); return `<span class="match">${m.label}<small>${esc(m.method)} · ${esc(m.why)} · Advisory only${x.review_notes?" · "+esc(x.review_notes):""}</small></span>`; }
+function cacheMatches(){ MATCHES.clear(); INB.items.forEach(x=>{ if(x.t==="new") MATCHES.set(x,itemMatch(x)); }); }
+function matchTag(x){ const m=MATCHES.get(x); return x.t==="new"&&m?`<span class="match">${m.label} · ${esc(m.why)}</span>`:""; }
+function priceProfitCheck(x){
+  const r=iRec(x),live=liveOf(r),p={...S,...published?.params},kg=kgOf(r),cost=Number(x.now);
+  if(!live||!(live[0]>0)||!Number.isFinite(live[0])||live[1]==null||!Number.isFinite(live[1])||live[1]<0||!(cost>0)||!Number.isFinite(cost)||!(kg>0)||!Number.isFinite(kg)||!(p.rate>0)||!["rate","perKg","handling"].every(k=>Number.isFinite(p[k])&&p[k]>=0)) return null;
+  const landed=cost*p.rate+kg*p.perKg+p.handling;
+  return {net:live[0]-landed-live[1],price:live[0],landed,comm:live[1],unit:catOf(r)==="shoes"?"pair":"item"};
+}
+function priceProfitTag(x){
+  const check=priceProfitCheck(x);
+  if(!check) return '<span class="profit-check">Profit unavailable: check live price and costs</span>';
+  return check.net<0?`<b class="profit-check">Loses ${fmtN(-check.net)} per ${check.unit}: hide or reprice</b>`:`<span class="profit-check">Still ${fmtN(check.net)} profit per ${check.unit}</span>`;
+}
 // product code from the ref when it has one (CAP-20612-BLK, DESA-SKS0782-TAN, DF-D8070AXNV44, 003-N43); sites that give each colour its own number (Ziya, LCW, Elle, Bambi) fall back to the model name
 function iCode(ref){ ref=String(ref||""); let m=ref.match(/^DF-([A-Z]\d{4}[A-Z]{2})/); if(m) return "DF-"+m[1]; if(/^(ZIYA|LCW|ELLE|BMB)-/.test(ref)) return "";
   m=ref.split("-"); return m.length>=3?m[0]+"-"+m[1]:m.length===2&&!/^[A-Z]+$/.test(m[0])?m[0]:""; }
 function iKey(x){ const r=iRec(x); if(x.grp) return x.grp; const c=iCode(x.ref); return [r.brand||"",r.g||"",c||String(r.model||x.ref).trim().toLowerCase()].join("|"); }
 const WHO_ORDER={men:0,women:1,baby:2,other:3};
-function iGroups(t){ const m=new Map(); INB.items.forEach((x,n)=>{ if(x.t!==t) return; const k=iKey(x); if(!m.has(k)) m.set(k,[]); m.get(k).push(n); });
-  return [...m.entries()].map(([k,ns])=>({k,ns:ns.sort((a,b)=>String(iRec(INB.items[a]).colour||"").localeCompare(String(iRec(INB.items[b]).colour||""))) }))
-    .sort((A,B)=>Math.max(...B.ns.map(n=>itemMatch(INB.items[n]).score))-Math.max(...A.ns.map(n=>itemMatch(INB.items[n]).score))||A.k.localeCompare(B.k)); }
+function iGroups(t){ const m=new Map(); INB.items.forEach((x,n)=>{ if(x.t!==t) return; const k=iWho(x)+"|"+iKey(x); if(!m.has(k)) m.set(k,[]); m.get(k).push(n); });
+  return [...m.entries()].map(([k,ns])=>({k,who:WHO_ORDER[iWho(INB.items[ns[0]])],best:Math.max(...ns.map(n=>MATCHES.get(INB.items[n])?.score||0)),ns:ns.sort((a,b)=>String(iRec(INB.items[a]).colour||"").localeCompare(String(iRec(INB.items[b]).colour||""))) }))
+    .sort((A,B)=>A.who-B.who||B.best-A.best||A.k.localeCompare(B.k)); }
 function inboxFilter(){
   document.querySelectorAll("#inboxBody .ichip").forEach(el=>el.classList.toggle("hid",!iShown(INB.items[+el.dataset.i])));
   document.querySelectorAll("#inboxBody .igrp").forEach(g=>{ const ns=g.dataset.ns.split(",").map(Number), vis=ns.filter(n=>iShown(INB.items[n]));
@@ -1168,6 +1219,7 @@ function inboxFilter(){
   document.querySelectorAll("#ifWho button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.w===IF.who))); inboxCount(); }
 function inboxDraw(inbox){
   const body=byId("inboxBody"), it=INB.items, last=(lastOf(INB.batches)||{}).created;
+  cacheMatches();
   const nStyles=new Set(it.filter(x=>x.t==="new").map(iKey)).size, nOther=it.filter(x=>x.t!=="new").length;
   byId("inboxSum").textContent = it.length ? `${nStyles?nStyles+" new style"+(nStyles===1?"":"s"):""}${nStyles&&nOther?" + ":""}${nOther?nOther+" change"+(nOther===1?"":"s"):""} waiting for you` : "Nothing waiting.";
   const bad=INB.bad?`<p class="note" style="color:var(--warn)">${INB.bad} robot batch${INB.bad>1?"es":""} couldn’t be opened with this book’s key. Tell Claude; nothing is lost.</p>`:"";
@@ -1179,7 +1231,7 @@ function inboxDraw(inbox){
     let extra=""; if(x.t==="new"){ const sz=x.sizes&&x.sizes.length?(x.sizes.length>2?esc(x.sizes[0])+"–"+esc(lastOf(x.sizes)):x.sizes.map(esc).join(", ")):""; extra=(sz?`<span class="x">${sz}</span>`:"")+(x.page?` <a href="${esc(x.page)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">page</a>`:""); }
     if(x.t==="price") extra=`<span class="x">${fmtT(x.old)} → ${fmtT(x.now)}${(r.id&&over[r.id])?" · own price set":""}</span>`;
     if(x.t==="gone") extra=x.page?` <a href="${esc(x.page)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">page</a>`:"";
-    return `<label class="ichip" data-i="${n}"><input type="checkbox" data-i="${n}" ${x.on?"checked":""}><img src="${esc(img||"")}" alt="" loading="lazy" onerror="this.style.visibility='hidden'"><span>${esc(col)}</span>${matchTag(x)}${extra}</label>`; };
+    return `<label class="ichip" data-i="${n}"><input type="checkbox" data-i="${n}" ${x.on?"checked":""}><img src="${esc(img||"")}" alt="" loading="lazy" onerror="this.style.visibility='hidden'"><span>${esc(col)}</span>${x.t==="new"?matchTag(x):x.t==="price"?priceProfitTag(x):""}${extra}</label>`; };
   const head=(t,ns)=>{ const xs=ns.map(n=>it[n]), x=xs[0], r=iRec(x), qs=xs.map(quoteOf), img=x.t==="new"?x.img:(r.id?thumb(r):"");
     const nc=ns.length, cols=`${nc} colour${nc===1?"":"s"}`;
     let sub="", pr="";
@@ -1197,6 +1249,7 @@ function inboxDraw(inbox){
   body.innerHTML = bad + `<div class="ifil" id="ifWho">${whoBtn("all","All")}${whoBtn("men","Men")}${whoBtn("women","Women")}${whoBtn("baby","Baby")}
       <select id="ifBrand" aria-label="Brand"><option value="">All brands</option>${brands.map(b=>`<option${b===IF.brand?" selected":""}>${esc(b)}</option>`).join("")}</select></div>
     <div class="acts"><button class="ghost" type="button" id="inboxTick">Tick all shown</button><button class="ghost" type="button" id="inboxAll">Untick all</button></div>`
+    + `<p class="note">Tags follow your rules until 50 decisions, then your own model. They never hide anything. Your model is used only when active.</p>`
     + group("new","New styles") + group("price","Price changes") + group("gone","Sold out or removed")
     + `<div class="ibar"><span class="note grow" id="inboxShown" style="margin:0"></span><button class="ghost" type="button" id="inboxDrop">Dismiss ticked</button><button class="action" type="button" id="inboxApply">Approve ticked</button></div>
     <p class="note">Each style shows once with its colours underneath. Tick the box by the style to take <b>all its colours</b>, or tick single colours. Then <b>Approve</b>: those go live. <b>Dismiss</b> removes ticked ones for good. Anything you don’t tick stays here for later.</p>`;

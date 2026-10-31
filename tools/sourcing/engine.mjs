@@ -145,8 +145,10 @@ export function snapshots(snapshotDir) {
   if(!sources.length)throw Error('No supplier snapshots found');
   return {all,sources};
 }
-// The scan discovers candidates, never pre-approves or preference-filters them.
-export function scanCandidates(candidates, existing=[], photos={}) {
+// Standing style/photo/price rules apply. Never pre-approve or filter by model score/count.
+export function scanCandidates(candidates, existing=[], photos={}, params) {
+  if(!params||!['rate','perKg','handling','minProfit','profitPct'].every(k=>Number.isFinite(params[k])&&params[k]>=0))throw Error('Actual pricing settings required');
+  if(params.rate<=0)throw Error('Exchange rate must be positive');
   const refs=new Set(existing.map(i=>i.ref)), pages=new Set(existing.map(i=>urlKey(i.page)).filter(Boolean));
   const images=new Set(existing.flatMap(i=>[i.img,...(i.imgs||[])]).map(imageKey).filter(Boolean)),seen=new Set();
   const items=[];
@@ -154,16 +156,20 @@ export function scanCandidates(candidates, existing=[], photos={}) {
     const i=c.item;
     if(refs.has(i.ref)||pages.has(urlKey(i.page))||[i.img,...(i.imgs||[])].some(u=>images.has(imageKey(u)))||seen.has(i.ref))continue;
     seen.add(i.ref);
+    if(!minimalCheck(i,c.evidence?.title).ok)continue;
+    const estimate=G.estimate(i.tl,i.kg,params);
+    if(!estimate||estimate.price>100000)continue;
     const photo=photos[c.id],people=new Set(photo?.people_photos||[]),clean=(i.imgs||[i.img]).filter(u=>!people.has(u));
+    if(photo?.verdict==='leave_out'||!clean.length)continue;
     const best=clean.includes(photo?.best_photo)?photo.best_photo:clean[0]||"";
-    items.push({...i,grp:c.product_key||i.grp||i.ref,source:"sourcing scan",img:best,imgs:clean,
-      ...(!best?{review_notes:"Needs a product-only photo; check the supplier page"}:photo?.verdict==='leave_out'?{review_notes:"Photo may be loud; review it yourself"}:{})});
+    if(!best)continue;
+    items.push({...i,grp:c.product_key||i.grp||i.ref,source:"sourcing scan",img:best,imgs:clean});
   }
   return items;
 }
 export function pool(snapshotDir,outPath) {
   const {all}=snapshots(snapshotDir);
-  const items=scanCandidates(all,existingCatalogue(ROOT));
+  const items=scanCandidates(all,existingCatalogue(ROOT),{},read(path.join(ROOT,'prices.json')).params);
   const refs=new Set(items.map(i=>i.ref));
   fs.writeFileSync(outPath,JSON.stringify({candidates:all.filter(c=>refs.has(c.item.ref)).map(c=>({id:c.id,item:c.item}))}));
   console.log(`pool: ${items.length} new candidates for photo checks; no preference cap`);
