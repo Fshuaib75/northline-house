@@ -17,15 +17,20 @@
   const dots = [...hero.querySelectorAll('[data-hero-index]')];
   const play = hero.querySelector('.hero-play');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-  let current = 0, timer, paused = false, hovered = false, visible = true, pointer;
+  // Keeps rotating on phones: a tap, swipe or dot only holds the slide for a while (HOLD), then rotation resumes.
+  // Only the Pause button stops it for good. With Reduce Motion the slides still change, just without animation.
+  const EVERY = 6500, EVERY_REDUCED = 9000, HOLD = 12000;
+  let current = 0, timer, paused = false, holdUntil = 0, hovered = false, visible = true, pointer;
   function schedule() {
     clearTimeout(timer);
     play.textContent = paused ? 'Play' : 'Pause';
     play.setAttribute('aria-label', paused ? 'Start automatic slides' : 'Pause automatic slides');
-    play.hidden = reduced.matches;
-    if (!paused && !hovered && visible && !document.hidden && !reduced.matches)
-      timer = setTimeout(() => show(current + 1), 6500);
+    play.hidden = false;
+    if (paused || hovered || !visible || document.hidden) return;
+    const wait = Math.max(reduced.matches ? EVERY_REDUCED : EVERY, holdUntil - Date.now());
+    timer = setTimeout(() => show(current + 1), wait);
   }
+  function hold() { holdUntil = Date.now() + HOLD; }
   function show(index, manual = false) {
     current = (index + slides.length) % slides.length;
     slides.forEach((slide, i) => {
@@ -37,7 +42,7 @@
     });
     hero.querySelector('.hero-counter').textContent = `0${current + 1} / 0${slides.length}`;
     if (manual) {
-      paused = true;
+      hold();
       hero.querySelector('.hero-announcement').textContent = slides[current].getAttribute('aria-label');
     }
     schedule();
@@ -48,10 +53,11 @@
   dots.forEach((dot, i) => dot.addEventListener('click', () => show(i, true)));
   hero.querySelector('[data-hero-prev]').addEventListener('click', () => show(current - 1, true));
   hero.querySelector('[data-hero-next]').addEventListener('click', () => show(current + 1, true));
-  play.addEventListener('click', () => { paused = !paused; schedule(); });
-  hero.addEventListener('mouseenter', () => { hovered = true; schedule(); });
-  hero.addEventListener('mouseleave', () => { hovered = false; schedule(); });
-  hero.addEventListener('focusin', event => { if (event.target !== play) { paused = true; schedule(); } });
+  play.addEventListener('click', () => { paused = !paused; holdUntil = 0; schedule(); });
+  // Hover pauses only for a real mouse: phones fire mouseenter on tap and never send mouseleave.
+  hero.addEventListener('pointerenter', event => { if (event.pointerType === 'mouse') { hovered = true; schedule(); } });
+  hero.addEventListener('pointerleave', event => { if (event.pointerType === 'mouse') { hovered = false; schedule(); } });
+  hero.addEventListener('focusin', event => { if (event.target !== play && event.target.matches(':focus-visible')) { hold(); schedule(); } });
   hero.addEventListener('keydown', event => {
     if (!['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
     // Keep keyboard focus on persistent controls, never inside an outgoing slide.
