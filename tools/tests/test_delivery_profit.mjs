@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
+import {builtBook} from '../book/test-build.mjs';
 import {normalize} from '../sourcing/engine.mjs';
 const read=p=>fs.readFileSync(new URL('../../'+p,import.meta.url),'utf8');
 const shop=read('shop/index.html'),agent=read('index.html'),book=read('tools/book/book.template.html');
@@ -54,7 +55,7 @@ test('missing commission/invalid quantities never produce invented net',()=>{
 test('Profit loader is read-only and all UI sections compile without private build data',()=>{
   assert.ok(!/ghPut|saveJson|localStorage|LS\.set/.test(section(book,'function profitReport(','// ---------- end profit')));
   assert.match(book,/data-tab="profit"/);assert.match(book,/data-panel="profit"/);
-  for(const html of [shop,agent,read('_dev/book/index.html')])for(const m of html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g))new vm.Script(m[1]);
+  for(const html of [shop,agent,builtBook])for(const m of html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g))new vm.Script(m[1]);
 });
 test('Derimod listing cleanup is identical across pages and source generator; material is never inferred from brand',()=>{
   const helper=section(shop,'function listingQuality(','\n}').concat('\n}');

@@ -144,6 +144,7 @@ header.top .stat b{color:#fff}
 .irow.hid{display:none}
 /* review inbox, grouped: one card per style, its colours as tickable chips underneath */
 .igrp{border:1px solid var(--line);border-radius:12px;background:var(--bg);padding:8px;display:grid;gap:8px}
+.match{font:600 12px var(--ui);padding:4px 7px;border-radius:7px;background:var(--surface);white-space:normal}.match small{display:block;font-weight:400}
 .igrp.hid,.ichip.hid{display:none}
 .ihead{display:grid;grid-template-columns:auto 64px minmax(0,1fr);gap:10px;align-items:center;cursor:pointer}
 .ihead img{width:64px;height:64px;object-fit:cover;border-radius:8px;background:var(--photo)}
@@ -797,7 +798,7 @@ function train(feedback) {
     metrics:{learned,baseline:rules},reason:active?'Improved held-out approval ranking; advisory only.':'Baseline retained: model did not improve both held-out metrics.'};
 }
 
-return {train,validFeatures,VERSION};
+return {train,validFeatures,VERSION,baseline,predict,validModel};
 })();
 // ---------- learning sync ----------
 let learningTimer, learningRunning=false, learningAgain=false;
@@ -1101,7 +1102,10 @@ function inboxAsk(msg,again){
 }
 async function inboxLoad(){
   const body=byId("inboxBody"), pass=LS.raw("nl-pass"); body.innerHTML=`<p class="note">Loading…</p>`;
-  const get=async f=>{ try{ const r=await fetch("../"+f+"?t="+Date.now(),{cache:"no-store"}); return r.ok?await r.json():null; }catch(e){ return null; } };
+  const get=async f=>{ try{
+    if(tok.get()&&["model.json","inbox.json"].includes(f)){ try{ return (await ghJson(f,null)).data; }catch(e){} }
+    const r=await fetch("../"+f+"?t="+Date.now(),{cache:"no-store"}); return r.ok?await r.json():null;
+  }catch(e){ return null; } };
   const pub=await get("inbox-pub.json");
   if(!pub){ body.innerHTML=`<p class="note">Not set up yet. One tap creates a lock the weekly robot can close but only this book (with your password) can open. Needs your GitHub key and book password, once.</p><div class="acts"><button class="action" id="inboxSetup">Set up the review inbox</button></div>`; byId("inboxSetup").onclick=inboxSetup; return; }
   if(!pass){ inboxAsk("Enter your book password to open the inbox. It is kept on this phone only.",false); return; }
@@ -1109,9 +1113,8 @@ async function inboxLoad(){
   catch(e){ inboxAsk("That password didn’t open the inbox. Type it again.",true); return; }
   const inbox=await get("inbox.json")||{batches:[]}; INB.batches=inbox.batches||[]; INB.items=[];
   INB.bad=0; for(const b of INB.batches){ try{ const d=await openBatch(b); (d.items||[]).forEach(x=>INB.items.push({...x, source:x.source||x.src||d.source||"inbox", decision_origin:x.decision_origin||b.id, batch:b.id, on:false})); }catch(e){ INB.bad++; } }
-  const known=new Set(DATA.map(r=>r.ref));
-  INB.items=INB.items.filter(x=>x.t!=="new"||!known.has(x.ref));            // already in the catalogue
-  INB.items=INB.items.filter(x=>x.t==="new"||known.has(x.ref));             // changes only for styles we still carry
+  await loadAdded(); // resolve private costs before computing tags for existing styles
+  MATCH_MODEL=await get("model.json"); // live gh-pages model; unavailable/invalid means baseline
   inboxDraw(inbox);
   scheduleLearning();
 }
@@ -1125,6 +1128,29 @@ function inboxCount(){ const it=INB.items, n=it.filter(x=>x.on).length, sh=it.fi
   byId("inboxShown").textContent=`${sh} shown · ${n} ticked`; }
 // ---- grouping: all colours of one style together (robot may send x.grp; otherwise brand + section + model) ----
 const iRec=x=>x.t==="new"?x:(DATA.find(d=>d.ref===x.ref)||{});
+let MATCH_MODEL=null;
+function itemMatch(x){
+  const r={...iRec(x),...x}, hints=[];
+  let f,missing=false;
+  try{
+    if(x.t!=="new"&&!DATA.some(r=>r.ref===x.ref)) throw Error("Unknown style");
+    f=decisionRow(x,"approve","preview").features;
+  }
+  catch(e){
+    missing=true;
+    f=[.5,.5,r.cat==="bags"?1:Math.min(1,(r.sizes||[]).length/6),.5,["Black","Brown","Tan & camel","Beige & nude","White","Grey"].includes(r.fam)?1:0,...["shoes","bags","clothing"].map(c=>Number(r.cat===c))];
+  }
+  const learned=!missing&&BookRanking.validModel(MATCH_MODEL);
+  const score=learned?BookRanking.predict(MATCH_MODEL,f):BookRanking.baseline(f);
+  if(missing) hints.push("Cost or weight unavailable; neutral baseline assumptions");
+  else if(f[0]>=.8) hints.push("Within the baseline price band");
+  else if(f[0]<.4) hints.push("Higher price band");
+  if(f[4]) hints.push("Calm colour");
+  if(f[2]>=.75) hints.push("Good size coverage");
+  if(!hints.length) hints.push("Mixed price, profit and stock signals");
+  return {score,label:score>=.65?"Strong match":score>=.4?"Maybe":"Unlikely",why:hints.join(" · "),method:learned?"Learned preference":"Baseline"};
+}
+function matchTag(x){ const m=itemMatch(x); return `<span class="match">${m.label}<small>${esc(m.method)} · ${esc(m.why)} · Advisory only${x.review_notes?" · "+esc(x.review_notes):""}</small></span>`; }
 // product code from the ref when it has one (CAP-20612-BLK, DESA-SKS0782-TAN, DF-D8070AXNV44, 003-N43); sites that give each colour its own number (Ziya, LCW, Elle, Bambi) fall back to the model name
 function iCode(ref){ ref=String(ref||""); let m=ref.match(/^DF-([A-Z]\d{4}[A-Z]{2})/); if(m) return "DF-"+m[1]; if(/^(ZIYA|LCW|ELLE|BMB)-/.test(ref)) return "";
   m=ref.split("-"); return m.length>=3?m[0]+"-"+m[1]:m.length===2&&!/^[A-Z]+$/.test(m[0])?m[0]:""; }
@@ -1132,8 +1158,7 @@ function iKey(x){ const r=iRec(x); if(x.grp) return x.grp; const c=iCode(x.ref);
 const WHO_ORDER={men:0,women:1,baby:2,other:3};
 function iGroups(t){ const m=new Map(); INB.items.forEach((x,n)=>{ if(x.t!==t) return; const k=iKey(x); if(!m.has(k)) m.set(k,[]); m.get(k).push(n); });
   return [...m.entries()].map(([k,ns])=>({k,ns:ns.sort((a,b)=>String(iRec(INB.items[a]).colour||"").localeCompare(String(iRec(INB.items[b]).colour||""))) }))
-    .sort((A,B)=>{ const a=INB.items[A.ns[0]], b=INB.items[B.ns[0]], ra=iRec(a), rb=iRec(b);
-      return (WHO_ORDER[iWho(a)]-WHO_ORDER[iWho(b)]) || String(ra.brand||"").localeCompare(String(rb.brand||"")) || String(ra.model||"").localeCompare(String(rb.model||"")); }); }
+    .sort((A,B)=>Math.max(...B.ns.map(n=>itemMatch(INB.items[n]).score))-Math.max(...A.ns.map(n=>itemMatch(INB.items[n]).score))||A.k.localeCompare(B.k)); }
 function inboxFilter(){
   document.querySelectorAll("#inboxBody .ichip").forEach(el=>el.classList.toggle("hid",!iShown(INB.items[+el.dataset.i])));
   document.querySelectorAll("#inboxBody .igrp").forEach(g=>{ const ns=g.dataset.ns.split(",").map(Number), vis=ns.filter(n=>iShown(INB.items[n]));
@@ -1154,7 +1179,7 @@ function inboxDraw(inbox){
     let extra=""; if(x.t==="new"){ const sz=x.sizes&&x.sizes.length?(x.sizes.length>2?esc(x.sizes[0])+"–"+esc(lastOf(x.sizes)):x.sizes.map(esc).join(", ")):""; extra=(sz?`<span class="x">${sz}</span>`:"")+(x.page?` <a href="${esc(x.page)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">page</a>`:""); }
     if(x.t==="price") extra=`<span class="x">${fmtT(x.old)} → ${fmtT(x.now)}${(r.id&&over[r.id])?" · own price set":""}</span>`;
     if(x.t==="gone") extra=x.page?` <a href="${esc(x.page)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">page</a>`:"";
-    return `<label class="ichip" data-i="${n}"><input type="checkbox" data-i="${n}" ${x.on?"checked":""}><img src="${esc(img||"")}" alt="" loading="lazy" onerror="this.style.visibility='hidden'"><span>${esc(col)}</span>${extra}</label>`; };
+    return `<label class="ichip" data-i="${n}"><input type="checkbox" data-i="${n}" ${x.on?"checked":""}><img src="${esc(img||"")}" alt="" loading="lazy" onerror="this.style.visibility='hidden'"><span>${esc(col)}</span>${matchTag(x)}${extra}</label>`; };
   const head=(t,ns)=>{ const xs=ns.map(n=>it[n]), x=xs[0], r=iRec(x), qs=xs.map(quoteOf), img=x.t==="new"?x.img:(r.id?thumb(r):"");
     const nc=ns.length, cols=`${nc} colour${nc===1?"":"s"}`;
     let sub="", pr="";

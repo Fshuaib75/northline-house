@@ -6,10 +6,12 @@
 // sealed with a fresh TEST key pair and the test password. Nothing reads the real sealed files, and the book's GitHub
 // saving is pointed at a dead address, so a test run can never write to the live site even if a real key is typed in.
 // The real build (catalogue with real buy prices, the password, StatiCrypt) stays private; see tools/book/README.md.
+import path from "node:path";
 import { readFileSync, writeFileSync, mkdirSync, copyFileSync, rmSync } from "node:fs";
 const { subtle } = globalThis.crypto; const rnd = n => globalThis.crypto.getRandomValues(new Uint8Array(n));
 const b64 = u => Buffer.from(u).toString("base64");
-const PASS = "test", OUT = "_dev", HERE = "tools/book/";
+const PASS = "test", OUT = process.env.NL_BOOK_TEST_OUT || "_dev", HERE = "tools/book/";
+if (OUT !== "_dev" && (!path.isAbsolute(OUT) || !path.basename(OUT).startsWith("nl-book-test-"))) throw Error("Test output must be an absolute nl-book-test-* directory");
 const sample = JSON.parse(readFileSync(HERE + "sample-data.json", "utf8"));
 const config = JSON.parse(readFileSync(HERE + "sample-config.json", "utf8"));
 const items = sample.items.map(r => ({ ...r, id: r.ref }));
