@@ -1,7 +1,4 @@
-# Northline: on demand, scan the allowlisted suppliers for new products and build the sourcing review page.
-# Press "Run workflow" under Actions > Sourcing scan. When it finishes, download "sourcing-review" from the
-# run's Artifacts, unzip it and open review.html in a browser. Nothing is published or written to the shop:
-# approved products still go through the owner's inbox.
+# Scan allowlisted sources and seal all valid new findings for the book. No plaintext artifacts.
 name: Sourcing scan
 
 on:
@@ -12,13 +9,8 @@ on:
         default: "8"
         required: true
 
-      limit:
-        description: "Maximum candidates in the review (1-500). At most 5 per brand; only minimal styles."
-        default: "30"
-        required: true
-
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: sourcing-scan
@@ -58,9 +50,7 @@ jobs:
           PAGES: ${{ inputs.pages }}
         run: python tools/sourcing/collect.py --output "$RUNNER_TEMP/sources" --pages "$PAGES"
 
-      # Photo check (tools/sourcing/vision.py): an open image model looks at each candidate's photos, leaves out
-      # loud ones (stones, sequins, prints, logos the title doesn't mention), flags borderline ones and puts the best
-      # whole-item photo first. If any of this fails, the scan still finishes with the keyword rules alone.
+      # Standing style/photo rules apply; no count caps or model-score exclusions.
       - uses: actions/cache@v4
         with:
           path: |
@@ -81,30 +71,19 @@ jobs:
           node tools/sourcing/engine.mjs pool "$RUNNER_TEMP/sources" "$RUNNER_TEMP/pool.json"
           python tools/sourcing/vision.py --candidates "$RUNNER_TEMP/pool.json" --out "$RUNNER_TEMP/photos.json"
 
-      - name: Build the review page
+      - name: Send all new findings to the book inbox
         working-directory: code
         env:
-          REVIEW_LIMIT: ${{ inputs.limit }}
-        run: |
-          node tools/sourcing/engine.mjs build "$RUNNER_TEMP/sources" "$RUNNER_TEMP/review" - "$REVIEW_LIMIT" "$RUNNER_TEMP/photos.json" | tee "$RUNNER_TEMP/summary.json"
-          node -e 'const s=require(process.argv[1]);const x=s.excluded;console.log(`::notice title=Sourcing scan::${s.selected} selected from ${s.eligible} eligible. Left out: ${x.notMinimal} by keywords, ${x.loudPhoto} by photo, ${x.onlyPeoplePhotos} only had photos with people, ${x.known} already stocked. Photo check ${s.photo_check}. Brands: ${s.brands.join(", ")}`)' "$RUNNER_TEMP/summary.json"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node tools/sourcing/queue.mjs "$RUNNER_TEMP/sources" "$RUNNER_TEMP/photos.json" > "$RUNNER_TEMP/summary.json"
 
-      - name: Summary
+      - name: Summary (counts only)
         run: |
           {
             echo "## Sourcing scan"
-            echo
-            echo "Download **sourcing-review** below, unzip it and open \`review.html\`."
-            echo
+            echo 'Review findings in the book: To review. No candidate downloads or separate approval page.'
+            echo 'Runs outside main are dry runs and do not send findings.'
             echo '```json'
             cat "$RUNNER_TEMP/summary.json"
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: sourcing-review
-          path: |
-            ${{ runner.temp }}/review/review.html
-            ${{ runner.temp }}/review/candidates.json
-          retention-days: 14

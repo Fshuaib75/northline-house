@@ -131,12 +131,12 @@ export function rank(candidates, existing, params, model=null, limit=30, perBran
   }
   return {candidates:selected,eligible:eligible.length,excluded,model:validModel(model)?'learned':'rules'};
 }
-function existingCatalogue(root) {
+export function existingCatalogue(root) {
   const html=fs.readFileSync(path.join(root,'shop/index.html'),'utf8'),match=html.match(/let ALL = (\[.*?\]);\n/s);
   if(!match)throw Error('Embedded catalogue could not be read; refusing to skip deduplication');
   return [...JSON.parse(match[1]),...read(path.join(root,'products.json'))];
 }
-function snapshots(snapshotDir) {
+export function snapshots(snapshotDir) {
   const all=[],sources=[];
   for(const key of Object.keys(SOURCES)) {
     const p=path.join(snapshotDir,key+'.json');if(!fs.existsSync(p))continue;
@@ -145,31 +145,40 @@ function snapshots(snapshotDir) {
   if(!sources.length)throw Error('No supplier snapshots found');
   return {all,sources};
 }
-// Wider pool for the photo check: up to 15 per brand, so the final 30 (5 per brand) still has room after photo drops.
+// Standing style/photo/price rules apply. Never pre-approve or filter by model score/count.
+export function scanCandidates(candidates, existing=[], photos={}, params) {
+  if(!params||!['rate','perKg','handling','minProfit','profitPct'].every(k=>Number.isFinite(params[k])&&params[k]>=0))throw Error('Actual pricing settings required');
+  if(params.rate<=0)throw Error('Exchange rate must be positive');
+  const refs=new Set(existing.map(i=>i.ref)), pages=new Set(existing.map(i=>urlKey(i.page)).filter(Boolean));
+  const images=new Set(existing.flatMap(i=>[i.img,...(i.imgs||[])]).map(imageKey).filter(Boolean)),seen=new Set();
+  const items=[];
+  for(const c of candidates){
+    const i=c.item;
+    if(refs.has(i.ref)||pages.has(urlKey(i.page))||[i.img,...(i.imgs||[])].some(u=>images.has(imageKey(u)))||seen.has(i.ref))continue;
+    seen.add(i.ref);
+    if(!minimalCheck(i,c.evidence?.title).ok)continue;
+    const estimate=G.estimate(i.tl,i.kg,params);
+    if(!estimate||estimate.price>100000)continue;
+    const photo=photos[c.id],people=new Set(photo?.people_photos||[]),clean=(i.imgs||[i.img]).filter(u=>!people.has(u));
+    if(photo?.verdict==='leave_out'||!clean.length)continue;
+    const best=clean.includes(photo?.best_photo)?photo.best_photo:clean[0]||"";
+    if(!best)continue;
+    items.push({...i,grp:c.product_key||i.grp||i.ref,source:"sourcing scan",img:best,imgs:clean});
+  }
+  return items;
+}
 export function pool(snapshotDir,outPath) {
   const {all}=snapshots(snapshotDir);
-  const r=rank(all,existingCatalogue(ROOT),read(path.join(ROOT,'prices.json')).params,null,500,15);
-  fs.writeFileSync(outPath,JSON.stringify({candidates:r.candidates.map(c=>({id:c.id,item:c.item}))}));
-  console.log(`pool: ${r.candidates.length} candidates for the photo check`);
-}
-export function build(snapshotDir,outDir,modelPath=null,limit=30,photosPath=null) {
-  const {all,sources}=snapshots(snapshotDir);
-  const check=photosPath&&fs.existsSync(photosPath)?read(photosPath):null;   // missing photo check: keyword rules only
-  const result=rank(all,existingCatalogue(ROOT),read(path.join(ROOT,'prices.json')).params,modelPath?read(modelPath):null,limit,5,check?.scores||{});
-  result.photo_check=check?{model:check.model,leave_out_below:check.leave_out_below,check_below:check.check_below,photos_failed:check.photos_failed}:null;
-  result.generated_at=new Date().toISOString();result.sources=sources;result.normalized=all.length;
-  fs.mkdirSync(outDir,{recursive:true});fs.writeFileSync(path.join(outDir,'candidates.json'),JSON.stringify(result,null,2));
-  const sealCode=fs.readFileSync(new URL('../extension/seal.js',import.meta.url),'utf8');
-  const template=fs.readFileSync(new URL('review.html',import.meta.url),'utf8').replace('/*INBOX_SEAL_CODE*/',()=>sealCode.replace(/<\/script/gi,'<\\/script'));
-  fs.writeFileSync(path.join(outDir,'review.html'),template.replace('/*CANDIDATE_DATA*/null',JSON.stringify(result).replace(/</g,'\\u003c')));
-  console.log(JSON.stringify({selected:result.candidates.length,eligible:result.eligible,excluded:result.excluded,brands:[...new Set(result.candidates.map(c=>c.item.brand))],model:result.model,photo_check:result.photo_check?'on':'off',sources},null,2));
-  return result;
+  const items=scanCandidates(all,existingCatalogue(ROOT),{},read(path.join(ROOT,'prices.json')).params);
+  const refs=new Set(items.map(i=>i.ref));
+  fs.writeFileSync(outPath,JSON.stringify({candidates:all.filter(c=>refs.has(c.item.ref)).map(c=>({id:c.id,item:c.item}))}));
+  console.log(`pool: ${items.length} new candidates for photo checks; no preference cap`);
 }
 function cli(args) {
   const [command,...rest]=args;
-  if(command==='build') {if(rest.length<2)throw Error('build SNAPSHOT_DIR OUTPUT_DIR [MODEL_JSON|-] [LIMIT 1-500] [PHOTO_SCORES_JSON]');build(rest[0],rest[1],rest[2]==='-'?null:rest[2],rest[3]===undefined||rest[3]==='-'?30:Number(rest[3]),rest[4]||null);}
+  if(command==='build') throw Error('Standalone review retired. Use tools/sourcing/queue.mjs; review everything in the book.');
   else if(command==='pool') {if(rest.length<2)throw Error('pool SNAPSHOT_DIR OUTPUT_JSON');pool(rest[0],rest[1]);}
   else if(command==='train') {if(rest.length<2)throw Error('train OUTPUT_MODEL FEEDBACK_JSON...');const [output,...files]=rest;const rows=files.flatMap(p=>read(p).decisions||[]);const model=train(rows);fs.writeFileSync(output,JSON.stringify(model,null,2));console.log(JSON.stringify(model,null,2));}
-  else console.log('Northline sourcing engine\nCollect: python tools/sourcing/collect.py --output /tmp/nl-sources --pages 4\nReview: node tools/sourcing/engine.mjs build /tmp/nl-sources /tmp/nl-review [model.json]\nLearn: node tools/sourcing/engine.mjs train /tmp/nl-model.json feedback.json...\nOpen review.html; approve/reject then download review findings and feedback. Findings use the owner inbox schema; publishing remains owner-controlled.');
+  else console.log('Sourcing scan: node tools/sourcing/queue.mjs SNAPSHOT_DIR [PHOTO_SCORES_JSON]. Review in the book. Training: engine.mjs train OUTPUT_MODEL FEEDBACK_JSON...');
 }
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)){try{cli(process.argv.slice(2));}catch(e){console.error(e.message);process.exitCode=1;}}

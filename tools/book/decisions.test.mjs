@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
+import {builtBook} from './test-build.mjs';
 import {webcrypto} from 'node:crypto';
 import {createRequire} from 'node:module';
 import {features, train} from '../sourcing/ranking.mjs';
@@ -176,7 +177,7 @@ test('a failed sold-out approval followed by Publish remains a supply event',asy
   assert.equal(Object.keys((await t.rows()).entries).length,0);
 });
 test('built template is valid JavaScript and keeps the test GitHub write endpoint disabled',()=>{
-  const built=fs.readFileSync(new URL('../../_dev/book/index.html',import.meta.url),'utf8');
+  const built=builtBook;
   for(const match of built.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g))new vm.Script(match[1]);
   assert.ok(built.includes('http://127.0.0.1:9/dev-build-no-github/'));
   assert.ok(!built.includes('https://api.github.com/repos/Fshuaib75/northline-house/contents/'));
