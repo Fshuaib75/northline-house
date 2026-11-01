@@ -12,16 +12,16 @@ Secrets (repo → Settings → Secrets and variables → Actions):
   IG_USER_ID   Instagram professional account id (numbers)
   IG_TOKEN     Page access token with instagram_content_publish (never expires if made from a long-lived user token)
   FB_PAGE_ID   optional: also post the photo to the Facebook Page
-Without IG_USER_ID / IG_TOKEN (or with "Preview only" ticked) the run is a PREVIEW: it makes the images and the
-caption, keeps them as a workflow artifact for you to look at, and posts nothing.
+Unless IG_POSTING_ENABLED=true and credentials exist, runs produce the seven-day preview,
+including pinned assets, at /ig-preview/. Preview mode never calls Meta or changes posting history.
 """
-import datetime as dt, io, json, os, re, sys, time, urllib.parse, urllib.request
+import datetime as dt, io, json, os, re, subprocess, sys, time, urllib.parse, urllib.request
 from PIL import Image, ImageChops, ImageDraw, ImageFont, ImageOps
 
-ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+ROOT = os.environ.get("NL_SITE_ROOT") or os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(ROOT, "ig")
-STATE = os.path.join(HERE, "posted.json")
+STATE = os.path.join(ROOT, "tools", "ig", "posted.json")
 REPO = os.environ.get("GITHUB_REPOSITORY", "Fshuaib75/northline-house")
 BRANCH = "gh-pages"   # the workflow commits the images here; GITHUB_REF_NAME is "main" on scheduled runs
 SHOP = "https://northlinehouse.shop/shop/"
@@ -35,6 +35,61 @@ def load(path, default):
         with open(path, encoding="utf-8") as f: return json.load(f)
     except Exception: return default
 
+def lagos_today():
+    return dt.datetime.now(dt.timezone(dt.timedelta(hours=1))).date()
+
+def next_post_day(now=None):
+    now = (now or dt.datetime.now(dt.timezone.utc)).astimezone(dt.timezone(dt.timedelta(hours=1)))
+    return now.date() + dt.timedelta(days=int((now.hour, now.minute) >= (18, 30)))
+
+def active_drop(drop, today):
+    if drop.get("week"):
+        try:
+            if not 0 <= (today - dt.date.fromisoformat(drop["week"])).days <= 7: return {**drop, "refs": []}
+        except ValueError: return {**drop, "refs": []}
+    return drop
+
+def product_link(ref, channel):
+    return SHOP + "?" + urllib.parse.urlencode({"i": ref, "a": channel})
+
+def photo_key(url):
+    return urllib.parse.unquote(str(url).split("?")[0].rstrip("/").split("/")[-1])
+
+def photo_policy():
+    return (load(os.path.join(ROOT, "photo-rules.json"), {}), load(os.path.join(ROOT, "photo-checked.json"), {}))
+
+def product_photo(url, rules, checked):
+    if not url: return False
+    if urllib.parse.urlsplit(str(url)).scheme not in ("", "http", "https"): return False
+    key = photo_key(url)
+    allowed = set(rules.get("allowed", []))
+    score = checked.get("scores", {}).get(key)
+    if key not in allowed and (key in rules.get("photos", []) or isinstance(score, (int, float)) and score >= .5): return False
+    label = checked.get("labels", {}).get(url, checked.get("labels", {}).get(key))
+    if label is None: label = checked.get("types", {}).get(url, checked.get("types", {}).get(key))
+    if label is None and isinstance(score, dict): label = score.get("type") or score.get("label")
+    if isinstance(label, dict): label = label.get("type") or label.get("label")
+    if label:
+        # A known non-product label always wins over an innocent-looking URL.
+        return str(label).lower() in {"whole", "closeup", "product", "product_only", "product-only", "flatlay", "detail", "sole", "back"}
+    return not any(s in urllib.parse.unquote(str(url)).lower() for s in ("olcu", "ölçü", "beden", "size", "chart"))
+
+def minimal_flags(items):
+    result = subprocess.run(["node", os.path.join(HERE, "minimal-check.mjs")], input=json.dumps(items), text=True, capture_output=True, check=True)
+    flags = json.loads(result.stdout)
+    if len(flags) != len(items): raise RuntimeError("Incomplete style-rule results")
+    return flags
+
+def eligible_items(items, drop):
+    rules, checked = photo_policy()
+    out = []
+    for i, rule in zip(items, minimal_flags(items)):
+        urls = list(dict.fromkeys([*(i.get("imgs") or []), i.get("full"), i.get("img")]))
+        safe = [u for u in urls if product_photo(u, rules, checked)]
+        if not rule["ok"] or not safe or i["price"] > 70000 and i["ref"] not in drop.get("refs", []): continue
+        out.append({**i, "imgs": safe, "img": safe[0], "full": safe[0]})
+    return out
+
 def catalogue():
     html = open(os.path.join(ROOT, "index.html"), encoding="utf-8").read()
     items = json.loads(re.search(r"let ALL = (\[.*?\]);\n", html, re.S).group(1))
@@ -42,20 +97,23 @@ def catalogue():
     for a in load(os.path.join(ROOT, "products.json"), []):
         if a.get("ref") and a["ref"] not in known: items.append(dict(a))
     prices = load(os.path.join(ROOT, "prices.json"), {})
-    lagos_today = (dt.datetime.utcnow() + dt.timedelta(hours=1)).date().isoformat()
-    use_next = bool(prices.get("switchAt")) and lagos_today >= prices["switchAt"]
+    use_next = bool(prices.get("switchAt")) and lagos_today().isoformat() >= prices["switchAt"]
     hidden = set(prices.get("hidden", []))
     # Owner rule: product-only photos, never a female body (photo-rules.json, tools/photos/no_people.py).
-    blocked = set(load(os.path.join(ROOT, "photo-rules.json"), {}).get("photos", []))
-    clean = lambda urls: [u for u in urls if u and str(u).split("?")[0].rstrip("/").split("/")[-1] not in blocked]
+    rules, checked = photo_policy()
+    clean = lambda urls: [u for u in urls if product_photo(u, rules, checked)]
     fresh = load(os.path.join(ROOT, "capone.json"), {}).get("styles", {})   # Capone's current photo links (weekly check)
+    brands = load(os.path.join(ROOT, "brands.json"), {}).get("styles", {})
     out = []
     for i in items:
         c = fresh.get(i["ref"]) or {}
         if c and (not c.get("on") or c.get("stock") == []): continue   # sold out at Capone
         f = c.get("img")
         if f: i["imgs"] = f + [u for u in (i.get("imgs") or []) if u not in f]
-        i["imgs"] = clean(i.get("imgs") or [])
+        stock = c if c else brands.get(i["ref"], {})
+        if stock and (stock.get("on") is False or stock.get("stock") == []): continue
+        if isinstance(stock.get("stock"), list): i["sizes"] = list(stock["stock"])
+        i["imgs"] = clean(list(dict.fromkeys([*(i.get("imgs") or []), i.get("full"), i.get("img")])))
         for k in ("img", "full"):
             if i.get(k) and not clean([i[k]]): i[k] = (i["imgs"] or [None])[0]
         p = (prices.get("next", {}) if use_next else {}).get(i["ref"]) or prices.get("prices", {}).get(i["ref"])
@@ -69,11 +127,12 @@ def audience(i):
     if g == "B" or i.get("for") in ("Girl", "Boy"): return "K"
     return "M" if i.get("for") == "Men" else "W"
 
-def pick(items, state):
-    recent = {r for r, d in state.get("posted", {}).items() if (dt.date.today() - dt.date.fromisoformat(d)).days < 60}
-    pool = [i for i in items if i["ref"] not in recent]
+def pick(items, state, today=None, drop=None):
+    today = today or lagos_today()
+    recent = {r for r, d in state.get("posted", {}).items() if (today - dt.date.fromisoformat(d)).days < 60}
+    drop = active_drop(drop if drop is not None else load(os.path.join(ROOT, "drop.json"), {}), today)
+    pool = [i for i in eligible_items(items, drop) if i["ref"] not in recent]
     by = {i["ref"]: i for i in pool}
-    drop = load(os.path.join(ROOT, "drop.json"), {})
     order = [by[r] for r in drop.get("refs", []) if r in by]
     lo_hi = {"W": (18000, 45000), "M": (18000, 45000), "K": (8000, 30000)}
     in_band = lambda i: lo_hi[audience(i)][0] <= i["price"] <= lo_hi[audience(i)][1]
@@ -104,20 +163,21 @@ def logo(im, x, y, height, colour="ink", anchor="left"):
     im.paste(lg, (x, y), lg)
 
 def fetch_photo(i):
+    rules, checked = photo_policy()
     for u in (i.get("imgs") or []) + [i.get("full"), i.get("img")]:
-        if not u: continue
+        if not product_photo(u, rules, checked): continue
         try:
-            req = urllib.request.Request(u, headers={"User-Agent": "Mozilla/5.0 (Northline poster)"})
+            req = urllib.request.Request(urllib.parse.urljoin("https://northlinehouse.shop/", u), headers={"User-Agent": "Mozilla/5.0 (Northline poster)"})
             with urllib.request.urlopen(req, timeout=30) as r: return Image.open(io.BytesIO(r.read())).convert("RGB")
-        except Exception as e: print("photo failed", u, e)
-    raise SystemExit("no photo could be downloaded for " + i["ref"])
+        except Exception: pass
+    raise RuntimeError("No product photo could be downloaded for " + i["ref"])
 
 def naira(n): return "₦" + f"{int(round(n)):,}"
 
 def sizes_line(i):
-    z = i.get("sizes") or {"W": ["36", "41"], "M": ["40", "45"]}.get(i.get("g"), [])
-    if not z or z == ["One size"]: return ""
-    return ("Ages " if i.get("g") == "B" else "Sizes ") + (z[0] if len(z) == 1 else f"{z[0]}–{z[-1]}")
+    z = [str(s) for s in i.get("sizes", []) if str(s) not in ("00", "0", "One size", "")]
+    if not z or i.get("cat") == "bags" or i.get("g") == "BG": return ""
+    return ("Ages " if i.get("g") == "B" else "Sizes ") + ", ".join(z)
 
 def wrap(draw, text, f, width):
     words, lines, cur = text.split(), [], ""
@@ -180,7 +240,8 @@ def caption(i):
     desc = (i.get("desc") or "").replace(", confirm size before payment", "").replace("confirm size before payment", "").strip(" ,")
     lines = [f"{i['model']}" + (f" · {i['colour']}" if i.get("colour") else ""), desc[:1].upper() + desc[1:] if desc else "",
              "", f"{naira(i['price'])}" + (f" · {sizes_line(i)}" if sizes_line(i) else ""),
-             "Delivered across Nigeria within 14 days of payment. Delivery from our Abuja pickup point to your door is paid on delivery.", "",
+             "Price includes shipping to Nigeria. Delivered within 14 days of payment. Delivery from our Abuja pickup point is paid on delivery.",
+             "Bank transfer after confirmation. No size exchanges.", "",
              "To order: tap the link in our bio or send us a WhatsApp message (number in bio). We confirm your size before you pay.", "",
              f"Ref {i['ref']} · {i['brand']}", "", "#northlinehouse " + TAGS[audience(i)]]
     return "\n".join(l for l in lines if l is not None).replace("\n\n\n", "\n\n")
@@ -193,7 +254,8 @@ def graph_get(path, params):
     q = urllib.parse.urlencode({**params, "access_token": os.environ["IG_TOKEN"]})
     with urllib.request.urlopen(GRAPH + path + "?" + q, timeout=60) as r: return json.load(r)
 
-def publish(image_url, text, story_url=None):
+def publish(image_url, text, story_url=None, product_url=None):
+    if os.environ.get("FB_PAGE_ID") and not product_url: raise ValueError("Facebook requires a product link")
     uid = os.environ["IG_USER_ID"]; out = {}
     for kind, url in (("feed", image_url), ("story", story_url)):
         if not url: continue
@@ -204,8 +266,8 @@ def publish(image_url, text, story_url=None):
             time.sleep(6)
         out[kind] = graph(f"/{uid}/media_publish", {"creation_id": c}).get("id")
     if os.environ.get("FB_PAGE_ID"):
-        try: out["facebook"] = graph(f"/{os.environ['FB_PAGE_ID']}/photos", {"url": image_url, "caption": text + f"\n\nShop: {SHOP}?a=FB"}).get("id")
-        except Exception as e: print("facebook post failed:", e)
+        try: out["facebook"] = graph(f"/{os.environ['FB_PAGE_ID']}/photos", {"url": image_url, "caption": text + f"\n\nShop: {product_url}"}).get("id")
+        except Exception: print("Facebook post failed; check the workflow credentials.")
     return out
 
 def main():
@@ -213,7 +275,7 @@ def main():
     i = pick(catalogue(), state)
     if not i: print("nothing left to post"); return
     os.makedirs(OUT, exist_ok=True)
-    day = dt.date.today().isoformat(); base = f"{day}-{re.sub(r'[^A-Za-z0-9-]', '', i['ref'])}"
+    day = lagos_today().isoformat(); base = f"{day}-{re.sub(r'[^A-Za-z0-9-]', '', i['ref'])}"
     photo = fetch_photo(i)
     card(i, photo, 1080, 1350, 1000).save(os.path.join(OUT, base + ".jpg"), quality=90)
     card(i, photo, 1080, 1920, 1180).save(os.path.join(OUT, base + "-story.jpg"), quality=90)
@@ -223,15 +285,22 @@ def main():
 
 def publish_step():
     """Second step: the workflow has committed the images, so Instagram can fetch them from raw.githubusercontent.com."""
+    if os.environ.get("IG_POSTING_ENABLED") != "true": raise RuntimeError("Posting disabled until the phone preview is approved")
     base, ref = os.environ["BASE"], os.environ["REF"]
-    state = load(STATE, {"posted": {}}); i = next(x for x in catalogue() if x["ref"] == ref)
+    state = load(STATE, {"posted": {}}); i = next(x for x in eligible_items(catalogue(), active_drop(load(os.path.join(ROOT, "drop.json"), {}), lagos_today())) if x["ref"] == ref)
     text = open(os.path.join(OUT, base + ".txt"), encoding="utf-8").read()
+    if text != caption(i): raise RuntimeError("Catalogue changed since rendering; regenerate before posting")
     raw = f"https://raw.githubusercontent.com/{REPO}/{BRANCH}/ig/"
-    res = publish(raw + base + ".jpg", text, raw + base + "-story.jpg"); print("published", res)
-    day = dt.date.today().isoformat()
-    state["posted"][ref] = day; state["last_aud"] = audience(i)
+    story_url = raw + base + "-story.jpg" if os.environ.get("IG_AUTO_STORY", "true") != "false" else None
+    res = publish(raw + base + ".jpg", text, story_url, product_link(ref, "FB")); print("published", res)
+    day = lagos_today().isoformat()
+    state.setdefault("posted", {})[ref] = day; state["last_aud"] = audience(i)
     state.setdefault("log", []).append({"day": day, "ref": ref, **res}); state["log"] = state["log"][-200:]
     json.dump(state, open(STATE, "w"), indent=1)
 
 if __name__ == "__main__":
-    publish_step() if "--publish" in sys.argv else main()
+    if "--preview-week" in sys.argv:
+        from preview_week import generate
+        generate()
+    elif "--publish" in sys.argv: publish_step()
+    else: main()
