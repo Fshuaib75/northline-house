@@ -1,83 +1,132 @@
-# Northline: one Instagram post (+ story) a day, picked from this week's drop and the best-value styles.
-# Set the secrets IG_USER_ID and IG_TOKEN (and optionally FB_PAGE_ID) to go live; until then every run is a preview.
+# Preview runs never call Meta or change posting history. Enable live mode only after phone review.
 name: Instagram daily post
-
 on:
   schedule:
-    - cron: "30 17 * * *"        # 18:30 in Lagos every day
+    - cron: "30 17 * * *" # 18:30 Lagos
   workflow_dispatch:
     inputs:
-      preview:
-        description: "Preview only (make the images, post nothing)"
-        type: boolean
-        default: true
-
+      action:
+        description: "Choose a run"
+        type: choice
+        default: "Preview next 7 days"
+        options: ["Preview next 7 days", "Post today"]
 permissions:
   contents: write
-
+  pages: write
 concurrency:
   group: ig-autopost
   cancel-in-progress: false
-
 jobs:
   post:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
         with:
+          path: code
+      - uses: actions/checkout@v4
+        with:
           ref: gh-pages
-
+          path: site
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-
-      - run: pip install pillow==11.3.0
-
-      - name: Pick a style and draw the images
-        id: make
-        run: python tools/ig/autopost.py
-
-      - name: Keep the images (preview)
-        uses: actions/upload-artifact@v4
+      - uses: actions/setup-node@v4
         with:
-          name: ig-${{ steps.make.outputs.base }}
-          path: ig/${{ steps.make.outputs.base }}*
-
-      - name: Decide whether to post
-        id: live
+          node-version: "20"
+      - run: pip install pillow==11.3.0
+      - name: Decide mode (posting requires phone-review approval)
+        id: mode
         env:
           HAS_IG: ${{ secrets.IG_USER_ID != '' && secrets.IG_TOKEN != '' }}
-          PREVIEW: ${{ github.event_name == 'workflow_dispatch' && inputs.preview }}
+          ENABLED: ${{ vars.IG_POSTING_ENABLED }}
+          PREVIEW: ${{ github.event_name == 'workflow_dispatch' && inputs.action != 'Post today' }}
         run: |
-          if [ "$HAS_IG" = "true" ] && [ "$PREVIEW" != "true" ]; then echo "go=yes" >> "$GITHUB_OUTPUT"; else echo "go=no" >> "$GITHUB_OUTPUT"; echo "Preview only: images are in the run's artifacts. Nothing was posted."; fi
-
-      - name: Put the images online (Instagram fetches them from the repo)
-        if: steps.live.outputs.go == 'yes'
+          if [ "$GITHUB_REF" = "refs/heads/main" ] && [ "$ENABLED" = "true" ] && [ "$HAS_IG" = "true" ] && [ "$PREVIEW" != "true" ]; then
+            echo "live=yes" >> "$GITHUB_OUTPUT"
+          else
+            echo "live=no" >> "$GITHUB_OUTPUT"
+            echo "Preview only. No Meta calls or posting-history updates."
+          fi
+      - name: Preview next 7 days
+        if: steps.mode.outputs.live != 'yes'
+        env:
+          NL_SITE_ROOT: ${{ github.workspace }}/site
+        run: python code/tools/ig/autopost.py --preview-week
+      - name: Pick and render today's real post
+        if: steps.mode.outputs.live == 'yes'
+        id: make
+        env:
+          NL_SITE_ROOT: ${{ github.workspace }}/site
+        run: python code/tools/ig/autopost.py
+      - name: Download seven-day preview
+        if: steps.mode.outputs.live != 'yes'
+        uses: actions/upload-artifact@v4
+        with:
+          name: instagram-preview
+          path: site/ig-preview/
+          retention-days: 7
+      - name: Download today's post assets
+        if: steps.mode.outputs.live == 'yes' && steps.make.outputs.base != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: instagram-today
+          path: site/ig/${{ steps.make.outputs.base }}*
+          retention-days: 7
+      - name: Publish preview page only
+        if: steps.mode.outputs.live != 'yes' && github.ref == 'refs/heads/main'
+        working-directory: site
+        run: |
+          git config user.name "Northline preview"
+          git config user.email "actions@users.noreply.github.com"
+          git add ig-preview
+          if ! git diff --cached --quiet; then
+            git commit -m "Instagram: next seven-day preview"
+            git pull --rebase origin gh-pages
+            git push origin HEAD:gh-pages
+          fi
+      - name: Request the preview Pages build
+        if: steps.mode.outputs.live != 'yes' && github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          source=$(gh api "repos/$GH_REPO/pages" --jq '.source.branch + ":" + .source.path')
+          if [ "$source" != "gh-pages:/" ]; then echo "::error::Preview requires the configured gh-pages root publishing source"; exit 1; fi
+          gh api --method POST "repos/$GH_REPO/pages/builds" > "$RUNNER_TEMP/ig-pages-build.json"
+      - name: Put today's images online for Instagram
+        if: steps.mode.outputs.live == 'yes' && steps.make.outputs.base != ''
+        working-directory: site
         run: |
           git config user.name "Northline poster"
           git config user.email "actions@users.noreply.github.com"
-          find ig -name '*.jpg' -mtime +30 -delete 2>/dev/null || true
           git add ig
-          git commit -m "Instagram: ${{ steps.make.outputs.ref }}" || true
+          if ! git diff --cached --quiet; then git commit -m "Instagram: today's assets"; fi
           git pull --rebase origin gh-pages
           git push origin HEAD:gh-pages
           sleep 20
-
-      - name: Post to Instagram
-        if: steps.live.outputs.go == 'yes'
+      - name: Post to Instagram and optional Facebook
+        if: steps.mode.outputs.live == 'yes' && steps.make.outputs.base != ''
         env:
+          NL_SITE_ROOT: ${{ github.workspace }}/site
+          IG_POSTING_ENABLED: ${{ vars.IG_POSTING_ENABLED }}
+          IG_AUTO_STORY: ${{ vars.IG_AUTO_STORY != 'false' }}
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
           IG_TOKEN: ${{ secrets.IG_TOKEN }}
           FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
           BASE: ${{ steps.make.outputs.base }}
           REF: ${{ steps.make.outputs.ref }}
-        run: python tools/ig/autopost.py --publish
-
-      - name: Remember what was posted
-        if: steps.live.outputs.go == 'yes'
+        run: python code/tools/ig/autopost.py --publish
+      - name: Remember actual posts only
+        if: steps.mode.outputs.live == 'yes' && steps.make.outputs.base != ''
+        working-directory: site
         run: |
           git add tools/ig/posted.json
-          git commit -m "Instagram: posted ${{ steps.make.outputs.ref }}" || true
+          git commit -m "Instagram: posted today's style"
           git pull --rebase origin gh-pages
           git push origin HEAD:gh-pages
-          git push origin HEAD:main || true
+      - name: Review link
+        run: |
+          echo '## Instagram review' >> "$GITHUB_STEP_SUMMARY"
+          echo '[Open the phone preview](https://northlinehouse.shop/ig-preview/) — choose Preview next 7 days to refresh it. Non-main previews are artifacts only.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'Live posting stays off until Claude checks the page on a phone and the owner sets IG_POSTING_ENABLED=true.' >> "$GITHUB_STEP_SUMMARY"
