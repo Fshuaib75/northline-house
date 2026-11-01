@@ -2,6 +2,14 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-11-01: Codex, codex/past-orders — bulk historical sales and hand entry
+
+Did: Add tab now has Past orders CSV entry with a preview table, exact catalogue matching, explicit ambiguous/unmatched resolution and confirmed free-text legacy styles. Groups by date and channel; saves paid with paid date equal to order date. Recognized sales channels have zero commission; unknown channels require classification, agent rates are editable and missing rates require entry. Added hand entry with past dates and Save and add another preserving date/channel. Preview edits invalidate stale plans; stable IDs make save retries idempotent. Source only; no actual orders imported or live branch changed.
+
+Validation: 15 parser/matching/grouping tests pass; UI JavaScript syntax and git diff --check pass. No phone-browser QA claimed. Tests cover invalid dates/numbers/CSV, aliases, ambiguous names, historical stock, free text, commission and atomic batches.
+
+Next: review draft and test at phone width before owner merges/deploys. Prices are per item. Unlisted styles retain a blank ref, so unknown costs stay explicit in profit reporting. Existing save transport is reused.
+
 ## 2026-11-01: Codex, codex/ig-week-preview — recover and publish the approved branch
 
 Did: recovered the seven committed files from the interrupted cloud session's saved changes and outputs. Before adding this recovery note, the full recovered Git tree matched the original exactly: `1625d4f667619491d5375cc890b2e8ecbba47009`, based on main `f541ffd4633fea2d5f07f0820cc2bfa849c38111`. The implementation and original handoff entry are preserved. The owner explicitly authorized uploading this branch, including HANDOFF.md, and opening a draft PR against main.

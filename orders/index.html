@@ -118,6 +118,15 @@ html,body{background:var(--bg)}
 .pill{border-radius:1px}
 textarea,input,select{border-radius:2px;background:#FBF8F2;border-color:var(--line-2)}
 textarea:focus,input:focus,select:focus{outline:2px solid var(--ink);outline-offset:1px}
+.entry-fields{border:0;padding:0;margin:0;min-width:0;display:grid;gap:12px}
+.entry-table{min-width:760px}
+.entry-table td{max-width:280px}
+.entry-table select{min-width:180px;margin-top:6px}
+.entry-table input[type=number]{min-width:100px}
+.entry-check{display:flex;gap:7px;align-items:flex-start;font-size:12.5px;margin-top:7px}
+.entry-check input{width:auto;margin-top:3px}
+.entry-errors{margin:5px 0 0;padding-left:16px;color:var(--err);font-size:12.5px}
+.entry-summary{margin:10px 0}
 </style>
 </head>
 <body>
@@ -169,6 +178,38 @@ textarea:focus,input:focus,select:focus{outline:2px solid var(--ink);outline-off
       <div class="row"><button class="btn primary" id="parseBtn">Read the order</button><span class="hint" id="parseMsg"></span></div>
     </div>
     <div id="preview"></div>
+    <div class="panel">
+      <h2>Add by hand</h2>
+      <p class="hint">Record a paid sale without a WhatsApp message. Prices are per item; the paid date is the order date.</p>
+      <fieldset class="entry-fields" id="manualFields">
+        <div class="grid2">
+          <label class="f">Order date<input id="manualDate" type="date" required></label>
+          <label class="f">Style ref or name<input id="manualStyle" list="orderStyles" autocomplete="off" required></label>
+          <label class="f">Size<input id="manualSize" autocomplete="off" placeholder="42 or One size" required></label>
+          <label class="f">Quantity<input id="manualQty" type="number" min="1" step="1" value="1" required></label>
+          <label class="f">Price per item (₦)<input id="manualPrice" type="number" min="0" step="1" required></label>
+          <label class="f">Channel or agent code<input id="manualChannel" list="orderChannels" value="Direct" autocomplete="off" required></label>
+        </div>
+        <div class="row"><button class="btn primary" id="manualPreviewBtn" type="button">Preview item</button></div>
+        <div id="manualPreview"></div>
+        <div class="row" id="manualActions" hidden><button class="btn primary" id="manualSave" type="button">Save as paid</button><button class="btn" id="manualAnother" type="button">Save and add another</button></div>
+      </fieldset>
+      <p class="hint" id="manualStatus" role="status" aria-live="polite"></p>
+    </div>
+    <div class="panel">
+      <h2>Past orders</h2>
+      <p class="hint" id="pastHelp">Paste one line per item: date, style ref or name, size, qty, price per item, channel. Use YYYY-MM-DD dates and prices without commas, or quote a value that contains commas. Lines with the same date and channel become one paid order.</p>
+      <fieldset class="entry-fields" id="pastFields">
+        <label class="f" for="pastText">Past order items<textarea id="pastText" aria-describedby="pastHelp" spellcheck="false" placeholder="2026-09-14, SLZ-SA16SE030-500, 42, 1, 30000, Direct"></textarea></label>
+        <p class="hint">Channels can be Direct, Instagram, Facebook, WhatsApp, or an agent code. Include sale details only, without customer names, phone numbers or addresses.</p>
+        <div class="row"><button class="btn primary" id="pastPreviewBtn" type="button">Preview past orders</button></div>
+        <div id="pastPreview"></div>
+        <div class="row" id="pastActions" hidden><button class="btn primary" id="pastSave" type="button">Save all as paid</button></div>
+      </fieldset>
+      <p class="hint" id="pastStatus" role="status" aria-live="polite"></p>
+    </div>
+    <datalist id="orderStyles"></datalist>
+    <datalist id="orderChannels"><option value="Direct"><option value="Instagram"><option value="Facebook"><option value="WhatsApp"><option value="TikTok"><option value="Website"><option value="Walk-in"></datalist>
   </section>
 
   <!-- orders -->
@@ -227,6 +268,8 @@ textarea:focus,input:focus,select:focus{outline:2px solid var(--ink);outline-off
 </main>
 <div class="toast" id="toast" hidden></div>
 
+<script src="past-orders.js"></script>
+<script src="past-orders-ui.js"></script>
 <script>
 const REPO="Fshuaib75/northline-house", LIVE="gh-pages", ALSO="main", FILE="orders.json";
 const $=id=>document.getElementById(id);
@@ -237,6 +280,7 @@ const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.
 function toast(t){ const el=$("toast"); el.textContent=t; el.hidden=false; clearTimeout(toast.t); toast.t=setTimeout(()=>el.hidden=true,2600); }
 const EMPTY=()=>({v:1, orders:[], payouts:[], wants:[]});
 let DATA=EMPTY(), PRICES={}, CAT=new Map(), TOKEN=store.get("nl-orders-token","");
+let CATALOGUE_READY=false;
 
 // ---------- GitHub: read and save orders.json on the live branch, then move main to the same commit ----------
 const API="https://api.github.com/repos/"+REPO;
@@ -284,6 +328,8 @@ async function catalogue(){
   const [p, prods]=await Promise.all([get("prices.json"), get("products.json")]); PRICES=(p&&p.prices)||{};
   try{ const h=await fetch("../shop/",{cache:"no-store"}).then(r=>r.text()); const m=h.match(/let ALL = (\[.*?\]);\n/s); if(m) JSON.parse(m[1]).forEach(i=>CAT.set(i.ref,i)); }catch(e){}
   (prods||[]).forEach(i=>{ if(i&&i.ref&&!CAT.has(i.ref)) CAT.set(i.ref,i); });
+  CATALOGUE_READY=CAT.size>0;
+  if(orderEntry) orderEntry.catalogueChanged();
   drawAll();
 }
 
@@ -353,7 +399,7 @@ function drawOrders(){
   const l=DATA.orders.filter(o=>!OF||o.status===OF).sort((a,b)=>String(b.at).localeCompare(String(a.at))||String(b.id).localeCompare(String(a.id)));
   const waiting=DATA.orders.filter(o=>o.status==="waiting").length; $("nOrders").textContent=waiting?`· ${waiting} waiting`:"";
   $("orderList").innerHTML=l.length?l.map(o=>`<div class="order" data-id="${esc(o.id)}">
-    <div class="hd"><b>${esc(o.agent||"Direct sale")}</b><span class="hint">${esc(o.at)}${o.paid?" · paid "+esc(o.paid):""} · ${o.src==="shop"?"from the shop":"from the agent page"}</span></div>
+    <div class="hd"><b>${esc(o.agent||o.channel||"Direct sale")}</b><span class="hint">${esc(o.at)}${o.paid?" · paid "+esc(o.paid):""} · ${o.src==="past"?"past order":o.src==="manual"?"hand entry":o.src==="shop"?"from the shop":"from the agent page"}</span></div>
     <ul>${(o.items||[]).map(it=>`<li><span>${itemLine(it)}</span><span>${N(it.price*it.qty)}</span></li>`).join("")}</ul>
     <div class="ft"><span><span class="pill ${esc(o.status)}">${o.status==="waiting"?"Waiting for payment":esc(o.status)}</span> <b style="margin-left:8px">${N(total(o))}</b>${commOf(o)?` <span class="hint">· agent ${N(commOf(o))}</span>`:""}</span>
       <span class="row">${o.status!=="paid"?`<button class="btn good small" data-a="paid">Mark paid</button>`:`<button class="btn small" data-a="waiting">Not paid</button>`}${o.status!=="cancelled"?`<button class="btn small" data-a="cancelled">Cancel</button>`:""}<button class="lnk" data-a="delete">Delete</button></span></div>
@@ -398,7 +444,7 @@ function drawSells(){
   bars("sStyles",cnt(it=>[`${it.model}${it.colour?" · "+it.colour:""}`, it.ref]));
   bars("sSizes",cnt(it=>[it.size&&it.size!=="One size"?"Size "+it.size:"",""]).sort((a,b)=>parseFloat(a[0].slice(5))-parseFloat(b[0].slice(5))),20);
   bars("sBrands",cnt(it=>[it.brand||(CAT.get(it.ref)||{}).brand||"Unknown",""]));
-  bars("sAgents",cnt((it,o)=>[o.agent||"Direct sale",""]));
+  bars("sAgents",cnt((it,o)=>[o.agent||o.channel||"Direct sale",""]));
   const w=new Map(); DATA.wants.forEach(x=>{ const k=(x.what+(x.size?" · size "+x.size:"")).trim(); w.set(k,(w.get(k)||0)+(x.n||1)); });
   bars("sWants",[...w].sort((a,b)=>b[1]-a[1]),20);
 }
@@ -410,6 +456,9 @@ document.querySelector(".tabs").addEventListener("click",e=>{ const b=e.target.c
   document.querySelectorAll(".tabs button").forEach(x=>x.setAttribute("aria-selected",x===b)); ["add","orders","agents","sells"].forEach(t=>$("p-"+t).hidden=t!==b.dataset.t); });
 function drawAll(){ drawOrders(); drawAgents(); drawSells(); }
 $("poDate").value=today();
+const orderEntry=NLOrderEntry.init({document, today, esc, money:N, save,
+  context:()=>({catalogue:[...CAT.values()],prices:PRICES,agents:[...new Set(DATA.orders.map(o=>o.agent).concat(DATA.payouts.map(p=>p.agent)).filter(Boolean))],today:today(),ready:CATALOGUE_READY}),
+  data:()=>DATA});
 conn(false); load(); catalogue();
 </script>
 </body>
