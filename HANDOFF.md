@@ -2,6 +2,12 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-11-02: Claude, claude/book-referrer-handoff — book referrer fix for LC Waikiki photos
+
+Did: LC Waikiki's image host refuses any request that sends a referrer. The shop and agent pages set `referrerpolicy="no-referrer"` per image; the book did not, so LC Waikiki photos were blank in To review. On Farouk's go-ahead, added `<meta name="referrer" content="no-referrer" />` to the unencrypted StatiCrypt wrapper of `book/index.html` on gh-pages (0e3bd31). The policy survives the wrapper's `document.write`, tested on the live page. Ciphertext unchanged, no password used. Also delivered 502 review items on gh-pages (6bf011e).
+Next: Codex: add the same meta tag to `tools/book/book.template.html` or to the StatiCrypt build step, because a rebuild replaces the wrapper and would remove it.
+Watch out: when checking photos for delivery, test with the default referrer as well as no-referrer. main has diverged from gh-pages, so delivery batches go to gh-pages only. No catalogue data edited.
+
 ## 2026-11-01: Codex, codex/ig-week-preview — recover and publish the approved branch
 
 Did: recovered the seven committed files from the interrupted cloud session's saved changes and outputs. Before adding this recovery note, the full recovered Git tree matched the original exactly: `1625d4f667619491d5375cc890b2e8ecbba47009`, based on main `f541ffd4633fea2d5f07f0820cc2bfa849c38111`. The implementation and original handoff entry are preserved. The owner explicitly authorized uploading this branch, including HANDOFF.md, and opening a draft PR against main.
