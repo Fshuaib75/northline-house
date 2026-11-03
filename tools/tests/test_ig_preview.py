@@ -9,7 +9,7 @@ import sys
 import tempfile
 import unittest
 from unittest.mock import patch
-from PIL import Image
+from PIL import Image, ImageDraw
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "ig"))
 import autopost as A
 import preview_week as W
@@ -21,6 +21,9 @@ def item(ref, **extra):
 
 class IGPreviewTests(unittest.TestCase):
     def setUp(self):
+        mixed = patch.object(A, 'IG_AUDIENCE', None)
+        mixed.start()
+        self.addCleanup(mixed.stop)
         self.policy = patch.object(A, "photo_policy", return_value=({}, {}))
         self.policy.start()
         self.addCleanup(self.policy.stop)
@@ -38,7 +41,9 @@ class IGPreviewTests(unittest.TestCase):
         self.assertTrue(A.product_photo("https://example.test/plain.jpg", {"photos": ["plain.jpg"], "allowed": ["plain.jpg"]}, {"scores": {"plain.jpg": .9}}))
 
     def test_sivarro_first_chart_is_never_downloaded(self):
-        buf = io.BytesIO(); Image.new("RGB", (20, 20), "white").save(buf, format="PNG")
+        photo = Image.new('RGB', (20, 20), 'white')
+        ImageDraw.Draw(photo).rectangle((5,8,15,12),fill='black')
+        buf = io.BytesIO(); photo.save(buf, format='PNG')
         calls = []
         def get(request, timeout):
             calls.append(request.full_url)
@@ -62,7 +67,7 @@ class IGPreviewTests(unittest.TestCase):
         for offset in range(7):
             day = start + dt.timedelta(days=offset)
             selected = A.pick(items, simulated, today=day, drop=drop); expected.append(selected["ref"])
-            simulated["posted"][selected["ref"]] = day.isoformat(); simulated["last_aud"] = A.audience(selected)
+            A.record_post(simulated, selected, day.isoformat())
         self.assertEqual([r["ref"] for r in days], expected)
         self.assertEqual(len(set(expected)), 7); self.assertEqual(state, original)
         self.assertTrue(days[0]["story_link"].endswith("?i=3&a=IG"))
@@ -118,7 +123,9 @@ class IGPreviewTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp:
             statefile = Path(temp) / "posted.json"; statefile.write_text('{"posted":{}}')
             out = Path(temp) / "preview"
-            with patch.object(A, "STATE", str(statefile)), patch.object(A, "fetch_photo", return_value=Image.new("RGB", (320, 320), "white")), patch.object(A, "graph", side_effect=AssertionError("no Meta")):
+            photo = Image.new('RGB', (320, 320), 'white')
+            ImageDraw.Draw(photo).rounded_rectangle((70,120,250,200),20,fill='black')
+            with patch.object(A, "STATE", str(statefile)), patch.object(A, "fetch_photo", return_value=photo), patch.object(A, "graph", side_effect=AssertionError("no Meta")):
                 result = W.generate(items=rows, drop={"refs": [str(n) for n in range(8)]}, start=dt.date(2026, 10, 31), out=out)
             self.assertEqual(statefile.read_text(), '{"posted":{}}')
             self.assertEqual(len(result["pins"]), 3)
