@@ -9,8 +9,12 @@
   "870-K853": "2026-11-02"
  },
  "reported": {
-  "blank": [],
+  "blank": [
+   "H100-BLK",
+   "Y07-BGE"
+  ],
   "unchecked": [
+   "870-K853",
    "DF-D8939AXWT34"
   ]
  }
