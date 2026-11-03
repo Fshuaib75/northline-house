@@ -7,13 +7,12 @@ import unittest
 
 SOURCE = Path(__file__).resolve().parents[1] / "ig" / "autopost.py"
 NAMES = {"audience", "style_key", "style_colours", "record_post", "display_name",
-         "grouped_items", "pick", "active_drop", "caption", "sizes_line", "naira"}
+         "grouped_items", "pick", "active_drop", "caption", "sizes_line", "naira", "clean_description", "hashtags"}
 tree = ast.parse(SOURCE.read_text(encoding="utf-8"))
 functions = ast.Module(body=[node for node in tree.body
                             if isinstance(node, ast.FunctionDef) and node.name in NAMES],
                        type_ignores=[])
-scope = {"dt": dt, "re": re, "eligible_items": lambda items, drop: items,
-         "TAGS": {"M": "#men", "W": "#women", "K": "#kids"}}
+scope = {"dt": dt, "re": re, "eligible_items": lambda items, drop: items, "IG_AUDIENCE": None}
 exec(compile(functions, str(SOURCE), "exec"), scope)
 DAY = dt.date(2026, 11, 3)
 
@@ -38,7 +37,7 @@ class StyleTests(unittest.TestCase):
         state = {}
         scope["record_post"](state, self.pick(rows, state), DAY.isoformat())
         self.assertEqual(set(state["posted"]), {"black", "tan"})
-        self.assertEqual(state["posted_styles"], {"slide": DAY.isoformat()})
+        self.assertEqual(state["posted_styles"], {"grp:slide": DAY.isoformat()})
         self.assertIsNone(self.pick(rows, state))
 
     def test_alternation_during_drop(self):
@@ -57,7 +56,8 @@ class StyleTests(unittest.TestCase):
         text = scope["caption"](chosen)
         self.assertTrue(text.startswith("Luxter cross slide"))
         self.assertIn("Sizes 40, 43", text)
-        self.assertIn("Other colours: tan", text)
+        self.assertIn("tan", text)
+        self.assertNotIn("Other colours", text)
         self.assertNotIn("41", text)
 
 if __name__ == "__main__":
