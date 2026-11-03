@@ -25,13 +25,12 @@ def plan(items, state, drop, start, render):
         item = A.pick(items, simulated, today=date, drop=drop)
         row = {"day": date.isoformat(), "ready": False}
         if item:
-            row.update(ref=item["ref"], name=item["model"], price=item["price"], caption=A.caption(item),
+            row.update(ref=item["ref"], name=A.display_name(item), price=item["price"], caption=A.caption(item),
                        story_link=A.product_link(item["ref"], "IG"), facebook_link=A.product_link(item["ref"], "FB"))
             try:
                 row.update(render(item, date))
                 row["ready"] = True
-                simulated["posted"][item["ref"]] = date.isoformat()
-                simulated["last_aud"] = A.audience(item)
+                A.record_post(simulated, item, date.isoformat())
             except Exception:
                 row["warning"] = "Photo/render failed. Nothing will post from this preview; the picker will retry this style."
         else:
@@ -43,10 +42,10 @@ def base_pin(title):
     im = Image.new("RGB", (1080, 1350), A.BG)
     A.logo(im, 64, 64, 48)
     d = ImageDraw.Draw(im)
-    d.text((64, 142), "Considered everyday essentials.", font=A.font("Jost.ttf", 27), fill=A.MUTED)
+    d.text((64, 142), "Considered everyday essentials.", font=A.font("Jost.ttf", 36), fill=A.MUTED)
     d.text((64, 235), title, font=A.font("Newsreader.ttf", 76), fill=A.INK)
     d.line((64, 365, 1016, 365), fill=A.CREAM2, width=2)
-    d.text((64, 1278), "northlinehouse.shop", font=A.font("Jost.ttf", 29), fill=A.MUTED)
+    d.text((64, 1278), "northlinehouse.shop", font=A.font("Jost.ttf", 36), fill=A.MUTED)
     return im
 
 def text_pin(title, lines):
@@ -54,7 +53,7 @@ def text_pin(title, lines):
     d = ImageDraw.Draw(im)
     for n, line in enumerate(lines):
         y = 435 + n * (140 if len(lines) == 5 else 175)
-        d.text((64, y), f"0{n + 1}", font=A.font("Jost.ttf", 29), fill=A.MUTED)
+        d.text((64, y), f"0{n + 1}", font=A.font("Jost.ttf", 36), fill=A.MUTED)
         for j, text in enumerate(A.wrap(d, line, A.font("Jost.ttf", 39), 850)):
             d.text((144, y + j * 52), text, font=A.font("Jost.ttf", 39), fill=A.INK)
     return im
@@ -62,22 +61,22 @@ def text_pin(title, lines):
 def drop_pin(items, photos, page, total):
     im = base_pin("This week’s drop")
     d = ImageDraw.Draw(im)
-    # Six styles per image; a larger drop becomes one carousel post rather than unreadable miniatures.
+    # Four large products per page, with separate photo, text and row spacing.
     d.rectangle((60, 365, 1020, 1240), fill=A.BG)
     if not items:
         d.text((64, 520), "No current drop styles eligible.", font=A.font("Jost.ttf", 38), fill=A.MUTED)
     for n, item in enumerate(items):
-        x, y = 64 + (n % 2) * 496, 390 + (n // 2) * 285
+        x, y = 64 + (n % 2) * 496, 390 + (n // 2) * 425
         photo = photos.get(item["ref"])
         if photo is not None:
-            im.paste(A.photo_box(photo, 452, 180), (x, y))
+            im.paste(A.photo_box(photo, 452, 250), (x, y))
         else:
-            d.text((x + 20, y + 70), "Photo unavailable", font=A.font("Jost.ttf", 26), fill=A.MUTED)
-        name = item["model"] + (" · " + item["colour"] if item.get("colour") else "")
-        for j, line in enumerate(A.wrap(d, name, A.font("Jost.ttf", 25), 452)[:2]):
-            d.text((x, y + 190 + j * 30), line, font=A.font("Jost.ttf", 25), fill=A.INK)
-        A.draw_price(d, x, y + 278, item["price"], 34)
-    d.text((1016, 1285), f"{page}/{total}", font=A.font("Jost.ttf", 26), fill=A.MUTED, anchor="rs")
+            d.text((x + 20, y + 70), "Photo unavailable", font=A.font("Jost.ttf", 36), fill=A.MUTED)
+        name = A.display_name(item) + (" · " + item["colour"] if item.get("colour") else "")
+        for j, line in enumerate(A.wrap(d, name, A.font("Jost.ttf", 36), 452)[:2]):
+            d.text((x, y + 260 + j * 42), line, font=A.font("Jost.ttf", 36), fill=A.INK)
+        A.draw_price(d, x, y + 390, item["price"], 42)
+    d.text((1016, 1285), f"{page}/{total}", font=A.font("Jost.ttf", 36), fill=A.MUTED, anchor="rs")
     return im
 
 def write_page(out, days, pins, generated):
@@ -90,7 +89,7 @@ def write_page(out, days, pins, generated):
     for row in days:
         content.append(f'<article><h2>{esc(row["day"])} · {esc(row.get("name", "No post"))}</h2>')
         if row["ready"]:
-            content.append('<div class="pair">' + asset(row["feed"], "feed · 1080×1350") + asset(row["story"], "story · 1080×1920") + '</div>')
+            content.append('<div class="pair">' + ''.join(asset(slide, "colour slide · 1080×1350") for slide in row.get("slides", [row["feed"]])) + asset(row["story"], "story · 1080×1920") + '</div>')
         else:
             content.append(f'<p class="warning">{esc(row["warning"])}</p>')
         if row.get("ref"):
@@ -132,9 +131,14 @@ def generate(items=None, state=None, drop=None, start=None, out=None):
         return photos[item["ref"]]
     def render(item, day):
         base = day.isoformat()
-        A.card(item, photo(item), 1080, 1350, 1000).save(out / (base + ".jpg"), quality=90)
+        A.card(item, photo(item), 1080, 1350, 900).save(out / (base + ".jpg"), quality=90)
         A.card(item, photo(item), 1080, 1920, 1180).save(out / (base + "-story.jpg"), quality=90)
-        return {"feed": base + ".jpg", "story": base + "-story.jpg"}
+        slides = []
+        for n, colour in enumerate(A.style_colours(item)):
+            filename = base + f"-colour-{n+1}.jpg"
+            A.card(colour, photo(colour), 1080, 1350, 900).save(out / filename, quality=90)
+            slides.append(filename)
+        return {"feed": base + ".jpg", "story": base + "-story.jpg", "slides": slides}
     days = plan(items, state, drop, start, render)
     pins = []
     for slug, title, lines, caption in PIN_COPY:
@@ -148,7 +152,18 @@ def generate(items=None, state=None, drop=None, start=None, out=None):
     for item in current:
         try: photo(item)
         except Exception: missing = True
-    chunks = [current[n:n+6] for n in range(0, len(current), 6)] or [[]]
+    # Apply the same audience choice within the drop, retaining all eligible products.
+    ordered = []
+    remaining = list(current)
+    last_aud = state.get("last_aud")
+    while remaining:
+        want = "W" if last_aud == "M" else "M"
+        item = next((i for i in remaining if A.audience(i) == want), remaining[0])
+        ordered.append(item)
+        remaining.remove(item)
+        last_aud = A.audience(item)
+    current = ordered
+    chunks = [current[n:n+4] for n in range(0, len(current), 4)] or [[]]
     assets = []
     for n, chunk in enumerate(chunks):
         name = f"pin-drop-{n+1}.jpg"
