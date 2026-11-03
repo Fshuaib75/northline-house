@@ -2,6 +2,16 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-11-04: Codex, codex/ig-style-carousels — real grouping and supplier-photo preview
+
+Did: corrected missing-grp identity using brand, g and colour-stripped supplier refs, including Sivarro audience suffixes, Capone colour codes, Slazenger numeric suffixes and DeFacto AX suffixes. Generic names never determine identity. Owner's men-only decision is now IG_AUDIENCE = "M", including men's accessories, with the existing brand-variety and ₦25–45k preferences. Updated README, product-type hashtags, generic customer names and cleaned capitalised descriptions. Captions list colours once.
+
+Photo fixes: fill starts only from background-classified corners. Remove small enclosed near-white gaps on dark products, and exact grey studio gaps around white straps. Pale products use a tighter exterior threshold and shaded pale footbeds remain foreground. Ambiguous white-on-white enclosed regions are intentionally preserved rather than guessed. Real-photo checks covered Freistep, Tergan strap sandals, white Lauren and white Eden, plus Ostuni and Boston.
+
+Validation: all 26 Instagram tests pass, including real refs, legacy history, men's accessories, masks/corners, sparse stock, preview isolation and mocked carousel publication/failure. Both edited modules compile. Read the complete public gh-pages snapshot of 726 catalogue rows. Current eligibility yields 277 style groups. Printed Boston's five, Freistep's three and Fuga's three eligible colour refs. Rendered seven days (4–10 November) from real supplier originals downloaded through the shop galleries, producing 12 feed slides, seven stories, captions and a full grouping report. Three scheduled styles have colour carousels. Generated files are delivered locally in this chat, not committed to gh-pages.
+
+PR: https://github.com/Fshuaib75/northline-house/pull/48 against main, still draft. Next: owner reviews the supplied actual-product images and decides merge/deployment. Daily audience is now men's only by explicit owner decision, superseding the earlier alternation assumption. Prices and catalogue were not edited. No workflows dispatched or social posts published.
+
 ## 2026-11-03: Codex, codex/ig-style-carousels — validation and preview review update
 
 Did: located the bundled Python runtime at C:/Users/FAROUK/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/python.exe with Pillow 12.3.0. Created/reopened an image and rendered the edited feed and four-product pin with a synthetic product photo successfully. The earlier Pillow-unavailable blocker is resolved. Reviewed the current public preview plan, six daily feed images, the Ostuni story, both information pins and all three drop pages.
