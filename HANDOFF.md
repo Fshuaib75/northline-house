@@ -2,6 +2,12 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-11-03: Codex, codex/ig-style-carousels
+
+Did: reviewed gh-pages ig-preview/plan.json and the browser drop-pin composition. Updated autopost.py and preview_week.py for grp colour carousels, legacy-compatible 60-day style history, alternation during drops, brand spacing/value preference, trimmed studio backgrounds, larger product fitting, 36px secondary text, four-product pins, clean customer names and shorter per-colour size captions. Updated the history schema and README. Catalogue and prices untouched.
+Next: review the draft PR against main. Render with Pillow and visually verify every colour slide and all drop pages before approval. Run the full existing preview suite and adjust assertions tied to the old selection/caption behaviour. Owner decides merging and deployment.
+Watch out: five pure scheduling/caption regression tests pass and both Python files compile. Full image rendering and existing Pillow-dependent tests remain unverified because Pillow is unavailable locally and the dependency download failed. All seven original selected refs lack records in current supplier stock maps. No workflows dispatched, no live assets changed, no social posts sent.
+
 ## 2026-11-02: Claude, claude/book-referrer-handoff — book referrer fix for LC Waikiki photos
 
 Did: LC Waikiki's image host refuses any request that sends a referrer. The shop and agent pages set `referrerpolicy="no-referrer"` per image; the book did not, so LC Waikiki photos were blank in To review. On Farouk's go-ahead, added `<meta name="referrer" content="no-referrer" />` to the unencrypted StatiCrypt wrapper of `book/index.html` on gh-pages (0e3bd31). The policy survives the wrapper's `document.write`, tested on the live page. Ciphertext unchanged, no password used. Also delivered 502 review items on gh-pages (6bf011e).
