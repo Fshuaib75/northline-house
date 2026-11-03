@@ -2,6 +2,16 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-11-03: Codex, codex/ig-style-carousels — validation and preview review update
+
+Did: located the bundled Python runtime at C:/Users/FAROUK/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/python.exe with Pillow 12.3.0. Created/reopened an image and rendered the edited feed and four-product pin with a synthetic product photo successfully. The earlier Pillow-unavailable blocker is resolved. Reviewed the current public preview plan, six daily feed images, the Ostuni story, both information pins and all three drop pages.
+
+Review: public preview is still the old 2026-11-02T23:59:28Z snapshot, not PR #48 output. Palette, typography and wordmark are consistent. Product scale is too small, Ostuni and Boston backgrounds remain rectangular, six-item drop pages have almost no price-to-next-photo spacing, and the last page is unbalanced. The seven-day selection is all men with three consecutive premium Hammer Jack picks, and caption terms are repetitive. Information pins are the strongest part. This public set is not approved for posting.
+
+Next: use the bundled runtime to render the PR against actual current supplier photos and visually inspect every slide. Run the full existing Pillow-dependent suite, fix any regressions, and verify carousel publishing with mocked Meta calls. Five pure scheduling/caption tests and compilation have passed; synthetic rendering alone does not verify the real photographs or live API path. PR #48 remains draft against main. Keep the owner's no-deployment instruction.
+
+Watch out: no claim that the revised actual-product preview is complete. This handoff is a repository record, not a message sent to another agent. No gh-pages writes, workflow dispatches or social posts during this review.
+
 ## 2026-11-03: Codex, codex/ig-style-carousels
 
 Did: reviewed gh-pages ig-preview/plan.json and the browser drop-pin composition. Updated autopost.py and preview_week.py for grp colour carousels, legacy-compatible 60-day style history, alternation during drops, brand spacing/value preference, trimmed studio backgrounds, larger product fitting, 36px secondary text, four-product pins, clean customer names and shorter per-colour size captions. Updated the history schema and README. Catalogue and prices untouched.
