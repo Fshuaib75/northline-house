@@ -2,8 +2,8 @@
 """Northline daily Instagram post.
 
 Runs on GitHub Actions (see .github/workflows/ig-autopost.yml). Each run:
-  1. picks the next style to post: this week's drop first, then styles you added recently,
-     then best-value styles (₦25k–45k), alternating Men / Women so the feed stays mixed;
+  1. picks men's styles and accessories using IG_AUDIENCE, with brand variety,
+     ₦25k–45k value preference, then drop and recent-addition priority;
   2. draws a 1080×1350 feed image (and a 1080×1920 story) in the May look (earth palette, peak-line logo);
   3. publishes it to Instagram (and the Facebook Page, if set) with the Graph API;
   4. records the style and its colour refs in tools/ig/posted.json so it isn't posted again for 60 days.
@@ -26,6 +26,7 @@ REPO = os.environ.get("GITHUB_REPOSITORY", "Fshuaib75/northline-house")
 BRANCH = "gh-pages"   # the workflow commits the images here; GITHUB_REF_NAME is "main" on scheduled runs
 SHOP = "https://northlinehouse.shop/shop/"
 GRAPH = "https://graph.facebook.com/v21.0"
+IG_AUDIENCE = "M"  # Owner decision. Set to None to restore mixed Men/Women selection.
 # the May look: charcoal text, soft white page, cream photo backdrop, muted text, muted black frame
 INK, BG, PHOTO, MUTED, BLACK, CREAM2 = (46, 44, 41), (244, 240, 232), (233, 225, 211), (107, 98, 87), (31, 26, 22), (168, 156, 140)
 BRAND = os.path.join(ROOT, "brand")
@@ -91,7 +92,8 @@ def eligible_items(items, drop):
     return out
 
 def catalogue():
-    html = open(os.path.join(ROOT, "index.html"), encoding="utf-8").read()
+    with open(os.path.join(ROOT, "index.html"), encoding="utf-8") as source:
+        html = source.read()
     items = json.loads(re.search(r"let ALL = (\[.*?\]);\n", html, re.S).group(1))
     known = {i["ref"] for i in items}
     for a in load(os.path.join(ROOT, "products.json"), []):
@@ -128,7 +130,24 @@ def audience(i):
     return "M" if i.get("for") == "Men" else "W"
 
 def style_key(item):
-    return str(item.get("grp") or item["ref"])
+    if item.get("grp"):
+        return "grp:" + str(item["grp"])
+    # Supplier colour tokens, including Capone's N/M/L codes. Preserve model IDs
+    # and audience suffixes; generic model names are never used as identity.
+    tokens = str(item["ref"]).upper().split("-")
+    if item.get("brand", "").casefold() == "slazenger" and len(tokens) == 3 and re.fullmatch(r"\d{3}[A-Z]?", tokens[-1]):
+        tokens.pop()
+    if item.get("brand", "").casefold() == "defacto":
+        tokens[-1] = re.sub(r"(?<=AX)(?:BK|BN|BG|NV|GR|KH|WT)\d+$", "", tokens[-1])
+    colour = r"(?:BLK|BRN|BGE|WHT|TAN|KHK|NVY|MNK|GRY|GREY|RED|BLU|BLUE|PNK|PINK|GRN|CRM|MLT|GLD|SLV|ANT|TPE|N\d+|M\d+|L\d+)"
+    position = len(tokens) - 2 if tokens[-1] in ("M", "W", "K") else len(tokens) - 1
+    # A numeric disambiguator after a colour is part of the reference, not a model.
+    if position > 1 and tokens[position].isdigit() and re.fullmatch(colour, tokens[position-1]):
+        tokens.pop(position)
+        position -= 1
+    if position > 0 and re.fullmatch(colour, tokens[position]):
+        tokens.pop(position)
+    return "|".join((item.get("brand", "").casefold(), str(item.get("g", audience(item))), "-".join(tokens)))
 
 def style_colours(item):
     return item.get("colours") or [item]
@@ -141,7 +160,18 @@ def record_post(state, item, day):
     state["last_brand"] = item.get("brand")
 
 def display_name(item):
-    return re.sub(r"^\d+[\s-]+", "", item["model"]).strip()
+    name = re.sub(r"^\d+[\s-]+", "", item.get("model", "")).strip()
+    if name.casefold() not in {"", "shoe", "shoes", "slide", "slides", "sandal", "sandals", "bag", "accessory"}:
+        return name
+    kind = item.get("kind") or ({"slide": "slide", "slides": "slide", "sandal": "sandal", "sandals": "sandal"}.get(name.casefold())) or item.get("cat", "product")
+    desc = clean_description(item).split(",")[0].strip(" .")
+    if desc and not desc.casefold().startswith("confirm "):
+        return desc[:1].upper() + desc[1:] + (" " + kind if kind not in desc.casefold() and kind not in {"shoes", "accessories"} else "")
+    return {"shoes": "Everyday footwear", "bags": "Everyday bag", "accessories": "Everyday accessory"}.get(kind, "Everyday " + kind)
+
+def clean_description(item):
+    desc = re.sub(r"[,;]?\s*confirm size before payment\.?", "", item.get("desc", ""), flags=re.I).strip(" ,.;")
+    return desc[:1].upper() + desc[1:]
 
 def grouped_items(items, drop):
     groups = {}
@@ -165,11 +195,12 @@ def pick(items, state, today=None, drop=None):
                      if (today - dt.date.fromisoformat(day)).days < 60}
     # Legacy history for any colour suppresses the entire group, including hidden colours.
     recent_styles.update(style_key(i) for i in items if i["ref"] in recent_refs)
-    pool = [i for i in grouped_items(items, drop) if style_key(i) not in recent_styles]
+    pool = [i for i in grouped_items(items, drop) if style_key(i) not in recent_styles
+            and (IG_AUDIENCE is None or audience(i) == IG_AUDIENCE)]
     if not pool:
         return None
     want = "W" if state.get("last_aud") == "M" else "M"
-    candidates = [i for i in pool if audience(i) == want] or pool
+    candidates = pool if IG_AUDIENCE else ([i for i in pool if audience(i) == want] or pool)
     different_brand = [i for i in candidates if i.get("brand") != state.get("last_brand")]
     candidates = different_brand or candidates
     drop_refs = set(drop.get("refs", []))
@@ -203,7 +234,7 @@ def fetch_photo(i):
             req = urllib.request.Request(urllib.parse.urljoin("https://northlinehouse.shop/", u), headers={"User-Agent": "Mozilla/5.0 (Northline poster)"})
             with urllib.request.urlopen(req, timeout=30) as r:
                 photo = Image.open(io.BytesIO(r.read())).convert("RGB")
-            photo_box(photo.copy(), 200, 200)
+            photo_box(photo.copy(), 200, 200, i)
             return photo
         except Exception: pass
     raise RuntimeError("No product photo could be downloaded for " + i["ref"])
@@ -231,11 +262,11 @@ def draw_price(d, x, y, amount, size, align="left"):
     d.text((x, y), "₦", font=sign, fill=INK, anchor="ls"); d.text((x + ws, y), digits, font=num, fill=INK, anchor="ls")
     return total
 
-def photo_box(photo, w, h):
-    """Trim studio margins and key only the edge-connected neutral background."""
+def photo_box(photo, w, h, item=None):
+    """Trim neutral studio margins, preserving pale products and shaded footbeds."""
     photo = photo.convert("RGB")
     # Work at bounded resolution for predictable rendering cost.
-    photo.thumbnail((1600, 1600), Image.Resampling.LANCZOS)
+    photo.thumbnail((1200, 1200), Image.Resampling.LANCZOS)
     sample = max(1, min(photo.size) // 40)
     patches = [photo.crop((x, y, x + sample, y + sample))
                for x, y in ((0, 0), (photo.width-sample, 0),
@@ -248,10 +279,45 @@ def photo_box(photo, w, h):
     channels = difference.split()
     distance = ImageChops.lighter(ImageChops.lighter(channels[0], channels[1]), channels[2])
     # Flood-fill from the image border to preserve pale areas enclosed by the shoe.
-    mask = distance.point(lambda value: 0 if value < 24 else 255)
-    ImageDraw.floodfill(mask, (0, 0), 128, thresh=0)
-    for point in ((photo.width-1, 0), (0, photo.height-1), (photo.width-1, photo.height-1)):
-        ImageDraw.floodfill(mask, point, 128, thresh=0)
+    pale_product = any(word in str((item or {}).get("colour", "")).casefold()
+                       for word in ("white", "cream", "ivory", "beige", "mink"))
+    threshold = 6 if pale_product else 24
+    mask = distance.point(lambda value: 0 if value < threshold else 255)
+    for point in ((0, 0), (photo.width-1, 0), (0, photo.height-1), (photo.width-1, photo.height-1)):
+        if mask.getpixel(point) == 0:
+            ImageDraw.floodfill(mask, point, 128, thresh=0)
+    # Enclosed near-white studio gaps need separate treatment. Large pale
+    # surfaces and declared white/cream products retain their enclosed pixels.
+    if min(background) >= 230:
+        pixels = photo.load()
+        seen = mask.copy()
+        for y in range(photo.height):
+            for x in range(photo.width):
+                if seen.getpixel((x, y)) != 0:
+                    continue
+                # Flood-fill on a copy marks a component once. Only tiny, almost
+                # paper-white components qualify; shaded footbeds stay intact.
+                queue, points = [(x, y)], []
+                seen.putpixel((x, y), 64)
+                while queue:
+                    px, py = queue.pop()
+                    points.append((px, py))
+                    for nx, ny in ((px-1, py), (px+1, py), (px, py-1), (px, py+1)):
+                        if 0 <= nx < photo.width and 0 <= ny < photo.height and seen.getpixel((nx, ny)) == 0:
+                            seen.putpixel((nx, ny), 64)
+                            queue.append((nx, ny))
+                # On a pale product against a grey studio backdrop, exact grey
+                # gaps can be distinguished from brighter white straps. Against
+                # white-on-white, preserve ambiguous enclosed pale components.
+                if pale_product:
+                    background_pixels = sum(max(abs(pixels[p][c]-background[c]) for c in range(3)) <= 2 for p in points)
+                    removable = min(background) < 245 and background_pixels >= len(points) * .85
+                else:
+                    near_white = sum(min(pixels[p]) >= 248 and max(pixels[p])-min(pixels[p]) <= 5 for p in points)
+                    removable = near_white >= len(points) * .75
+                if len(points) <= photo.width * photo.height * .12 and removable:
+                    for point in points:
+                        mask.putpixel(point, 128)
     mask = mask.point(lambda value: 0 if value == 128 else 255)
     bounds = mask.getbbox()
     if not bounds:
@@ -270,7 +336,7 @@ def card(i, photo, w, h, photo_h):
     serif, sans = (lambda n, wt=400: font("Newsreader.ttf", n, wt)), (lambda n, wt=400: font("Jost.ttf", n, wt))
     if story:
         logo(im, w // 2, 110, 64, "ink", "center")
-        box = photo_box(photo, w - 120, photo_h)
+        box = photo_box(photo, w - 120, photo_h, i)
         mask = Image.new("L", box.size, 0); ImageDraw.Draw(mask).rounded_rectangle([0, 0, box.width - 1, box.height - 1], 16, fill=255)
         im.paste(box, (60, 230), mask)
         x, y = 60, 230 + photo_h + 60
@@ -281,7 +347,7 @@ def card(i, photo, w, h, photo_h):
         draw_price(d, x, y + 84, i["price"], 96)
         d.text((w // 2, h - 60), "Order: link in bio", font=sans(36), fill=MUTED, anchor="ms")
     else:
-        im.paste(photo_box(photo, w, photo_h), (0, 0))
+        im.paste(photo_box(photo, w, photo_h, i), (0, 0))
         x, y = 64, photo_h + 36
         pw = d.textlength("₦", font=serif(64, 500)) + d.textlength(f"{int(round(i['price'])):,}", font=sans(64, 500))
         d.text((x, y), i.get("brand", ""), font=sans(36), fill=MUTED)
@@ -294,21 +360,30 @@ def card(i, photo, w, h, photo_h):
         d.text((w - 64, h - 44), "Order: link in bio", font=sans(36), fill=MUTED, anchor="rs")
     return im
 
-TAGS = {"M": "#mensfashion #palms #mensslides #lagosfashion #abujafashion", "W": "#womensfashion #slides #ladiesfootwear #lagosfashion #abujafashion",
-        "K": "#babyclothes #kidsfashion #naijamums #lagosmums"}
+def hashtags(item):
+    text = " ".join(str(item.get(key, "")) for key in ("cat", "kind", "model", "desc")).casefold()
+    if item.get("cat") == "bags":
+        product = "#bags #everydaycarry"
+    elif item.get("cat") == "accessories":
+        product = "#wallets" if "wallet" in text else "#belts" if "belt" in text else "#accessories"
+    elif "slide" in text or "sandal" in text or "palm" in text:
+        product = "#slides #sandals"
+    elif item.get("cat") == "shoes":
+        product = "#footwear #shoes"
+    else:
+        product = "#everydaystyle"
+    audience_tag = {"M": "#mensfashion", "W": "#womensfashion", "K": "#kidsfashion"}[audience(item)]
+    return " ".join(("#northlinehouse", audience_tag, product, "#lagosfashion #abujafashion"))
 
 def caption(i):
     colours = style_colours(i)
-    lines = [display_name(i) + " · " + i.get("brand", ""), i.get("desc", "").strip()]
+    lines = [display_name(i) + " · " + i.get("brand", ""), clean_description(i)]
     for colour in colours:
         detail = " · ".join(filter(None, [colour.get("colour"), naira(colour["price"]), sizes_line(colour)]))
         lines.append(detail)
-    other = [c.get("colour", "") for c in colours[1:]]
-    if other:
-        lines.append("Other colours: " + ", ".join(other))
     lines.extend(["", "Shipping to Nigeria included · within 14 days of payment.",
                   "Abuja onward courier paid on delivery. Bank transfer after size confirmation. No size exchanges.",
-                  "Order via the link in bio or WhatsApp.", "", "#northlinehouse " + TAGS[audience(i)]])
+                  "Order via the link in bio or WhatsApp.", "", hashtags(i)])
     return "\n".join(lines)
 
 def graph(path, params):
