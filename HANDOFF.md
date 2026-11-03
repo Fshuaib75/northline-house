@@ -2,6 +2,32 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-11-04: Codex, codex/ig-style-carousels — real grouping and supplier-photo preview
+
+Did: corrected missing-grp identity using brand, g and colour-stripped supplier refs, including Sivarro audience suffixes, Capone colour codes, Slazenger numeric suffixes and DeFacto AX suffixes. Generic names never determine identity. Owner's men-only decision is now IG_AUDIENCE = "M", including men's accessories, with the existing brand-variety and ₦25–45k preferences. Updated README, product-type hashtags, generic customer names and cleaned capitalised descriptions. Captions list colours once.
+
+Photo fixes: fill starts only from background-classified corners. Remove small enclosed near-white gaps on dark products, and exact grey studio gaps around white straps. Pale products use a tighter exterior threshold and shaded pale footbeds remain foreground. Ambiguous white-on-white enclosed regions are intentionally preserved rather than guessed. Real-photo checks covered Freistep, Tergan strap sandals, white Lauren and white Eden, plus Ostuni and Boston.
+
+Validation: all 26 Instagram tests pass, including real refs, legacy history, men's accessories, masks/corners, sparse stock, preview isolation and mocked carousel publication/failure. Both edited modules compile. Read the complete public gh-pages snapshot of 726 catalogue rows. Current eligibility yields 277 style groups. Printed Boston's five, Freistep's three and Fuga's three eligible colour refs. Rendered seven days (4–10 November) from real supplier originals downloaded through the shop galleries, producing 12 feed slides, seven stories, captions and a full grouping report. Three scheduled styles have colour carousels. Generated files are delivered locally in this chat, not committed to gh-pages.
+
+PR: https://github.com/Fshuaib75/northline-house/pull/48 against main, still draft. Next: owner reviews the supplied actual-product images and decides merge/deployment. Daily audience is now men's only by explicit owner decision, superseding the earlier alternation assumption. Prices and catalogue were not edited. No workflows dispatched or social posts published.
+
+## 2026-11-03: Codex, codex/ig-style-carousels — validation and preview review update
+
+Did: located the bundled Python runtime at C:/Users/FAROUK/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/python.exe with Pillow 12.3.0. Created/reopened an image and rendered the edited feed and four-product pin with a synthetic product photo successfully. The earlier Pillow-unavailable blocker is resolved. Reviewed the current public preview plan, six daily feed images, the Ostuni story, both information pins and all three drop pages.
+
+Review: public preview is still the old 2026-11-02T23:59:28Z snapshot, not PR #48 output. Palette, typography and wordmark are consistent. Product scale is too small, Ostuni and Boston backgrounds remain rectangular, six-item drop pages have almost no price-to-next-photo spacing, and the last page is unbalanced. The seven-day selection is all men with three consecutive premium Hammer Jack picks, and caption terms are repetitive. Information pins are the strongest part. This public set is not approved for posting.
+
+Next: use the bundled runtime to render the PR against actual current supplier photos and visually inspect every slide. Run the full existing Pillow-dependent suite, fix any regressions, and verify carousel publishing with mocked Meta calls. Five pure scheduling/caption tests and compilation have passed; synthetic rendering alone does not verify the real photographs or live API path. PR #48 remains draft against main. Keep the owner's no-deployment instruction.
+
+Watch out: no claim that the revised actual-product preview is complete. This handoff is a repository record, not a message sent to another agent. No gh-pages writes, workflow dispatches or social posts during this review.
+
+## 2026-11-03: Codex, codex/ig-style-carousels
+
+Did: reviewed gh-pages ig-preview/plan.json and the browser drop-pin composition. Updated autopost.py and preview_week.py for grp colour carousels, legacy-compatible 60-day style history, alternation during drops, brand spacing/value preference, trimmed studio backgrounds, larger product fitting, 36px secondary text, four-product pins, clean customer names and shorter per-colour size captions. Updated the history schema and README. Catalogue and prices untouched.
+Next: review the draft PR against main. Render with Pillow and visually verify every colour slide and all drop pages before approval. Run the full existing preview suite and adjust assertions tied to the old selection/caption behaviour. Owner decides merging and deployment.
+Watch out: five pure scheduling/caption regression tests pass and both Python files compile. Full image rendering and existing Pillow-dependent tests remain unverified because Pillow is unavailable locally and the dependency download failed. All seven original selected refs lack records in current supplier stock maps. No workflows dispatched, no live assets changed, no social posts sent.
+
 ## 2026-11-02: Claude, claude/book-referrer-handoff — book referrer fix for LC Waikiki photos
 
 Did: LC Waikiki's image host refuses any request that sends a referrer. The shop and agent pages set `referrerpolicy="no-referrer"` per image; the book did not, so LC Waikiki photos were blank in To review. On Farouk's go-ahead, added `<meta name="referrer" content="no-referrer" />` to the unencrypted StatiCrypt wrapper of `book/index.html` on gh-pages (0e3bd31). The policy survives the wrapper's `document.write`, tested on the live page. Ciphertext unchanged, no password used. Also delivered 502 review items on gh-pages (6bf011e).
