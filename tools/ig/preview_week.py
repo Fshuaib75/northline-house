@@ -69,7 +69,7 @@ def drop_pin(items, photos, page, total):
         x, y = 64 + (n % 2) * 496, 390 + (n // 2) * 425
         photo = photos.get(item["ref"])
         if photo is not None:
-            im.paste(A.photo_box(photo, 452, 250), (x, y))
+            im.paste(A.photo_box(photo, 452, 250, item), (x, y))
         else:
             d.text((x + 20, y + 70), "Photo unavailable", font=A.font("Jost.ttf", 36), fill=A.MUTED)
         name = A.display_name(item) + (" · " + item["colour"] if item.get("colour") else "")
