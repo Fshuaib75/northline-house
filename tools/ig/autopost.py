@@ -3,10 +3,10 @@
 
 Runs on GitHub Actions (see .github/workflows/ig-autopost.yml). Each run:
   1. picks the next style to post: this week's drop first, then styles you added recently,
-     then best-value styles (₦18k–45k), alternating Men / Women so the feed stays mixed;
+     then best-value styles (₦25k–45k), alternating Men / Women so the feed stays mixed;
   2. draws a 1080×1350 feed image (and a 1080×1920 story) in the May look (earth palette, peak-line logo);
   3. publishes it to Instagram (and the Facebook Page, if set) with the Graph API;
-  4. records the ref in tools/ig/posted.json so it isn't posted again for 60 days.
+  4. records the style and its colour refs in tools/ig/posted.json so it isn't posted again for 60 days.
 
 Secrets (repo → Settings → Secrets and variables → Actions):
   IG_USER_ID   Instagram professional account id (numbers)
@@ -16,7 +16,7 @@ Unless IG_POSTING_ENABLED=true and credentials exist, runs produce the seven-day
 including pinned assets, at /ig-preview/. Preview mode never calls Meta or changes posting history.
 """
 import datetime as dt, io, json, os, re, subprocess, sys, time, urllib.parse, urllib.request
-from PIL import Image, ImageChops, ImageDraw, ImageFont, ImageOps
+from PIL import Image, ImageChops, ImageDraw, ImageFont, ImageOps, ImageStat, ImageFilter
 
 ROOT = os.environ.get("NL_SITE_ROOT") or os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -127,25 +127,58 @@ def audience(i):
     if g == "B" or i.get("for") in ("Girl", "Boy"): return "K"
     return "M" if i.get("for") == "Men" else "W"
 
+def style_key(item):
+    return str(item.get("grp") or item["ref"])
+
+def style_colours(item):
+    return item.get("colours") or [item]
+
+def record_post(state, item, day):
+    state.setdefault("posted_styles", {})[style_key(item)] = day
+    for colour in style_colours(item):
+        state.setdefault("posted", {})[colour["ref"]] = day
+    state["last_aud"] = audience(item)
+    state["last_brand"] = item.get("brand")
+
+def display_name(item):
+    return re.sub(r"^\d+[\s-]+", "", item["model"]).strip()
+
+def grouped_items(items, drop):
+    groups = {}
+    for item in eligible_items(items, drop):
+        groups.setdefault(style_key(item), []).append(item)
+    result = []
+    for key, colours in groups.items():
+        unique = {}
+        for colour in colours:
+            unique.setdefault(colour.get("colour") or colour["ref"], colour)
+        colours = list(unique.values())
+        result.append({**colours[0], "colours": colours})
+    return result
+
 def pick(items, state, today=None, drop=None):
     today = today or lagos_today()
-    recent = {r for r, d in state.get("posted", {}).items() if (today - dt.date.fromisoformat(d)).days < 60}
     drop = active_drop(drop if drop is not None else load(os.path.join(ROOT, "drop.json"), {}), today)
-    pool = [i for i in eligible_items(items, drop) if i["ref"] not in recent]
-    by = {i["ref"]: i for i in pool}
-    order = [by[r] for r in drop.get("refs", []) if r in by]
-    lo_hi = {"W": (18000, 45000), "M": (18000, 45000), "K": (8000, 30000)}
-    in_band = lambda i: lo_hi[audience(i)][0] <= i["price"] <= lo_hi[audience(i)][1]
-    added = sorted([i for i in pool if i.get("added")], key=lambda i: (not in_band(i), -int(i["added"].replace("-", ""))))
-    value = [i for i in pool if in_band(i) and len(i.get("imgs") or []) > 1]
-    value.sort(key=lambda i: (i["brand"], i["price"]))
-    seen, cands = set(), []
-    for i in order + added + value:
-        if i["ref"] not in seen: seen.add(i["ref"]); cands.append(i)
-    if not cands: return None
-    want = "W" if state.get("last_aud") == "M" else "M"          # alternate Men / Women
-    first = cands[0] if cands[0] in order else next((i for i in cands if audience(i) == want), cands[0])
-    return first
+    recent_refs = {r for r, day in state.get("posted", {}).items()
+                   if (today - dt.date.fromisoformat(day)).days < 60}
+    recent_styles = {key for key, day in state.get("posted_styles", {}).items()
+                     if (today - dt.date.fromisoformat(day)).days < 60}
+    # Legacy history for any colour suppresses the entire group, including hidden colours.
+    recent_styles.update(style_key(i) for i in items if i["ref"] in recent_refs)
+    pool = [i for i in grouped_items(items, drop) if style_key(i) not in recent_styles]
+    if not pool:
+        return None
+    want = "W" if state.get("last_aud") == "M" else "M"
+    candidates = [i for i in pool if audience(i) == want] or pool
+    different_brand = [i for i in candidates if i.get("brand") != state.get("last_brand")]
+    candidates = different_brand or candidates
+    drop_refs = set(drop.get("refs", []))
+    def priority(item):
+        in_band = 25000 <= item["price"] <= 45000
+        in_drop = any(c["ref"] in drop_refs for c in style_colours(item))
+        return (not in_band, not in_drop, not bool(item.get("added")),
+                -int(str(item.get("added") or "0").replace("-", "")), item["price"], style_key(item))
+    return min(candidates, key=priority)
 
 def font(name, size, wght=None):
     f = ImageFont.truetype(os.path.join(HERE, "fonts", name), size)
@@ -168,7 +201,10 @@ def fetch_photo(i):
         if not product_photo(u, rules, checked): continue
         try:
             req = urllib.request.Request(urllib.parse.urljoin("https://northlinehouse.shop/", u), headers={"User-Agent": "Mozilla/5.0 (Northline poster)"})
-            with urllib.request.urlopen(req, timeout=30) as r: return Image.open(io.BytesIO(r.read())).convert("RGB")
+            with urllib.request.urlopen(req, timeout=30) as r:
+                photo = Image.open(io.BytesIO(r.read())).convert("RGB")
+            photo_box(photo.copy(), 200, 200)
+            return photo
         except Exception: pass
     raise RuntimeError("No product photo could be downloaded for " + i["ref"])
 
@@ -196,12 +232,36 @@ def draw_price(d, x, y, amount, size, align="left"):
     return total
 
 def photo_box(photo, w, h):
-    """The product photo fitted on cream; white studio backgrounds melt into the cream (multiply), as on the shop."""
+    """Trim studio margins and key only the edge-connected neutral background."""
+    photo = photo.convert("RGB")
+    # Work at bounded resolution for predictable rendering cost.
+    photo.thumbnail((1600, 1600), Image.Resampling.LANCZOS)
+    sample = max(1, min(photo.size) // 40)
+    patches = [photo.crop((x, y, x + sample, y + sample))
+               for x, y in ((0, 0), (photo.width-sample, 0),
+                            (0, photo.height-sample), (photo.width-sample, photo.height-sample))]
+    background = tuple(round(sorted(ImageStat.Stat(p).median[channel] for p in patches)[1])
+                       for channel in range(3))
+    if min(background) < 180 or max(background) - min(background) > 35:
+        raise ValueError("Photo needs a clean neutral studio background")
+    difference = ImageChops.difference(photo, Image.new("RGB", photo.size, background))
+    channels = difference.split()
+    distance = ImageChops.lighter(ImageChops.lighter(channels[0], channels[1]), channels[2])
+    # Flood-fill from the image border to preserve pale areas enclosed by the shoe.
+    mask = distance.point(lambda value: 0 if value < 24 else 255)
+    ImageDraw.floodfill(mask, (0, 0), 128, thresh=0)
+    for point in ((photo.width-1, 0), (0, photo.height-1), (photo.width-1, photo.height-1)):
+        ImageDraw.floodfill(mask, point, 128, thresh=0)
+    mask = mask.point(lambda value: 0 if value == 128 else 255)
+    bounds = mask.getbbox()
+    if not bounds:
+        raise ValueError("No product found in photo")
+    rgba = photo.convert("RGBA")
+    rgba.putalpha(mask.filter(ImageFilter.GaussianBlur(.7)))
+    rgba = rgba.crop(bounds)
+    rgba = ImageOps.contain(rgba, (round(w * .79), round(h * .90)), Image.Resampling.LANCZOS)
     box = Image.new("RGB", (w, h), PHOTO)
-    ph = ImageOps.contain(photo, (int(w * .86), int(h * .86)))
-    pos = ((w - ph.width) // 2, (h - ph.height) // 2)
-    region = box.crop((pos[0], pos[1], pos[0] + ph.width, pos[1] + ph.height))
-    box.paste(ImageChops.multiply(region, ph), pos)
+    box.paste(rgba, ((w-rgba.width)//2, (h-rgba.height)//2), rgba)
     return box
 
 def card(i, photo, w, h, photo_h):
@@ -214,37 +274,42 @@ def card(i, photo, w, h, photo_h):
         mask = Image.new("L", box.size, 0); ImageDraw.Draw(mask).rounded_rectangle([0, 0, box.width - 1, box.height - 1], 16, fill=255)
         im.paste(box, (60, 230), mask)
         x, y = 60, 230 + photo_h + 60
-        d.text((x, y), i.get("brand", ""), font=sans(32), fill=MUTED); y += 54
-        d.text((x, y), wrap(d, i["model"], serif(72), w - 120)[0], font=serif(72), fill=INK); y += 96
-        sub = " · ".join(t for t in (i.get("colour", ""), sizes_line(i)) if t)
+        d.text((x, y), i.get("brand", ""), font=sans(36), fill=MUTED); y += 54
+        d.text((x, y), wrap(d, display_name(i), serif(72), w - 120)[0], font=serif(72), fill=INK); y += 96
+        sub = i.get("colour", "")
         if sub: d.text((x, y), sub, font=sans(36), fill=MUTED); y += 66
         draw_price(d, x, y + 84, i["price"], 96)
-        d.text((w // 2, h - 60), "Order: link in bio", font=sans(32), fill=MUTED, anchor="ms")
+        d.text((w // 2, h - 60), "Order: link in bio", font=sans(36), fill=MUTED, anchor="ms")
     else:
         im.paste(photo_box(photo, w, photo_h), (0, 0))
         x, y = 64, photo_h + 36
         pw = d.textlength("₦", font=serif(64, 500)) + d.textlength(f"{int(round(i['price'])):,}", font=sans(64, 500))
-        d.text((x, y), i.get("brand", ""), font=sans(28), fill=MUTED)
-        d.text((x, y + 44), wrap(d, i["model"], serif(58), w - 128 - pw - 40)[0], font=serif(58), fill=INK)
-        sub = " · ".join(t for t in (i.get("colour", ""), sizes_line(i)) if t)
-        if sub: d.text((x, y + 124), sub, font=sans(30), fill=MUTED)
-        draw_price(d, w - 64, y + 108, i["price"], 64, "right")
+        d.text((x, y), i.get("brand", ""), font=sans(36), fill=MUTED)
+        for n, line in enumerate(wrap(d, display_name(i), serif(58), w - 128)):
+            d.text((x, y + 50 + n * 66), line, font=serif(58), fill=INK)
+        sub = i.get("colour", "")
+        if sub: d.text((x, y + 200), sub, font=sans(36), fill=MUTED)
+        draw_price(d, w - 64, y + 270, i["price"], 64, "right")
         logo(im, x, h - 74, 34, "ink")
-        d.text((w - 64, h - 44), "Order: link in bio", font=sans(28), fill=MUTED, anchor="rs")
+        d.text((w - 64, h - 44), "Order: link in bio", font=sans(36), fill=MUTED, anchor="rs")
     return im
 
 TAGS = {"M": "#mensfashion #palms #mensslides #lagosfashion #abujafashion", "W": "#womensfashion #slides #ladiesfootwear #lagosfashion #abujafashion",
         "K": "#babyclothes #kidsfashion #naijamums #lagosmums"}
 
 def caption(i):
-    desc = (i.get("desc") or "").replace(", confirm size before payment", "").replace("confirm size before payment", "").strip(" ,")
-    lines = [f"{i['model']}" + (f" · {i['colour']}" if i.get("colour") else ""), desc[:1].upper() + desc[1:] if desc else "",
-             "", f"{naira(i['price'])}" + (f" · {sizes_line(i)}" if sizes_line(i) else ""),
-             "Price includes shipping to Nigeria. Delivered within 14 days of payment. Delivery from our Abuja pickup point is paid on delivery.",
-             "Bank transfer after confirmation. No size exchanges.", "",
-             "To order: tap the link in our bio or send us a WhatsApp message (number in bio). We confirm your size before you pay.", "",
-             f"Ref {i['ref']} · {i['brand']}", "", "#northlinehouse " + TAGS[audience(i)]]
-    return "\n".join(l for l in lines if l is not None).replace("\n\n\n", "\n\n")
+    colours = style_colours(i)
+    lines = [display_name(i) + " · " + i.get("brand", ""), i.get("desc", "").strip()]
+    for colour in colours:
+        detail = " · ".join(filter(None, [colour.get("colour"), naira(colour["price"]), sizes_line(colour)]))
+        lines.append(detail)
+    other = [c.get("colour", "") for c in colours[1:]]
+    if other:
+        lines.append("Other colours: " + ", ".join(other))
+    lines.extend(["", "Shipping to Nigeria included · within 14 days of payment.",
+                  "Abuja onward courier paid on delivery. Bank transfer after size confirmation. No size exchanges.",
+                  "Order via the link in bio or WhatsApp.", "", "#northlinehouse " + TAGS[audience(i)]])
+    return "\n".join(lines)
 
 def graph(path, params):
     data = urllib.parse.urlencode({**params, "access_token": os.environ["IG_TOKEN"]}).encode()
@@ -257,8 +322,33 @@ def graph_get(path, params):
 def publish(image_url, text, story_url=None, product_url=None):
     if os.environ.get("FB_PAGE_ID") and not product_url: raise ValueError("Facebook requires a product link")
     uid = os.environ["IG_USER_ID"]; out = {}
+    urls = image_url if isinstance(image_url, list) else [image_url]
+    image_url = urls[0]
+    if len(urls) > 10:
+        raise ValueError("Instagram carousel supports at most ten colours")
+    if len(urls) > 1:
+        children = [graph(f"/{uid}/media", {"image_url": url, "is_carousel_item": "true"})["id"] for url in urls]
+        for child in children:
+            for attempt in range(20):
+                status = graph_get(f"/{child}", {"fields": "status_code"}).get("status_code")
+                if status == "FINISHED":
+                    break
+                if status in ("ERROR", "EXPIRED"):
+                    raise RuntimeError("Carousel colour processing failed")
+                time.sleep(6)
+            else:
+                raise RuntimeError("Carousel colour processing timed out")
+        container = graph(f"/{uid}/media", {"media_type": "CAROUSEL", "children": ",".join(children), "caption": text})["id"]
+        for attempt in range(20):
+            if graph_get(f"/{container}", {"fields": "status_code"}).get("status_code") == "FINISHED":
+                break
+            time.sleep(6)
+        else:
+            raise RuntimeError("Carousel processing timed out")
+        out["feed"] = graph(f"/{uid}/media_publish", {"creation_id": container}).get("id")
+
     for kind, url in (("feed", image_url), ("story", story_url)):
-        if not url: continue
+        if not url or kind == "feed" and len(urls) > 1: continue
         params = {"image_url": url} | ({"caption": text} if kind == "feed" else {"media_type": "STORIES"})
         c = graph(f"/{uid}/media", params)["id"]
         for _ in range(20):
@@ -277,8 +367,15 @@ def main():
     os.makedirs(OUT, exist_ok=True)
     day = lagos_today().isoformat(); base = f"{day}-{re.sub(r'[^A-Za-z0-9-]', '', i['ref'])}"
     photo = fetch_photo(i)
-    card(i, photo, 1080, 1350, 1000).save(os.path.join(OUT, base + ".jpg"), quality=90)
+    card(i, photo, 1080, 1350, 900).save(os.path.join(OUT, base + ".jpg"), quality=90)
     card(i, photo, 1080, 1920, 1180).save(os.path.join(OUT, base + "-story.jpg"), quality=90)
+    slides = []
+    for n, colour in enumerate(style_colours(i)):
+        filename = base + f"-colour-{n+1}.jpg"
+        card(colour, fetch_photo(colour), 1080, 1350, 900).save(os.path.join(OUT, filename), quality=90)
+        slides.append(filename)
+    with open(os.path.join(OUT, base + "-slides.json"), "w", encoding="utf-8") as manifest:
+        json.dump(slides, manifest)
     text = caption(i); open(os.path.join(OUT, base + ".txt"), "w", encoding="utf-8").write(text)
     print(f"{i['ref']} · {i['model']} · {naira(i['price'])}\n---\n{text}\n---")
     with open(os.environ.get("GITHUB_OUTPUT", os.devnull), "a") as o: o.write(f"base={base}\nref={i['ref']}\n")
@@ -287,14 +384,18 @@ def publish_step():
     """Second step: the workflow has committed the images, so Instagram can fetch them from raw.githubusercontent.com."""
     if os.environ.get("IG_POSTING_ENABLED") != "true": raise RuntimeError("Posting disabled until the phone preview is approved")
     base, ref = os.environ["BASE"], os.environ["REF"]
-    state = load(STATE, {"posted": {}}); i = next(x for x in eligible_items(catalogue(), active_drop(load(os.path.join(ROOT, "drop.json"), {}), lagos_today())) if x["ref"] == ref)
+    state = load(STATE, {"posted": {}}); i = next(x for x in grouped_items(catalogue(), active_drop(load(os.path.join(ROOT, "drop.json"), {}), lagos_today())) if x["ref"] == ref)
     text = open(os.path.join(OUT, base + ".txt"), encoding="utf-8").read()
     if text != caption(i): raise RuntimeError("Catalogue changed since rendering; regenerate before posting")
     raw = f"https://raw.githubusercontent.com/{REPO}/{BRANCH}/ig/"
     story_url = raw + base + "-story.jpg" if os.environ.get("IG_AUTO_STORY", "true") != "false" else None
-    res = publish(raw + base + ".jpg", text, story_url, product_link(ref, "FB")); print("published", res)
+    slides = load(os.path.join(OUT, base + "-slides.json"), [])
+    if len(slides) != len(style_colours(i)):
+        raise RuntimeError("Colour slides changed; regenerate before posting")
+    res = publish([raw + name for name in slides], text, story_url, product_link(ref, "FB"))
+    print("published", res)
     day = lagos_today().isoformat()
-    state.setdefault("posted", {})[ref] = day; state["last_aud"] = audience(i)
+    record_post(state, i, day)
     state.setdefault("log", []).append({"day": day, "ref": ref, **res}); state["log"] = state["log"][-200:]
     json.dump(state, open(STATE, "w"), indent=1)
 
