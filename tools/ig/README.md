@@ -16,7 +16,7 @@ The preview also generates three manual-upload pinned-post sets, with captions:
 
 1. How to order: choose on the site, WhatsApp, size confirmation, bank transfer, delivery within 14 days of payment.
 2. Delivery & payment: shipping to Nigeria included; Abuja-to-address courier paid on delivery; bank transfer after confirmation; no size exchanges.
-3. This week's drop: real eligible current drop styles/prices, six per 1080×1350 image. A larger drop is one carousel post, with more images instead of unreadable tiny products.
+3. This week's drop: real eligible current drop styles/prices, four per 1080×1350 image. A larger drop is one carousel post, with more images instead of unreadable tiny products.
 
 There is no origin-city/country wording on those pinned assets. The robot does **not** upload or pin them automatically. With no current eligible drop, or a failed drop photo, the drop set is marked not ready. Publish a current drop from the book rather than inventing a selection. Dated drops expire after seven days, including the above-₦70,000 exception.
 
@@ -43,3 +43,13 @@ A Meta failure after a feed was published but before the story/history step fini
 `python3 -m unittest discover -s tools/tests -p test_ig_preview.py -v` uses synthetic data and mocked downloads/Meta; it does not post. Pillow and Node are required. `python tools/ig/autopost.py --preview-week` renders using local public catalogue/state into `ig-preview/`; use `NL_SITE_ROOT=/absolute/test-or-live-checkout` to read a separate public site snapshot. Do not run `--publish` during review. Tests check real picker order, no state mutation, photo/colour/price rules, actual sparse sizes, rendering dimensions, captions/noindex/copy links, expired drops, explicit failures, Facebook URLs and approval gating.
 
 Pages build request documentation: https://docs.github.com/en/rest/pages/pages#request-a-github-pages-build . The workflow verifies the configured source is gh-pages before requesting a build; it never copies main's shop/hero onto the live site.
+
+## Style carousels and selection
+
+Daily posts group eligible colours by `grp` (falling back to `ref`) with one colour per carousel slide. Preview and live rendering use the same grouped candidates and captions. Any colour in legacy reference history suppresses the whole style for 60 days. New successful posts record both `posted_styles` and every colour reference. Empty history stays empty until a real post succeeds.
+
+Men/Women alternation remains the intended policy documented above, including during the drop. When the requested audience has no eligible style, the picker falls back to the available audience. Within that audience it prefers another brand and the ₦25–45k band, then current-drop and recently added styles. These are preferences, never fabricated stock or prices.
+
+The 3–9 November preview omitted sizes because its seven selected references have no stock records in the current supplier stock maps. Size labels are shown per colour only when recorded stock exists. Missing stock means unknown availability and requires confirmation, rather than a guessed size range.
+
+Photos are cropped to their detected product bounds before fitting at a target 79% panel width, subject to the panel height. Only edge-connected neutral studio backgrounds are blended. Non-neutral backgrounds require a cleaner approved product photo. Secondary image text is at least 36px. Pins use four products with distinct photo, name and price space.
