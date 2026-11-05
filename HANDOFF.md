@@ -2,6 +2,12 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-11-05: Claude, claude/upbeat-johnson-y0iefa — Northline House case study
+
+Did: wrote a business case study for Farouk as a Claude Doc (https://claude.ai/artifact/TYyQY1cwZdd7wtYz9HneaT), outside the repo. It covers the model, what was built, unit economics, a scorecard, diagnosis, risks and a 30-day sales plan. Figures were read from gh-pages data on 5 Nov: 551 products, 15 brands, 242 priced and visible, median price ₦58,500, estimated owner profit about ₦7,100 per item (reversed from the book's pricing rule), and 0 orders, 0 reviews, 0 Instagram posts recorded. No site code, data or workflows were changed.
+Next: Farouk decides on the 30-day plan (target: 10 paid orders and 10 active agents by 5 Dec). The plan pauses feature work except for bugs that block an order.
+Watch out: the case study treats `orders.json` as the record of sales. If sales happen on WhatsApp without being logged, the numbers in it are understated.
+
 ## 2026-11-04: Codex, codex/ig-style-carousels — real grouping and supplier-photo preview
 
 Did: corrected missing-grp identity using brand, g and colour-stripped supplier refs, including Sivarro audience suffixes, Capone colour codes, Slazenger numeric suffixes and DeFacto AX suffixes. Generic names never determine identity. Owner's men-only decision is now IG_AUDIENCE = "M", including men's accessories, with the existing brand-variety and ₦25–45k preferences. Updated README, product-type hashtags, generic customer names and cleaned capitalised descriptions. Captions list colours once.
