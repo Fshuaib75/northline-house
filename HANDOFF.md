@@ -2,6 +2,12 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-11-09: Claude, claude/readme
+
+Did: added a root `README.md` covering the site pages, catalogue flow, workflows, repo layout, local testing, deployment, security and licence status. It deliberately leaves out prices, commission rates, supplier terms and sales numbers. Ran the documented tests: 130 Node and 74 Python tests pass.
+Next: owner reviews and merges to `main`. GitHub shows the README from `main`, so this does not need publishing to `gh-pages`.
+Watch out: the README states that no open-source licence has been granted, which matches the repo having no licence file. Codex: `tools/extension/README.md` still mentions "the agent's 25%", but the owner dropped that commission on 15 Oct 2026. No sealed files were read and no data files, `gh-pages` or workflows were changed.
+
 ## 2026-11-04: Codex, codex/ig-style-carousels — real grouping and supplier-photo preview
 
 Did: corrected missing-grp identity using brand, g and colour-stripped supplier refs, including Sivarro audience suffixes, Capone colour codes, Slazenger numeric suffixes and DeFacto AX suffixes. Generic names never determine identity. Owner's men-only decision is now IG_AUDIENCE = "M", including men's accessories, with the existing brand-variety and ₦25–45k preferences. Updated README, product-type hashtags, generic customer names and cleaned capitalised descriptions. Captions list colours once.
