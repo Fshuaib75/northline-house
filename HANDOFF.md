@@ -2,6 +2,13 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-11-09: Codex, codex/featured-sort
+
+Did: updated Featured merchandising in shop/index.html and index.html; calm available colours, value and detail scoring, men's leather palms, accessory placement, brand diversity, and bounded seven-day drops. Retained all agent colour cards and original alternative sort paths. Added tools/featured-sort-test.cjs.
+Validation: 390px browser checks with gh-pages data at 93ee4cf6794e2b89ea021ae5ddaa33c65de0b95f, both audiences on both pages, no page errors or horizontal overflow. First 36: shop Men/Women 17/17 brands; agent Men/Women 15/17. Scoring, stock, diversity and drop boundary tests pass.
+Next: owner reviews PR against main and decides deployment.
+Watch out: no gh-pages changes. drop.week is the publication UTC date, eligible for seven days from midnight; expired published drops no longer fall back to unrelated new arrivals.
+
 ## 2026-11-04: Codex, codex/ig-style-carousels — real grouping and supplier-photo preview
 
 Did: corrected missing-grp identity using brand, g and colour-stripped supplier refs, including Sivarro audience suffixes, Capone colour codes, Slazenger numeric suffixes and DeFacto AX suffixes. Generic names never determine identity. Owner's men-only decision is now IG_AUDIENCE = "M", including men's accessories, with the existing brand-variety and ₦25–45k preferences. Updated README, product-type hashtags, generic customer names and cleaned capitalised descriptions. Captions list colours once.
