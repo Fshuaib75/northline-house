@@ -40,9 +40,69 @@
     }
    ],
    "paid": "2026-11-10"
+  },
+  {
+   "id": "Omwb935c1rre7",
+   "at": "2026-11-10",
+   "agent": "admin",
+   "src": "shop",
+   "status": "paid",
+   "items": [
+    {
+     "ref": "5414-BGE",
+     "model": "Jude",
+     "colour": "Beige",
+     "brand": "Capone",
+     "size": "40",
+     "qty": 1,
+     "price": 42000,
+     "comm": 4000
+    },
+    {
+     "ref": "632-N36",
+     "model": "Kandy",
+     "colour": "Navy",
+     "brand": "Capone",
+     "size": "40",
+     "qty": 1,
+     "price": 44000,
+     "comm": 4000
+    },
+    {
+     "ref": "632-N16",
+     "model": "Kandy",
+     "colour": "Copper",
+     "brand": "Capone",
+     "size": "40",
+     "qty": 1,
+     "price": 44000,
+     "comm": 4000
+    },
+    {
+     "ref": "SIV-BOSTON-NVY",
+     "model": "Boston",
+     "colour": "Navy",
+     "brand": "Sivarro",
+     "size": "40",
+     "qty": 1,
+     "price": 39000,
+     "comm": 4000
+    },
+    {
+     "ref": "PL-166986-BRZ",
+     "model": "166986 metallic slide",
+     "colour": "Bronze",
+     "brand": "Polaris",
+     "size": "39",
+     "qty": 1,
+     "price": 37000,
+     "comm": 4000
+    }
+   ],
+   "paid": "2026-11-10"
   }
  ],
  "payouts": [],
  "wants": [],
- "updated": "2026-11-10T22:16:22.431Z"
+ "updated": "2026-11-10T22:17:22.233Z"
 }
