@@ -20,9 +20,29 @@
     }
    ],
    "paid": "2026-11-10"
+  },
+  {
+   "id": "Omwb91w69v6jt",
+   "at": "2026-11-10",
+   "agent": "",
+   "src": "shop",
+   "status": "paid",
+   "items": [
+    {
+     "ref": "SIV-BOSTON-KHK-M",
+     "model": "Boston",
+     "colour": "Khaki",
+     "brand": "Sivarro",
+     "size": "42",
+     "qty": 1,
+     "price": 39000,
+     "comm": 0
+    }
+   ],
+   "paid": "2026-11-10"
   }
  ],
  "payouts": [],
  "wants": [],
- "updated": "2026-11-10T22:15:44.111Z"
+ "updated": "2026-11-10T22:16:22.431Z"
 }
