@@ -2,6 +2,13 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-11-10: Codex, codex/featured-sort — ranking corrections for PR #51
+
+Did: changed sort code in both pages after the owner's rejection of the earlier ranking. Removed the per-brand frequency penalty and hard palm-first buckets. Palm bonuses now apply only at or below N60k; premium palms cannot jump in-band candidates. Added first-12 men's value reservation, first-36 premium cap, calm-before-loud ordering (including rejection of Grey & mint), and detection of any 3+ digit model code. Brand spacing/diversity narrow candidates without changing scores. No catalogue rows are removed.
+Validation: fresh gh-pages snapshot be6cc42c34bee973e4cd3c645eb6c55c8fa5c1b3; both pages and genders tested at 390x844. Browser assertions enforce 8+ in-band men's cards in the first 12, at most two premium cards, 8+ brands, no three identical consecutive brands, and no loud/code-named cards in the first 36. Added explicit regression tests for all three correction requests to tools/featured-sort-test.cjs; both page implementations pass. Complete updated first-36 lists are in PR #51's description and the local output report.
+Next: PR #51 remains unapproved; owner decides review, merge and deployment.
+Watch out: no live deployment or data changes. Browser test uses modified local HTML with current live JSON; supplier-photo loading is outside the ranking assertions. Constraints fall back when a filtered catalogue cannot satisfy them without removing items.
+
 ## 2026-11-10: Codex, codex/featured-sort — PR #51 handoff
 
 Did: opened [PR #51](https://github.com/Fshuaib75/northline-house/pull/51) against main for Featured sorting in shop/index.html and index.html. PR remains open and unmerged as checked today. The complete ordered first-36 card lists for Men and Women on both pages are included in the PR description.
