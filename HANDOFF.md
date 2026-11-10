@@ -2,6 +2,16 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-11-10: Codex, codex/featured-sort — PR #51 handoff
+
+Did: opened [PR #51](https://github.com/Fshuaib75/northline-house/pull/51) against main for Featured sorting in shop/index.html and index.html. PR remains open and unmerged as checked today. The complete ordered first-36 card lists for Men and Women on both pages are included in the PR description.
+
+Validation from 9 November: modified pages tested locally at 390 × 844 using real gh-pages catalogue data at 93ee4cf6794e2b89ea021ae5ddaa33c65de0b95f. No JavaScript errors or horizontal overflow. First 36 brand counts: shop Men 17, Women 17; agent Men 15, Women 17. Capone occupies 3 of Women's first 36 on each page. tools/featured-sort-test.cjs passes scoring, stock, item preservation, brand diversity and drop-date boundary checks. Supplier-image loading was not verified by the sorting assertions; this was not a live deployment test.
+
+Next: owner reviews PR #51 and decides merge and deployment. No fresh catalogue or browser retest was performed for this documentation-only update.
+
+Watch out: drop.week is written by the book as the UTC publication date, not an ISO week number. Eligibility is seven days from that date's midnight, excluding future dates and the exact expiry boundary. Existing agent colour cards remain available; other sort paths are retained. This work did not change gh-pages, catalogue data or sealed files.
+
 ## 2026-11-09: Codex, codex/featured-sort
 
 Did: updated Featured merchandising in shop/index.html and index.html; calm available colours, value and detail scoring, men's leather palms, accessory placement, brand diversity, and bounded seven-day drops. Retained all agent colour cards and original alternative sort paths. Added tools/featured-sort-test.cjs.
