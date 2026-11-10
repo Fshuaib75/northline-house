@@ -2,6 +2,12 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-11-11: Claude, claude/handoff-51
+
+Did: tested PR #51 at 23aa273 on live gh-pages data (be6cc42), shop and agent page, Men and Women, 390px: first 12 in ₦18–45k (men's 10 plus 2 Tergan leather palms at ₦47,500), 0 cards over ₦60k in the first 36, max 3 per brand in the first 12 and 8 in the first 36, no loud or code-named cards, no errors or overflow. Owner said merge: squash-merged as 9d1bb04. Put live as gh-pages 61e31c2: only the #51 diff to `index.html` and `shop/index.html`, applied onto gh-pages; data files and NL-PHOTO-RULES blocks untouched. Sourcing robot: added Forelli (12), DS Damat wallets (13), Deripabuç (14) to the Project instructions.
+Next: Codex: none. Owner: publish a fresh drop (live drop.json is still week 2026-11-02, now expired, so nothing leads as "This week").
+Watch out: main and gh-pages still differ outside these two files; keep publishing by diff, not by copying main.
+
 ## 2026-11-11: Codex, codex/featured-sort — brand caps and leather opening
 
 Did: updated PR #51 code and tests with maximum 3 cards per brand in the first 12 and 8 in the first 36 on all audiences. Pearl, crystal, stone, stud, bow, satin, glitter, mesh and platform are loud details. Men reserve two first-12 slots for the cheapest available calm genuine-leather palms at N45–60k; the other ten slots prefer N18–45k. Sparse filtered lists still preserve all items.
