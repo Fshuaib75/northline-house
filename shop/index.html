@@ -834,8 +834,61 @@ function sizeSel(){ const pool=new Set(ITEMS.filter(i=>audOf(i)===S.g&&typeOk(i)
   el.value=S.size; el.classList.toggle("on",!!S.size); }
 // cards for the current view: a design shows when any of its colours passes; that colour leads the card
 function cards(){
-  const out=[]; GROUPS.forEach(g=>{ const pass=g.items.filter(i=>baseOk(i)&&filtersOk(i)); if(pass.length) out.push({g, rep:pass.find(i=>!soldOut(i))||pass[0], pass, out:pass.every(soldOut)}); });
+  const out=[]; GROUPS.forEach(g=>{ const pass=g.items.filter(i=>baseOk(i)&&filtersOk(i)); if(S.sort==="rec") pass.sort((a,b)=>Number(soldOut(a))-Number(soldOut(b))||Number(calmColour(b))-Number(calmColour(a))||itemRank(b)-itemRank(a)); if(pass.length) out.push({g, rep:pass.find(i=>!soldOut(i))||pass[0], pass, out:pass.every(soldOut)}); });
   const r=sortCards(out); return r.filter(c=>!c.out).concat(r.filter(c=>c.out));   // sold out everywhere: last
+}
+
+
+// Featured merchandising only. Other sort modes retain their original ordering.
+const calmColour=i=>!/(metallic|croco|print|multi|gold|silver|pink|purple|yellow|mint|red|orange)/i.test((i.colour||'')+' '+(i.fam||''))&&(/^(Black|Brown|Tan & camel|Beige & nude|White|Grey)$/i.test(i.fam||'')||/\b(navy|khaki|olive)\b/i.test(i.colour||''));
+const loudStyle=i=>/\b(pearl|crystal|stone|stud|bow|satin|glitter|mesh|platform)s?\b/i.test([i.model,i.colour,i.desc].join(' '));
+const activeDrop=(drop,now=Date.now())=>{ const day=drop&&drop.week; if(!/^\d{4}-\d{2}-\d{2}$/.test(day||'')) return false; const start=Date.parse(day+'T00:00:00Z'); return Number.isFinite(start)&&new Date(start).toISOString().slice(0,10)===day&&now>=start&&now<start+7*864e5; };
+const featureScore=i=>{
+  const p=Number(i.price)||0, text=[i.model,i.colour,i.fam,i.desc].join(' ');
+  const sizes=sizesOf(i).filter(s=>inStock(i,s));
+  return (p>=18000&&p<=45000?60:p>45000&&p<=60000?40:p>60000&&p<=80000?20:0)
+    +(calmColour(i)?18:0)-(loudStyle(i)?75:0)-(/logo|monogram|metallic|croco|print|gold|silver/i.test(text)?75:0)
+    -(/\d{3,}|^(slides?\b|sandals?\b|shoes?\b|sneakers?\b|loafers?\b|palms?\b|model\b)/i.test(i.model||'')?22:0)
+    +((i.imgs||[]).length>1?8:0)-(!oneSize(i)&&sizes.length>0&&sizes.length<=2?20:0);
+};
+function merchandise(list,rep,dropHit){
+  const brand=x=>String(rep(x).brand||'').trim().toLowerCase();
+  const band=x=>rep(x).price>=18000&&rep(x).price<=45000;
+  const code=x=>/\d{3,}/.test(rep(x).model||'');
+  const score=x=>{const i=rep(x); return featureScore(i)+(dropHit(x)?10:0)
+    +(S.g==='M'&&i.kind==='slide'&&i.price<=60000?(/genuine leather|real leather|hakiki deri/i.test(i.desc||'')?12:6):0);};
+  const remaining=list.slice().sort((a,b)=>score(b)-score(a));
+  const result=[],seen=new Set(),counts=new Map(); let premium=0,inBand=0,leatherCount=0;
+  const leather=x=>{const i=rep(x); return !soldOut(i)&&calmColour(i)&&!loudStyle(i)&&!code(x)&&i.kind==='slide'&&i.price>=45000&&i.price<=60000&&/genuine leather|real leather|hakiki deri/i.test(i.desc||'');};
+  const leatherTarget=S.g==='M'?Math.min(2,list.filter(leather).length):0;
+  // Constraints narrow candidates; brand frequency never changes their score.
+  const prefer=(pool,predicate)=>{const subset=pool.filter(predicate); return subset.length?subset:pool;};
+  while(remaining.length){
+    let choices=prefer(remaining,x=>!soldOut(rep(x)));
+    choices=prefer(choices,x=>calmColour(rep(x))&&!loudStyle(rep(x)));
+    if(!S.type&&!S.sec) choices=prefer(choices,x=>!['Bags','Accessories'].includes(secOf(rep(x))));
+    // Code-named styles and loud colours are deferred, never removed.
+    if(result.length<36) choices=prefer(choices,x=>!code(x));
+    if(result.length<36&&premium>=2) choices=prefer(choices,x=>rep(x).price<=60000);
+    if(result.length<36) choices=prefer(choices,x=>(counts.get(brand(x))||0)<(result.length<12?3:8));
+    if(S.g==='M'&&result.length<12){
+      if(leatherCount<leatherTarget) choices=prefer(choices,leather).slice().sort((a,b)=>rep(a).price-rep(b).price);
+      else choices=prefer(choices,band);
+    }
+    if(S.g==='M'){
+      // A premium palm must never jump an available in-band style.
+      if(choices.some(band)) choices=choices.filter(x=>rep(x).price<=60000);
+      if(result.length<12&&12-result.length<=8-inBand) choices=prefer(choices,band);
+    }
+    const last=result.slice(-2);
+    if(last.length===2&&brand(last[0])===brand(last[1])) choices=prefer(choices,x=>brand(x)!==brand(last[0]));
+    const available=new Set([...seen,...remaining.filter(x=>!soldOut(rep(x))&&calmColour(rep(x))&&!loudStyle(rep(x))&&!code(x)&&rep(x).price<=60000).map(brand)]);
+    const target=Math.min(8,available.size);
+    if(result.length<36&&36-result.length<=target-seen.size) choices=prefer(choices,x=>!seen.has(brand(x)));
+    const pick=choices[0]; remaining.splice(remaining.indexOf(pick),1); result.push(pick);
+    seen.add(brand(pick)); counts.set(brand(pick),(counts.get(brand(pick))||0)+1); if(leather(pick)) leatherCount++; if(rep(pick).price>60000) premium++; if(band(pick)) inBand++;
+  }
+  return result;
 }
 
 // ---------- sorting ----------
@@ -847,7 +900,7 @@ const SWEET={W:[18000,45000],M:[18000,45000],B:[8000,30000],BG:[30000,70000],CL:
 function tierOf(i){ const b=SWEET[i.g]||SWEET.W, lo=b[0], hi=b[1], p=i.price||0; let t=(p>=lo&&p<=hi)?0:(p<lo||p<=hi*1.35)?1:(p<=hi*1.8)?2:3;
   if(fewSizes(i)) t++; return t; }
 const cScore=c=>(isFresh(c.rep)?1.5:0)+Math.min(c.g.items.length,6)*0.4+(photos(c.rep)>1?1:0)+((c.rep.sizes||[]).length>4?0.5:0);
-function featured(list){
+function legacyFeatured(list){
   const dropPos=c=>Math.min(...c.pass.map(i=>DROP.refs.indexOf(i.ref)).filter(n=>n>=0));
   const picks=DROP?list.filter(c=>c.pass.some(inDrop)).sort((a,b)=>dropPos(a)-dropPos(b)):[];
   const rest=list.filter(c=>!picks.includes(c)), tiers=new Map();
@@ -858,7 +911,8 @@ function featured(list){
   return picks.concat(spread);
 }
 function sortCards(list){
-  const f=featured(list); if(S.sort==="rec") return f;
+  if(S.sort==="rec") return merchandise(list,c=>c.rep,c=>c.pass.some(inDrop));
+  const f=legacyFeatured(list);
   const pos=new Map(f.map((c,n)=>[c,n])), tie=(a,b)=>pos.get(a)-pos.get(b);
   if(S.sort==="low") return f.slice().sort((a,b)=>a.rep.price-b.rep.price||tie(a,b));
   if(S.sort==="high") return f.slice().sort((a,b)=>b.rep.price-a.rep.price||tie(a,b));
@@ -1249,8 +1303,8 @@ function brandStock(c){ const st=c&&c.styles; if(!st) return; const fresh14=new 
   Object.entries(st).forEach(([ref,r])=>{ if(!r.on) STOCK[ref]=[]; else if(Array.isArray(r.stock)) STOCK[ref]=r.stock; if(r.back&&r.back>=fresh14) BACK[ref]=r.back; }); }
 Promise.all([fresh("products.json"), fresh("prices.json"), fresh("drop.json"), fresh("capone.json"), fresh("brands.json"), fresh("reviews.json")]).then(([added,j,drop,cap,brs,rev])=>{ REV=normRev(rev); drawFb();
   const weekAgo=new Date(Date.now()-7*864e5).toISOString().slice(0,10);
-  if(drop&&Array.isArray(drop.refs)&&drop.refs.length&&drop.week>=weekAgo) DROP={label:"This week",refs:drop.refs};
-  else if(Array.isArray(added)){ const nw=added.filter(a=>a&&a.added&&a.added>=weekAgo).map(a=>a.ref); if(nw.length) DROP={label:"New this week",refs:nw}; }
+  if(drop&&Array.isArray(drop.refs)&&drop.refs.length&&activeDrop(drop)) DROP={label:"This week",refs:drop.refs};
+  else if(!drop&&Array.isArray(added)){ const nw=added.filter(a=>a&&a.added&&a.added>=weekAgo).map(a=>a.ref); if(nw.length) DROP={label:"New this week",refs:nw}; }
   if(Array.isArray(added) && added.length){
     const known=new Set(ALL.map(i=>i.ref));
     ALL = ALL.concat(added.filter(a=>a&&a.ref&&!known.has(a.ref)).map(a=>({...a, desc:a.desc||"", colour:a.colour||"", fam:a.fam||"", heel:a.heel||"", img:IMG(a.img), full:IMG(a.img), imgs:(a.imgs||[]).map(IMG)})));

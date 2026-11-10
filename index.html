@@ -571,7 +571,60 @@ function list(){
 // Recommended: styles in the price range customers buy most (₦20k–50k) and with several photos come first; then brands and
 // models are spread evenly through the list, so the first screen isn't one brand or one shoe in six colours.
 // Recommended groups styles by type (slides, sandals…); price and newest sorts run across the whole list
-function sortItems(l){ const r=sortItems0(l), pos=new Map(r.map((x,n)=>[x,n])), out=x=>soldOut(x)?1:0;   // sold out: last in its group
+
+// Featured merchandising only. Other sort modes retain their original ordering.
+const calmColour=i=>!/(metallic|croco|print|multi|gold|silver|pink|purple|yellow|mint|red|orange)/i.test((i.colour||'')+' '+(i.fam||''))&&(/^(Black|Brown|Tan & camel|Beige & nude|White|Grey)$/i.test(i.fam||'')||/\b(navy|khaki|olive)\b/i.test(i.colour||''));
+const loudStyle=i=>/\b(pearl|crystal|stone|stud|bow|satin|glitter|mesh|platform)s?\b/i.test([i.model,i.colour,i.desc].join(' '));
+const activeDrop=(drop,now=Date.now())=>{ const day=drop&&drop.week; if(!/^\d{4}-\d{2}-\d{2}$/.test(day||'')) return false; const start=Date.parse(day+'T00:00:00Z'); return Number.isFinite(start)&&new Date(start).toISOString().slice(0,10)===day&&now>=start&&now<start+7*864e5; };
+const featureScore=i=>{
+  const p=Number(i.price)||0, text=[i.model,i.colour,i.fam,i.desc].join(' ');
+  const sizes=sizesOf(i).filter(s=>inStock(i,s));
+  return (p>=18000&&p<=45000?60:p>45000&&p<=60000?40:p>60000&&p<=80000?20:0)
+    +(calmColour(i)?18:0)-(loudStyle(i)?75:0)-(/logo|monogram|metallic|croco|print|gold|silver/i.test(text)?75:0)
+    -(/\d{3,}|^(slides?\b|sandals?\b|shoes?\b|sneakers?\b|loafers?\b|palms?\b|model\b)/i.test(i.model||'')?22:0)
+    +((i.imgs||[]).length>1?8:0)-(!oneSize(i)&&sizes.length>0&&sizes.length<=2?20:0);
+};
+function merchandise(list,rep,dropHit){
+  const brand=x=>String(rep(x).brand||'').trim().toLowerCase();
+  const band=x=>rep(x).price>=18000&&rep(x).price<=45000;
+  const code=x=>/\d{3,}/.test(rep(x).model||'');
+  const score=x=>{const i=rep(x); return featureScore(i)+(dropHit(x)?10:0)
+    +(S.g==='M'&&i.kind==='slide'&&i.price<=60000?(/genuine leather|real leather|hakiki deri/i.test(i.desc||'')?12:6):0);};
+  const remaining=list.slice().sort((a,b)=>score(b)-score(a));
+  const result=[],seen=new Set(),counts=new Map(); let premium=0,inBand=0,leatherCount=0;
+  const leather=x=>{const i=rep(x); return !soldOut(i)&&calmColour(i)&&!loudStyle(i)&&!code(x)&&i.kind==='slide'&&i.price>=45000&&i.price<=60000&&/genuine leather|real leather|hakiki deri/i.test(i.desc||'');};
+  const leatherTarget=S.g==='M'?Math.min(2,list.filter(leather).length):0;
+  // Constraints narrow candidates; brand frequency never changes their score.
+  const prefer=(pool,predicate)=>{const subset=pool.filter(predicate); return subset.length?subset:pool;};
+  while(remaining.length){
+    let choices=prefer(remaining,x=>!soldOut(rep(x)));
+    choices=prefer(choices,x=>calmColour(rep(x))&&!loudStyle(rep(x)));
+    if(!S.type&&!S.sec) choices=prefer(choices,x=>!['Bags','Accessories'].includes(secOf(rep(x))));
+    // Code-named styles and loud colours are deferred, never removed.
+    if(result.length<36) choices=prefer(choices,x=>!code(x));
+    if(result.length<36&&premium>=2) choices=prefer(choices,x=>rep(x).price<=60000);
+    if(result.length<36) choices=prefer(choices,x=>(counts.get(brand(x))||0)<(result.length<12?3:8));
+    if(S.g==='M'&&result.length<12){
+      if(leatherCount<leatherTarget) choices=prefer(choices,leather).slice().sort((a,b)=>rep(a).price-rep(b).price);
+      else choices=prefer(choices,band);
+    }
+    if(S.g==='M'){
+      // A premium palm must never jump an available in-band style.
+      if(choices.some(band)) choices=choices.filter(x=>rep(x).price<=60000);
+      if(result.length<12&&12-result.length<=8-inBand) choices=prefer(choices,band);
+    }
+    const last=result.slice(-2);
+    if(last.length===2&&brand(last[0])===brand(last[1])) choices=prefer(choices,x=>brand(x)!==brand(last[0]));
+    const available=new Set([...seen,...remaining.filter(x=>!soldOut(rep(x))&&calmColour(rep(x))&&!loudStyle(rep(x))&&!code(x)&&rep(x).price<=60000).map(brand)]);
+    const target=Math.min(8,available.size);
+    if(result.length<36&&36-result.length<=target-seen.size) choices=prefer(choices,x=>!seen.has(brand(x)));
+    const pick=choices[0]; remaining.splice(remaining.indexOf(pick),1); result.push(pick);
+    seen.add(brand(pick)); counts.set(brand(pick),(counts.get(brand(pick))||0)+1); if(leather(pick)) leatherCount++; if(rep(pick).price>60000) premium++; if(band(pick)) inBand++;
+  }
+  return result;
+}
+
+function sortItems(l){ if(S.sort==="rec") return merchandise(l,i=>i,i=>!!(DROP&&DROP.refs.includes(i.ref))); const r=sortItems0(l), pos=new Map(r.map((x,n)=>[x,n])), out=x=>soldOut(x)?1:0;   // sold out: last in its group
   return r.slice().sort((a,b)=>(S.sort==="rec"?typeKey(a)-typeKey(b):0)||(S.sort==="brand"?a.brand.localeCompare(b.brand):0)||out(a)-out(b)||pos.get(a)-pos.get(b)); }
 function sortItems0(l){
   if(S.sort==="low") return l.sort((a,b)=>a.price-b.price);
@@ -696,7 +749,7 @@ function render(){
   const pages=Math.max(1,Math.ceil(all.length/PAGE_N));
   if(LOADED&&PG>pages){ PG=pages; setURL(false); }
   const cur=Math.min(PG,pages), from=(cur-1)*PAGE_N, to=Math.min(all.length,from+PAGE_N), l=all.slice(from,to);
-  let last=null; $("grid").innerHTML=(S.drop&&DROP?`<div class="dropbar"><span><b>${esc(DROP.label)}</b> · ${all.length} styles</span>${typeof dropImages==="function"?`<button class="mini st" id="dropAll">Status images for all</button>`:""}</div>`:"")+l.map(i=>{ let h=""; if(S.sort==="brand"){ if(i.brand!==last){ last=i.brand; h=`<h3 class="bhead">${esc(i.brand)}<span>${all.filter(x=>x.brand===i.brand).length} styles</span></h3>`; } } else if(S.sort==="rec"){ const t=typeKey(i); if(t!==last){ last=t; h=`<h3 class="bhead">${esc(kindLabel(i))}<span>${all.filter(x=>typeKey(x)===t).length} styles</span></h3>`; } } return h+cardHtml(i); }).join("");
+  let last=null; $("grid").innerHTML=(S.drop&&DROP?`<div class="dropbar"><span><b>${esc(DROP.label)}</b> · ${all.length} styles</span>${typeof dropImages==="function"?`<button class="mini st" id="dropAll">Status images for all</button>`:""}</div>`:"")+l.map(i=>{ let h=""; if(S.sort==="brand"){ if(i.brand!==last){ last=i.brand; h=`<h3 class="bhead">${esc(i.brand)}<span>${all.filter(x=>x.brand===i.brand).length} styles</span></h3>`; } } return h+cardHtml(i); }).join("");
   $("empty").hidden=all.length>0;
   drawPager(cur,pages,from,to,all.length);
   store.set("nl-sort",S.sort);
@@ -945,8 +998,8 @@ function brandStock(c){ const st=c&&c.styles; if(!st) return; const fresh14=new 
 Promise.all([fresh("products.json"), fresh("prices.json"), fresh("drop.json"), fresh("capone.json"), fresh("brands.json")]).then(([added,j,drop,cap,brs])=>{
   LOADED=true;
   const weekAgo=new Date(Date.now()-7*864e5).toISOString().slice(0,10);
-  if(drop&&Array.isArray(drop.refs)&&drop.refs.length&&drop.week>=weekAgo) DROP={label:"This week",refs:drop.refs};
-  else if(Array.isArray(added)){ const nw=added.filter(a=>a&&a.added&&a.added>=weekAgo).map(a=>a.ref); if(nw.length) DROP={label:"New this week",refs:nw}; }
+  if(drop&&Array.isArray(drop.refs)&&drop.refs.length&&activeDrop(drop)) DROP={label:"This week",refs:drop.refs};
+  else if(!drop&&Array.isArray(added)){ const nw=added.filter(a=>a&&a.added&&a.added>=weekAgo).map(a=>a.ref); if(nw.length) DROP={label:"New this week",refs:nw}; }
   if(Array.isArray(added) && added.length){
     const known=new Set(ALL.map(i=>i.ref));
     ALL = ALL.concat(added.filter(a=>a&&a.ref&&!known.has(a.ref)).map(a=>({...a, desc:a.desc||"", colour:a.colour||"", fam:a.fam||"", heel:a.heel||"", full:a.img})));
