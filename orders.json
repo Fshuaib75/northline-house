@@ -102,7 +102,14 @@
    "paid": "2026-11-10"
   }
  ],
- "payouts": [],
+ "payouts": [
+  {
+   "id": "Pmwb9btca",
+   "agent": "ADMIN",
+   "amount": 4000,
+   "at": "2026-11-10"
+  }
+ ],
  "wants": [],
- "updated": "2026-11-10T22:17:22.233Z"
+ "updated": "2026-11-10T22:24:00.586Z"
 }
