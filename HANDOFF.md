@@ -2,6 +2,36 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-11-11: Codex, codex/featured-sort — brand caps and leather opening
+
+Did: updated PR #51 code and tests with maximum 3 cards per brand in the first 12 and 8 in the first 36 on all audiences. Pearl, crystal, stone, stud, bow, satin, glitter, mesh and platform are loud details. Men reserve two first-12 slots for the cheapest available calm genuine-leather palms at N45–60k; the other ten slots prefer N18–45k. Sparse filtered lists still preserve all items.
+Validation: both pages pass regression tests for caps on M/W/K, all nine no-go terms, cheapest-first leather selection, exactly ten value cards and sparse fallback. Retested both genders/pages at 390x844 against reviewed live snapshot be6cc42; first two Men's cards are Tergan leather palms at N47,500 each, remaining ten N18–45k. Brand caps, prior premium/calm/code constraints and no-three-in-a-row pass. No JavaScript errors or horizontal overflow. Updated first-16 lists are in PR #51 and local output first-16-report.md.
+Next: owner decides merge/deployment; PR remains unapproved. No gh-pages writes or supplier-photo verification claimed.
+
+## 2026-11-10: Codex, codex/featured-sort — ranking corrections for PR #51
+
+Did: changed sort code in both pages after the owner's rejection of the earlier ranking. Removed the per-brand frequency penalty and hard palm-first buckets. Palm bonuses now apply only at or below N60k; premium palms cannot jump in-band candidates. Added first-12 men's value reservation, first-36 premium cap, calm-before-loud ordering (including rejection of Grey & mint), and detection of any 3+ digit model code. Brand spacing/diversity narrow candidates without changing scores. No catalogue rows are removed.
+Validation: fresh gh-pages snapshot be6cc42c34bee973e4cd3c645eb6c55c8fa5c1b3; both pages and genders tested at 390x844. Browser assertions enforce 8+ in-band men's cards in the first 12, at most two premium cards, 8+ brands, no three identical consecutive brands, and no loud/code-named cards in the first 36. Added explicit regression tests for all three correction requests to tools/featured-sort-test.cjs; both page implementations pass. Complete updated first-36 lists are in PR #51's description and the local output report.
+Next: PR #51 remains unapproved; owner decides review, merge and deployment.
+Watch out: no live deployment or data changes. Browser test uses modified local HTML with current live JSON; supplier-photo loading is outside the ranking assertions. Constraints fall back when a filtered catalogue cannot satisfy them without removing items.
+
+## 2026-11-10: Codex, codex/featured-sort — PR #51 handoff
+
+Did: opened [PR #51](https://github.com/Fshuaib75/northline-house/pull/51) against main for Featured sorting in shop/index.html and index.html. PR remains open and unmerged as checked today. The complete ordered first-36 card lists for Men and Women on both pages are included in the PR description.
+
+Validation from 9 November: modified pages tested locally at 390 × 844 using real gh-pages catalogue data at 93ee4cf6794e2b89ea021ae5ddaa33c65de0b95f. No JavaScript errors or horizontal overflow. First 36 brand counts: shop Men 17, Women 17; agent Men 15, Women 17. Capone occupies 3 of Women's first 36 on each page. tools/featured-sort-test.cjs passes scoring, stock, item preservation, brand diversity and drop-date boundary checks. Supplier-image loading was not verified by the sorting assertions; this was not a live deployment test.
+
+Next: owner reviews PR #51 and decides merge and deployment. No fresh catalogue or browser retest was performed for this documentation-only update.
+
+Watch out: drop.week is written by the book as the UTC publication date, not an ISO week number. Eligibility is seven days from that date's midnight, excluding future dates and the exact expiry boundary. Existing agent colour cards remain available; other sort paths are retained. This work did not change gh-pages, catalogue data or sealed files.
+
+## 2026-11-09: Codex, codex/featured-sort
+
+Did: updated Featured merchandising in shop/index.html and index.html; calm available colours, value and detail scoring, men's leather palms, accessory placement, brand diversity, and bounded seven-day drops. Retained all agent colour cards and original alternative sort paths. Added tools/featured-sort-test.cjs.
+Validation: 390px browser checks with gh-pages data at 93ee4cf6794e2b89ea021ae5ddaa33c65de0b95f, both audiences on both pages, no page errors or horizontal overflow. First 36: shop Men/Women 17/17 brands; agent Men/Women 15/17. Scoring, stock, diversity and drop boundary tests pass.
+Next: owner reviews PR against main and decides deployment.
+Watch out: no gh-pages changes. drop.week is the publication UTC date, eligible for seven days from midnight; expired published drops no longer fall back to unrelated new arrivals.
+
 ## 2026-11-04: Codex, codex/ig-style-carousels — real grouping and supplier-photo preview
 
 Did: corrected missing-grp identity using brand, g and colour-stripped supplier refs, including Sivarro audience suffixes, Capone colour codes, Slazenger numeric suffixes and DeFacto AX suffixes. Generic names never determine identity. Owner's men-only decision is now IG_AUDIENCE = "M", including men's accessories, with the existing brand-variety and ₦25–45k preferences. Updated README, product-type hashtags, generic customer names and cleaned capitalised descriptions. Captions list colours once.
