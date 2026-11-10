@@ -32,5 +32,22 @@ const clean=a.merchandise(loud.concat(coded,value),i=>i,()=>false);
 assert(clean.slice(0,36).every(i=>a.calmColour(i)&&!/[0-9]{3,}/.test(i.model)));
 assert(clean.indexOf(loud[0])>=value.length+coded.length);
 assert.equal(clean.length,loud.length+coded.length+value.length);
-console.log(p+': value/palm priority, premium cap, score-first brand constraints, calm colours, code names, stock and drop boundaries passed');
+// First-screen and first-36 brand caps apply to every audience.
+for(const g of ['M','W','K']) {ctx.S.g=g; const capped=a.merchandise(items,i=>i,()=>false);for(const [n,cap] of [[12,3],[36,8]]){const counts=new Map();capped.slice(0,n).forEach(i=>counts.set(i.brand,(counts.get(i.brand)||0)+1));assert(Math.max(...counts.values())<=cap);}}
+// Owner's no-go details are deferred even on a calm colour.
+ctx.S.g='W';
+for(const term of ['pearl','crystal','stone','stud','bow','satin','glitter','mesh','platform']){
+ const bad={...item,model:term+' slide'};assert(a.featureScore(bad)<a.featureScore(item));
+ assert(!a.merchandise([bad,...value],i=>i,()=>false).slice(0,36).includes(bad));
+}
+// Reserve exactly two qualifying leather palms, cheapest first, then ten value cards.
+ctx.S.g='M';
+const affordable=[60000,47500,55000].map((price,n)=>({...item,brand:'Leather'+n,model:'Leather palm',kind:'slide',desc:'genuine leather',price}));
+const opening=a.merchandise([...affordable,...palms,...value],i=>i,()=>false).slice(0,12);
+assert.deepEqual(Array.from(opening.filter(i=>affordable.includes(i)),i=>i.price),[47500,55000]);
+assert.equal(opening.filter(i=>i.price>=18000&&i.price<=45000).length,10);
+// Sparse/filtered views preserve all cards without inventing leather stock.
+assert.equal(a.merchandise(value,i=>i,()=>false).length,value.length);
+assert.equal(a.merchandise([affordable[0]],i=>i,()=>false).length,1);
+console.log(p+': all ranking constraints, brand caps, no-go details and leather reservation passed');
 }

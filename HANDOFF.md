@@ -2,6 +2,12 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-11-11: Codex, codex/featured-sort — brand caps and leather opening
+
+Did: updated PR #51 code and tests with maximum 3 cards per brand in the first 12 and 8 in the first 36 on all audiences. Pearl, crystal, stone, stud, bow, satin, glitter, mesh and platform are loud details. Men reserve two first-12 slots for the cheapest available calm genuine-leather palms at N45–60k; the other ten slots prefer N18–45k. Sparse filtered lists still preserve all items.
+Validation: both pages pass regression tests for caps on M/W/K, all nine no-go terms, cheapest-first leather selection, exactly ten value cards and sparse fallback. Retested both genders/pages at 390x844 against reviewed live snapshot be6cc42; first two Men's cards are Tergan leather palms at N47,500 each, remaining ten N18–45k. Brand caps, prior premium/calm/code constraints and no-three-in-a-row pass. No JavaScript errors or horizontal overflow. Updated first-16 lists are in PR #51 and local output first-16-report.md.
+Next: owner decides merge/deployment; PR remains unapproved. No gh-pages writes or supplier-photo verification claimed.
+
 ## 2026-11-10: Codex, codex/featured-sort — ranking corrections for PR #51
 
 Did: changed sort code in both pages after the owner's rejection of the earlier ranking. Removed the per-brand frequency penalty and hard palm-first buckets. Palm bonuses now apply only at or below N60k; premium palms cannot jump in-band candidates. Added first-12 men's value reservation, first-36 premium cap, calm-before-loud ordering (including rejection of Grey & mint), and detection of any 3+ digit model code. Brand spacing/diversity narrow candidates without changing scores. No catalogue rows are removed.
