@@ -2,12 +2,18 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-11-11: Codex, codex/hero-pool — PR #53 design and pattern revisions
+
+Did: product heroes reuse hero-copy/hero-visual, dark copy panel, NORTHLINE HOUSE kicker, established display type, price, primary Shop this style button, How to order link and photo-side visual-label. Supplier photos retain contain sizing with padding and multiply blending on the warm panel. Added croc/croco/crocodile, snake, python, leopard, zebra and animal rejections. Selected slides are ordered men's shoes, women's shoes, accessories; product mode opens on the men's slot and same-category replacement preserves that order.
+Validation: new regression cases cover Capone Paris 222 croc clutch, every added pattern term, and ordered selection across randomized/reversed inputs. All hero tests pass. Browser tested at 390 and 1366 against gh-pages 1dc13b5 with real GZ-2169 (white-background), 003-N23 (grey-background) and USPA-BAG-9508-MS photos. Six screenshots show all three slides at both widths. Verified dark panels, kicker, order link, category order, loaded photos, contain/multiply and no horizontal overflow. Grey supplier backgrounds retain their original tonal area under multiply; no photo editing.
+Next: owner reviews updated PR #53. No gh-pages writes, merge, pool publication or encrypted book rebuild.
+
 ## 2026-11-11: Codex, codex/hero-pool — approved random hero pool
 
 Did: added empty root hero.json and the book's Publish starred as hero pool button using saveJson, max 30 unique live visible refs and its own success toast. Shop loads the pool no-store after current pricing/stock, reuses Featured calm/loud checks and NL-PHOTO-RULES, picks three unique styles with audience coverage or distinct brands, and minimizes previous-visit repeats through guarded localStorage. Supplier photos preload before an atomic overlay, use contain, keep original hero geometry and existing controls, and link by ?i=REF with referral preserved. Failed images use unused eligible replacements, or restore the fixed slides when exhausted. Missing/empty/insufficient pools leave the existing fixed slides untouched.
 Validation: tools/hero-pool-test.cjs passes eligibility/category/duplicate/previous-visit/fallback and mocked book publish/failure checks; Featured regression tests and book dev build pass. Browser checked 390px and 1366px with actual supplier images and twelve real sample refs against gh-pages 71442a3. All three images loaded at both widths, contain/alt/referral links verified, no horizontal overflow. Dot/counter/next/pause checks pass; simulated late failure replaced a style without reuse; null/empty/two-ref pools preserved fixed images and hero height; autoplay and pause passed.
 Rejected sample refs: 003-MNK duplicate style; USPA-BAG-VR046-CB outside N18–60k; USPA-BAG-VR031-CR non-calm colour; PC-Y604-CL loud details. The sample pool is QA-only, not owner approval; committed hero.json remains empty.
-Next: owner reviews [PR #53](https://github.com/Fshuaib75/northline-house/pull/53) against main, then separately decides deployment and encrypted book rebuild. No gh-pages writes or real pool publication. Preserve live NL-PHOTO-RULES on deployment. Owner approves refs in the book; no photos were edited or generated.
+Next: owner reviews PR against main, then separately decides deployment and encrypted book rebuild. No gh-pages writes or real pool publication. Preserve live NL-PHOTO-RULES on deployment. Owner approves refs in the book; no photos were edited or generated.
 
 ## 2026-11-11: Codex, codex/featured-sort — brand caps and leather opening
 

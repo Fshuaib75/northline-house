@@ -5,6 +5,12 @@ const checks={soldOut:i=>i.out,calm:i=>!i.bright,loud:i=>i.loud,photo:i=>i.block
 const items=[item('men'),item('women','W'),item('bag','A'),item('men2'),item('women2','W'),item('bag2','A')];
 let result=eligible({refs:items.map(i=>i.ref)},items,checks);assert.equal(result.accepted.length,6);
 const picked=select(result.accepted,[],()=>.2);assert.equal(new Set(picked.map(i=>i.heroCategory)).size,3);assert.equal(new Set(picked.map(i=>i.ref)).size,3);
+// Order is fixed even when random enumeration or input starts with a bag.
+for(let n=0;n<25;n++) assert.deepEqual(select(result.accepted.slice().reverse()).map(i=>i.heroCategory),['M','W','A']);
+for(const term of ['croc','croco','crocodile','snake','python','leopard','zebra','animal']){
+ const bad={...item('paris','A'),brand:'Capone',model:'Paris 222 '+term+' clutch'};
+ assert.equal(eligible({refs:['paris']},[bad],checks).rejected[0].reason,'loud details');
+}
 assert(select(result.accepted,picked.map(i=>i.ref)).every(i=>!picked.some(p=>p.ref===i.ref)));
 assert.equal(select(items.slice(0,2)).length,0);assert.equal(eligible(null,items,checks).accepted.length,0);
 assert.equal(select([item('a'),item('b'),item('c')]).length,3);assert.equal(select([item('a','M','same'),item('b','M','same'),item('c','M','same')]).length,0);

@@ -1,5 +1,6 @@
 (function(root){
   'use strict';
+  const loud=i=>/\b(croc\w*|snake|python|leopard|zebra|animal)\b/i.test([i.brand,i.model,i.colour,i.desc].join(' '));
   const style=i=>i.grp||[i.brand,i.model,i.g,i.kind].join('|');
   function eligible(pool,items,checks){
     const accepted=[],rejected=[],seen=new Set();
@@ -8,7 +9,7 @@
       if(!i) reason='not live or hidden';
       else if(checks.soldOut(i)) reason='sold out';
       else if(!checks.calm(i)) reason='no calm approved colour';
-      else if(checks.loud(i)) reason='loud details';
+      else if(loud(i)||checks.loud(i)) reason='loud details';
       else if(!(i.price>=18000&&i.price<=60000)) reason='outside N18–60k';
       const photo=!reason&&checks.photo(i);
       if(!reason&&!photo) reason='no product photo passes photo rules';
@@ -31,7 +32,7 @@
       const cost=triple.filter(i=>previous.includes(i.ref)).length;
       if(cost<bestCost){best=triple;bestCost=cost;}
     }
-    return best||[];
+    return (best||[]).sort((a,b)=>(categories.indexOf(a.heroCategory)<0?3:categories.indexOf(a.heroCategory))-(categories.indexOf(b.heroCategory)<0?3:categories.indexOf(b.heroCategory)));
   }
   async function start(pool,items,checks){
     const hero=document.querySelector('.hero-carousel'); if(!hero) return;
@@ -46,21 +47,22 @@
       const slide=slides[n];slide.querySelector('.hero-pool-content')?.remove();
       [...slide.children].forEach(e=>e.setAttribute('aria-hidden','true'));slide.classList.add('hero-product');
       const box=document.createElement('div');box.className='hero-pool-content';
-      const copy=document.createElement('div');copy.className='hero-pool-copy';
+      const copy=document.createElement('div');copy.className='hero-copy';
+      const kicker=document.createElement('p');kicker.className='kicker';kicker.textContent='NORTHLINE HOUSE';
       const heading=document.createElement(n?'h2':'h1');heading.textContent=i.brand+' '+i.model;
-      const price=document.createElement('p');price.textContent='₦'+Number(i.price).toLocaleString('en-NG');
+      const price=document.createElement('p');price.className='hero-description';price.textContent='₦'+Number(i.price).toLocaleString('en-NG');
       const link=document.createElement('a');link.className='hero-cta';link.textContent='Shop this style';const url=new URL(location.href);url.search='';url.hash='browse';url.searchParams.set('i',i.ref);const agent=checks.agent();if(agent)url.searchParams.set('a',agent);link.href=url.pathname+url.search+url.hash;
-      copy.append(heading,price,link);const img=document.createElement('img');img.alt=[i.brand,i.model,i.colour].filter(Boolean).join(' · ');img.referrerPolicy='no-referrer';img.setAttribute('fetchpriority',n?'auto':'high');img.src=i.heroPhoto;
-      img.onerror=async()=>{img.onerror=null;for(const next of candidates.filter(x=>!used.has(x.ref)&&!active.some(a=>style(a)===style(x))).sort((a,b)=>Number(b.heroCategory===i.heroCategory)-Number(a.heroCategory===i.heroCategory))){if(retired)return;used.add(next.ref);const ok=await load(next);if(retired)return;if(ok){active[n]=next;paint(next,n);remember();return;}}fallback();};
-      box.append(copy,img);slide.append(box);slide.setAttribute('aria-label',`${n+1} of 3: ${heading.textContent}`);dots[n].setAttribute('aria-label',`Show ${heading.textContent}`);
+      const actions=document.createElement('div');actions.className='hero-actions';const how=document.createElement('a');how.className='text-link';how.href='#how-it-works';how.textContent='How to order';actions.append(link,how);copy.append(kicker,heading,price,actions);const img=document.createElement('img');img.alt=[i.brand,i.model,i.colour].filter(Boolean).join(' · ');img.referrerPolicy='no-referrer';img.setAttribute('fetchpriority',n?'auto':'high');img.src=i.heroPhoto;
+      img.onerror=async()=>{img.onerror=null;for(const next of candidates.filter(x=>x.heroCategory===i.heroCategory&&!used.has(x.ref)&&!active.some(a=>style(a)===style(x))).sort((a,b)=>Number(b.heroCategory===i.heroCategory)-Number(a.heroCategory===i.heroCategory))){if(retired)return;used.add(next.ref);const ok=await load(next);if(retired)return;if(ok){active[n]=next;paint(next,n);remember();return;}}fallback();};
+      const visual=document.createElement('div');visual.className='hero-visual';const label=document.createElement('span');label.className='visual-label';label.textContent=i.heroCategory==='M'?"MEN’S SHOES":i.heroCategory==='W'?"WOMEN’S SHOES":'BAGS & ACCESSORIES';visual.append(img,label);box.append(copy,visual);slide.append(box);slide.setAttribute('aria-label',`${n+1} of 3: ${heading.textContent}`);dots[n].setAttribute('aria-label',`Show ${heading.textContent}`);
     }
     while(candidates.length>=3){
       const picks=select(candidates,previous);if(picks.length<3)return;
       const ok=await Promise.all(picks.map(load));const failed=picks.filter((i,n)=>!ok[n]);
       if(failed.length){failed.forEach(i=>audit.rejected.push({ref:i.ref,reason:'photo failed to load'}));candidates=candidates.filter(i=>!failed.includes(i));continue;}
       active=picks;slides.forEach((s,n)=>{s.dataset.fixedLabel=s.getAttribute('aria-label');dots[n].dataset.fixedLabel=dots[n].getAttribute('aria-label');});
-      picks.forEach((i,n)=>{used.add(i.ref);paint(i,n);});remember();hero.dataset.poolRefs=picks.map(i=>i.ref).join(',');return;
+      picks.forEach((i,n)=>{used.add(i.ref);paint(i,n);});remember();hero.dataset.poolRefs=picks.map(i=>i.ref).join(',');hero.dispatchEvent(new Event('hero-pool-ready'));return;
     }
   }
-  const api={eligible,select,start};if(typeof module==='object')module.exports=api;else root.NLHero=api;
+  const api={eligible,select,start,loud};if(typeof module==='object')module.exports=api;else root.NLHero=api;
 })(typeof window==='object'?window:globalThis);
