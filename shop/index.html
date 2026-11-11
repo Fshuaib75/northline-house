@@ -1304,7 +1304,7 @@ Promise.all([fresh("products.json"), fresh("prices.json"), fresh("drop.json"), f
     const known=new Set(ALL.map(i=>i.ref));
     ALL = ALL.concat(added.filter(a=>a&&a.ref&&!known.has(a.ref)).map(a=>({...a, desc:a.desc||"", colour:a.colour||"", fam:a.fam||"", heel:a.heel||"", img:IMG(a.img), full:IMG(a.img), imgs:(a.imgs||[]).map(IMG)})));
   }
-  capPhotos(cap); ALL=ALL.map(listingQuality).map(nlClean); brandStock(brs);
+  capPhotos(cap); ALL=ALL.map(listingQuality).map(nlClean).map(i=>{const lead=NLHero.cardLead(i,u=>!NL_BLOCK.has(nlKey(u)));return lead?{...i,img:lead}:i;}); brandStock(brs);
   if(j&&j.prices){
     SWITCH=j.switchAt||"";
     const P = (commText() && j.next) ? Object.assign({}, j.prices, j.next) : j.prices;
@@ -1318,7 +1318,9 @@ Promise.all([fresh("products.json"), fresh("prices.json"), fresh("drop.json"), f
     soldOut,calm:calmColour,loud:i=>loudStyle(i)||/logo|monogram|metallic|croco|print|gold|silver/i.test([i.model,i.colour,i.desc].join(' ')),
     category:i=>['Bags','Accessories'].includes(secOf(i))?'A':secOf(i)==='Shoes'?audOf(i):'',
     agent:()=>new URLSearchParams(location.search).get('a')||'',
-    photo:i=>{const urls=[i.full,i.img,...(i.imgs||[])].filter(u=>u&&!NL_BLOCK.has(nlKey(u))&&!/olcu|ölçü|beden|size.chart/i.test(u));return urls.find(u=>nlKey(u)===NL_RULES.best[i.ref])||urls[0]||'';}
+    // Match the card's lead exactly; never substitute a gallery detail or NL_RULES.best.
+    photo:i=>NLHero.cardLead(i,u=>!NL_BLOCK.has(nlKey(u)))
+
   })).catch(()=>{});
   if(OPEN.includes("pd")&&PD.i){ const g=BYREF.get(PD.i.ref); if(g){ PD.items=g.items; PD.i=g.items.find(x=>x.ref===PD.i.ref)||g.items[0]; drawPD(false); } }   // a product opened before the data arrived
   S.f=new Set([...S.f].filter(x=>{ const n=x.indexOf(":"), k=x.slice(0,n), v=x.slice(n+1); return ITEMS.some(i=>String(i[k])===v); }));

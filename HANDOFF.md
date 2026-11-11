@@ -2,6 +2,13 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-11-11: Codex, codex/hero-pool — matched backgrounds and whole-bag lead
+
+Did: sample original photo corners through the same wsrv.nl CORS relay as agent status images; consistent corner samples set the visual panel background and disable multiply for that slide. Failed/tainted/inconsistent samples preserve the existing warm-panel/multiply behaviour. Canvas reads only; displayed supplier images are unchanged. Added conservative edge-framing rejection and explicit no full-product photo reason. Hero now uses the card lead rather than full/gallery or NL_RULES.best preference.
+Photo review: the live USPA-BAG-9508-MS card itself used detail IMG-3576763679003673206.jpg. Inspected all five original gallery images; promoted the verified whole front view IMG-5914703428641554540.jpg for both card and hero. Original detail and interior shots are excluded from hero leads. If the reviewed whole frame disappears or is blocked and only known details remain, the hero rejects the style rather than substituting a close-up. No catalogue JSON or live photo-rules changes.
+Validation: hero tests cover shared lead, blocked/missing full view, no-detail fallback, corner colour and cropped/blank framing. Browser checks on gh-pages 1dc13b5 at 390/1366 use real Capone 003-N23 and bag supplier photos. Capone panel matches rgb(236,236,236), bag panel white, both normal blending. Whole bag visually confirmed. Four updated screenshots attached in PR #53. Supplier photo framing checks are conservative pixel checks, not a semantic vision model; owner-approved pool and reviewed lead remain the primary safeguards.
+Next: owner reviews PR #53. No merge, gh-pages writes, photo edits or encrypted book rebuild.
+
 ## 2026-11-11: Codex, codex/hero-pool — PR #53 design and pattern revisions
 
 Did: product heroes reuse hero-copy/hero-visual, dark copy panel, NORTHLINE HOUSE kicker, established display type, price, primary Shop this style button, How to order link and photo-side visual-label. Supplier photos retain contain sizing with padding and multiply blending on the warm panel. Added croc/croco/crocodile, snake, python, leopard, zebra and animal rejections. Selected slides are ordered men's shoes, women's shoes, accessories; product mode opens on the men's slot and same-category replacement preserves that order.
