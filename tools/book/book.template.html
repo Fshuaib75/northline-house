@@ -345,6 +345,7 @@ body.lb .app{border-bottom-color:var(--gold)}
       <span class="legend src-only" aria-hidden="true"><i class="c"></i>Landed <i class="a"></i>Agent <i class="k"></i>You keep</span>
       <span class="staracts">
         <button class="ghost" id="copyBtn">Copy starred for WhatsApp</button>
+        <button class="ghost src-only" id="heroBtn">Publish starred as hero pool</button>
         <button class="ghost src-only" id="dropBtn" title="Agents get these as 'This week' with status images for all of them">Publish starred as this week’s drop</button>
         <button class="linkbtn" id="clearStars">Clear stars</button>
       </span>
@@ -628,6 +629,13 @@ document.getElementById("dropBtn").onclick=async()=>{
   if(!refs.length){ toast("Star some styles that are on the agent site first"); return; }
   try{ await saveJson("drop.json", ()=>({week:new Date().toISOString().slice(0,10), refs:refs.slice(0,24)}), null, `This week's drop (${Math.min(refs.length,24)} styles)`);
     toast(`Drop published: ${Math.min(refs.length,24)} styles. Agents see it within about a minute.`); }catch(e){ toast(errMsg(e)); } };
+document.getElementById("heroBtn").onclick=async()=>{
+  if(!tok.get()){ document.getElementById("tokBox").open=true; toast("Connect your GitHub key first"); return; }
+  const refs=[...new Set(DATA.filter(r=>stars.has(r.id)&&liveOf(r)&&!hidden.has(r.ref)).map(r=>r.ref))].slice(0,30);
+  if(!refs.length){ toast("Star some styles that are on the agent site first"); return; }
+  try{ await saveJson("hero.json", ()=>({updated:new Date().toISOString().slice(0,10),refs}), null, "Publish hero pool");
+    toast(`Hero pool published: ${refs.length} styles.`); }catch(e){ toast(errMsg(e)); }
+};
 document.getElementById("clearStars").onclick=()=>{ if(!stars.size) return; stars.clear(); save(); render(); toast("Stars cleared"); };
 document.getElementById("copyBtn").onclick=()=>{
   const picks = DATA.filter(r=>stars.has(r.id));
