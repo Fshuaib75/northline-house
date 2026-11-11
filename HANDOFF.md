@@ -2,11 +2,37 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-11-11: Claude, claude/handoff-51 — #53 tested, merged, shop side live
+
+Did: reviewed PR #53 across three rounds (design panels, croc/animal patterns, slide order, matched photo backgrounds, whole-bag lead); hero, Featured and the 90 existing tests pass at 103ed38. Owner said merge: squash-merged as 32ee07f. Put the shop side live as gh-pages 3fea6d9: only the #53 diff to `shop/index.html`, `shop/storefront.css`, `shop/storefront.js`, plus `shop/hero-pool.js` and an empty `hero.json`. Checked on that build at 390px and 1366px: empty pool keeps the fixed slides, 983 items, no errors, Featured order unchanged. Also live (294300e, owner asked): Tergan 57606 black and tan share one name and `grp`.
+Next: Codex: sample the hero background from a tiny image (wsrv `w=96`, not `w=1400`) so phones don't download each hero photo twice at full size; move the hardcoded `detailPhotos`/`fullLeads` in `shop/hero-pool.js` into data. Claude: rebuild the encrypted book so "Publish starred as hero pool" appears (needs the owner's book password). Owner: publish a hero pool and a fresh drop (drop.json is still week 2026-11-02, expired).
+Watch out: the live book has no hero-pool button until the rebuild. main and gh-pages still differ outside these files; keep publishing by diff.
+
 ## 2026-11-11: Claude, claude/handoff-51
 
 Did: tested PR #51 at 23aa273 on live gh-pages data (be6cc42), shop and agent page, Men and Women, 390px: first 12 in ₦18–45k (men's 10 plus 2 Tergan leather palms at ₦47,500), 0 cards over ₦60k in the first 36, max 3 per brand in the first 12 and 8 in the first 36, no loud or code-named cards, no errors or overflow. Owner said merge: squash-merged as 9d1bb04. Put live as gh-pages 61e31c2: only the #51 diff to `index.html` and `shop/index.html`, applied onto gh-pages; data files and NL-PHOTO-RULES blocks untouched. Sourcing robot: added Forelli (12), DS Damat wallets (13), Deripabuç (14) to the Project instructions.
 Next: Codex: none. Owner: publish a fresh drop (live drop.json is still week 2026-11-02, now expired, so nothing leads as "This week").
 Watch out: main and gh-pages still differ outside these two files; keep publishing by diff, not by copying main.
+
+## 2026-11-11: Codex, codex/hero-pool — matched backgrounds and whole-bag lead
+
+Did: sample original photo corners through the same wsrv.nl CORS relay as agent status images; consistent corner samples set the visual panel background and disable multiply for that slide. Failed/tainted/inconsistent samples preserve the existing warm-panel/multiply behaviour. Canvas reads only; displayed supplier images are unchanged. Added conservative edge-framing rejection and explicit no full-product photo reason. Hero now uses the card lead rather than full/gallery or NL_RULES.best preference.
+Photo review: the live USPA-BAG-9508-MS card itself used detail IMG-3576763679003673206.jpg. Inspected all five original gallery images; promoted the verified whole front view IMG-5914703428641554540.jpg for both card and hero. Original detail and interior shots are excluded from hero leads. If the reviewed whole frame disappears or is blocked and only known details remain, the hero rejects the style rather than substituting a close-up. No catalogue JSON or live photo-rules changes.
+Validation: hero tests cover shared lead, blocked/missing full view, no-detail fallback, corner colour and cropped/blank framing. Browser checks on gh-pages 1dc13b5 at 390/1366 use real Capone 003-N23 and bag supplier photos. Capone panel matches rgb(236,236,236), bag panel white, both normal blending. Whole bag visually confirmed. Four updated screenshots attached in PR #53. Supplier photo framing checks are conservative pixel checks, not a semantic vision model; owner-approved pool and reviewed lead remain the primary safeguards.
+Next: owner reviews PR #53. No merge, gh-pages writes, photo edits or encrypted book rebuild.
+
+## 2026-11-11: Codex, codex/hero-pool — PR #53 design and pattern revisions
+
+Did: product heroes reuse hero-copy/hero-visual, dark copy panel, NORTHLINE HOUSE kicker, established display type, price, primary Shop this style button, How to order link and photo-side visual-label. Supplier photos retain contain sizing with padding and multiply blending on the warm panel. Added croc/croco/crocodile, snake, python, leopard, zebra and animal rejections. Selected slides are ordered men's shoes, women's shoes, accessories; product mode opens on the men's slot and same-category replacement preserves that order.
+Validation: new regression cases cover Capone Paris 222 croc clutch, every added pattern term, and ordered selection across randomized/reversed inputs. All hero tests pass. Browser tested at 390 and 1366 against gh-pages 1dc13b5 with real GZ-2169 (white-background), 003-N23 (grey-background) and USPA-BAG-9508-MS photos. Six screenshots show all three slides at both widths. Verified dark panels, kicker, order link, category order, loaded photos, contain/multiply and no horizontal overflow. Grey supplier backgrounds retain their original tonal area under multiply; no photo editing.
+Next: owner reviews updated PR #53. No gh-pages writes, merge, pool publication or encrypted book rebuild.
+
+## 2026-11-11: Codex, codex/hero-pool — approved random hero pool
+
+Did: added empty root hero.json and the book's Publish starred as hero pool button using saveJson, max 30 unique live visible refs and its own success toast. Shop loads the pool no-store after current pricing/stock, reuses Featured calm/loud checks and NL-PHOTO-RULES, picks three unique styles with audience coverage or distinct brands, and minimizes previous-visit repeats through guarded localStorage. Supplier photos preload before an atomic overlay, use contain, keep original hero geometry and existing controls, and link by ?i=REF with referral preserved. Failed images use unused eligible replacements, or restore the fixed slides when exhausted. Missing/empty/insufficient pools leave the existing fixed slides untouched.
+Validation: tools/hero-pool-test.cjs passes eligibility/category/duplicate/previous-visit/fallback and mocked book publish/failure checks; Featured regression tests and book dev build pass. Browser checked 390px and 1366px with actual supplier images and twelve real sample refs against gh-pages 71442a3. All three images loaded at both widths, contain/alt/referral links verified, no horizontal overflow. Dot/counter/next/pause checks pass; simulated late failure replaced a style without reuse; null/empty/two-ref pools preserved fixed images and hero height; autoplay and pause passed.
+Rejected sample refs: 003-MNK duplicate style; USPA-BAG-VR046-CB outside N18–60k; USPA-BAG-VR031-CR non-calm colour; PC-Y604-CL loud details. The sample pool is QA-only, not owner approval; committed hero.json remains empty.
+Next: owner reviews PR against main, then separately decides deployment and encrypted book rebuild. No gh-pages writes or real pool publication. Preserve live NL-PHOTO-RULES on deployment. Owner approves refs in the book; no photos were edited or generated.
 
 ## 2026-11-11: Codex, codex/featured-sort — brand caps and leather opening
 

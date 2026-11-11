@@ -431,6 +431,7 @@ details.more>summary em{color:var(--ink);font-weight:600}
 .nl-arrow{display:inline-block;vertical-align:.05em;flex:none}
 </style>
 <link rel="stylesheet" href="storefront.css">
+<script src="hero-pool.js"></script>
 </head>
 <body>
 <header class="top">
@@ -1283,6 +1284,7 @@ let SWITCH="";
 const todayNG = () => new Date(Date.now()+3600e3).toISOString().slice(0,10);
 function commText(){ return !!SWITCH && todayNG()>=SWITCH; }
 const fresh = f => fetch("../"+f+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.ok?r.json():null).catch(()=>null);
+const heroPool=fresh("hero.json");
 fresh("build.json").then(j=>{ if(j&&j.build&&j.build!==BUILD) $("stale").hidden=false; });
 // Capone's current photo links, from the weekly check (tools/capone): Capone re-uploads photos under new file names,
 // which breaks the links saved in the catalogue
@@ -1302,7 +1304,7 @@ Promise.all([fresh("products.json"), fresh("prices.json"), fresh("drop.json"), f
     const known=new Set(ALL.map(i=>i.ref));
     ALL = ALL.concat(added.filter(a=>a&&a.ref&&!known.has(a.ref)).map(a=>({...a, desc:a.desc||"", colour:a.colour||"", fam:a.fam||"", heel:a.heel||"", img:IMG(a.img), full:IMG(a.img), imgs:(a.imgs||[]).map(IMG)})));
   }
-  capPhotos(cap); ALL=ALL.map(listingQuality).map(nlClean); brandStock(brs);
+  capPhotos(cap); ALL=ALL.map(listingQuality).map(nlClean).map(i=>{const lead=NLHero.cardLead(i,u=>!NL_BLOCK.has(nlKey(u)));return lead?{...i,img:lead}:i;}); brandStock(brs);
   if(j&&j.prices){
     SWITCH=j.switchAt||"";
     const P = (commText() && j.next) ? Object.assign({}, j.prices, j.next) : j.prices;
@@ -1311,6 +1313,15 @@ Promise.all([fresh("products.json"), fresh("prices.json"), fresh("drop.json"), f
   } else ITEMS = ALL.filter(i=>i.price).map(i=>({...i, band:band(i.price)}));
   cart = store.get("nl-shop-cart",[]).filter(c=>ITEMS.some(i=>i.ref===c.ref)).map(c=>{ const i=ITEMS.find(x=>x.ref===c.ref); return {...c, model:i.model, colour:i.colour, price:i.price, comm:i.comm, g:i.g}; }); store.set("nl-shop-cart",cart);
   LOADED=true; buildGroups();
+  // Only authoritative priced/live catalogue entries can enter the approved hero pool.
+  if(j&&j.prices) heroPool.then(pool=>NLHero.start(pool,ITEMS,{
+    soldOut,calm:calmColour,loud:i=>loudStyle(i)||/logo|monogram|metallic|croco|print|gold|silver/i.test([i.model,i.colour,i.desc].join(' ')),
+    category:i=>['Bags','Accessories'].includes(secOf(i))?'A':secOf(i)==='Shoes'?audOf(i):'',
+    agent:()=>new URLSearchParams(location.search).get('a')||'',
+    // Match the card's lead exactly; never substitute a gallery detail or NL_RULES.best.
+    photo:i=>NLHero.cardLead(i,u=>!NL_BLOCK.has(nlKey(u)))
+
+  })).catch(()=>{});
   if(OPEN.includes("pd")&&PD.i){ const g=BYREF.get(PD.i.ref); if(g){ PD.items=g.items; PD.i=g.items.find(x=>x.ref===PD.i.ref)||g.items[0]; drawPD(false); } }   // a product opened before the data arrived
   S.f=new Set([...S.f].filter(x=>{ const n=x.indexOf(":"), k=x.slice(0,n), v=x.slice(n+1); return ITEMS.some(i=>String(i[k])===v); }));
   QUIET=true; brandParam(); syncControls(); refresh(); QUIET=false; LOAD_VIEW=view(); bagUI(); itemParam(); setURL(false);
