@@ -2,6 +2,13 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-11-11: Codex, codex/hero-pool — approved random hero pool
+
+Did: added empty root hero.json and the book's Publish starred as hero pool button using saveJson, max 30 unique live visible refs and its own success toast. Shop loads the pool no-store after current pricing/stock, reuses Featured calm/loud checks and NL-PHOTO-RULES, picks three unique styles with audience coverage or distinct brands, and minimizes previous-visit repeats through guarded localStorage. Supplier photos preload before an atomic overlay, use contain, keep original hero geometry and existing controls, and link by ?i=REF with referral preserved. Failed images use unused eligible replacements, or restore the fixed slides when exhausted. Missing/empty/insufficient pools leave the existing fixed slides untouched.
+Validation: tools/hero-pool-test.cjs passes eligibility/category/duplicate/previous-visit/fallback and mocked book publish/failure checks; Featured regression tests and book dev build pass. Browser checked 390px and 1366px with actual supplier images and twelve real sample refs against gh-pages 71442a3. All three images loaded at both widths, contain/alt/referral links verified, no horizontal overflow. Dot/counter/next/pause checks pass; simulated late failure replaced a style without reuse; null/empty/two-ref pools preserved fixed images and hero height; autoplay and pause passed.
+Rejected sample refs: 003-MNK duplicate style; USPA-BAG-VR046-CB outside N18–60k; USPA-BAG-VR031-CR non-calm colour; PC-Y604-CL loud details. The sample pool is QA-only, not owner approval; committed hero.json remains empty.
+Next: owner reviews PR against main, then separately decides deployment and encrypted book rebuild. No gh-pages writes or real pool publication. Preserve live NL-PHOTO-RULES on deployment. Owner approves refs in the book; no photos were edited or generated.
+
 ## 2026-11-11: Codex, codex/featured-sort — brand caps and leather opening
 
 Did: updated PR #51 code and tests with maximum 3 cards per brand in the first 12 and 8 in the first 36 on all audiences. Pearl, crystal, stone, stud, bow, satin, glitter, mesh and platform are loud details. Men reserve two first-12 slots for the cheapest available calm genuine-leather palms at N45–60k; the other ten slots prefer N18–45k. Sparse filtered lists still preserve all items.
