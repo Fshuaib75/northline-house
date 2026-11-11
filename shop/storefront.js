@@ -49,6 +49,8 @@
   }
   slides.forEach(slide => { slide.hidden = false; });
   hero.classList.add('hero-ready');
+  // Approved product edits always open on the men's slot; fixed fallback keeps its random start.
+  hero.addEventListener('hero-pool-ready', () => show(0));
   hero.querySelector('.hero-navigation').hidden = false;
   dots.forEach((dot, i) => dot.addEventListener('click', () => show(i, true)));
   hero.querySelector('[data-hero-prev]').addEventListener('click', () => show(current - 1, true));
