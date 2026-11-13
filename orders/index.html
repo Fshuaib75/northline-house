@@ -118,6 +118,16 @@ html,body{background:var(--bg)}
 .pill{border-radius:1px}
 textarea,input,select{border-radius:2px;background:#FBF8F2;border-color:var(--line-2)}
 textarea:focus,input:focus,select:focus{outline:2px solid var(--ink);outline-offset:1px}
+.entry-fields{border:0;padding:0;margin:0;min-width:0;display:grid;gap:12px}
+.entry-fields .tw{overflow-x:auto;max-width:100%;min-width:0}
+.entry-table{min-width:760px}
+.entry-table td{max-width:280px}
+.entry-table select{min-width:180px;margin-top:6px}
+.entry-table input[type=number]{min-width:100px}
+.entry-check{display:flex;gap:7px;align-items:flex-start;font-size:12.5px;margin-top:7px}
+.entry-check input{width:auto;margin-top:3px}
+.entry-errors{margin:5px 0 0;padding-left:16px;color:var(--err);font-size:12.5px}
+.entry-summary{margin:10px 0}
 </style>
 </head>
 <body>
@@ -169,6 +179,38 @@ textarea:focus,input:focus,select:focus{outline:2px solid var(--ink);outline-off
       <div class="row"><button class="btn primary" id="parseBtn">Read the order</button><span class="hint" id="parseMsg"></span></div>
     </div>
     <div id="preview"></div>
+    <div class="panel">
+      <h2>Add by hand</h2>
+      <p class="hint">Record a paid sale without a WhatsApp message. Prices are per item; the paid date is the order date.</p>
+      <fieldset class="entry-fields" id="manualFields">
+        <div class="grid2">
+          <label class="f">Order date<input id="manualDate" type="date" required></label>
+          <label class="f">Style ref or name<input id="manualStyle" list="orderStyles" autocomplete="off" required></label>
+          <label class="f">Size<input id="manualSize" autocomplete="off" placeholder="42 or One size" required></label>
+          <label class="f">Quantity<input id="manualQty" type="number" min="1" step="1" value="1" required></label>
+          <label class="f">Price per item (₦)<input id="manualPrice" type="number" min="0" step="1" required></label>
+          <label class="f">Channel or agent code<input id="manualChannel" list="orderChannels" value="Direct" autocomplete="off" required></label>
+        </div>
+        <div class="row"><button class="btn primary" id="manualPreviewBtn" type="button">Preview item</button></div>
+        <div id="manualPreview"></div>
+        <div class="row" id="manualActions" hidden><button class="btn primary" id="manualSave" type="button">Save as paid</button><button class="btn" id="manualAnother" type="button">Save and add another</button></div>
+      </fieldset>
+      <p class="hint" id="manualStatus" role="status" aria-live="polite"></p>
+    </div>
+    <div class="panel">
+      <h2>Past orders</h2>
+      <p class="hint" id="pastHelp">Paste one line per item: date, style ref or name, size, qty, price per item, channel. Use YYYY-MM-DD dates and prices without commas, or quote a value that contains commas. Lines with the same date and channel become one paid order.</p>
+      <fieldset class="entry-fields" id="pastFields">
+        <label class="f" for="pastText">Past order items<textarea id="pastText" aria-describedby="pastHelp" spellcheck="false" placeholder="2026-09-14, SLZ-SA16SE030-500, 42, 1, 30000, Direct"></textarea></label>
+        <p class="hint">Channels can be Direct, Instagram, Facebook, WhatsApp, or an agent code. Include sale details only, without customer names, phone numbers or addresses.</p>
+        <div class="row"><button class="btn primary" id="pastPreviewBtn" type="button">Preview past orders</button></div>
+        <div id="pastPreview"></div>
+        <div class="row" id="pastActions" hidden><button class="btn primary" id="pastSave" type="button">Save all as paid</button></div>
+      </fieldset>
+      <p class="hint" id="pastStatus" role="status" aria-live="polite"></p>
+    </div>
+    <datalist id="orderStyles"></datalist>
+    <datalist id="orderChannels"><option value="Direct"><option value="Instagram"><option value="Facebook"><option value="WhatsApp"><option value="TikTok"><option value="Website"><option value="Walk-in"></datalist>
   </section>
 
   <!-- orders -->
@@ -227,6 +269,8 @@ textarea:focus,input:focus,select:focus{outline:2px solid var(--ink);outline-off
 </main>
 <div class="toast" id="toast" hidden></div>
 
+<script src="past-orders.js"></script>
+<script src="past-orders-ui.js"></script>
 <script>
 const REPO="Fshuaib75/northline-house", LIVE="gh-pages", ALSO="main", FILE="orders.json";
 const $=id=>document.getElementById(id);
@@ -237,6 +281,7 @@ const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.
 function toast(t){ const el=$("toast"); el.textContent=t; el.hidden=false; clearTimeout(toast.t); toast.t=setTimeout(()=>el.hidden=true,2600); }
 const EMPTY=()=>({v:1, orders:[], payouts:[], wants:[]});
 let DATA=EMPTY(), PRICES={}, CAT=new Map(), TOKEN=store.get("nl-orders-token","");
+let CATALOGUE_READY=false;
 
 // ---------- GitHub: read and save orders.json on the live branch, then move main to the same commit ----------
 const API="https://api.github.com/repos/"+REPO;
@@ -284,6 +329,8 @@ async function catalogue(){
   const [p, prods]=await Promise.all([get("prices.json"), get("products.json")]); PRICES=(p&&p.prices)||{};
   try{ const h=await fetch("../shop/",{cache:"no-store"}).then(r=>r.text()); const m=h.match(/let ALL = (\[.*?\]);\n/s); if(m) JSON.parse(m[1]).forEach(i=>CAT.set(i.ref,i)); }catch(e){}
   (prods||[]).forEach(i=>{ if(i&&i.ref&&!CAT.has(i.ref)) CAT.set(i.ref,i); });
+  CATALOGUE_READY=CAT.size>0;
+  if(orderEntry) orderEntry.catalogueChanged();
   drawAll();
 }
 
@@ -296,7 +343,9 @@ function parseOrders(text){
   return parts.map(t=>{
     const src=/NORTHLINE ORDER \(shop\)/.test(t)?"shop":"agent";
     let agent=((t.match(/^\s*Agent:\s*(.+)$/m)||[])[1]||"").trim().replace(/[^A-Za-z0-9_-]/g,"").slice(0,24);
-    if(/^DIRECT$/i.test(agent)) agent="";
+    const source=NLPastOrders.classifyChannel(agent||'DIRECT');
+    const channel=source.channelType==='channel'?source.channel:'';
+    if(channel)agent='';
     const items=[], problems=[];
     t.split("\n").forEach(line=>{ const m=line.match(/^\s*\d+\.\s+(.+?)\s*\[([^\]]+)\]\s*$/); if(!m) return;
       const bits=m[1].split(" · ").map(x=>x.trim()); const br=m[2].trim();
@@ -309,17 +358,19 @@ function parseOrders(text){
       else if(agent&&src==="agent"&&PRICES[ref]) comm=PRICES[ref][1];
       else if(!agent) comm=0;
       if(comm==null){ comm=PRICES[ref]?PRICES[ref][1]:0; if(agent) problems.push(`No commission in the text for ${ref}: used today’s ${N(comm)}.`); }
+      if(!agent)comm=0;
       const c=CAT.get(ref);
       items.push({ref, model:rest[0]||(c&&c.model)||ref, colour:rest[1]&&rest[1]!=="—"?rest[1]:((c&&c.colour)||""), brand:(c&&c.brand)||"", size:sizeBit?sizeBit.replace(/^size\s+/i,""):"One size", qty, price:qty?Math.round(total/qty):total, comm});
     });
     if(!items.length) problems.push("No item lines found. Paste the whole message, including the numbered lines.");
-    return {id:"O"+Date.now().toString(36)+Math.random().toString(36).slice(2,6), at:today(), agent, src, status:"waiting", items, problems};
+    return {id:"O"+Date.now().toString(36)+Math.random().toString(36).slice(2,6), at:today(), agent, channel, src, status:"waiting", items, problems};
   });
 }
 let PARSED=[];
 $("parseBtn").onclick=()=>{ PARSED=parseOrders($("paste").value); $("parseMsg").textContent=PARSED.length?`${PARSED.length} order${PARSED.length===1?"":"s"} found`:"No “NORTHLINE ORDER” found in the text."; drawPreview(); };
 const total=o=>(o.items||[]).reduce((s,it)=>s+(it.price||0)*(it.qty||1),0);
-const commOf=o=>(o.items||[]).reduce((s,it)=>s+(it.comm||0)*(it.qty||1),0);
+const isMarketing=code=>NLPastOrders.classifyChannel(code||"DIRECT").channelType==="channel";
+const commOf=o=>isMarketing(o.agent)?0:(o.items||[]).reduce((s,it)=>s+(it.comm||0)*(it.qty||1),0);
 const units=o=>(o.items||[]).reduce((s,it)=>s+(it.qty||1),0);
 const itemLine=it=>`${esc(it.model)}${it.colour?" · "+esc(it.colour):""}${it.size&&it.size!=="One size"?" · size "+esc(it.size):""}${it.qty>1?" ×"+it.qty:""}`;
 function drawPreview(){
@@ -338,7 +389,8 @@ function drawPreview(){
 $("preview").addEventListener("input",e=>{ const p=e.target.closest("[data-k]"), f=e.target.dataset.f; if(!p||!f) return; const o=PARSED[+p.dataset.k]; o[f]=f==="agent"?e.target.value.trim().replace(/[^A-Za-z0-9_-]/g,"").slice(0,24):e.target.value; });
 $("preview").addEventListener("click",async e=>{ const b=e.target.closest("[data-a]"); if(!b) return; const k=+b.closest("[data-k]").dataset.k, o=PARSED[k];
   if(b.dataset.a==="drop"){ PARSED.splice(k,1); drawPreview(); return; }
-  const rec={id:o.id, at:o.at, agent:o.agent, src:o.src, status:b.dataset.a==="savepaid"?"paid":"waiting", items:o.items};
+  if(isMarketing(o.agent)){o.channel=NLPastOrders.classifyChannel(o.agent||o.channel||'DIRECT').channel;o.agent='';o.items.forEach(it=>it.comm=0);}
+  const rec={id:o.id, at:o.at, agent:o.agent, channel:o.channel, src:o.src, status:b.dataset.a==="savepaid"?"paid":"waiting", items:o.items};
   if(rec.status==="paid") rec.paid=today();
   b.disabled=true;
   const dup=DATA.orders.find(x=>x.agent===rec.agent&&x.at===rec.at&&JSON.stringify(x.items.map(i=>[i.ref,i.size,i.qty]))===JSON.stringify(rec.items.map(i=>[i.ref,i.size,i.qty])));
@@ -353,7 +405,7 @@ function drawOrders(){
   const l=DATA.orders.filter(o=>!OF||o.status===OF).sort((a,b)=>String(b.at).localeCompare(String(a.at))||String(b.id).localeCompare(String(a.id)));
   const waiting=DATA.orders.filter(o=>o.status==="waiting").length; $("nOrders").textContent=waiting?`· ${waiting} waiting`:"";
   $("orderList").innerHTML=l.length?l.map(o=>`<div class="order" data-id="${esc(o.id)}">
-    <div class="hd"><b>${esc(o.agent||"Direct sale")}</b><span class="hint">${esc(o.at)}${o.paid?" · paid "+esc(o.paid):""} · ${o.src==="shop"?"from the shop":"from the agent page"}</span></div>
+    <div class="hd"><b>${esc(o.agent||o.channel||"Direct sale")}</b><span class="hint">${esc(o.at)}${o.paid?" · paid "+esc(o.paid):""} · ${o.src==="past"?"past order":o.src==="manual"?"hand entry":o.src==="shop"?"from the shop":"from the agent page"}</span></div>
     <ul>${(o.items||[]).map(it=>`<li><span>${itemLine(it)}</span><span>${N(it.price*it.qty)}</span></li>`).join("")}</ul>
     <div class="ft"><span><span class="pill ${esc(o.status)}">${o.status==="waiting"?"Waiting for payment":esc(o.status)}</span> <b style="margin-left:8px">${N(total(o))}</b>${commOf(o)?` <span class="hint">· agent ${N(commOf(o))}</span>`:""}</span>
       <span class="row">${o.status!=="paid"?`<button class="btn good small" data-a="paid">Mark paid</button>`:`<button class="btn small" data-a="waiting">Not paid</button>`}${o.status!=="cancelled"?`<button class="btn small" data-a="cancelled">Cancel</button>`:""}<button class="lnk" data-a="delete">Delete</button></span></div>
@@ -367,6 +419,7 @@ $("orderList").addEventListener("click",async e=>{ const b=e.target.closest("[da
 
 // ---------- agents: earnings and payouts (same rule as the agent page) ----------
 function earnings(who){ const k=String(who).toUpperCase();
+  if(isMarketing(k))return {items:0,earned:0,paidOut:0,owed:0,toNext:1};
   const mine=DATA.orders.filter(o=>o.status==="paid"&&String(o.agent||"").toUpperCase()===k).sort((a,b)=>String(a.paid||a.at).localeCompare(String(b.paid||b.at))||String(a.id).localeCompare(String(b.id)));
   const u=[]; mine.forEach(o=>(o.items||[]).forEach(it=>{ for(let n=0;n<(it.qty||1);n++) u.push(it.comm||0); }));
   const done=u.length<1?0:1+Math.floor((u.length-1)/5)*5, due=u.slice(0,done).reduce((s,x)=>s+x,0), waiting=u.slice(done).reduce((s,x)=>s+x,0);
@@ -374,12 +427,13 @@ function earnings(who){ const k=String(who).toUpperCase();
   return {items:u.length, earned:due+waiting, paidOut, owed:Math.max(0,due-paidOut), toNext:u.length<1?1:(5-((u.length-1)%5))%5||5}; }
 function drawAgents(){
   const codes=[...new Set(DATA.orders.filter(o=>o.agent).map(o=>o.agent.toUpperCase()).concat(DATA.payouts.map(p=>String(p.agent).toUpperCase())))].sort();
-  const rows=codes.map(c=>[c,earnings(c)]).sort((a,b)=>b[1].owed-a[1].owed||b[1].items-a[1].items);
+  const rows=codes.filter(c=>!isMarketing(c)).map(c=>[c,earnings(c)]).sort((a,b)=>b[1].owed-a[1].owed||b[1].items-a[1].items);
   $("agentRows").innerHTML=rows.length?rows.map(([c,e])=>`<tr><td style="white-space:nowrap"><b>${esc(c)}</b></td><td class="n"><b style="color:${e.owed?"var(--good)":"inherit"}">${N(e.owed)}</b></td><td>${e.owed?`<button class="btn small" data-pay="${esc(c)}" data-amt="${e.owed}">Pay</button>`:""}</td><td class="n">${e.items}</td><td class="n">${N(e.earned)}</td><td class="n">${N(e.paidOut)}</td><td class="n">${e.items?e.toNext+" item"+(e.toNext===1?"":"s"):"first sale"}</td></tr>`).join(""):`<tr><td colspan="7" class="empty">No agent sales recorded yet.</td></tr>`;
   $("poRows").innerHTML=DATA.payouts.slice().sort((a,b)=>String(b.at).localeCompare(String(a.at))).map(p=>`<tr><td>${esc(p.at)}</td><td>${esc(p.agent)}</td><td class="n">${N(p.amount)}</td><td class="n"><button class="lnk" data-del="${esc(p.id)}">Delete</button></td></tr>`).join("")||`<tr><td colspan="4" class="hint">No payouts recorded yet.</td></tr>`;
 }
 $("agentRows").addEventListener("click",e=>{ const b=e.target.closest("[data-pay]"); if(!b) return; $("poAgent").value=b.dataset.pay; $("poAmt").value=b.dataset.amt; $("poDate").value=today(); $("poAmt").focus(); });
 $("poSave").onclick=async()=>{ const agent=$("poAgent").value.trim().replace(/[^A-Za-z0-9_-]/g,"").slice(0,24).toUpperCase(), amount=money($("poAmt").value), at=$("poDate").value||today();
+  if(isMarketing(agent)){toast("Marketing sources cannot receive agent payouts");return;}
   if(!agent||!amount){ toast("Add the agent code and the amount"); return; }
   if(await save(d=>{ d.payouts.push({id:"P"+Date.now().toString(36), agent, amount, at}); }, `payout ${agent} ${amount}`)){ $("poAgent").value=""; $("poAmt").value=""; } };
 $("poRows").addEventListener("click",async e=>{ const b=e.target.closest("[data-del]"); if(!b||!confirm("Delete this payout?")) return; await save(d=>{ d.payouts=d.payouts.filter(p=>p.id!==b.dataset.del); }, "delete payout"); });
@@ -398,7 +452,7 @@ function drawSells(){
   bars("sStyles",cnt(it=>[`${it.model}${it.colour?" · "+it.colour:""}`, it.ref]));
   bars("sSizes",cnt(it=>[it.size&&it.size!=="One size"?"Size "+it.size:"",""]).sort((a,b)=>parseFloat(a[0].slice(5))-parseFloat(b[0].slice(5))),20);
   bars("sBrands",cnt(it=>[it.brand||(CAT.get(it.ref)||{}).brand||"Unknown",""]));
-  bars("sAgents",cnt((it,o)=>[o.agent||"Direct sale",""]));
+  bars("sAgents",cnt((it,o)=>[o.agent||o.channel||"Direct sale",""]));
   const w=new Map(); DATA.wants.forEach(x=>{ const k=(x.what+(x.size?" · size "+x.size:"")).trim(); w.set(k,(w.get(k)||0)+(x.n||1)); });
   bars("sWants",[...w].sort((a,b)=>b[1]-a[1]),20);
 }
@@ -410,6 +464,9 @@ document.querySelector(".tabs").addEventListener("click",e=>{ const b=e.target.c
   document.querySelectorAll(".tabs button").forEach(x=>x.setAttribute("aria-selected",x===b)); ["add","orders","agents","sells"].forEach(t=>$("p-"+t).hidden=t!==b.dataset.t); });
 function drawAll(){ drawOrders(); drawAgents(); drawSells(); }
 $("poDate").value=today();
+const orderEntry=NLOrderEntry.init({document, today, esc, money:N, save,
+  context:()=>({catalogue:[...CAT.values()],prices:PRICES,agents:[...new Set(DATA.orders.map(o=>o.agent).concat(DATA.payouts.map(p=>p.agent)).filter(Boolean))],today:today(),ready:CATALOGUE_READY}),
+  data:()=>DATA});
 conn(false); load(); catalogue();
 </script>
 </body>

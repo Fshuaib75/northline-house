@@ -785,7 +785,7 @@ $("shopCopy").onclick=()=>copy(shopUrl());
 // ---------- your earnings: paid orders Northline has recorded for this agent code (orders.json, kept by the owner) ----------
 // First paid item is paid straight away; after that, every 5 paid items are paid together.
 let ORDERS=null;
-function earningsOf(data, who){ const k=String(who||"").toUpperCase(); if(!k) return null;
+function earningsOf(data, who){ const k=String(who||"").toUpperCase(); if(!k||/^(IG|INSTAGRAM|FB|FACEBOOK|WA|WHATSAPP|ADMIN|DIRECT)$/i.test(k)) return null;
   const mine=(data.orders||[]).filter(o=>o.status==="paid"&&String(o.agent||"").toUpperCase()===k).sort((a,b)=>String(a.paid||a.at).localeCompare(String(b.paid||b.at))||String(a.id).localeCompare(String(b.id)));
   const units=[]; mine.forEach(o=>(o.items||[]).forEach(it=>{ for(let n=0;n<(it.qty||1);n++) units.push({o, it}); }));
   const done=units.length<1?0:1+Math.floor((units.length-1)/5)*5, due=units.slice(0,done).reduce((s,u)=>s+(u.it.comm||0),0), waiting=units.slice(done).reduce((s,u)=>s+(u.it.comm||0),0);

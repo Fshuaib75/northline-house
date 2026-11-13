@@ -2,6 +2,11 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-11-13: Codex, codex/commission-sources
+Did: integrated PR #46 source and fixed preview containment, five closest suggestions and editable manual-price prefill. Marketing channels earn zero even with explicit commission text, retain channel attribution, and cannot receive payouts; agent earnings excludes reserved channel codes.
+Validation: regression cases failed before fixes. Agent-list enforcement deferred by owner. Browser verification and PR publication still pending; no live writes.
+Next: complete verification and open commission PR; then book conflicts, price-load failures, cart revalidation, platform checkpoints, stale stock and separate hero changes.
+
 ## 2026-11-11: Claude, claude/handoff-51 — #53 tested, merged, shop side live
 
 Did: reviewed PR #53 across three rounds (design panels, croc/animal patterns, slide order, matched photo backgrounds, whole-bag lead); hero, Featured and the 90 existing tests pass at 103ed38. Owner said merge: squash-merged as 32ee07f. Put the shop side live as gh-pages 3fea6d9: only the #53 diff to `shop/index.html`, `shop/storefront.css`, `shop/storefront.js`, plus `shop/hero-pool.js` and an empty `hero.json`. Checked on that build at 390px and 1366px: empty pool keeps the fixed slides, 983 items, no errors, Featured order unchanged. Also live (294300e, owner asked): Tergan 57606 black and tan share one name and `grp`.
