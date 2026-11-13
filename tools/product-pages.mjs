@@ -33,12 +33,13 @@ export function build(root,out,now=new Date()){
  if(fs.existsSync(out)&&fs.readdirSync(out).length)throw Error('Output must be empty to avoid retaining removed products');
  const read=p=>JSON.parse(fs.readFileSync(path.join(root,p),'utf8').replace(/^\uFEFF/,''));
  const source=fs.readFileSync(path.join(root,'shop/index.html'),'utf8');
- const match=source.match(/let ALL = (\[.*?\]);\r?\n/s);if(!match)throw Error('Catalogue source not found');
- const catalogue=new Map(JSON.parse(match[1]).map(i=>[i.ref,i]));for(const i of read('products.json'))if(i?.ref&&!catalogue.has(i.ref))catalogue.set(i.ref,i);
+ const match=source.match(/let ALL = (\[.*?\]);\r?\n/s);
+ const catalogue=new Map((match?JSON.parse(match[1]):read('shop/catalogue.json')).map(i=>[i.ref,i]));for(const i of read('products.json'))if(i?.ref&&!catalogue.has(i.ref))catalogue.set(i.ref,i);
  const stock={};for(const file of ['capone.json','brands.json']){const data=read(file);for(const [ref,r] of Object.entries(data.styles||{})){stock[ref]={...r,checked_at:r.checked_at||(!r.stale?data.checked:null)};if(file==='capone.json'&&r.img?.length&&catalogue.has(ref)){const i=catalogue.get(ref);catalogue.set(ref,{...i,img:r.img[0],imgs:r.img});}}}
  const products=prepare([...catalogue.values()],read('prices.json'),stock,read('photo-rules.json').photos,now);
  fs.mkdirSync(out,{recursive:true});const date=now.toISOString().slice(0,10);
  for(const i of products){const dir=path.join(out,'shop/products',i.ref);fs.mkdirSync(dir,{recursive:true});fs.writeFileSync(path.join(dir,'index.html'),render(i,date));}
+ fs.writeFileSync(path.join(out,'product-pages-manifest.json'),JSON.stringify({version:1,paths:products.map(i=>'shop/products/'+i.ref+'/index.html')},null,2));
  fs.writeFileSync(path.join(out,'sitemap.xml'),'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+[origin+'/shop/',...products.map(i=>i.url)].map(url=>'<url><loc>'+escape(url)+'</loc></url>').join('')+'</urlset>');
  const report={built:date,products:products.length,verifiedOffers:products.filter(i=>i.availability).length,unverified:products.filter(i=>!i.availability).length};fs.writeFileSync(path.join(out,'build-report.json'),JSON.stringify(report,null,2));return report;
 }

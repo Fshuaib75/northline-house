@@ -5,6 +5,9 @@ on:
     paths:
       - 'tools/product-pages.mjs'
       - 'tools/tests/test_product_pages.mjs'
+      - 'tools/tests/test_product_pages_sync.mjs'
+      - 'tools/sync-product-pages.mjs'
+      - '.github/workflows/product-pages-refresh.yml'
       - '.github/workflows/product-pages-preview.yml'
 permissions:
   contents: read
@@ -22,7 +25,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: node --test code/tools/tests/test_product_pages.mjs
+      - run: node --test code/tools/tests/test_product_pages.mjs code/tools/tests/test_product_pages_sync.mjs
       - run: node code/tools/product-pages.mjs catalogue "$RUNNER_TEMP/product-pages"
       - uses: actions/upload-artifact@v4
         with:
