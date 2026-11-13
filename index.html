@@ -431,6 +431,9 @@ const sizesOf = i => (i.sizes&&i.sizes.length) ? i.sizes : SIZES[i.g]||["One siz
 // sizes in stock at Capone (same weekly check): a size Capone has sold out can't be ordered; no data = assume available
 const STOCK={};
 const inStock=(i,s)=>{ const z=STOCK[i.ref]; return !z||((sizesOf(i).length===1&&sizesOf(i)[0]==="One size")?z.length>0:z.includes(s)); };
+function stockExpired(checked,now=Date.now()){const stamp=Date.parse(checked);return !Number.isFinite(stamp)||now-stamp>=14*864e5;}
+const STOCK_CHECKED={};
+const needsConfirmation=i=>stockExpired(STOCK_CHECKED[i.ref]);
 const soldOut=i=>!!STOCK[i.ref]&&!sizesOf(i).some(s=>inStock(i,s));
 const unit = (n,g) => (g==="B"||g==="BG"||g==="CL"||g==="AC") ? `${n} piece${n===1?"":"s"}` : `${n} pair${n===1?"":"s"}`;
 const S = {g:"M", sec:"", q:"", f:new Set(), sort:"rec", more:false, size:""};
@@ -651,7 +654,7 @@ function cardHtml(i){
   const img = chain.length ? imgTag(chain, `loading="lazy" alt="${esc(i.model+" "+i.colour)}"`, "miss") : `<div class="miss">Photo coming soon</div>`;
   const gone=soldOut(i);
   return `<article class="card${gone?" out":""}" data-ref="${esc(i.ref)}">
-    <div class="ph">${img}${gone?"":isBack(i)?`<span class="tag back">Back in stock</span>`:allSizes(i)?`<span class="tag all">All sizes</span>`:fewLeft(i)?`<span class="tag few">Few sizes left</span>`:""}${(i.imgs||[]).length>1?`<span class="pcount">More photos ›</span>`:""}</div>
+    <div class="ph">${img}${needsConfirmation(i)?`<span class="tag">Confirm availability</span>`:gone?"":isBack(i)?`<span class="tag back">Back in stock</span>`:allSizes(i)?`<span class="tag all">All sizes</span>`:fewLeft(i)?`<span class="tag few">Few sizes left</span>`:""}${(i.imgs||[]).length>1?`<span class="pcount">More photos ›</span>`:""}</div>
     <div><div class="mb">${esc(i.brand)}</div><div class="mname">${esc(i.model)}</div><div class="mcol">${esc([i.colour,i.desc].filter(Boolean).join(" · "))}</div></div>
     <div class="price">${N(i.price)} <span class="earn">you earn ${N(i.comm)}</span></div><p class="hint">Prices include shipping from Türkiye to Nigeria. Delivery from our pickup point in Abuja to your address is paid by you on delivery.</p>
     ${gone?`<div class="soldout">Sold out for now</div><button class="ntf" title="Ask Northline to tell you when it’s back">Customer wants it: tell me when it’s back</button>`:`<div class="picker">
@@ -989,12 +992,12 @@ earnBox();
 // which breaks the links saved in the catalogue
 function capPhotos(c){ const st=c&&c.styles; if(!st) return;
   const fresh14=new Date(Date.now()-14*864e5).toISOString().slice(0,10);
-  Object.entries(st).forEach(([ref,r])=>{ if(!r.on) STOCK[ref]=[]; else if(Array.isArray(r.stock)) STOCK[ref]=r.stock; if(r.back&&r.back>=fresh14) BACK[ref]=r.back; });
+  Object.entries(st).forEach(([ref,r])=>{ STOCK_CHECKED[ref]=r.checked_at||(!r.stale?c.checked:''); if(!r.on) STOCK[ref]=[]; else if(Array.isArray(r.stock)) STOCK[ref]=r.stock; if(r.back&&r.back>=fresh14) BACK[ref]=r.back; });
   ALL=ALL.map(i=>{ const r=st[i.ref], im=r&&r.img; if(!im||!im.length) return i; const at=w=>im[0].replace(/\?.*$/,"")+"?width="+w;
     return {...i, img:at(700), full:at(2000), imgs:im}; }); }
 // other brands' stock (tools/brands, weekly): same shape as capone.json, used for sizes, sold out and "Back in stock" only
 function brandStock(c){ const st=c&&c.styles; if(!st) return; const fresh14=new Date(Date.now()-14*864e5).toISOString().slice(0,10);
-  Object.entries(st).forEach(([ref,r])=>{ if(!r.on) STOCK[ref]=[]; else if(Array.isArray(r.stock)) STOCK[ref]=r.stock; if(r.back&&r.back>=fresh14) BACK[ref]=r.back; }); }
+  Object.entries(st).forEach(([ref,r])=>{ STOCK_CHECKED[ref]=r.checked_at||(!r.stale?c.checked:''); if(!r.on) STOCK[ref]=[]; else if(Array.isArray(r.stock)) STOCK[ref]=r.stock; if(r.back&&r.back>=fresh14) BACK[ref]=r.back; }); }
 Promise.all([fresh("products.json"), fresh("prices.json"), fresh("drop.json"), fresh("capone.json"), fresh("brands.json")]).then(([added,j,drop,cap,brs])=>{
   LOADED=true;
   const weekAgo=new Date(Date.now()-7*864e5).toISOString().slice(0,10);

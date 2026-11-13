@@ -17,6 +17,7 @@
     for(const ref of [...new Set(Array.isArray(pool?.refs)?pool.refs:[])].slice(0,30)){
       const i=items.find(i=>i.ref===ref); let reason='';
       if(!i) reason='not live or hidden';
+      else if(checks.stale?.(i)) reason='confirm availability';
       else if(checks.soldOut(i)) reason='sold out';
       else if(!checks.calm(i)) reason='no calm approved colour';
       else if(loud(i)||checks.loud(i)) reason='loud details';
