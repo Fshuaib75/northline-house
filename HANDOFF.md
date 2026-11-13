@@ -2,6 +2,11 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-11-14: Codex, PR #55 review fixes and #62/#63 merge
+Did: merged owner-approved #62 and #63 into main only. Reconciled #55 with the split catalogue loader, loaded both Orders helpers in the profit test, and added unknown-code regression coverage. Orders now maintains an explicit approved-code list in orders.json agents; old orders/payouts never establish membership. Unknown and marketing codes retain their sales source with zero commission. Past/manual imports and agent earnings use the same approved list. No roster was populated or live data changed.
+Validation: commission parser and known-agent control tests, importer and delivery/profit regressions. Fixed a Windows file-URL issue in the existing inbox CLI test harness so the full Node suite can run locally.
+Watch out: owner must enter approved codes in Orders before agents can earn; existing historical records are not rewritten. #55 remains for review. Product-page refresh remains disabled; main merges do not deploy gh-pages.
+
 ## 2026-11-14: Codex, catalogue loading and gated product-page refresh
 Did: PR #62 extracts the unchanged base catalogue into shop/catalogue.json, updates stock/photo/sourcing/orders readers for both formats, and fails closed on catalogue loading errors. PR #63 adds manifest-owned page synchronization and a refresh workflow gated by PRODUCT_PAGES_ENABLED (left unset/off). It rebuilds from current gh-pages data on updates, successful stock/photo jobs and hourly; retries rebuild on push conflict and explicitly request a Pages build.
 Validation: mobile document readiness median 7.591s to 3.840s, LCP 2.380s and CLS 0.021 in the new three-run lab sample. 390/1366 browser checks pass; unavailable/malformed catalogue blocks ordering and Retry recovers. Product generation/sync, legacy/external readers, photo guard, Featured, hero, SEO and motion tests pass.
