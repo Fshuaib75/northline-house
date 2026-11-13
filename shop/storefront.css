@@ -165,3 +165,10 @@ body{background:#fbf8f2}
 .meta{border-bottom:0;margin-bottom:8px}
 button:focus-visible,a:focus-visible,select:focus-visible{outline:2px solid #5e5e45;outline-offset:3px}
 @media(max-width:760px){.meta{gap:4px}.meta>span:first-child{font-size:12px}.mctl{width:100%;justify-content:space-between}.rail .chip{padding-inline:12px}.collection-links{margin-bottom:4px}}
+/* Reserve late-hydrating UI so catalogue loading does not move the page. */
+.hero-navigation[hidden]{display:flex!important;visibility:hidden}
+.tools .tabs{min-height:58px}
+.tools .rail{min-height:58px}
+#grid:empty{min-height:420px}
+#count{display:inline-block;min-height:20px}
+@media(max-width:760px){.tools .tabs{height:52px;min-height:52px}.tools .rail{height:58px;min-height:58px}}

@@ -2,6 +2,11 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-11-13: Codex, storefront performance and product SEO
+Did: PR #62 now reserves loading geometry and starts on the priority hero image with Play opt-in. PR #63 adds static product-page build, sitemap, accurate offer eligibility and read-only artifact workflow. No deployment.
+Validation: three controlled mobile runs: median LCP 8.700s to 1.908s, CLS 0.244 to 0.025. Lab only; catalogue parse/load remains slow. Details and raw results in tools/PERFORMANCE.md and tools/performance-results. Generated 923 pages from current gh-pages (559 recent-stock offers, 364 without offers). Product and motion tests pass; sample product page has no errors/overflow at 390/1366.
+Next: owner review; production product-page/data-refresh deployment must be wired before shipping generated pages. Run live Rich Results and Search Console checks after deployment.
+
 ## 2026-11-13: Codex, codex/storefront-refinement
 Did: product-led public storefront revision. Replaced clay campaign imagery with existing supplier photographs, reduced mobile hero, simplified category links and repeated copy, tightened card typography and kept contain photo sizing. Preserved carousel and catalogue controls.
 Validation: local 390px/1366px browser renders with real catalogue and supplier images, no page errors or horizontal overflow; Featured and hero suites pass. Preview screenshots in local outputs.
