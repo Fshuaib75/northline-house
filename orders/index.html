@@ -282,7 +282,7 @@ $("tokForget").onclick=()=>{ store.del("nl-orders-token"); TOKEN=""; $("tok").va
 async function catalogue(){
   const get=f=>fetch("../"+f+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.ok?r.json():null).catch(()=>null);
   const [p, prods]=await Promise.all([get("prices.json"), get("products.json")]); PRICES=(p&&p.prices)||{};
-  try{ const h=await fetch("../shop/",{cache:"no-store"}).then(r=>r.text()); const m=h.match(/let ALL = (\[.*?\]);\n/s); if(m) JSON.parse(m[1]).forEach(i=>CAT.set(i.ref,i)); }catch(e){}
+  try{ const base=await get("shop/catalogue.json"); if(Array.isArray(base))base.forEach(i=>CAT.set(i.ref,i)); else {const h=await fetch("../shop/",{cache:"no-store"}).then(r=>r.text()); const m=h.match(/let ALL = (\[.*?\]);\n/s); if(m) JSON.parse(m[1]).forEach(i=>CAT.set(i.ref,i));} }catch(e){}
   (prods||[]).forEach(i=>{ if(i&&i.ref&&!CAT.has(i.ref)) CAT.set(i.ref,i); });
   drawAll();
 }

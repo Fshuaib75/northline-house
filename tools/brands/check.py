@@ -64,7 +64,8 @@ def get(url, tries=3):
 
 def catalogue():
     html = open("shop/index.html", encoding="utf-8").read()
-    ALL = json.loads(re.search(r"let ALL = (\[.*?\]);\n", html, re.S).group(1))
+    embedded = re.search(r"let ALL = (\[.*?\]);\n", html, re.S)
+    ALL = json.loads(embedded.group(1)) if embedded else json.load(open("shop/catalogue.json", encoding="utf-8"))
     try: added = json.load(open("products.json"))
     except Exception: added = []
     known = {i["ref"] for i in ALL}
