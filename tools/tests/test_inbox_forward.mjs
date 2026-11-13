@@ -1,3 +1,4 @@
+import {fileURLToPath} from 'node:url';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -61,7 +62,7 @@ test('CLI against real git history: forwards only the new batch, and does nothin
   fs.writeFileSync(path.join(dir, 'inbox.json'), JSON.stringify(inbox(batch('old'), batch('new', 45))));
   git('commit', '-qam', 'two'); const after = git('rev-parse', 'HEAD');
   const live = path.join(dir, 'live.json'); fs.writeFileSync(live, JSON.stringify(inbox()));
-  const script = new URL('../inbox/forward.mjs', import.meta.url).pathname;
+  const script = fileURLToPath(new URL('../inbox/forward.mjs', import.meta.url));
   const out = execFileSync('node', [script, '--before', before, '--after', after, '--repo', dir, '--live', live], {encoding: 'utf8'});
   assert.match(out, /added=1 items=45 ids=new/);
   assert.deepEqual(JSON.parse(fs.readFileSync(live, 'utf8')).batches.map(b => b.id), ['new']);

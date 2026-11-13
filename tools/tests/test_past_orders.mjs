@@ -77,13 +77,14 @@ test('known agent code uses per-item commission, shown as editable and retained 
   rows[0].commission='1500';const rec=Past.resolve(rows,opts).orders[0];
   assert.equal(rec.agent,'AMINA-KD');assert.equal(rec.channel,'AMINA-KD');assert.equal(rec.items[0].comm,1500);assert.equal(rec.items[0].qty,2);assert.equal(rec.paid,'2026-09-14');
 });
-test('unknown channels require explicit classification; new valid agent codes can be confirmed',()=>{
+test('unknown codes remain zero-commission sources until approved in the agent list',()=>{
   const opts=options(),rows=Past.parse(line(undefined,'NEW-AGENT'),opts);
-  assert.equal(rows[0].channelType,'unknown');assert.equal(Past.resolve(rows,opts).orders.length,0);
-  rows[0].channelType='agent';rows[0].commission=2500;assert.equal(Past.resolve(rows,opts).orders[0].agent,'NEW-AGENT');
+  assert.equal(rows[0].channelType,'channel');assert.equal(Past.resolve(rows,opts).orders[0].items[0].comm,0);
+  rows[0].channelType='agent';rows[0].commission=2500;assert.equal(Past.resolve(rows,opts).orders[0].agent,'');
+  const approved={...opts,agents:[...opts.agents,'NEW-AGENT']};assert.equal(Past.resolve(rows,approved).orders[0].agent,'NEW-AGENT');
   rows[0].channelType='channel';assert.equal(Past.resolve(rows,opts).orders[0].items[0].comm,0);
   assert.equal(Past.resolve(rows,opts).orders[0].agent,'');
-  rows[0].channelType='agent';rows[0].channel='bad code';assert.equal(Past.resolve(rows,opts).orders.length,0);
+  rows[0].channelType='agent';rows[0].channel='bad code';assert.equal(Past.resolve(rows,opts).orders[0].items[0].comm,0);
 });
 test('missing agent rate requires explicit amount, including legacy styles; excessive or invalid commission blocks saving',()=>{
   const opts=options(),rows=Past.parse(line('OLD-1','AMINA-KD'),opts);

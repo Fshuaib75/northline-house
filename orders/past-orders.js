@@ -34,7 +34,7 @@
     const prefixed=channel.match(/^agent:\s*([a-z0-9_-]{1,24})$/i);
     const code=(prefixed?prefixed[1]:channel).toUpperCase();
     const known=new Set(agents.map(x=>key(typeof x==='string'?x:x&&x.agent)));
-    if(/^[A-Z0-9_-]{1,24}$/.test(code)&&(prefixed||known.has(key(code)))) return {channel:code,channelType:'agent',agent:code};
+    if(/^[A-Z0-9_-]{1,24}$/.test(code)&&known.has(key(code))) return {channel:code,channelType:'agent',agent:code};
     return {channel,channelType:'unknown',agent:''};
   }
   const nameKey=value=>key(value).replace(/\s*[·/]\s*/g,' ');
@@ -113,7 +113,7 @@
     else row.match='matched';
     const classified=classifyChannel(row.channel,options.agents||[]);
     if(!row.channel||row.channel.length>48) fail('Enter a channel or agent code (up to 48 characters).');
-    if(classified.channelType==='channel') Object.assign(row,classified);
+    if(classified.channelType!=='agent') Object.assign(row,{...classified,channelType:'channel',agent:''});
     else if(row.channelType==='agent'){
       const code=row.channel.replace(/^agent:\s*/i,'').toUpperCase();
       if(!/^[A-Z0-9_-]{1,24}$/.test(code)) fail('Agent codes use 1–24 letters, numbers, hyphens or underscores.');

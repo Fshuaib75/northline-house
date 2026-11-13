@@ -2,8 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
-const code = fs.readFileSync(new URL('../../shop/storefront.js', import.meta.url), 'utf8');
-function setup(reduce = false, random = 0) {
+const code = fs.readFileSync(new URL('../../shop/storefront.js', import.meta.url), 'utf8').split('// Public-shop discovery metadata.')[0];
+function setup(reduce = false, random = 0, playOn = true) {
   class Element {
     constructor() { this.attrs = {}; this.events = {}; this.classes = new Set(); this.classList = { add: (...c) => c.forEach(x => this.classes.add(x)), remove: (...c) => c.forEach(x => this.classes.delete(x)), toggle: (c, on) => on ? this.classes.add(c) : this.classes.delete(c) }; }
     setAttribute(k, v) { this.attrs[k] = v; }
@@ -23,6 +23,7 @@ function setup(reduce = false, random = 0) {
     Math:Object.assign(Object.create(Math),{random:()=>random}), Date:{now:()=>now},
     setTimeout:(fn, ms) => { jobs.set(++serial, fn); delays.set(serial, ms); return serial; }, clearTimeout:id => { jobs.delete(id); delays.delete(id); }});
   vm.runInContext(code, ctx);
+  if(playOn)play.events.click();
   const advance = () => { const [id, fn] = jobs.entries().next().value; jobs.delete(id); fn(); };
   const delay = () => [...delays.values()].at(-1);
   const tick = ms => { now += ms; };
@@ -34,9 +35,9 @@ test('autoplay advances one accessible slide and wraps', () => {
   assert.equal(r.slides.filter(s => s.attrs['aria-hidden']==='false').length,1);
   r.advance(); r.advance(); assert.equal(r.slides[0].inert,false);
 });
-test('random first slide each visit', () => {
+test('priority first slide is stable and starts paused', () => {
   assert.equal(setup(false, 0).slides[0].inert, false);
-  const r = setup(false, 0.7); assert.equal(r.slides[2].inert, false); assert.equal(r.slides[0].inert, true);
+  const r = setup(false, 0.7, false); assert.equal(r.slides[0].inert, false); assert.equal(r.jobs.size,0); assert.equal(r.play.textContent,'Play');
 });
 test('manual navigation holds the slide, then resumes; only Pause stops it', () => {
   const r = setup(); r.next.events.click();
