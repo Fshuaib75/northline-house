@@ -1,3 +1,4 @@
+import {pathToFileURL} from 'node:url';
 // Inbox safety net: when a sealed batch lands in inbox.json on `main` by mistake, copy it to the live inbox on
 // `gh-pages`, which is the only inbox the owner's book reads. Runs from .github/workflows/inbox-forward.yml.
 //
@@ -47,7 +48,7 @@ function cli(argv) {
   return result.added.length;
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   try { const n = cli(process.argv.slice(2)); if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, `added=${n}\n`); }
   catch (e) { console.error(e.message); process.exitCode = 1; }
 }

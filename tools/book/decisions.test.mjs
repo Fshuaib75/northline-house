@@ -24,15 +24,39 @@ export function setup(){
     INB:{items:[],batches:[{id:'batch'}]},byId:el,
     tl:r=>r.tl||0,kgOf:r=>r.kg||.5,mergeOver:()=>{},mergeHidden:()=>{},save:()=>{},render:()=>{},stats:()=>{},
     priceMap:()=>({}),errMsg:e=>e.message,fetch:async()=>({json:async()=>({build:'test-build'})}),
-    b64:s=>btoa(s),ghJson:async()=>({data:null}),ghPut:async(path)=>{writes.push(path);},
-    saveJson:async(path,fn,fallback)=>{writes.push(path);return fn(fallback);},
+    b64:s=>btoa(s),ghJson:async(path)=>({data:path==='prices.json'?structuredClone(c.published):null}),ghPut:async(path)=>{writes.push(path);},
+    saveJson:async(path,fn,fallback)=>{const value=fn(path==='prices.json'?structuredClone(c.published):fallback);writes.push(path);return value;},
     mergeAdded:()=>{},inboxReseal:async items=>({id:'resealed',items}),inboxLoad:()=>{}
   });
   vm.runInContext(section('const u8=','// ---------- added products ----------'),c);
+  vm.runInContext(section('function mergeSessionPrices(', 'function priceMap('),c);
   vm.runInContext(section('async function publishPrices(', '// ---------- review inbox ----------'),c);
   vm.runInContext(section('async function inboxApply(', '// unpin the top bar'),c);
   return {c,store,writes,notices,el,run:s=>vm.runInContext(s,c),rows:async()=>JSON.parse(JSON.stringify(await vm.runInContext('decisionRead("test")',c)))};
 }
+test('publish merges latest prices outside this session and keeps scheduled entries',async()=>{
+  const t=setup(),ref=t.c.DATA[0].ref;
+  t.c.published={prices:{[ref]:[30000,3000]},next:{[ref]:[31000,3000]},hidden:[]};
+  const latest=structuredClone(t.c.published);latest.prices.OTHER=[50000,5000];latest.next.OTHER=[55000,5000];
+  t.c.ghJson=async()=>({data:structuredClone(latest)});
+  t.c.priceMap=()=>({[ref]:[32000,3000]});
+  t.c.saveJson=async(path,fn)=>{const result=fn(structuredClone(latest));t.writes.push(path);return result;};
+  assert.equal(await t.c.publishPrices(),true,t.notices.join('; '));
+  assert.deepEqual(Array.from(t.c.published.prices.OTHER),[50000,5000]);
+  assert.deepEqual(Array.from(t.c.published.next.OTHER),[55000,5000]);
+  assert.deepEqual(Array.from(t.c.published.prices[ref]),[32000,3000]);
+});
+test('price conflict at preflight or write time stops publication and requests reload',async()=>{
+  for(const stage of ['preflight','write']){
+    const t=setup(),ref=t.c.DATA[0].ref;t.c.published={prices:{[ref]:[30000,3000]},hidden:[]};
+    const latest={prices:{[ref]:[45000,4000]},hidden:[]};
+    t.c.priceMap=()=>({[ref]:[32000,3000]});
+    if(stage==='preflight')t.c.ghJson=async()=>({data:latest});
+    else t.c.saveJson=async(path,fn)=>{const result=fn(latest);t.writes.push(path);return result;};
+    assert.equal(await t.c.publishPrices(),false);assert.deepEqual(t.writes,[]);
+    assert.ok(t.notices.some(n=>n.includes('Reload the book')));assert.equal(t.el('pubBtn').disabled,false);
+  }
+});
 test('book feature vectors match sourcing VERSION 1 across categories, parameters and price bands',()=>{
   const {c}=setup();
   for(const cat of ['shoes','bags','clothing','baby'])for(const cost of [50,950,3100,20000])for(const fam of ['Black','Pink & purple']){
@@ -80,7 +104,8 @@ test('dismiss commits only after cleanup; failed approve and storage failure do 
 });
 test('approve survives inbox cleanup failure; dismiss retries deduplicate and preserve provenance',async()=>{
   const t=setup();t.c.INB.items=[{...sample.inbox[0],on:true,source:'sourcing scan',decision_origin:'original',batch:'resealed'}];
-  t.c.saveJson=async(path,fn,fallback)=>{if(path==='inbox.json')throw Error('cleanup');return fn(fallback);};
+  const save=t.c.saveJson;
+  t.c.saveJson=async(path,fn,fallback)=>{if(path==='inbox.json')throw Error('cleanup');return save(path,fn,fallback);};
   await t.c.inboxApply('approve');
   const row=Object.values((await t.rows()).entries)[0];assert.equal(row.confirmed,true);assert.equal(row.row.source,'sourcing scan');
   const d=setup();d.c.INB.items=[{...sample.inbox[0],on:true,batch:'batch',source:'extension'}];
