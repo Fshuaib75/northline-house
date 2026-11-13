@@ -7,7 +7,9 @@
   "DF-D8939AXWT34": "2026-10-25"
  },
  "reported": {
-  "blank": [],
+  "blank": [
+   "SLZ-SA22SE020-230"
+  ],
   "unchecked": [
    "DF-D8939AXWT34"
   ]
