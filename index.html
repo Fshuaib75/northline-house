@@ -424,7 +424,14 @@ function nlClean(i){ const ok=u=>u&&!NL_BLOCK.has(nlKey(u)), imgs=(i.imgs||[]).f
 ALL=ALL.map(nlClean);
 /*/NL-PHOTO-RULES*/
 const band = n => n<=30000?"₦30k and under":n<=50000?"₦30k–50k":n<=80000?"₦50k–80k":"₦80k+";
-let ITEMS = ALL.filter(i=>i.price).map(i=>({...i, band:band(i.price)}));
+let ITEMS = [], PRICE_READY=false;
+function priceFailure(){
+  PRICE_READY=false; ITEMS=[];
+  const notice=document.createElement('div');notice.className='stale';notice.setAttribute('role','alert');
+  notice.append('Prices could not be loaded. Ordering is unavailable. ');
+  const retry=document.createElement('button');retry.textContent='Retry';retry.onclick=()=>location.reload();notice.append(retry);document.body.append(notice);
+  $('send').setAttribute('aria-disabled','true');$('send').removeAttribute('href');$('copyOrder').disabled=true;
+}
 const WA = "2348168230733";
 const SIZES = {W:["36","37","38","39","40","41"], M:["40","41","42","43","44","45"], B:["0-3m","3-6m","6-9m","9-12m","12-18m","18-24m","2-3y","3-4y"], BG:["One size"],AC:["One size"], CL:["S","M","L","XL"]};
 const sizesOf = i => (i.sizes&&i.sizes.length) ? i.sizes : SIZES[i.g]||["One size"];
@@ -460,7 +467,7 @@ const inView=i=>audOf(i)===S.g&&(!S.sec||secOf(i)===S.sec);
 let cart = [];
 const store = {get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}}, set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
 S.sort = ["rec","new","low","high","brand"].includes(store.get("nl-sort","rec")) ? store.get("nl-sort","rec") : "rec";
-cart = store.get("nl-cart",[]).filter(c=>ITEMS.some(i=>i.ref===c.ref));
+cart = store.get("nl-cart",[]);
 const $ = id=>document.getElementById(id);
 // visit counting (GoatCounter, no cookies): page views plus a few actions, so we learn what people look at and order
 const PAGE="agent";
@@ -773,13 +780,17 @@ function reconcileCart(saved,items,available){
  }return {rows,changes};
 }
 function validateCart(){
+ if(!PRICE_READY)return false;
  const result=reconcileCart(cart,ITEMS,(i,size)=>sizesOf(i).includes(size)&&inStock(i,size));
  cart=result.rows;store.set('nl-cart',cart);
- if(result.changes.length){alert('Your bag changed:\n'+result.changes.join('\n')+'\nPlease review before sending.');render();return false;}return true;
+ if(result.changes.length){drawSheet();alert('Your bag changed:\n'+result.changes.join('\n')+'\nPlease review before sending.');render();return false;}return true;
 }
 async function currentCart(){
+ if(!PRICE_READY)return false;
  const [p,b,c]=await Promise.all([fresh('prices.json'),fresh('brands.json'),fresh('capone.json')]);
  if(!p?.prices||!b||!c){alert('Could not check current prices and stock. Please retry.');return false;}
+ Object.keys(STOCK).forEach(ref=>delete STOCK[ref]);
+ if(typeof STOCK_CHECKED!=='undefined')Object.keys(STOCK_CHECKED).forEach(ref=>delete STOCK_CHECKED[ref]);
  brandStock(b);capPhotos(c);const prices=p.switchAt&&todayNG()>=p.switchAt?{...p.prices,...p.next}:p.prices;
  ITEMS=ITEMS.filter(i=>prices[i.ref]&&!(p.hidden||[]).includes(i.ref)).map(i=>({...i,price:prices[i.ref][0],comm:prices[i.ref][1]}));
  return validateCart();
@@ -988,8 +999,8 @@ function check(){
   const miss=[]; if(!$("agentCode").value.trim()) miss.push("your agent code (top of the page)"); if(!$("cName").value.trim()) miss.push("customer name"); if(!$("cPhone").value.trim()) miss.push("customer phone"); if(!$("cAddr").value.trim()) miss.push("delivery address");
   $("err").hidden=!miss.length; $("err").textContent=miss.length?"Add "+miss.join(", ")+".":""; return !miss.length;
 }
-$("send").addEventListener("click",async e=>{ e.preventDefault(); if(!await currentCart()||!cart.length||!check()){ e.preventDefault(); return; } location.href="https://wa.me/"+WA+"?text="+encodeURIComponent(orderText()); track("order/sent", cart.reduce((s,c)=>s+c.qty,0)+" items"); });
-$("copyOrder").onclick=async()=>{ if(!await currentCart()||!cart.length) return; copy(orderText(), $("orderText")); };
+$("send").addEventListener("click",async e=>{ e.preventDefault(); if(!PRICE_READY||!await currentCart()||!cart.length||!check()){ e.preventDefault(); return; } location.href="https://wa.me/"+WA+"?text="+encodeURIComponent(orderText()); track("order/sent", cart.reduce((s,c)=>s+c.qty,0)+" items"); });
+$("copyOrder").onclick=async()=>{ if(!PRICE_READY||!await currentCart()||!cart.length) return; copy(orderText(), $("orderText")); };
 brandParam(); syncControls(); render();
 let LOAD_VIEW=view(); try{ history.replaceState({v:view()},"",here()); }catch(e){}
 const BUILD="20261003072126";
@@ -1025,7 +1036,8 @@ Promise.all([fresh("products.json"), fresh("prices.json"), fresh("drop.json"), f
     ALL = ALL.concat(added.filter(a=>a&&a.ref&&!known.has(a.ref)).map(a=>({...a, desc:a.desc||"", colour:a.colour||"", fam:a.fam||"", heel:a.heel||"", full:a.img})));
   }
   capPhotos(cap); ALL=ALL.map(listingQuality).map(nlClean); brandStock(brs);
-  if(!j||!j.prices) { if(added&&added.length){ ITEMS = ALL.filter(i=>i.price).map(i=>({...i, band:band(i.price)})); tabs(); chips(); render(); } return; }
+  if(!j||!j.prices) {priceFailure();return;}
+  PRICE_READY=true;
   SWITCH=j.switchAt||"";
   const P = (commText() && j.next) ? Object.assign({}, j.prices, j.next) : j.prices;
   ITEMS = ALL.filter(i=>P[i.ref]).map(i=>({...i, price:P[i.ref][0], comm:P[i.ref][1], band:band(P[i.ref][0])}));

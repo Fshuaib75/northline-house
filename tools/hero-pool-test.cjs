@@ -14,7 +14,7 @@ for(const term of ['croc','croco','crocodile','snake','python','leopard','zebra'
 assert(select(result.accepted,picked.map(i=>i.ref)).every(i=>!picked.some(p=>p.ref===i.ref)));
 assert.equal(select(items.slice(0,2)).length,0);assert.equal(eligible(null,items,checks).accepted.length,0);
 assert.equal(select([item('a'),item('b'),item('c')]).length,3);assert.equal(select([item('a','M','same'),item('b','M','same'),item('c','M','same')]).length,0);
-for(const [change,reason] of [[{out:true},'sold out'],[{bright:true},'no calm approved colour'],[{loud:true},'loud details'],[{price:61000},'outside N18–60k'],[{blocked:true},'no full-product photo']]){const x={...item('x'),...change};assert.equal(eligible({refs:['x']},[x],checks).rejected[0].reason,reason);}
+for(const [change,reason] of [[{out:true},'sold out'],[{bright:true},'no calm approved colour'],[{loud:true},'loud details'],[{price:17999},'below N18k'],[{blocked:true},'no full-product photo']]){const x={...item('x'),...change};assert.equal(eligible({refs:['x']},[x],checks).rejected[0].reason,reason);}
 assert.equal(eligible({refs:['hidden']},[],checks).rejected[0].reason,'not live or hidden');
 assert.equal(eligible({refs:['men','men']},items,checks).accepted.length,1);
 assert.equal(eligible({refs:['a','b']},[{...item('a'),grp:'same'},{...item('b'),grp:'same'}],checks).accepted.length,1);
@@ -37,3 +37,6 @@ const pixels=new Uint8ClampedArray(20*20*4);for(let n=0;n<pixels.length;n+=4)pix
 assert.equal(inspect(pixels,20,20).full,false);for(let y=5;y<15;y++)for(let x=5;x<15;x++)pixels.set([30,30,30,255],(y*20+x)*4);
 assert.deepEqual(inspect(pixels,20,20),{colour:'rgb(200, 195, 190)',full:true});
 for(let x=0;x<8;x++)pixels.set([30,30,30,255],(10*20+x)*4);assert.equal(inspect(pixels,20,20).full,false);
+
+assert.equal(eligible({refs:['premium']},[{...item('premium'),price:250000}],checks).accepted.length,1);
+assert.match(fs.readFileSync(require('node:path').join(__dirname,'../shop/hero-pool.js'),'utf8'),/&w=96&/);

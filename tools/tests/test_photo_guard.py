@@ -1,5 +1,5 @@
 """Photo guard decisions (tools/photos/guard.py): block, hide, and send to the review inbox."""
-import os, sys, unittest
+import os, sys, unittest, tempfile, json
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "photos"))
 import guard as G
 
@@ -10,6 +10,19 @@ GIRL = {"ref": "G1", "g": "B", "for": "Girl", "img": "https://x/g.jpg"}
 
 
 class Guard(unittest.TestCase):
+    def test_external_catalogue_matches_embedded(self):
+        with tempfile.TemporaryDirectory() as root:
+            os.mkdir(os.path.join(root, 'shop'))
+            def write(name, value):
+                with open(os.path.join(root, name), 'w', encoding='utf-8') as f:
+                    f.write(value)
+            write('shop/index.html', 'let ALL = ' + json.dumps([W]) + ';\n')
+            write('prices.json', json.dumps({'prices': {'W1': [30000, 4000]}}))
+            before = G.store(root)
+            write('shop/index.html', 'let ALL=[];\n')
+            write('shop/catalogue.json', json.dumps([W]))
+            self.assertEqual(G.store(root), before)
+
     def test_plan_scores_only_new_photos(self):
         todo = G.plan([OK], {"a.jpg": 0.0})
         self.assertEqual(todo[0]["imgs"], ["https://x/b.jpg"])

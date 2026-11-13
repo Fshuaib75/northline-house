@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import vm from 'node:vm';
 import {builtBook} from '../book/test-build.mjs';
 import {normalize} from '../sourcing/engine.mjs';
-const read=p=>fs.readFileSync(new URL('../../'+p,import.meta.url),'utf8');
+const read=p=>fs.readFileSync(new URL('../../'+p,import.meta.url),'utf8').replace(/\r\n/g,'\n');
 const shop=read('shop/index.html'),agent=read('index.html'),book=read('tools/book/book.template.html');
 const section=(s,start,end)=>s.slice(s.indexOf(start),s.indexOf(end,s.indexOf(start)));
 test('delivery wording exists at price, bag and Ordering; origin line stays factual',()=>{

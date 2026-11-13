@@ -13,6 +13,13 @@ HTML = "<script>\nlet ALL = [{\"ref\":\"A\"}];\nlet X=1;\nfunction f(){ capPhoto
 
 
 class NoPeople(unittest.TestCase):
+    def test_split_catalogue_injection(self):
+        N.RULES = N.build(REPORT)
+        html = HTML.replace('let ALL = [{"ref":"A"}];', 'let ALL=[];')
+        once = N.inject(html)
+        self.assertIn('capPhotos(cap); ALL=ALL.map(nlClean);', once)
+        self.assertEqual(N.inject(once), once)
+
     def test_key_ignores_size_query_and_host(self):
         self.assertEqual(N.key("https://n11.test/a1/400_570/1/IMG-9.jpg?x=1"), "IMG-9.jpg")
         self.assertEqual(N.key("https://cdn.test/files/IMG-9.jpg"), "IMG-9.jpg")
