@@ -691,6 +691,9 @@ const oneSize = i => { const z=sizesOf(i); return z.length===1 && z[0]==="One si
 // sizes in stock at Capone (same weekly check): a size Capone has sold out can't be ordered; no data = assume available
 const STOCK={};
 const inStock=(i,s)=>{ const z=STOCK[i.ref]; return !z||(oneSize(i)?z.length>0:z.includes(s)); };
+function stockExpired(checked,now=Date.now()){const stamp=Date.parse(checked);return !Number.isFinite(stamp)||now-stamp>=14*864e5;}
+const STOCK_CHECKED={};
+const needsConfirmation=i=>Object.prototype.hasOwnProperty.call(STOCK_CHECKED,i.ref)&&stockExpired(STOCK_CHECKED[i.ref]);
 const soldOut=i=>!!STOCK[i.ref]&&!sizesOf(i).some(s=>inStock(i,s));
 // Capone stock badges: back in stock (weekly check, for 14 days) and every size in stock
 const BACK={};
@@ -942,7 +945,7 @@ function dotsHtml(items, max){ const fams=[]; items.forEach(i=>{ const f=FAM_HEX
   return `<span class="dots">${fams.slice(0,max).map(f=>`<i class="dot" style="background:${FAM_HEX[f]}"></i>`).join("")}</span>`; }
 function cardHtml(c){
   const i=c.rep, n=c.g.items.length, alt=(i.imgs||[]).find(u=>u&&u!==i.img&&u!==i.full&&u!==(i.imgs||[])[0]) || ((i.imgs||[]).length>1?i.imgs[1]:"");
-  const tag=c.out?`<span class="tag out">Sold out</span>`:inDrop(i)?`<span class="tag pick">This week</span>`:isBack(i)?`<span class="tag back">Back in stock</span>`:isFresh(i)?`<span class="tag">New</span>`:"";
+  const tag=needsConfirmation(i)?`<span class="tag">Confirm availability</span>`:c.out?`<span class="tag out">Sold out</span>`:inDrop(i)?`<span class="tag pick">This week</span>`:isBack(i)?`<span class="tag back">Back in stock</span>`:isFresh(i)?`<span class="tag">New</span>`:"";
   const main=imgTag(photoChain(i.img, i.imgs||[], i.full), `class="main" loading="lazy" alt="${esc(i.model+" "+(i.colour||""))}"`, "card");
   const ph=main?main+(alt?`<img class="alt" alt="" data-lazy="1" data-alts="${esc(JSON.stringify(photoChain(alt)))}" data-gone="alt" referrerpolicy="no-referrer" onload="imgOk(this)" onerror="imgNext(this)">`:""):"";
   return `<article class="card${c.out?" out":""}" data-ref="${esc(i.ref)}" tabindex="0" role="link" aria-label="${esc(i.brand+" "+i.model+", "+(i.colour||"")+", "+N(i.price))}">
@@ -1158,7 +1161,7 @@ function drawPD(newGallery){
   $("pdColour").textContent=i.colour||""; $("pdColours").hidden=PD.items.length<2&&!i.colour;
   $("pdSw").innerHTML=PD.items.length>1?PD.items.map(x=>`<button class="sw" data-ref="${esc(x.ref)}" aria-pressed="${x===i}" aria-label="${esc(x.colour||x.ref)}" title="${esc(x.colour||"")}">${x.img?imgTag(photoChain(x.img, x.imgs||[], x.full), 'alt="" loading="lazy"'):""}</button>`).join(""):"";
   if(PD.size&&(!sz.includes(PD.size)||!inStock(i,PD.size))) PD.size=null; if(one) PD.size="One size";
-  const gone=soldOut(i); $("pdAdd").disabled=gone; $("pdAdd").textContent=gone?"Sold out":"Add to bag";
+  const gone=soldOut(i); $("pdAdd").disabled=gone; $("pdAdd").textContent=gone?"Sold out":needsConfirmation(i)?"Confirm availability":"Add to bag";
   $("pdSizes").hidden=one; $("pdSG").hidden=i.g==="BG"||i.g==="CL"||i.g==="AC";
   $("pdSz").innerHTML=one?"":sz.map(s=>inStock(i,s)?`<button class="sz" data-s="${esc(s)}" aria-pressed="${PD.size===s}">${esc(s)}</button>`:`<button class="sz" disabled aria-label="${esc(s)}, sold out" title="Sold out">${esc(s)}</button>`).join("");
   $("pdFew").hidden=!fewSizes(i); $("qN").textContent=PD.qty; $("pdErr").hidden=true;
@@ -1322,12 +1325,12 @@ fresh("build.json").then(j=>{ if(j&&j.build&&j.build!==BUILD) $("stale").hidden=
 // which breaks the links saved in the catalogue
 function capPhotos(c){ const st=c&&c.styles; if(!st) return;
   const fresh14=new Date(Date.now()-14*864e5).toISOString().slice(0,10);
-  Object.entries(st).forEach(([ref,r])=>{ if(!r.on) STOCK[ref]=[]; else if(Array.isArray(r.stock)) STOCK[ref]=r.stock; if(r.back&&r.back>=fresh14) BACK[ref]=r.back; });
+  Object.entries(st).forEach(([ref,r])=>{ STOCK_CHECKED[ref]=r.stale?'':(r.checked_at||c.checked||''); if(!r.on) STOCK[ref]=[]; else if(Array.isArray(r.stock)) STOCK[ref]=r.stock; if(r.back&&r.back>=fresh14) BACK[ref]=r.back; });
   ALL=ALL.map(i=>{ const r=st[i.ref], im=r&&r.img; if(!im||!im.length) return i; const at=w=>im[0].replace(/\?.*$/,"")+"?width="+w;
     return {...i, img:at(700), full:at(2000), imgs:im}; }); }
 // other brands' stock (tools/brands, weekly): same shape as capone.json, used for sizes, sold out and "Back in stock" only
 function brandStock(c){ const st=c&&c.styles; if(!st) return; const fresh14=new Date(Date.now()-14*864e5).toISOString().slice(0,10);
-  Object.entries(st).forEach(([ref,r])=>{ if(!r.on) STOCK[ref]=[]; else if(Array.isArray(r.stock)) STOCK[ref]=r.stock; if(r.back&&r.back>=fresh14) BACK[ref]=r.back; }); }
+  Object.entries(st).forEach(([ref,r])=>{ STOCK_CHECKED[ref]=r.stale?'':(r.checked_at||c.checked||''); if(!r.on) STOCK[ref]=[]; else if(Array.isArray(r.stock)) STOCK[ref]=r.stock; if(r.back&&r.back>=fresh14) BACK[ref]=r.back; }); }
 Promise.all([catalogueReady,fresh("products.json"), fresh("prices.json"), fresh("drop.json"), fresh("capone.json"), fresh("brands.json"), fresh("reviews.json")]).then(([base,added,j,drop,cap,brs,rev])=>{ if(!Array.isArray(base)){priceFailure();return;} ALL=base; REV=normRev(rev); drawFb();
   const weekAgo=new Date(Date.now()-7*864e5).toISOString().slice(0,10);
   if(drop&&Array.isArray(drop.refs)&&drop.refs.length&&activeDrop(drop)) DROP={label:"This week",refs:drop.refs};
@@ -1348,7 +1351,7 @@ Promise.all([catalogueReady,fresh("products.json"), fresh("prices.json"), fresh(
   LOADED=true; buildGroups();
   // Only authoritative priced/live catalogue entries can enter the approved hero pool.
   if(j&&j.prices) heroPool.then(pool=>NLHero.start(pool,ITEMS,{
-    soldOut,calm:calmColour,loud:i=>loudStyle(i)||/logo|monogram|metallic|croco|print|gold|silver/i.test([i.model,i.colour,i.desc].join(' ')),
+    soldOut,stale:needsConfirmation,calm:calmColour,loud:i=>loudStyle(i)||/logo|monogram|metallic|croco|print|gold|silver/i.test([i.model,i.colour,i.desc].join(' ')),
     category:i=>['Bags','Accessories'].includes(secOf(i))?'A':secOf(i)==='Shoes'?audOf(i):'',
     agent:()=>new URLSearchParams(location.search).get('a')||'',
     // Match the card's lead exactly; never substitute a gallery detail or NL_RULES.best.

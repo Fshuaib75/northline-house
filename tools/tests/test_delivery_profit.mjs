@@ -71,7 +71,9 @@ test('Derimod listing cleanup is identical across pages and source generator; ma
   assert.match(shop,/trim\(\)\.replace\(\/\[\.\!\?\]\+\$\//);
 });
 test('customer message parses into Orders with attribution and a commission check',()=>{
-  const html=read('orders/index.html'),ctx=vm.createContext({PRICES:{'DRM-1':[40000,4000]},CAT:new Map(),N:n=>'₦'+n,today:()=> '2026-10-31'});
+  const html=read('orders/index.html'),ctx=vm.createContext({DATA:{agents:['AMINA']},PRICES:{'DRM-1':[40000,4000]},CAT:new Map(),N:n=>'₦'+n,today:()=> '2026-10-31'});
+  vm.runInContext(read('orders/past-orders.js'),ctx);
+  vm.runInContext(read('orders/past-orders-ui.js'),ctx);
   vm.runInContext(section(html,'const money=','$("parseBtn")'),ctx);
   const parsed=ctx.parseOrders(message(shop))[0];
   assert.equal(parsed.agent,'AMINA');assert.equal(parsed.items[0].comm,4000);
