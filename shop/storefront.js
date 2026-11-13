@@ -101,3 +101,24 @@
     });
   }
 })();
+
+// Public-shop discovery metadata. Tracking codes never become canonical URLs.
+(() => {
+  const canonical = new URL(location.href);
+  canonical.protocol = 'https:'; canonical.host = 'northlinehouse.shop'; canonical.hash = '';
+  canonical.searchParams.delete('a');
+  const link = document.createElement('link'); link.rel = 'canonical'; link.href = canonical.href;
+  document.head.append(link);
+  if (canonical.searchParams.get('q')) {
+    const robots = document.createElement('meta'); robots.name = 'robots'; robots.content = 'noindex,follow'; document.head.append(robots);
+  }
+  const graph = document.createElement('script'); graph.type = 'application/ld+json';
+  graph.textContent = JSON.stringify({'@context':'https://schema.org','@graph':[
+    {'@type':'Organization','@id':'https://northlinehouse.shop/#organization',name:'Northline House',url:'https://northlinehouse.shop/shop/',logo:'https://northlinehouse.shop/brand/northline-wordmark-ink.svg'},
+    {'@type':'WebSite','@id':'https://northlinehouse.shop/#website',name:'Northline House',url:'https://northlinehouse.shop/shop/',publisher:{'@id':'https://northlinehouse.shop/#organization'}}
+  ]}); document.head.append(graph);
+  const count = document.getElementById('count');
+  if(count){count.setAttribute('role','status');count.setAttribute('aria-live','polite');count.setAttribute('aria-atomic','true');}
+  const sort = document.getElementById('sort');
+  if(sort){sort.setAttribute('aria-label','Sort products');const featured=sort.querySelector('option[value="rec"]');if(featured)featured.textContent='Featured';}
+})();
