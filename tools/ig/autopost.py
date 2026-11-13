@@ -484,7 +484,7 @@ def publish_step():
     slides = load(os.path.join(OUT, base + "-slides.json"), [])
     if len(slides) != len(style_colours(i)):
         raise RuntimeError("Colour slides changed; regenerate before posting")
-    checkpoints = state.setdefault("checkpoints", {}).setdefault(base, {})
+    checkpoints = state.setdefault("checkpoints", {}).setdefault(ref, {})
     def persist():
         import subprocess
         json.dump(state, open(STATE, "w"), indent=1)
@@ -496,6 +496,7 @@ def publish_step():
     print("published", res)
     day = lagos_today().isoformat()
     record_post(state, i, day)
+    state.get("checkpoints", {}).pop(ref, None)
     state.setdefault("log", []).append({"day": day, "ref": ref, **res}); state["log"] = state["log"][-200:]
     json.dump(state, open(STATE, "w"), indent=1)
 
