@@ -675,7 +675,14 @@ ALL=ALL.map(nlClean);
 /*/NL-PHOTO-RULES*/
 const band = n => n<=30000?"₦30k and under":n<=50000?"₦30k–50k":n<=80000?"₦50k–80k":"₦80k+";
 const BANDS = ["₦30k and under","₦30k–50k","₦50k–80k","₦80k+"];
-let ITEMS = ALL.filter(i=>i.price).map(i=>({...i, band:band(i.price)}));
+let ITEMS = [], PRICE_READY=false;
+function priceFailure(){
+  PRICE_READY=false; ITEMS=[];
+  const notice=document.createElement('div');notice.className='stale';notice.setAttribute('role','alert');
+  notice.append('Prices could not be loaded. Ordering is unavailable. ');
+  const retry=document.createElement('button');retry.textContent='Retry';retry.onclick=()=>location.reload();notice.append(retry);document.body.append(notice);
+  $('send').setAttribute('aria-disabled','true');$('send').removeAttribute('href');$('copyOrder').disabled=true;
+}
 const WA = "2348168230733";
 const SIZES = {W:["36","37","38","39","40","41"], M:["40","41","42","43","44","45"], B:["0-3m","3-6m","6-9m","9-12m","12-18m","18-24m","2-3y","3-4y"], BG:["One size"],AC:["One size"], CL:["S","M","L","XL"]};
 const sizesOf = i => (i.sizes&&i.sizes.length) ? i.sizes : SIZES[i.g]||["One size"];
@@ -806,7 +813,7 @@ const SIZE_ORDER=[].concat(SIZES.W,SIZES.M,SIZES.B,SIZES.CL);
 const sizeSort=(a,b)=>{ const num=/^\d+(\.\d+)?$/; if(num.test(a)&&num.test(b)) return parseFloat(a)-parseFloat(b); return (SIZE_ORDER.indexOf(a)+1||99)-(SIZE_ORDER.indexOf(b)+1||99)||String(a).localeCompare(String(b)); };
 S.g = ["M","W","K"].includes(store.get("nl-aud","M")) ? store.get("nl-aud","M") : "M";
 S.sort = ["rec","new","low","high","brand"].includes(store.get("nl-sort","rec")) ? store.get("nl-sort","rec") : "rec";
-let cart = store.get("nl-shop-cart",[]).filter(c=>ITEMS.some(i=>i.ref===c.ref));
+let cart = store.get("nl-shop-cart",[]);
 
 function typeOk(i){
   if(!S.type) return true;
@@ -1213,8 +1220,8 @@ function check(){
   const miss=[]; if(!$("cName").value.trim()) miss.push("your name"); if(!$("cPhone").value.trim()) miss.push("your phone number"); if(!$("cAddr").value.trim()) miss.push("delivery address");
   $("err").hidden=!miss.length; $("err").textContent=miss.length?"Add "+miss.join(", ")+".":""; return !miss.length;
 }
-$("send").addEventListener("click",e=>{ if(!cart.length||!check()){ e.preventDefault(); return; } e.currentTarget.href="https://wa.me/"+WA+"?text="+encodeURIComponent(orderText()); track("order/sent", cart.reduce((s,c)=>s+c.qty,0)+" items"); });
-$("copyOrder").onclick=()=>{ if(!cart.length) return; copy(orderText(), $("orderText")); };
+$("send").addEventListener("click",e=>{ if(!PRICE_READY||!cart.length||!check()){ e.preventDefault(); return; } e.currentTarget.href="https://wa.me/"+WA+"?text="+encodeURIComponent(orderText()); track("order/sent", cart.reduce((s,c)=>s+c.qty,0)+" items"); });
+$("copyOrder").onclick=()=>{ if(!PRICE_READY||!cart.length) return; copy(orderText(), $("orderText")); };
 
 // who referred this customer: ?a=CODE in the link, remembered for 60 days on this phone
 const REF = (()=>{ const q=new URLSearchParams(location.search), a=(q.get("a")||"").replace(/[^A-Za-z0-9_-]/g,"").slice(0,24);
@@ -1310,7 +1317,8 @@ Promise.all([fresh("products.json"), fresh("prices.json"), fresh("drop.json"), f
     const P = (commText() && j.next) ? Object.assign({}, j.prices, j.next) : j.prices;
     ITEMS = ALL.filter(i=>P[i.ref]).map(i=>({...i, price:P[i.ref][0], comm:P[i.ref][1], band:band(P[i.ref][0])}));
     dropDead();
-  } else ITEMS = ALL.filter(i=>i.price).map(i=>({...i, band:band(i.price)}));
+  } else {priceFailure();return;}
+  PRICE_READY=true;
   cart = store.get("nl-shop-cart",[]).filter(c=>ITEMS.some(i=>i.ref===c.ref)).map(c=>{ const i=ITEMS.find(x=>x.ref===c.ref); return {...c, model:i.model, colour:i.colour, price:i.price, comm:i.comm, g:i.g}; }); store.set("nl-shop-cart",cart);
   LOADED=true; buildGroups();
   // Only authoritative priced/live catalogue entries can enter the approved hero pool.
