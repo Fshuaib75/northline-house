@@ -1,0 +1,29 @@
+{
+  "environment": "Local uncompressed server, Edge headless, 390x844, 4x CPU, 1.6Mbps, 150ms latency; lab only, cross-origin bytes may be unavailable",
+  "runs": [
+    {
+      "lcp": 2380,
+      "cls": 0.02111254295590629,
+      "longTasks": 963,
+      "dom": 3840.399999976158,
+      "requests": 18,
+      "bytes": 1675233
+    },
+    {
+      "lcp": 2780,
+      "cls": 0.0225907131538941,
+      "longTasks": 1107,
+      "dom": 3813.600000023842,
+      "requests": 18,
+      "bytes": 1675233
+    },
+    {
+      "lcp": 2264,
+      "cls": 0.02111254295590629,
+      "longTasks": 1280,
+      "dom": 3902,
+      "requests": 18,
+      "bytes": 1675233
+    }
+  ]
+}

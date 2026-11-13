@@ -2,6 +2,12 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-11-14: Codex, catalogue loading and gated product-page refresh
+Did: PR #62 extracts the unchanged base catalogue into shop/catalogue.json, updates stock/photo/sourcing/orders readers for both formats, and fails closed on catalogue loading errors. PR #63 adds manifest-owned page synchronization and a refresh workflow gated by PRODUCT_PAGES_ENABLED (left unset/off). It rebuilds from current gh-pages data on updates, successful stock/photo jobs and hourly; retries rebuild on push conflict and explicitly request a Pages build.
+Validation: mobile document readiness median 7.591s to 3.840s, LCP 2.380s and CLS 0.021 in the new three-run lab sample. 390/1366 browser checks pass; unavailable/malformed catalogue blocks ordering and Retry recovers. Product generation/sync, legacy/external readers, photo guard, Featured, hero, SEO and motion tests pass.
+Next: owner review of #62/#63. Merge code before enabling PRODUCT_PAGES_ENABLED with deployment approval; validate deployed structured data afterward.
+Watch out: no live writes or refresh runs performed. Deploy shop/catalogue.json with the shop code, extracting the current live base catalogue so newer live data is preserved. Root agent catalogue remains embedded. Earlier unresolved system-fix PRs remain separate.
+
 ## 2026-11-13: Codex, storefront performance and product SEO
 Did: PR #62 now reserves loading geometry and starts on the priority hero image with Play opt-in. PR #63 adds static product-page build, sitemap, accurate offer eligibility and read-only artifact workflow. No deployment.
 Validation: three controlled mobile runs: median LCP 8.700s to 1.908s, CLS 0.244 to 0.025. Lab only; catalogue parse/load remains slow. Details and raw results in tools/PERFORMANCE.md and tools/performance-results. Generated 923 pages from current gh-pages (559 recent-stock offers, 364 without offers). Product and motion tests pass; sample product page has no errors/overflow at 390/1366.

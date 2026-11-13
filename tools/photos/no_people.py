@@ -57,7 +57,7 @@ def inject(html):
     block = snippet(RULES)
     if START in html:
         return re.sub(re.escape(START) + ".*?" + re.escape(END), lambda m: block, html, flags=re.S)
-    m = re.search(r"let ALL = \[.*?\];\n", html, re.S)
+    m = re.search(r"let ALL\s*=\s*\[.*?\];\r?\n", html, re.S)
     if not m:
         raise SystemExit("catalogue not found")
     out = html[:m.end()] + block + "\n" + html[m.end():]

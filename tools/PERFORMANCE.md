@@ -17,9 +17,15 @@ Reserve carousel controls, type filters and initial catalogue space before JavaS
 
 The baseline automatically advanced slides after the initial paint. The after version avoids that unsolicited transition. This is a user-visible behaviour change, not a guarantee that every customer will see the same loading time.
 
+## Separate catalogue follow-up — 14 November 2026
+
+The base catalogue now loads from `shop/catalogue.json` with cache revalidation. The shop document drops from roughly 910 KB to 139 KB before compression. The same three-run mobile experiment gives median DOMContentLoaded 3.840 s (previously 7.591 s), LCP 2.380 s and CLS 0.021. LCP varied upwards relative to the prior 1.908 s sample; this is not an across-the-board speed claim. Raw runs are in `performance-results/mobile-split.json`.
+
+The catalogue payload still downloads on a cold visit. This change separates parsing and allows independent caching; it does not eliminate catalogue bytes. Catalogue-ready time and field interaction latency have not been measured. Failure or malformed catalogue responses disable ordering and show Retry; both paths recover after successful reload in browser checks. 390px and 1366px checks show no errors or overflow.
+
 ## Remaining bottleneck
 
-The catalogue is still embedded in roughly 900 KB of HTML before compression, and the page separately loads public catalogue/stock data. Filtering and normalization produce long main-thread tasks. A future data-loading refactor should remove duplicated embedded payload and avoid repeated full-list work, with a measured production compression/cache audit. The current change does not claim to solve all loading or interaction performance.
+The page still loads the full catalogue and stock data. Filtering and normalization produce long main-thread tasks. Further work should avoid repeated full-list work and measure production compression/cache behaviour. The current change does not claim to solve all loading or interaction performance.
 
 ## Reproduce
 
