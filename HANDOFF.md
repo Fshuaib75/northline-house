@@ -2,6 +2,11 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-11-13: Codex, codex/storefront-refinement
+Did: product-led public storefront revision. Replaced clay campaign imagery with existing supplier photographs, reduced mobile hero, simplified category links and repeated copy, tightened card typography and kept contain photo sizing. Preserved carousel and catalogue controls.
+Validation: local 390px/1366px browser renders with real catalogue and supplier images, no page errors or horizontal overflow; Featured and hero suites pass. Preview screenshots in local outputs.
+Next: owner visual review; no deployment or live data writes.
+
 ## 2026-11-13: Claude, claude/handoff-1113 — review-fix PRs #54–#60 tested
 
 Did: ran Node, Python, Featured and hero suites on every branch, combined them on main, and browser-tested the result on live gh-pages data at 390px and 1366px (normal load and prices.json returning 503). Owner said merge. Squash-merged #54 (0b4313d), #59 (d358662), #56 (80e0e4a). Live as gh-pages 4af32b4: only the #54/#59 diff to `index.html`, `shop/index.html`, `shop/hero-pool.js`. Checked on that build: 982 items, Featured order unchanged, no errors or overflow; with prices.json failing, 0 items, ordering blocked, Retry shown. Hero pool: 16 of 20 owner refs now qualify (women's Aldo and Capone included).
