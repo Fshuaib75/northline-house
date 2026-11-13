@@ -18,9 +18,9 @@
   const play = hero.querySelector('.hero-play');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   // Keeps rotating on phones: a tap, swipe or dot only holds the slide for a while (HOLD), then rotation resumes.
-  // Only the Pause button stops it for good. With Reduce Motion the slides still change, just without animation.
+  // Start still. Play opts into automatic rotation; navigation remains available immediately.
   const EVERY = 6500, EVERY_REDUCED = 9000, HOLD = 12000;
-  let current = 0, timer, paused = false, holdUntil = 0, hovered = false, visible = true, pointer;
+  let current = 0, timer, paused = true, holdUntil = 0, hovered = false, visible = true, pointer;
   function schedule() {
     clearTimeout(timer);
     play.textContent = paused ? 'Play' : 'Pause';
@@ -49,7 +49,7 @@
   }
   slides.forEach(slide => { slide.hidden = false; });
   hero.classList.add('hero-ready');
-  // Approved product edits always open on the men's slot; fixed fallback keeps its random start.
+  // Approved product edits always open on the men's slot; fixed fallback retains its priority image.
   hero.addEventListener('hero-pool-ready', () => show(0));
   hero.querySelector('.hero-navigation').hidden = false;
   dots.forEach((dot, i) => dot.addEventListener('click', () => show(i, true)));
@@ -82,8 +82,8 @@
   if ('IntersectionObserver' in window) {
     new IntersectionObserver(entries => { visible = entries[0].isIntersecting; schedule(); }, { threshold: .15 }).observe(hero);
   }
-  // Start on a random slide each visit so returning customers see something different first.
-  show(Math.floor(Math.random() * slides.length));
+  // Keep the priority image visible at startup; approved product-pool selection remains random.
+  show(0);
 
   // Reveal only below-the-fold editorial sections; catalogue items remain immediate.
   if ('IntersectionObserver' in window && !reduced.matches) {
@@ -100,4 +100,25 @@
       }
     });
   }
+})();
+
+// Public-shop discovery metadata. Tracking codes never become canonical URLs.
+(() => {
+  const canonical = new URL(location.href);
+  canonical.protocol = 'https:'; canonical.host = 'northlinehouse.shop'; canonical.hash = '';
+  canonical.searchParams.delete('a');
+  const link = document.createElement('link'); link.rel = 'canonical'; link.href = canonical.href;
+  document.head.append(link);
+  if (canonical.searchParams.get('q')) {
+    const robots = document.createElement('meta'); robots.name = 'robots'; robots.content = 'noindex,follow'; document.head.append(robots);
+  }
+  const graph = document.createElement('script'); graph.type = 'application/ld+json';
+  graph.textContent = JSON.stringify({'@context':'https://schema.org','@graph':[
+    {'@type':'Organization','@id':'https://northlinehouse.shop/#organization',name:'Northline House',url:'https://northlinehouse.shop/shop/',logo:'https://northlinehouse.shop/brand/northline-wordmark-ink.svg'},
+    {'@type':'WebSite','@id':'https://northlinehouse.shop/#website',name:'Northline House',url:'https://northlinehouse.shop/shop/',publisher:{'@id':'https://northlinehouse.shop/#organization'}}
+  ]}); document.head.append(graph);
+  const count = document.getElementById('count');
+  if(count){count.setAttribute('role','status');count.setAttribute('aria-live','polite');count.setAttribute('aria-atomic','true');}
+  const sort = document.getElementById('sort');
+  if(sort){sort.setAttribute('aria-label','Sort products');const featured=sort.querySelector('option[value="rec"]');if(featured)featured.textContent='Featured';}
 })();

@@ -133,8 +133,9 @@ export function rank(candidates, existing, params, model=null, limit=30, perBran
 }
 export function existingCatalogue(root) {
   const html=fs.readFileSync(path.join(root,'shop/index.html'),'utf8'),match=html.match(/let ALL = (\[.*?\]);\n/s);
-  if(!match)throw Error('Embedded catalogue could not be read; refusing to skip deduplication');
-  return [...JSON.parse(match[1]),...read(path.join(root,'products.json'))];
+  const base=match?JSON.parse(match[1]):read(path.join(root,'shop/catalogue.json'));
+  if(!Array.isArray(base))throw Error('Catalogue could not be read; refusing to skip deduplication');
+  return [...base,...read(path.join(root,'products.json'))];
 }
 export function snapshots(snapshotDir) {
   const all=[],sources=[];

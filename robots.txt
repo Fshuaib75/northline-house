@@ -1,2 +1,14 @@
 User-agent: *
 Disallow: /
+Allow: /shop/
+Allow: /brand/
+Allow: /og.jpg
+Allow: /products.json
+Allow: /prices.json
+Allow: /brands.json
+Allow: /capone.json
+Allow: /drop.json
+Allow: /hero.json
+Allow: /reviews.json
+Allow: /build.json
+Sitemap: https://northlinehouse.shop/sitemap.xml
