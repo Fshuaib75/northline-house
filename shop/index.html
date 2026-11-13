@@ -924,7 +924,7 @@ function sortCards(list){
 // ---------- browsing UI ----------
 function audTabs(){ const has=g=>ITEMS.some(i=>audOf(i)===g);
   document.querySelectorAll("#aud button").forEach(b=>{ b.hidden=!has(b.dataset.g); b.setAttribute("aria-pressed",b.dataset.g===S.g); });
-  if(!has(S.g)){ S.g=["M","W","K"].find(has)||"M"; S.type=""; S.f.clear(); audTabs(); } }
+  if(ITEMS.length&&!has(S.g)){ S.g=["M","W","K"].find(has)||"M"; S.type=""; S.f.clear(); audTabs(); } }
 function typeRail(){
   const aud=ITEMS.filter(i=>audOf(i)===S.g&&qOk(i)), opts=[];
   const nDrop=DROP?aud.filter(inDrop).length:0;
