@@ -1056,6 +1056,18 @@ async function removeProduct(ref){
 }
 
 // ---------- publish prices ----------
+function mergeSessionPrices(base,live,desired,refs,key){
+  if(!base||!live)throw new Error('reload');
+  const same=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
+  for(const field of ['params','switchAt'])if(!same(base[field],live[field]))throw new Error('reload');
+  const out={...(live[key]||{})};
+  for(const ref of refs){
+    if((base.hidden||[]).includes(ref)!==(live.hidden||[]).includes(ref))throw new Error('reload');
+    if(!same((base[key]||{})[ref],out[ref]))throw new Error('reload');
+    if(Object.prototype.hasOwnProperty.call(desired,ref))out[ref]=desired[ref];else delete out[ref];
+  }
+  return out;
+}
 function priceMap(rule){ const out={}, isNew=rule==="new", live=(published&&(isNew?published.next:published.prices))||{}, f=isNew?priceNew:priceOld;
   DATA.forEach(r=>{ if(hidden.has(r.ref)) return; const p=f(r); if(p && r.img) out[r.ref]=[p.sell,p.comm]; else if(r.added && live[r.ref]) out[r.ref]=live[r.ref]; });
   return out; }
@@ -1086,6 +1098,9 @@ async function publishPrices(reviewHides=[]){
   const publishingHides={...hidePending};
   const params={}; PARAMS.forEach(k=>params[k]=S[k]);
   try{
+    const latest=(await ghJson('prices.json',null)).data;
+    mergeSessionPrices(published,latest,priceMap('old'),DATA.map(r=>r.ref),'prices');
+    mergeSessionPrices(published,latest,NC?priceMap('new'):{},DATA.map(r=>r.ref),'next');
     const commitHistory=await prepareReviewHistory(Object.entries(publishingHides)
       .filter(([ref,hide])=>hide&&!supplyHidePending[ref]&&!reviewHides.includes(ref)&&!(published?.hidden||[]).includes(ref))
       .map(([ref])=>()=>decisionRow({ref},"reject",`book:hide:${ref}:${published?.updated||BUILD}`,"late_hide")));
@@ -1100,12 +1115,15 @@ async function publishPrices(reviewHides=[]){
       LS.rawSet("nl-pass",pass); privateCosts=costs; privOver={...over}; pending={}; save();
     }
     const body=await saveJson("prices.json", cur=>{ const h=new Set((cur&&cur.hidden)||[]); Object.entries(publishingHides).forEach(([k,v])=>{ v?h.add(k):h.delete(k); }); hidden=h;   // merge with what is live, so hides made elsewhere are kept
-      return {updated:new Date().toISOString(), params, menPrice:{}, locked:Object.keys(over), hidden:[...h], prices:priceMap("old"), ...(NC?{switchAt:NC.from, next:priceMap("new")}:{})}; }, null, "Update agent prices");
+      const refs=DATA.map(r=>r.ref);
+      const prices=mergeSessionPrices(published,cur,priceMap("old"),refs,'prices');
+      const next=mergeSessionPrices(published,cur,NC?priceMap("new"):Object.fromEntries(refs.filter(r=>cur.next?.[r]).map(r=>[r,cur.next[r]])),refs,'next');
+      return {...cur,updated:new Date().toISOString(), params, hidden:[...h], prices, ...(cur.next||NC?{next}:{}), ...(NC?{switchAt:NC.from}:{})}; }, null, "Update agent prices");
     Object.entries(publishingHides).forEach(([ref,hide])=>{ if(hidePending[ref]===hide){ delete hidePending[ref]; delete supplyHidePending[ref]; } }); save();
     await decisionFinish(commitHistory);
     published=body; mergeHidden(); render(); toast("Published. Agents see it within about a minute.");
     btn.disabled=false; btn.textContent="Publish these prices to agent site"; return true;
-  }catch(e){ if(e.message!=="history") toast(e.message==="needpass"?"Enter your book password to publish your own prices":errMsg(e)); }
+  }catch(e){ if(e.message!=="history") toast(e.message==='reload'?'Live prices changed. Reload the book before publishing.':e.message==="needpass"?"Enter your book password to publish your own prices":errMsg(e)); }
   btn.disabled=false; btn.textContent="Publish these prices to agent site"; return false;
 }
 document.getElementById("pubBtn").onclick=()=>publishPrices();
