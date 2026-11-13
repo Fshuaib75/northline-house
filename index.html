@@ -774,6 +774,30 @@ function copy(text, fallbackEl){
   const fb=()=>{ if(fallbackEl){fallbackEl.hidden=false;fallbackEl.value=text;fallbackEl.select();} toast("Select the text and copy"); };
   if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(ok,fb); else fb();
 }
+function reconcileCart(saved,items,available){
+ const rows=[],changes=[];
+ for(const row of saved){const i=items.find(i=>i.ref===row.ref);
+  if(!i||!available(i,row.size)){changes.push((row.model||row.ref)+' · '+row.size+' removed: unavailable');continue;}
+  if(row.price!==i.price)changes.push((i.model||i.ref)+': price changed from '+row.price+' to '+i.price);
+  rows.push({...row,model:i.model,colour:i.colour,price:i.price,comm:i.comm,g:i.g});
+ }return {rows,changes};
+}
+function validateCart(){
+ if(!PRICE_READY)return false;
+ const result=reconcileCart(cart,ITEMS,(i,size)=>sizesOf(i).includes(size)&&inStock(i,size));
+ cart=result.rows;store.set('nl-cart',cart);
+ if(result.changes.length){drawSheet();alert('Your bag changed:\n'+result.changes.join('\n')+'\nPlease review before sending.');render();return false;}return true;
+}
+async function currentCart(){
+ if(!PRICE_READY)return false;
+ const [p,b,c]=await Promise.all([fresh('prices.json'),fresh('brands.json'),fresh('capone.json')]);
+ if(!p?.prices||!b||!c){alert('Could not check current prices and stock. Please retry.');return false;}
+ Object.keys(STOCK).forEach(ref=>delete STOCK[ref]);
+ if(typeof STOCK_CHECKED!=='undefined')Object.keys(STOCK_CHECKED).forEach(ref=>delete STOCK_CHECKED[ref]);
+ brandStock(b);capPhotos(c);const prices=p.switchAt&&todayNG()>=p.switchAt?{...p.prices,...p.next}:p.prices;
+ ITEMS=ITEMS.filter(i=>prices[i.ref]&&!(p.hidden||[]).includes(i.ref)).map(i=>({...i,price:prices[i.ref][0],comm:prices[i.ref][1]}));
+ return validateCart();
+}
 function orderText(){
   const code=$("agentCode").value.trim();
   const lines=cart.map((c,n)=>`${n+1}. ${c.model} · ${c.colour||"—"}${c.size&&c.size!=="One size"?" · size "+c.size:""} · x${c.qty} · ${N(c.price*c.qty)} [${c.ref}${c.comm?" · earns "+N(c.comm)+(c.qty>1?" each":""):""}]`);
@@ -978,8 +1002,8 @@ function check(){
   const miss=[]; if(!$("agentCode").value.trim()) miss.push("your agent code (top of the page)"); if(!$("cName").value.trim()) miss.push("customer name"); if(!$("cPhone").value.trim()) miss.push("customer phone"); if(!$("cAddr").value.trim()) miss.push("delivery address");
   $("err").hidden=!miss.length; $("err").textContent=miss.length?"Add "+miss.join(", ")+".":""; return !miss.length;
 }
-$("send").addEventListener("click",e=>{ if(!PRICE_READY||!cart.length||!check()){ e.preventDefault(); return; } e.currentTarget.href="https://wa.me/"+WA+"?text="+encodeURIComponent(orderText()); track("order/sent", cart.reduce((s,c)=>s+c.qty,0)+" items"); });
-$("copyOrder").onclick=()=>{ if(!PRICE_READY||!cart.length) return; copy(orderText(), $("orderText")); };
+$("send").addEventListener("click",async e=>{ e.preventDefault(); if(!PRICE_READY||!await currentCart()||!cart.length||!check()){ e.preventDefault(); return; } location.href="https://wa.me/"+WA+"?text="+encodeURIComponent(orderText()); track("order/sent", cart.reduce((s,c)=>s+c.qty,0)+" items"); });
+$("copyOrder").onclick=async()=>{ if(!PRICE_READY||!await currentCart()||!cart.length) return; copy(orderText(), $("orderText")); };
 brandParam(); syncControls(); render();
 let LOAD_VIEW=view(); try{ history.replaceState({v:view()},"",here()); }catch(e){}
 const BUILD="20261003072126";
@@ -1021,7 +1045,7 @@ Promise.all([fresh("products.json"), fresh("prices.json"), fresh("drop.json"), f
   const P = (commText() && j.next) ? Object.assign({}, j.prices, j.next) : j.prices;
   ITEMS = ALL.filter(i=>P[i.ref]).map(i=>({...i, price:P[i.ref][0], comm:P[i.ref][1], band:band(P[i.ref][0])}));
   dropDead();
-  cart = store.get("nl-cart",[]).filter(c=>ITEMS.some(i=>i.ref===c.ref)).map(c=>{ const i=ITEMS.find(x=>x.ref===c.ref); return {...c, model:i.model, colour:i.colour, price:i.price, comm:i.comm, g:i.g}; }); store.set("nl-cart",cart);
+  cart=store.get('nl-cart',[]); validateCart();
   try{ $("upd").textContent=new Date(j.updated).toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"}); }catch(e){}
   S.f=new Set([...S.f].filter(x=>{ const n=x.indexOf(":"), k=x.slice(0,n), v=x.slice(n+1); return ITEMS.some(i=>String(i[k])===v); }));
   QUIET=true; tabs(); brandParam(); syncControls(); render(); QUIET=false; LOAD_VIEW=view(); setURL(false);

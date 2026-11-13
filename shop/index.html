@@ -1216,6 +1216,30 @@ function copy(text, fallbackEl){
   const fb=()=>{ if(fallbackEl){fallbackEl.hidden=false;fallbackEl.value=text;fallbackEl.select();} toast("Select the text and copy"); };
   if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(ok,fb); else fb();
 }
+function reconcileCart(saved,items,available){
+ const rows=[],changes=[];
+ for(const row of saved){const i=items.find(i=>i.ref===row.ref);
+  if(!i||!available(i,row.size)){changes.push((row.model||row.ref)+' · '+row.size+' removed: unavailable');continue;}
+  if(row.price!==i.price)changes.push((i.model||i.ref)+': price changed from '+row.price+' to '+i.price);
+  rows.push({...row,model:i.model,colour:i.colour,price:i.price,comm:i.comm,g:i.g});
+ }return {rows,changes};
+}
+function validateCart(){
+ if(!PRICE_READY)return false;
+ const result=reconcileCart(cart,ITEMS,(i,size)=>sizesOf(i).includes(size)&&inStock(i,size));
+ cart=result.rows;store.set('nl-shop-cart',cart);
+ if(result.changes.length){drawBag();alert('Your bag changed:\n'+result.changes.join('\n')+'\nPlease review before sending.');bagUI();return false;}return true;
+}
+async function currentCart(){
+ if(!PRICE_READY)return false;
+ const [p,b,c]=await Promise.all([fresh('prices.json'),fresh('brands.json'),fresh('capone.json')]);
+ if(!p?.prices||!b||!c){alert('Could not check current prices and stock. Please retry.');return false;}
+ Object.keys(STOCK).forEach(ref=>delete STOCK[ref]);
+ if(typeof STOCK_CHECKED!=='undefined')Object.keys(STOCK_CHECKED).forEach(ref=>delete STOCK_CHECKED[ref]);
+ brandStock(b);capPhotos(c);const prices=p.switchAt&&todayNG()>=p.switchAt?{...p.prices,...p.next}:p.prices;
+ ITEMS=ITEMS.filter(i=>prices[i.ref]&&!(p.hidden||[]).includes(i.ref)).map(i=>({...i,price:prices[i.ref][0],comm:prices[i.ref][1]}));
+ return validateCart();
+}
 function orderText(){
   const lines=cart.map((c,n)=>`${n+1}. ${c.model} · ${c.colour||"—"}${c.size&&c.size!=="One size"?" · size "+c.size:""} · x${c.qty} · ${N(c.price*c.qty)} [${c.ref}]`);
   return ["NORTHLINE ORDER (shop)", `Agent: ${REF.code||"DIRECT"}`, "", `Customer: ${$("cName").value.trim()}`, `Phone: ${$("cPhone").value.trim()}`, `Delivery: ${$("cAddr").value.trim()}`, $("cFoot").value.trim()?`Foot length: ${$("cFoot").value.trim()} cm`:"", $("cNote").value.trim()?`Note: ${$("cNote").value.trim()}`:"", "", ...lines, "", `Total: ${N(cart.reduce((s,c)=>s+c.price*c.qty,0))} (${((n)=>n+" item"+(n===1?"":"s"))(cart.reduce((s,c)=>s+c.qty,0))})`, "Delivery from Abuja: paid on delivery", "", "Seen: delivery up to 14 days · bank transfer · no size exchanges"].filter((x,i,a)=>!(x===""&&a[i-1]==="")).join("\n");
@@ -1224,8 +1248,8 @@ function check(){
   const miss=[]; if(!$("cName").value.trim()) miss.push("your name"); if(!$("cPhone").value.trim()) miss.push("your phone number"); if(!$("cAddr").value.trim()) miss.push("delivery address");
   $("err").hidden=!miss.length; $("err").textContent=miss.length?"Add "+miss.join(", ")+".":""; return !miss.length;
 }
-$("send").addEventListener("click",e=>{ if(!PRICE_READY||!cart.length||!check()){ e.preventDefault(); return; } e.currentTarget.href="https://wa.me/"+WA+"?text="+encodeURIComponent(orderText()); track("order/sent", cart.reduce((s,c)=>s+c.qty,0)+" items"); });
-$("copyOrder").onclick=()=>{ if(!PRICE_READY||!cart.length) return; copy(orderText(), $("orderText")); };
+$("send").addEventListener("click",async e=>{ e.preventDefault(); if(!PRICE_READY||!await currentCart()||!cart.length||!check()){ e.preventDefault(); return; } location.href="https://wa.me/"+WA+"?text="+encodeURIComponent(orderText()); track("order/sent", cart.reduce((s,c)=>s+c.qty,0)+" items"); });
+$("copyOrder").onclick=async()=>{ if(!PRICE_READY||!await currentCart()||!cart.length) return; copy(orderText(), $("orderText")); };
 
 // who referred this customer: ?a=CODE in the link, remembered for 60 days on this phone
 const REF = (()=>{ const q=new URLSearchParams(location.search), a=(q.get("a")||"").replace(/[^A-Za-z0-9_-]/g,"").slice(0,24);
@@ -1323,7 +1347,7 @@ Promise.all([catalogueReady,fresh("products.json"), fresh("prices.json"), fresh(
     dropDead();
   } else {priceFailure();return;}
   PRICE_READY=true;
-  cart = store.get("nl-shop-cart",[]).filter(c=>ITEMS.some(i=>i.ref===c.ref)).map(c=>{ const i=ITEMS.find(x=>x.ref===c.ref); return {...c, model:i.model, colour:i.colour, price:i.price, comm:i.comm, g:i.g}; }); store.set("nl-shop-cart",cart);
+  cart=store.get('nl-shop-cart',[]); validateCart();
   LOADED=true; buildGroups();
   // Only authoritative priced/live catalogue entries can enter the approved hero pool.
   if(j&&j.prices) heroPool.then(pool=>NLHero.start(pool,ITEMS,{
