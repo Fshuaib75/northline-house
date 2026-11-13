@@ -21,7 +21,7 @@
       else if(checks.soldOut(i)) reason='sold out';
       else if(!checks.calm(i)) reason='no calm approved colour';
       else if(loud(i)||checks.loud(i)) reason='loud details';
-      else if(!(i.price>=18000&&i.price<=60000)) reason='outside N18–60k';
+      else if(!(Number.isFinite(i.price)&&i.price>=18000)) reason='below N18k';
       const photo=!reason&&checks.photo(i);
       if(!reason&&!photo) reason='no full-product photo';
       if(!reason&&seen.has(style(i))) reason='duplicate style';
@@ -58,7 +58,7 @@
     const image=new Image();let done=false;const finish=value=>{if(done)return;done=true;clearTimeout(timer);resolve(value);};
     const timer=setTimeout(()=>finish(null),8000);image.crossOrigin='anonymous';
     image.onerror=()=>finish(null);image.onload=()=>{try{const canvas=document.createElement('canvas');canvas.width=96;canvas.height=96;const ctx=canvas.getContext('2d',{willReadFrequently:true});ctx.drawImage(image,0,0,96,96);finish(inspectPixels(ctx.getImageData(0,0,96,96).data,96,96));}catch{finish(null);}};
-    image.src='https://wsrv.nl/?url='+encodeURIComponent(url)+'&w=1400&output=jpg';
+    image.src='https://wsrv.nl/?url='+encodeURIComponent(url)+'&w=96&output=jpg';
   });}
   async function start(pool,items,checks){
     const hero=document.querySelector('.hero-carousel'); if(!hero) return;

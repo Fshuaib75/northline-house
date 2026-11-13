@@ -394,7 +394,24 @@ def graph_get(path, params):
     q = urllib.parse.urlencode({**params, "access_token": os.environ["IG_TOKEN"]})
     with urllib.request.urlopen(GRAPH + path + "?" + q, timeout=60) as r: return json.load(r)
 
-def publish(image_url, text, story_url=None, product_url=None):
+def checkpoint_call(state, platform, persist, path, params):
+    previous = state.get(platform, {})
+    if previous.get("id"): return previous["id"]
+    if previous.get("pending"): raise RuntimeError("Uncertain " + platform + " publication: reconcile before retrying")
+    state[platform] = {"pending": True}
+    persist()  # Must be durable before the external side effect.
+    result = graph(path, params).get("id")
+    if not result: raise RuntimeError("Publication returned no ID; reconcile before retrying")
+    state[platform] = {"id": result}
+    persist()
+    return result
+
+
+def publish(image_url, text, story_url=None, product_url=None, checkpoints=None, persist=None):
+    checkpoints = {} if checkpoints is None else checkpoints
+    persist = persist or (lambda: None)
+    def once(kind, path, params): return checkpoint_call(checkpoints, kind, persist, path, params)
+
     if os.environ.get("FB_PAGE_ID") and not product_url: raise ValueError("Facebook requires a product link")
     uid = os.environ["IG_USER_ID"]; out = {}
     urls = image_url if isinstance(image_url, list) else [image_url]
@@ -420,7 +437,7 @@ def publish(image_url, text, story_url=None, product_url=None):
             time.sleep(6)
         else:
             raise RuntimeError("Carousel processing timed out")
-        out["feed"] = graph(f"/{uid}/media_publish", {"creation_id": container}).get("id")
+        out["feed"] = once("feed", f"/{uid}/media_publish", {"creation_id": container})
 
     for kind, url in (("feed", image_url), ("story", story_url)):
         if not url or kind == "feed" and len(urls) > 1: continue
@@ -429,10 +446,10 @@ def publish(image_url, text, story_url=None, product_url=None):
         for _ in range(20):
             if graph_get(f"/{c}", {"fields": "status_code"}).get("status_code") in ("FINISHED", None): break
             time.sleep(6)
-        out[kind] = graph(f"/{uid}/media_publish", {"creation_id": c}).get("id")
+        out[kind] = once(kind, f"/{uid}/media_publish", {"creation_id": c})
     if os.environ.get("FB_PAGE_ID"):
-        try: out["facebook"] = graph(f"/{os.environ['FB_PAGE_ID']}/photos", {"url": image_url, "caption": text + f"\n\nShop: {product_url}"}).get("id")
-        except Exception: print("Facebook post failed; check the workflow credentials.")
+        try: out["facebook"] = once("facebook", f"/{os.environ['FB_PAGE_ID']}/photos", {"url": image_url, "caption": text + f"\n\nShop: {product_url}"})
+        except Exception: raise
     return out
 
 def main():
@@ -467,10 +484,19 @@ def publish_step():
     slides = load(os.path.join(OUT, base + "-slides.json"), [])
     if len(slides) != len(style_colours(i)):
         raise RuntimeError("Colour slides changed; regenerate before posting")
-    res = publish([raw + name for name in slides], text, story_url, product_link(ref, "FB"))
+    checkpoints = state.setdefault("checkpoints", {}).setdefault(ref, {})
+    def persist():
+        import subprocess
+        json.dump(state, open(STATE, "w"), indent=1)
+        relative = os.path.relpath(STATE, ROOT)
+        subprocess.run(["git", "add", relative], cwd=ROOT, check=True)
+        subprocess.run(["git", "commit", "-m", "Instagram: platform checkpoint"], cwd=ROOT, check=True)
+        subprocess.run(["git", "push", "origin", "HEAD:gh-pages"], cwd=ROOT, check=True)
+    res = publish([raw + name for name in slides], text, story_url, product_link(ref, "FB"), checkpoints, persist)
     print("published", res)
     day = lagos_today().isoformat()
     record_post(state, i, day)
+    state.get("checkpoints", {}).pop(ref, None)
     state.setdefault("log", []).append({"day": day, "ref": ref, **res}); state["log"] = state["log"][-200:]
     json.dump(state, open(STATE, "w"), indent=1)
 

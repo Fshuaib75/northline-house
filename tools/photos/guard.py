@@ -42,7 +42,8 @@ def load(path, default):
 def store(site):
     """Every style on sale with the photos the shop would show (before the photo rules are applied)."""
     html = open(os.path.join(site, "shop", "index.html")).read()
-    built = json.loads(re.search(r"let ALL = (\[.*?\]);\n", html, re.S).group(1))
+    embedded = re.search(r"let ALL = (\[.*?\]);\n", html, re.S)
+    built = json.loads(embedded.group(1)) if embedded else json.load(open(os.path.join(site, "shop", "catalogue.json"), encoding="utf-8"))
     items = {i["ref"]: dict(i) for i in built}
     for a in load(os.path.join(site, "products.json"), []):
         if a.get("ref") and a["ref"] not in items:

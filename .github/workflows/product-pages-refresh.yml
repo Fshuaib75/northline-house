@@ -1,0 +1,77 @@
+name: Refresh public product pages
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 * * * *'
+  push:
+    branches: [gh-pages]
+    paths:
+      - 'products.json'
+      - 'prices.json'
+      - 'brands.json'
+      - 'capone.json'
+      - 'photo-rules.json'
+      - 'shop/catalogue.json'
+      - 'shop/index.html'
+  workflow_run:
+    workflows: ['Capone weekly check', 'Other brands weekly check', 'Photo guard']
+    types: [completed]
+permissions:
+  contents: read
+concurrency:
+  group: product-pages-refresh
+  cancel-in-progress: false
+jobs:
+  refresh:
+    if: vars.PRODUCT_PAGES_ENABLED == 'true' && (github.event_name != 'workflow_dispatch' || github.ref == 'refs/heads/main') && (github.event_name != 'workflow_run' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      pages: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          path: code
+      - uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: site
+          fetch-depth: 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Rebuild from the latest public catalogue and publish one commit
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          source=$(gh api "repos/$GH_REPO/pages" --jq '.source.branch + ":" + .source.path')
+          if [ "$source" != 'gh-pages:/' ]; then echo 'Unexpected Pages publishing source'; exit 1; fi
+          git -C site config user.name 'Northline product pages'
+          git -C site config user.email 'actions@users.noreply.github.com'
+          for attempt in 1 2 3; do
+            # This is the disposable Actions checkout. Rebuild after every rejected push;
+            # never rebase stale generated prices onto a newer catalogue.
+            git -C site fetch origin gh-pages
+            git -C site reset --hard origin/gh-pages
+            output="$RUNNER_TEMP/product-pages-$attempt"
+            node code/tools/product-pages.mjs site "$output"
+            node code/tools/sync-product-pages.mjs site "$output"
+            git -C site add shop/product-pages-manifest.json sitemap.xml
+            if [ -d site/shop/products ]; then git -C site add -A -- shop/products; fi
+            if git -C site diff --cached --quiet; then
+              gh api --method POST "repos/$GH_REPO/pages/builds" > /dev/null
+              exit 0
+            fi
+            git -C site commit -m 'Refresh public product pages from current catalogue'
+            if git -C site push origin HEAD:gh-pages; then
+              gh api --method POST "repos/$GH_REPO/pages/builds" > /dev/null
+              exit 0
+            fi
+          done
+          echo 'Catalogue changed during all three attempts; refusing stale publication.' >&2
+          exit 1
