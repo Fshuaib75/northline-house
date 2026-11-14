@@ -32,6 +32,7 @@ jobs:
             products.json
             prices.json
             shop/index.html
+            shop/catalogue.json
           sparse-checkout-cone-mode: false
 
       - uses: actions/setup-python@v5
@@ -42,7 +43,10 @@ jobs:
           node-version: "20"
 
       - name: Use the live catalogue and prices
-        run: cp site/products.json site/prices.json code/ && cp site/shop/index.html code/shop/index.html
+        run: |
+          cp site/products.json site/prices.json code/
+          cp site/shop/index.html code/shop/index.html
+          cp site/shop/catalogue.json code/shop/catalogue.json
 
       - name: Read the brands' catalogues
         working-directory: code
