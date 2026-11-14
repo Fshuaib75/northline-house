@@ -14,8 +14,8 @@ function setup(reduce = false, random = 0, playOn = true, mobile = false) {
   const hero = new Element(), play = new Element(), slides = Array.from({length:3}, (_,i) => { const s = new Element(); s.attrs['aria-label'] = `Slide ${i+1}`; return s; });
   const dots = slides.map(() => new Element()), nav = new Element(), prev = new Element(), next = new Element(), announcement = new Element();
   const nodes = {'.hero-play':play,'.hero-navigation':nav,'[data-hero-prev]':prev,'[data-hero-next]':next,'.hero-announcement':announcement,'.hero-counter':new Element()};
-  hero.querySelector = s => nodes[s]; hero.querySelectorAll = s => s === '[data-hero-slide]' ? slides : dots;
-  const doc = new Element(); doc.querySelector = () => hero; doc.querySelectorAll = () => [];
+  hero.querySelector = s => nodes[s]; hero.querySelectorAll = s => s === '[data-hero-slide]' ? slides : s.includes('img[')?[]:dots;
+  const doc = new Element(); doc.readyState="complete"; doc.querySelector = () => hero; doc.querySelectorAll = () => [];
   const media = new Element(); media.matches = reduce;
   const compact = new Element(); compact.matches = mobile;
   const jobs = new Map(), delays = new Map(); let serial = 0, now = 1e6; const observers = [];
@@ -24,19 +24,13 @@ function setup(reduce = false, random = 0, playOn = true, mobile = false) {
     Math:Object.assign(Object.create(Math),{random:()=>random}), Date:{now:()=>now},
     setTimeout:(fn, ms) => { jobs.set(++serial, fn); delays.set(serial, ms); return serial; }, clearTimeout:id => { jobs.delete(id); delays.delete(id); }});
   vm.runInContext(code, ctx);
-  if(playOn)play.events.click();
+  if(reduce ? playOn : !playOn)play.events.click();
   const advance = () => { const [id, fn] = jobs.entries().next().value; jobs.delete(id); fn(); };
   const delay = () => [...delays.values()].at(-1);
   const tick = ms => { now += ms; };
   return {hero,play,slides,dots,prev,next,doc,media,compact,jobs,observers,advance,announcement,delay,tick};
 }
-test('mobile stays on one accessible slide and resizing resets a desktop carousel', () => {
-  const r=setup(false,0,true,true);assert.equal(r.jobs.size,0);
-  r.next.events.click();assert.equal(r.slides[0].inert,false);assert.equal(r.slides[1].inert,true);
-  r.compact.matches=false;r.compact.events.change();assert.equal(r.jobs.size,0);
-  r.next.events.click();assert.equal(r.slides[1].inert,false);
-  r.compact.matches=true;r.compact.events.change();assert.equal(r.slides[0].inert,false);assert.equal(r.jobs.size,0);
-});
+test('phones autoplay through all accessible slides; reduced motion starts still',()=>{const r=setup(false,0,true,true);assert.equal(r.play.textContent,'Pause');r.advance();assert.equal(r.slides[1].inert,false);r.advance();assert.equal(r.slides[2].inert,false);const q=setup(true,0,false,true);assert.equal(q.jobs.size,0);assert.equal(q.play.textContent,'Play');});
 test('autoplay advances one accessible slide and wraps', () => {
   const r = setup(); assert.equal(r.jobs.size,1);
   r.advance(); assert.equal(r.slides[1].inert,false); assert.equal(r.slides[0].inert,true);
@@ -62,7 +56,7 @@ test('reduced motion still rotates slower; mouse hover, offscreen and background
   s.doc.hidden=true; s.doc.events.visibilitychange(); assert.equal(s.jobs.size,0);
   s.doc.hidden=false; s.doc.events.visibilitychange(); s.observers[0]([{isIntersecting:false}]); assert.equal(s.jobs.size,0);
   s.observers[0]([{isIntersecting:true}]); assert.equal(s.jobs.size,1);
-  s.media.matches=true; s.media.events.change(); assert.equal(s.jobs.size,1); assert.equal(s.delay(),9000);
+  s.media.matches=true; s.media.events.change(); assert.equal(s.jobs.size,0); s.play.events.click(); assert.equal(s.delay(),9000);
 });
 test('keyboard focus holds, tap focus does not; horizontal touch changes slide without capturing vertical scroll', () => {
   const r=setup(); r.hero.events.focusin({target:{matches:()=>true}}); assert.equal(r.jobs.size,1); assert.ok(r.delay()>=12000);

@@ -64,6 +64,7 @@
     const hero=document.querySelector('.hero-carousel'); if(!hero) return;
     const slides=[...hero.querySelectorAll('[data-hero-slide]')],dots=[...hero.querySelectorAll('[data-hero-index]')];
     let previous=[];try{const p=JSON.parse(localStorage.getItem('nl-hero-previous')||'[]');if(Array.isArray(p))previous=p;}catch{}
+    if(root.matchMedia?.('(max-width:760px)').matches && document.readyState!=='complete')await new Promise(resolve=>root.addEventListener('load',resolve,{once:true}));
     const audit=eligible(pool,items,checks),used=new Set(); let candidates=audit.accepted,active=[],retired=false;
     hero.heroAudit=audit;
     const load=i=>new Promise(resolve=>{const img=new Image();let done=false;const finish=ok=>{if(done)return;done=true;clearTimeout(timer);resolve(ok);};const timer=setTimeout(()=>finish(false),18000);img.referrerPolicy='no-referrer';img.onload=async()=>{const sample=await samplePhoto(i.heroPhoto);if(sample&&!sample.full){audit.rejected.push({ref:i.ref,reason:'no full-product photo'});finish(false);return;}i.heroBackground=sample?.colour||'';finish(img.naturalWidth>0);};img.onerror=()=>finish(false);img.src=i.heroPhoto;});

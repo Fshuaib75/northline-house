@@ -18,21 +18,21 @@
   const play = hero.querySelector('.hero-play');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const compact = matchMedia('(max-width:760px)');
-  // Start still. Play opts into automatic rotation; navigation remains available immediately.
+  // Reduced-motion visitors start still; everyone else starts with automatic rotation.
   const EVERY = 6500, EVERY_REDUCED = 9000, HOLD = 12000;
-  let current = 0, timer, paused = true, holdUntil = 0, hovered = false, visible = true, pointer;
+  let current = 0, timer, paused = reduced.matches, holdUntil = 0, hovered = false, visible = true, pointer;
   function schedule() {
     clearTimeout(timer);
     play.textContent = paused ? 'Play' : 'Pause';
     play.setAttribute('aria-label', paused ? 'Start automatic slides' : 'Pause automatic slides');
     play.hidden = false;
-    if (compact.matches || paused || hovered || !visible || document.hidden) return;
+    if (paused || hovered || !visible || document.hidden) return;
     const wait = Math.max(reduced.matches ? EVERY_REDUCED : EVERY, holdUntil - Date.now());
     timer = setTimeout(() => show(current + 1), wait);
   }
   function hold() { holdUntil = Date.now() + HOLD; }
   function show(index, manual = false) {
-    current = compact.matches ? 0 : (index + slides.length) % slides.length;
+    current = (index + slides.length) % slides.length;
     slides.forEach((slide, i) => {
       const active = i === current;
       slide.classList.toggle('is-active', active);
@@ -47,6 +47,9 @@
     }
     schedule();
   }
+  function loadLaterImages(){hero.querySelectorAll('img[data-hero-src]').forEach(img=>{img.src=img.dataset.heroSrc;img.removeAttribute('data-hero-src');});}
+  if(!compact.matches || document.readyState==='complete')loadLaterImages();
+  else window.addEventListener('load',loadLaterImages,{once:true});
   slides.forEach(slide => { slide.hidden = false; });
   hero.classList.add('hero-ready');
   // Approved product edits always open on the men's slot; fixed fallback retains its priority image.
@@ -67,6 +70,7 @@
     event.preventDefault(); show(current + (event.key === 'ArrowRight' ? 1 : -1), true);
   });
   hero.addEventListener('pointerdown', event => {
+    if(event.pointerType==='touch'){hold();schedule();}
     pointer = event.pointerType === 'touch' && !event.target.closest('a,button')
       ? { x: event.clientX, y: event.clientY } : null;
   });
@@ -78,8 +82,8 @@
   });
   hero.addEventListener('pointercancel', () => { pointer = null; });
   document.addEventListener('visibilitychange', schedule);
-  reduced.addEventListener('change', schedule);
-  compact.addEventListener('change', () => { paused = true; show(0); });
+  reduced.addEventListener('change', () => { if(reduced.matches) paused=true; schedule(); });
+  
   if ('IntersectionObserver' in window) {
     new IntersectionObserver(entries => { visible = entries[0].isIntersecting; schedule(); }, { threshold: .15 }).observe(hero);
   }
