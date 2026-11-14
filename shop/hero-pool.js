@@ -46,8 +46,11 @@
     const rank=i=>categories.indexOf(i.heroCategory)<0?3:categories.indexOf(i.heroCategory);
     const picks=(best||[]).sort((a,b)=>rank(a)-rank(b));
     if(!picks.length||count<=3) return picks;
-    // Extra slots: cycle Men, Women, Bags; prefer styles not seen last visit and brands not yet shown.
-    const rest=shuffled.filter(i=>!picks.includes(i)),extra=[];
+    return extend(picks,shuffled,previous,count);
+  }
+  // Extra slots: cycle Men, Women, Bags; prefer styles not seen last visit and brands not yet shown.
+  function extend(picks,pool,previous,count){
+    const categories=['M','W','A'],rest=pool.filter(i=>!picks.includes(i)),extra=[];
     const styles=new Set(picks.map(style)),brands=new Set(picks.map(i=>i.brand));
     for(let slot=0;picks.length+extra.length<count;slot++){
       const want=categories[slot%3],open=rest.filter(i=>!styles.has(style(i)));
@@ -75,7 +78,7 @@
   });}
   async function start(pool,items,checks){
     const hero=document.querySelector('.hero-carousel'); if(!hero) return;
-    const SLIDES=6;
+    const SLIDES=6,KEEP_MS=3*864e5;
     let slides=[...hero.querySelectorAll('[data-hero-slide]')],dots=[...hero.querySelectorAll('[data-hero-index]')];
     const fixedCount=slides.length,changed=()=>hero.dispatchEvent(new Event('hero-slides-changed'));
     // Extra product slots copy the bag slide (same size, image already cached) so the hero never changes height.
@@ -88,12 +91,15 @@
       }
     }
     function shrink(){slides.filter(s=>'heroExtra' in s.dataset).forEach(s=>s.remove());dots.filter(d=>'heroExtra' in d.dataset).forEach(d=>d.remove());slides=slides.slice(0,fixedCount);dots=dots.slice(0,fixedCount);}
-    let previous=[];try{const p=JSON.parse(localStorage.getItem('nl-hero-previous')||'[]');if(Array.isArray(p))previous=p;}catch{}
+    let previous=[],keep=null;try{const p=JSON.parse(localStorage.getItem('nl-hero-previous')||'[]');if(Array.isArray(p))previous=p;}catch{}
+    // A returning visitor sees the same styles for 3 days, so a style they liked is still there when they come back.
+    try{const k=JSON.parse(localStorage.getItem('nl-hero-keep')||'null');if(k&&Array.isArray(k.refs)&&Number.isFinite(k.at)&&Date.now()-k.at>=0&&Date.now()-k.at<KEEP_MS)keep=k;}catch{}
     if(root.matchMedia?.('(max-width:760px)').matches && document.readyState!=='complete')await new Promise(resolve=>root.addEventListener('load',resolve,{once:true}));
     const audit=eligible(pool,items,checks),used=new Set(); let candidates=audit.accepted,active=[],retired=false;
     hero.heroAudit=audit;
     const load=i=>new Promise(resolve=>{const img=new Image();let done=false;const finish=ok=>{if(done)return;done=true;clearTimeout(timer);resolve(ok);};const timer=setTimeout(()=>finish(false),18000);img.referrerPolicy='no-referrer';img.onload=async()=>{const sample=await samplePhoto(i.heroPhoto);if(sample&&!sample.full){audit.rejected.push({ref:i.ref,reason:'no full-product photo'});finish(false);return;}i.heroBackground=sample?.colour||'';finish(img.naturalWidth>0);};img.onerror=()=>finish(false);img.src=i.heroPhoto;});
-    const remember=()=>{hero.dataset.poolRefs=active.map(i=>i.ref).join(',');try{localStorage.setItem('nl-hero-previous',JSON.stringify(active.map(i=>i.ref)));}catch{}};
+    let keptAt=Date.now();
+    const remember=()=>{const refs=active.map(i=>i.ref);hero.dataset.poolRefs=refs.join(',');try{localStorage.setItem('nl-hero-previous',JSON.stringify(refs));localStorage.setItem('nl-hero-keep',JSON.stringify({at:keptAt,refs}));}catch{}};
     function fallback(){retired=true;shrink();slides.forEach((s,n)=>{s.querySelector('.hero-pool-content')?.remove();s.classList.remove('hero-product');s.setAttribute('aria-label',s.dataset.fixedLabel);dots[n].setAttribute('aria-label',dots[n].dataset.fixedLabel);[...s.children].forEach(e=>e.removeAttribute('aria-hidden'));});active=[];delete hero.dataset.poolRefs;changed();}
     function paint(i,n){
       const slide=slides[n];slide.querySelector('.hero-pool-content')?.remove();
@@ -109,12 +115,17 @@
       const visual=document.createElement('div');visual.className='hero-visual';const label=document.createElement('span');label.className='visual-label';label.textContent=i.heroCategory==='M'?"MEN’S SHOES":i.heroCategory==='W'?"WOMEN’S SHOES":'BAGS & ACCESSORIES';if(i.heroBackground){visual.style.backgroundColor=i.heroBackground;img.style.mixBlendMode='normal';visual.dataset.backgroundMatched='true';}visual.append(img,label);box.append(copy,visual);slide.append(box);slide.setAttribute('aria-label',`${n+1} of ${slides.length}: ${heading.textContent}`);dots[n].setAttribute('aria-label',`Show ${heading.textContent}`);
     }
     while(candidates.length>=3){
-      const picks=select(candidates,previous,Math.random,SLIDES);if(picks.length<3)return;
+      // Kept styles that are still live, in stock and approved come first; any gaps are filled as usual.
+      const kept=keep?keep.refs.map(r=>candidates.find(c=>c.ref===r)).filter(Boolean):[];
+      let picks;
+      if(kept.length>=3){picks=kept.length<SLIDES?extend(kept,candidates,keep.refs,SLIDES):kept.slice(0,SLIDES);keptAt=keep.at;}
+      else picks=select(candidates,previous,Math.random,SLIDES);
+      if(picks.length<3)return;
       const ok=await Promise.all(picks.map(load));const failed=picks.filter((i,n)=>!ok[n]);
       if(failed.length){failed.forEach(i=>{if(!audit.rejected.some(r=>r.ref===i.ref))audit.rejected.push({ref:i.ref,reason:'photo failed to load'});});candidates=candidates.filter(i=>!failed.includes(i));continue;}
       active=picks;grow(picks.length);slides.forEach((s,n)=>{s.dataset.fixedLabel=s.getAttribute('aria-label');dots[n].dataset.fixedLabel=dots[n].getAttribute('aria-label');});changed();
       picks.forEach((i,n)=>{used.add(i.ref);paint(i,n);});remember();hero.dataset.poolRefs=picks.map(i=>i.ref).join(',');hero.dispatchEvent(new Event('hero-pool-ready'));return;
     }
   }
-  const api={eligible,select,start,loud,inspectPixels,cardLead};if(typeof module==='object')module.exports=api;else root.NLHero=api;
+  const api={eligible,select,extend,start,loud,inspectPixels,cardLead};if(typeof module==='object')module.exports=api;else root.NLHero=api;
 })(typeof window==='object'?window:globalThis);
