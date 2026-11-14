@@ -1,15 +1,11 @@
 {
  "note": "Styles whose photos don't load (blank) or couldn't be checked, since when, and which were sent to the review inbox (tools/photos/guard.py).",
- "blank": {
-  "SLZ-SA22SE020-230": "2026-11-12"
- },
+ "blank": {},
  "unchecked": {
   "DF-D8939AXWT34": "2026-10-25"
  },
  "reported": {
-  "blank": [
-   "SLZ-SA22SE020-230"
-  ],
+  "blank": [],
   "unchecked": [
    "DF-D8939AXWT34"
   ]
