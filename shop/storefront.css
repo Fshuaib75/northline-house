@@ -139,3 +139,39 @@ button:focus-visible,a:focus-visible,select:focus-visible{outline:2px solid #5e5
 /* Stable slide positioning also contains approved product-pool overlays. */
 .hero-slide{position:relative}
 .hero-navigation[hidden]{display:flex!important;visibility:hidden}
+
+/* Whole supplier photographs, with the original background left intact. */
+.hero-footwear .hero-visual>img{width:100%;height:100%;inset:0;object-fit:contain;padding:24px;box-sizing:border-box}
+.info .p{font-size:16px;color:var(--ink)}
+.card-sizes{font:400 11px/1.6 var(--ui);color:var(--muted)}
+.card-action{display:flex;align-items:center;justify-content:space-between;min-height:44px;border-bottom:1px solid var(--line);font:500 12px var(--ui);margin-top:4px}
+.card:hover .card-action,.card:focus-visible .card-action{border-color:var(--ink)}
+.tag{background:var(--paper);color:var(--ink);font-weight:400}
+@media(max-width:760px){
+  /* One still edit leads straight into the audience and category controls. */
+  .hero-carousel .hero-navigation,.hero-carousel .hero-navigation[hidden]{display:none!important}
+  .hero-slides .hero-slide:not(:first-child){display:none}
+  .hero-slide.editorial{grid-template-columns:56% 44%;min-height:270px}
+  .hero-slide .hero-copy{min-height:0;padding:24px 16px}
+  .hero-copy h1,.hero-copy h2{font-size:28px;line-height:1.06;margin-bottom:14px}
+  .hero-copy .kicker{font-size:8px;letter-spacing:.12em;margin-bottom:14px}
+  .hero-description{font-size:11px;line-height:1.5;margin-bottom:16px}
+  .hero-slide>.hero-copy .hero-description{display:none}
+  .hero-actions{gap:6px;width:100%}
+  .hero-cta{font-size:11px;padding:12px;min-height:44px;gap:8px;box-sizing:border-box}
+  .text-link{display:flex;align-items:center;min-height:44px;font-size:11px}
+  .hero-slide .hero-visual{min-height:0}
+  .hero-slide .hero-visual>img{width:100%;height:100%;inset:0;object-fit:contain;padding:8px;box-sizing:border-box}
+  .visual-label{font-size:7px;letter-spacing:.08em;top:20px;left:12px;right:8px}
+  .hero-slide .hero-pool-content{position:absolute;inset:0;grid-template-columns:56% 44%;grid-template-rows:auto}
+  .hero-slide .hero-pool-content .hero-copy{padding:16px}
+  .hero-pool-content .hero-copy h1,.hero-pool-content .hero-copy h2{font-size:22px;line-height:1.06;margin-bottom:10px;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden}
+  .hero-pool-content .hero-copy .kicker{font-size:8px;margin-bottom:10px}
+  .hero-pool-content .hero-copy .hero-description{font-size:16px;margin-bottom:10px}
+  .hero-slide .hero-pool-content .hero-visual>img{padding:24px 8px 12px}
+  .hero-pool-content .hero-actions{gap:6px}
+  .hero-pool-content .visual-label{left:12px;font-size:7px}
+  .service-strip,.collection-links{display:none}
+  .meta{margin-bottom:0}
+  .info .p{font-size:15px}
+}

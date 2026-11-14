@@ -17,7 +17,7 @@
   const dots = [...hero.querySelectorAll('[data-hero-index]')];
   const play = hero.querySelector('.hero-play');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-  // Keeps rotating on phones: a tap, swipe or dot only holds the slide for a while (HOLD), then rotation resumes.
+  const compact = matchMedia('(max-width:760px)');
   // Start still. Play opts into automatic rotation; navigation remains available immediately.
   const EVERY = 6500, EVERY_REDUCED = 9000, HOLD = 12000;
   let current = 0, timer, paused = true, holdUntil = 0, hovered = false, visible = true, pointer;
@@ -26,13 +26,13 @@
     play.textContent = paused ? 'Play' : 'Pause';
     play.setAttribute('aria-label', paused ? 'Start automatic slides' : 'Pause automatic slides');
     play.hidden = false;
-    if (paused || hovered || !visible || document.hidden) return;
+    if (compact.matches || paused || hovered || !visible || document.hidden) return;
     const wait = Math.max(reduced.matches ? EVERY_REDUCED : EVERY, holdUntil - Date.now());
     timer = setTimeout(() => show(current + 1), wait);
   }
   function hold() { holdUntil = Date.now() + HOLD; }
   function show(index, manual = false) {
-    current = (index + slides.length) % slides.length;
+    current = compact.matches ? 0 : (index + slides.length) % slides.length;
     slides.forEach((slide, i) => {
       const active = i === current;
       slide.classList.toggle('is-active', active);
@@ -79,6 +79,7 @@
   hero.addEventListener('pointercancel', () => { pointer = null; });
   document.addEventListener('visibilitychange', schedule);
   reduced.addEventListener('change', schedule);
+  compact.addEventListener('change', () => { paused = true; show(0); });
   if ('IntersectionObserver' in window) {
     new IntersectionObserver(entries => { visible = entries[0].isIntersecting; schedule(); }, { threshold: .15 }).observe(hero);
   }
