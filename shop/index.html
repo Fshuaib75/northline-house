@@ -468,7 +468,7 @@ details.more>summary em{color:var(--ink);font-weight:600}
   </div>
   <div class="hero-visual">
     <span class="visual-label">THE EVERYDAY EDIT / 02</span>
-    <img src="assets/hero-bag.jpg" width="800" height="1200" alt="Beige Beverly Hills Polo Club shoulder bag with a small gold-tone medallion" loading="lazy">
+    <img data-hero-src="assets/hero-bag.jpg" width="800" height="1200" alt="Beige Beverly Hills Polo Club shoulder bag with a small gold-tone medallion" loading="lazy">
   </div>
  </article>
  <article class="editorial hero-slide hero-footwear" data-hero-slide aria-label="3 of 3: Women's footwear" aria-roledescription="slide" hidden>
@@ -479,7 +479,7 @@ details.more>summary em{color:var(--ink);font-weight:600}
   </div>
   <div class="hero-visual">
     <span class="visual-label">THE EVERYDAY EDIT / 03</span>
-    <img src="assets/womens-slide-detail.jpg" width="1200" height="1800" alt="Close-up of the brown women's slide: square toe, suede-look strap and gold-tone detail" loading="lazy">
+    <img data-hero-src="assets/womens-full-slide.jpg" width="1200" height="1200" alt="Full side view of the brown Capone square-toe slide with a suede-look strap" loading="lazy">
   </div>
  </article>
  </div>
@@ -952,6 +952,9 @@ function dotsHtml(items, max){ const fams=[]; items.forEach(i=>{ const f=FAM_HEX
   return `<span class="dots">${fams.slice(0,max).map(f=>`<i class="dot" style="background:${FAM_HEX[f]}"></i>`).join("")}</span>`; }
 function cardHtml(c){
   const i=c.rep, n=c.g.items.length, alt=(i.imgs||[]).find(u=>u&&u!==i.img&&u!==i.full&&u!==(i.imgs||[])[0]) || ((i.imgs||[]).length>1?i.imgs[1]:"");
+  const available=sizesOf(i).filter(s=>inStock(i,s));
+  const sizeLabel=c.out?'Sold out':needsConfirmation(i)?'Confirm availability':oneSize(i)?'One size':`Sizes ${available.join(' · ')}`;
+  const action=c.out||oneSize(i)?'View details':'Choose size';
   const tag=needsConfirmation(i)?`<span class="tag">Confirm availability</span>`:c.out?`<span class="tag out">Sold out</span>`:inDrop(i)?`<span class="tag pick">This week</span>`:isBack(i)?`<span class="tag back">Back in stock</span>`:isFresh(i)?`<span class="tag">New</span>`:"";
   const main=imgTag(photoChain(i.img, i.imgs||[], i.full), `class="main" loading="lazy" alt="${esc(i.model+" "+(i.colour||""))}"`, "card");
   const ph=main?main+(alt?`<img class="alt" alt="" data-lazy="1" data-alts="${esc(JSON.stringify(photoChain(alt)))}" data-gone="alt" referrerpolicy="no-referrer" onload="imgOk(this)" onerror="imgNext(this)">`:""):"";
@@ -959,7 +962,7 @@ function cardHtml(c){
     <div class="ph${ph?"":" nophoto"}">${ph}${tag}</div>
     <div class="info"><span class="b">${esc(i.brand)}</span><span class="m">${esc(i.model)}</span>
       <span class="c">${n>1?`${dotsHtml(c.g.items,5)}${n} colours`:esc(i.colour||"")}</span>
-      <span class="p">${N(i.price)}</span>${revCard(c.g)}${fewSizes(i)?`<span class="few">Few sizes left</span>`:allSizes(i)?`<span class="allsz">All sizes in stock</span>`:""}</div>
+      <span class="p">${N(i.price)}</span><span class="card-sizes">${esc(sizeLabel)}</span>${revCard(c.g)}<span class="card-action">${action}<span aria-hidden="true">↗</span></span></div>
   </article>`;
 }
 // ---------- numbered pages, and the whole view in the link ----------
