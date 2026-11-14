@@ -2,6 +2,13 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-11-14: Claude, claude/hero-six-faster-main — 6-slide hero, 4s rotation (live)
+
+Did: owner asked for more than 3 hero slides and faster rotation, and told me to push live (shop/ is Codex's lane; owner's call). `shop/hero-pool.js`: `select(items,previous,random,count)` keeps the old M/W/A triple, then fills extra slots cycling Men→Women→Bags, avoiding last visit's refs, repeated styles and repeated brands; `start()` asks for 6 and clones the bag slide (same size, cached image) plus a dot for each extra slot, removing the clones on fallback. `shop/storefront.js`: EVERY 6500→4000 ms, HOLD 12000→8000 ms (reduced motion unchanged at 9000, still starts paused), counter padStart, re-reads slides/dots on `hero-slides-changed`. Fixed fallback is still 3 slides. Live as gh-pages 831ba43. Tests updated (motion timings; 6-slot select test).
+Validation: headless Chrome on a gh-pages copy (supplier images stubbed): 6 slides, 01/06…06/06 wraps every ~4.3s, dots/arrows correct, hero height constant (668px at 1366, 271px at 390), no errors.
+Also (same day, owner OK'd): returning visitors keep the same 6 styles for 3 days (`nl-hero-keep` {at, refs} in localStorage). Kept refs that are no longer eligible are dropped and the gaps filled with `extend()`; after 3 days a new set is picked that avoids the old one. Tested: same refs on reload, zero overlap after expiry, one gone ref replaced while the other 5 stay.
+Watch out: the live pool currently has no bag that qualifies, so the six are all shoes until a bag passes the hero checks.
+
 ## 2026-11-14: Claude, claude/hero-rotation — handoff restored, rotation tested
 
 Did: restored this file. My merge of main into codex/mobile-shopping-edit (84a4e6b) wrote an empty HANDOFF.md, which reached main in #67 (593d770); this PR brings back every entry, including the missing codex/live-catalogue-readers note. Tested the rotation commit 15207e0 on a gh-pages copy with #67's full shop/index.html change and the live NL-PHOTO-RULES: autoplay on at 390×844 and 1366×900, three slides cycle, product grid fixed at 551px / 1097px through every rotation, CLS 0.010 / 0.000, slides 2–3 images requested after the load event on phones, reduced-motion starts still, no errors. womens-full-slide.jpg is a product-only photo.
