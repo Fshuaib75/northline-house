@@ -13,13 +13,13 @@
 (() => {
   const hero = document.querySelector('.hero-carousel');
   if (!hero) return;
-  const slides = [...hero.querySelectorAll('[data-hero-slide]')];
-  const dots = [...hero.querySelectorAll('[data-hero-index]')];
+  let slides = [...hero.querySelectorAll('[data-hero-slide]')];
+  let dots = [...hero.querySelectorAll('[data-hero-index]')];
   const play = hero.querySelector('.hero-play');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const compact = matchMedia('(max-width:760px)');
   // Reduced-motion visitors start still; everyone else starts with automatic rotation.
-  const EVERY = 6500, EVERY_REDUCED = 9000, HOLD = 12000;
+  const EVERY = 4000, EVERY_REDUCED = 9000, HOLD = 8000;
   let current = 0, timer, paused = reduced.matches, holdUntil = 0, hovered = false, visible = true, pointer;
   function schedule() {
     clearTimeout(timer);
@@ -40,7 +40,7 @@
       slide.setAttribute('aria-hidden', String(!active));
       dots[i].setAttribute('aria-current', String(active));
     });
-    hero.querySelector('.hero-counter').textContent = `0${current + 1} / 0${slides.length}`;
+    hero.querySelector('.hero-counter').textContent = `${String(current + 1).padStart(2, '0')} / ${String(slides.length).padStart(2, '0')}`;
     if (manual) {
       hold();
       hero.querySelector('.hero-announcement').textContent = slides[current].getAttribute('aria-label');
@@ -54,8 +54,17 @@
   hero.classList.add('hero-ready');
   // Approved product edits always open on the men's slot; fixed fallback retains its priority image.
   hero.addEventListener('hero-pool-ready', () => show(0));
+  // The product pool can add or remove slides (up to six); re-read them and keep the current position valid.
+  hero.addEventListener('hero-slides-changed', () => {
+    slides = [...hero.querySelectorAll('[data-hero-slide]')];
+    dots = [...hero.querySelectorAll('[data-hero-index]')];
+    bindDots();
+    show(Math.min(current, slides.length - 1));
+  });
   hero.querySelector('.hero-navigation').hidden = false;
-  dots.forEach((dot, i) => dot.addEventListener('click', () => show(i, true)));
+  const bound = new WeakSet();
+  function bindDots() { dots.forEach(dot => { if (bound.has(dot)) return; bound.add(dot); dot.addEventListener('click', () => show(dots.indexOf(dot), true)); }); }
+  bindDots();
   hero.querySelector('[data-hero-prev]').addEventListener('click', () => show(current - 1, true));
   hero.querySelector('[data-hero-next]').addEventListener('click', () => show(current + 1, true));
   play.addEventListener('click', () => { paused = !paused; holdUntil = 0; schedule(); });
