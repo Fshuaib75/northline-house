@@ -1,0 +1,111 @@
+[
+  {
+    "width": 390,
+    "mode": "fixed",
+    "index": 1,
+    "top": 551.015625,
+    "height": 271,
+    "copyFits": true
+  },
+  {
+    "width": 390,
+    "mode": "fixed",
+    "index": 2,
+    "top": 551.015625,
+    "height": 271,
+    "copyFits": true
+  },
+  {
+    "width": 390,
+    "mode": "fixed",
+    "index": 0,
+    "top": 551.015625,
+    "height": 271,
+    "copyFits": true
+  },
+  {
+    "width": 390,
+    "requests": [
+      {
+        "name": "assets/hero-bag.jpg",
+        "afterLoad": true
+      },
+      {
+        "name": "assets/womens-full-slide.jpg",
+        "afterLoad": true
+      }
+    ]
+  },
+  {
+    "width": 390,
+    "mode": "pool",
+    "index": 1,
+    "top": 551.015625,
+    "height": 271,
+    "copyFits": true
+  },
+  {
+    "width": 390,
+    "mode": "pool",
+    "index": 2,
+    "top": 551.015625,
+    "height": 271,
+    "copyFits": true
+  },
+  {
+    "width": 390,
+    "mode": "pool",
+    "index": 0,
+    "top": 551.015625,
+    "height": 271,
+    "copyFits": true
+  },
+  {
+    "width": 1366,
+    "mode": "fixed",
+    "index": 1,
+    "top": 1060.5,
+    "height": 632,
+    "copyFits": true
+  },
+  {
+    "width": 1366,
+    "mode": "fixed",
+    "index": 2,
+    "top": 1060.5,
+    "height": 632,
+    "copyFits": true
+  },
+  {
+    "width": 1366,
+    "mode": "fixed",
+    "index": 0,
+    "top": 1060.5,
+    "height": 632,
+    "copyFits": true
+  },
+  {
+    "width": 1366,
+    "mode": "pool",
+    "index": 1,
+    "top": 1060.5,
+    "height": 632,
+    "copyFits": true
+  },
+  {
+    "width": 1366,
+    "mode": "pool",
+    "index": 2,
+    "top": 1060.5,
+    "height": 632,
+    "copyFits": true
+  },
+  {
+    "width": 1366,
+    "mode": "pool",
+    "index": 0,
+    "top": 1060.5,
+    "height": 632,
+    "copyFits": true
+  }
+]

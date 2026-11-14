@@ -148,9 +148,15 @@ button:focus-visible,a:focus-visible,select:focus-visible{outline:2px solid #5e5
 .card:hover .card-action,.card:focus-visible .card-action{border-color:var(--ink)}
 .tag{background:var(--paper);color:var(--ink);font-weight:400}
 @media(max-width:760px){
-  /* One still edit leads straight into the audience and category controls. */
-  .hero-carousel .hero-navigation,.hero-carousel .hero-navigation[hidden]{display:none!important}
-  .hero-slides .hero-slide:not(:first-child){display:none}
+  /* The original first edit reserves the box; later edits cannot resize it. */
+  .hero-slides{position:relative}
+  .hero-slides .hero-slide:not(:first-child){position:absolute;inset:0;height:100%}
+  .hero-carousel{position:relative}
+  .hero-carousel .hero-navigation{position:absolute;bottom:0;right:0;z-index:3;min-height:0;padding:0 6px;border:0;gap:0;background:#f4f0e8}
+  .hero-navigation .hero-dots,.hero-navigation .hero-counter,.hero-navigation .hero-arrows{display:none}
+  .hero-navigation .hero-play{font-size:10px;min-height:44px}
+  .hero-navigation[hidden]{visibility:hidden}
+  
   .hero-slide.editorial{grid-template-columns:56% 44%;min-height:270px}
   .hero-slide .hero-copy{min-height:0;padding:24px 16px}
   .hero-copy h1,.hero-copy h2{font-size:28px;line-height:1.06;margin-bottom:14px}
