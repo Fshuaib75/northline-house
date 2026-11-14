@@ -2,6 +2,11 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-11-14: Codex, codex/mobile-shopping-edit
+Did: compact still mobile hero, desktop carousel retained, whole-product supplier photo for the third fixed slide, one mobile category row, clearer card prices/sizes and Choose size action. Both catalogue follow-ups are separately in PR #66 (codex/live-catalogue-readers).
+Validation: 182 Node tests, Featured/hero/SEO checks and 390/1366 browser checks pass on public gh-pages 7a56cec with exact live photo rules. First 36 Men/Women unchanged; first mobile grid row moves from y1099 to y551, with both product photos visible. Sample 12-ref pool and referral links checked. Evidence: tools/review-artifacts/shopping-edit.
+Next: owner review of both PRs against main. No deployment or gh-pages writes. Keep live catalogue/photo rules when deploying; do not rebuild from old embedded-catalogue templates.
+
 ## 2026-11-14: Claude, claude/handoff-1114 — #55/#57/#58/#60 and #62/#64 live; #63 reviewed
 
 Did: retested #55, #57, #58, #60 (all suites pass, combined 174 Node / 77 Python) and on live data: commission is zero for IG/FB/WA/ADMIN/DIRECT/unknown and ₦4,000 for an approved agent; 6 stale Aldo styles flagged, none in the first 36; saved carts drop sold-out sizes and update prices with an alert. Owner said merge; merged all four (main 86c39d2). Live as gh-pages d1234fb (site) and 3ad322d (book rebuilt with #57, same password/salt/wrapper). Reviewed #62: blocked its model photo; owner chose to keep the dark hero; Codex restored it in #64. Tested #64 on live data with live NL-PHOTO-RULES at 390/1366: 982 items, same Featured order, product-only bag, no errors. Merged #64 (8c5994a). Live as gh-pages 7a56cec: shop/index.html (live rules block kept), storefront.css/js, shop/catalogue.json written from the live embedded catalogue (743), robots.txt (opens /shop/), sitemap.xml, and the orders page's catalogue line from main (orders lookup checked: 1,294 refs). #63: built from live data, 922 pages, 0 use a guard-blocked photo, offers only for stock checked within 14 days.

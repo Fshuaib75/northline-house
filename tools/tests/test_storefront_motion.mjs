@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
 const code = fs.readFileSync(new URL('../../shop/storefront.js', import.meta.url), 'utf8').split('// Public-shop discovery metadata.')[0];
-function setup(reduce = false, random = 0, playOn = true) {
+function setup(reduce = false, random = 0, playOn = true, mobile = false) {
   class Element {
     constructor() { this.attrs = {}; this.events = {}; this.classes = new Set(); this.classList = { add: (...c) => c.forEach(x => this.classes.add(x)), remove: (...c) => c.forEach(x => this.classes.delete(x)), toggle: (c, on) => on ? this.classes.add(c) : this.classes.delete(c) }; }
     setAttribute(k, v) { this.attrs[k] = v; }
@@ -17,9 +17,10 @@ function setup(reduce = false, random = 0, playOn = true) {
   hero.querySelector = s => nodes[s]; hero.querySelectorAll = s => s === '[data-hero-slide]' ? slides : dots;
   const doc = new Element(); doc.querySelector = () => hero; doc.querySelectorAll = () => [];
   const media = new Element(); media.matches = reduce;
+  const compact = new Element(); compact.matches = mobile;
   const jobs = new Map(), delays = new Map(); let serial = 0, now = 1e6; const observers = [];
   class Observer { constructor(fn) { observers.push(fn); } observe() {} }
-  const ctx = vm.createContext({document:doc, location:{search:''}, URLSearchParams, matchMedia:()=>media, window:{IntersectionObserver:Observer}, IntersectionObserver:Observer,
+  const ctx = vm.createContext({document:doc, location:{search:''}, URLSearchParams, matchMedia:q=>q.includes('max-width')?compact:media, window:{IntersectionObserver:Observer}, IntersectionObserver:Observer,
     Math:Object.assign(Object.create(Math),{random:()=>random}), Date:{now:()=>now},
     setTimeout:(fn, ms) => { jobs.set(++serial, fn); delays.set(serial, ms); return serial; }, clearTimeout:id => { jobs.delete(id); delays.delete(id); }});
   vm.runInContext(code, ctx);
@@ -27,8 +28,15 @@ function setup(reduce = false, random = 0, playOn = true) {
   const advance = () => { const [id, fn] = jobs.entries().next().value; jobs.delete(id); fn(); };
   const delay = () => [...delays.values()].at(-1);
   const tick = ms => { now += ms; };
-  return {hero,play,slides,dots,prev,next,doc,media,jobs,observers,advance,announcement,delay,tick};
+  return {hero,play,slides,dots,prev,next,doc,media,compact,jobs,observers,advance,announcement,delay,tick};
 }
+test('mobile stays on one accessible slide and resizing resets a desktop carousel', () => {
+  const r=setup(false,0,true,true);assert.equal(r.jobs.size,0);
+  r.next.events.click();assert.equal(r.slides[0].inert,false);assert.equal(r.slides[1].inert,true);
+  r.compact.matches=false;r.compact.events.change();assert.equal(r.jobs.size,0);
+  r.next.events.click();assert.equal(r.slides[1].inert,false);
+  r.compact.matches=true;r.compact.events.change();assert.equal(r.slides[0].inert,false);assert.equal(r.jobs.size,0);
+});
 test('autoplay advances one accessible slide and wraps', () => {
   const r = setup(); assert.equal(r.jobs.size,1);
   r.advance(); assert.equal(r.slides[1].inert,false); assert.equal(r.slides[0].inert,true);
