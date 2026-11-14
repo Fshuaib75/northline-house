@@ -2,6 +2,11 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-11-14: Claude, claude/hero-rotation — handoff restored, rotation tested
+
+Did: restored this file. My merge of main into codex/mobile-shopping-edit (84a4e6b) wrote an empty HANDOFF.md, which reached main in #67 (593d770); this PR brings back every entry, including the missing codex/live-catalogue-readers note. Tested the rotation commit 15207e0 on a gh-pages copy with #67's full shop/index.html change and the live NL-PHOTO-RULES: autoplay on at 390×844 and 1366×900, three slides cycle, product grid fixed at 551px / 1097px through every rotation, CLS 0.010 / 0.000, slides 2–3 images requested after the load event on phones, reduced-motion starts still, no errors. womens-full-slide.jpg is a product-only photo.
+Watch out: when #67 went live (gh-pages ecdd975) only storefront.css/js were pushed; its shop/index.html change (card sizes, Choose size, whole-product third slide) and womens-full-slide.jpg did not go live. They go live with this PR.
+
 ## 2026-11-14: Codex, PR #67 rotation
 Did: restored autoplay on phones and desktop; reduced motion starts still. All mobile slides occupy the original compact box. Later mobile hero image requests and pool preparation wait for page load. Mobile Pause overlays the photo panel.
 Validation: six motion regressions and hero/Featured suites pass. Clock-driven fixed and real pool rotations at 390x844 and 1366x900 on gh-pages 7a56cec: grid top stays y551.015625 and y1060.5 respectively through every rotation; copy fits, no errors, later image requests occur after load. Report: tools/review-artifacts/shopping-edit/hero-rotation-results.json.
@@ -11,6 +16,11 @@ Next: owner review #67; no deployment. Supersedes earlier still-mobile/opt-in-au
 Did: compact still mobile hero, desktop carousel retained, whole-product supplier photo for the third fixed slide, one mobile category row, clearer card prices/sizes and Choose size action. Both catalogue follow-ups are separately in PR #66 (codex/live-catalogue-readers).
 Validation: 182 Node tests, Featured/hero/SEO checks and 390/1366 browser checks pass on public gh-pages 7a56cec with exact live photo rules. First 36 Men/Women unchanged; first mobile grid row moves from y1099 to y551, with both product photos visible. Sample 12-ref pool and referral links checked. Evidence: tools/review-artifacts/shopping-edit.
 Next: owner review of both PRs against main. No deployment or gh-pages writes. Keep live catalogue/photo rules when deploying; do not rebuild from old embedded-catalogue templates.
+
+## 2026-11-14: Codex, codex/live-catalogue-readers
+Did: sourcing sparse checkout and copy now include the current gh-pages shop/catalogue.json. Photo-model checks read that split file, append new product refs, and fail on missing, empty or invalid catalogues before installing the model.
+Validation: regression reproduced before the fix; four catalogue tests pass. Reader tested against public gh-pages 7a56cec: 1,294 refs. No model run, sealed files, live data edits or deployment.
+Next: owner review against main. Mobile shopping improvements are a separate PR. Continue retaining live catalogue and NL-PHOTO-RULES during deployment.
 
 ## 2026-11-14: Claude, claude/handoff-1114 — #55/#57/#58/#60 and #62/#64 live; #63 reviewed
 
