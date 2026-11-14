@@ -6,7 +6,7 @@ name: Photo model test
 
 on:
   pull_request:
-    paths: [tools/sourcing/vision.py, tools/sourcing/keyword-check.mjs, .github/workflows/photo-model-test.yml]
+    paths: [tools/photos/catalogue.mjs, tools/sourcing/vision.py, tools/sourcing/keyword-check.mjs, .github/workflows/photo-model-test.yml]
   workflow_dispatch:
 
 permissions:
@@ -42,19 +42,13 @@ jobs:
             ~/.cache/huggingface
           key: photo-model-${{ runner.os }}-v1
 
+      - name: Read and validate the live split catalogue
+        run: node code/tools/photos/catalogue.mjs site "$RUNNER_TEMP/store.json"
+
       - name: Install the image model (CPU only)
         run: |
           pip install --quiet torch torchvision --index-url https://download.pytorch.org/whl/cpu
           pip install --quiet open_clip_torch pillow
-
-      - name: Whole store catalogue (products.json plus the list built into the shop page)
-        run: |
-          node -e '
-            const fs=require("fs"); const html=fs.readFileSync("site/shop/index.html","utf8");
-            const m=html.match(/let ALL = (\[.*?\]);\n/s); const built=m?JSON.parse(m[1]):[];
-            const all=new Map([...built,...JSON.parse(fs.readFileSync("site/products.json","utf8"))].map(i=>[i.ref,i]));
-            fs.writeFileSync(process.argv[1],JSON.stringify([...all.values()]));
-            console.log(`${all.size} styles in the store (${built.length} built into the page)`);' "$RUNNER_TEMP/store.json"
 
       - name: Keyword verdicts
         run: node code/tools/sourcing/keyword-check.mjs "$RUNNER_TEMP/store.json" "$RUNNER_TEMP/keywords.json"

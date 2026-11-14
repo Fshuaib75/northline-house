@@ -2,6 +2,11 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-11-14: Codex, codex/live-catalogue-readers
+Did: sourcing sparse checkout and copy now include the current gh-pages shop/catalogue.json. Photo-model checks read that split file, append new product refs, and fail on missing, empty or invalid catalogues before installing the model.
+Validation: regression reproduced before the fix; four catalogue tests pass. Reader tested against public gh-pages 7a56cec: 1,294 refs. No model run, sealed files, live data edits or deployment.
+Next: owner review against main. Mobile shopping improvements are a separate PR. Continue retaining live catalogue and NL-PHOTO-RULES during deployment.
+
 ## 2026-11-14: Claude, claude/handoff-1114 — #55/#57/#58/#60 and #62/#64 live; #63 reviewed
 
 Did: retested #55, #57, #58, #60 (all suites pass, combined 174 Node / 77 Python) and on live data: commission is zero for IG/FB/WA/ADMIN/DIRECT/unknown and ₦4,000 for an approved agent; 6 stale Aldo styles flagged, none in the first 36; saved carts drop sold-out sizes and update prices with an alert. Owner said merge; merged all four (main 86c39d2). Live as gh-pages d1234fb (site) and 3ad322d (book rebuilt with #57, same password/salt/wrapper). Reviewed #62: blocked its model photo; owner chose to keep the dark hero; Codex restored it in #64. Tested #64 on live data with live NL-PHOTO-RULES at 390/1366: 982 items, same Featured order, product-only bag, no errors. Merged #64 (8c5994a). Live as gh-pages 7a56cec: shop/index.html (live rules block kept), storefront.css/js, shop/catalogue.json written from the live embedded catalogue (743), robots.txt (opens /shop/), sitemap.xml, and the orders page's catalogue line from main (orders lookup checked: 1,294 refs). #63: built from live data, 922 pages, 0 use a guard-blocked photo, offers only for stock checked within 14 days.
