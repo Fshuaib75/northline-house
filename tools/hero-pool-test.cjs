@@ -40,3 +40,9 @@ for(let x=0;x<8;x++)pixels.set([30,30,30,255],(10*20+x)*4);assert.equal(inspect(
 
 assert.equal(eligible({refs:['premium']},[{...item('premium'),price:250000}],checks).accepted.length,1);
 assert.match(fs.readFileSync(require('node:path').join(__dirname,'../shop/hero-pool.js'),'utf8'),/&w=96&/);
+
+// Six-slot pool: Men, Women, Bags twice; unique styles; previous-visit styles avoided where possible.
+{const it=(r,c,b)=>({ref:r,brand:b||r,model:r,g:c,heroCategory:c,price:30000});
+ const many=['M','W','A'].flatMap(c=>[1,2,3].map(n=>it(c+n,c,c+'b'+(n%2))));
+ for(let k=0;k<30;k++){const p=select(many,['M1','W1'],Math.random,6);assert.equal(p.length,6);assert.equal(new Set(p.map(i=>i.ref)).size,6);assert.equal(p.map(i=>i.heroCategory).join(''),'MWAMWA');}
+ assert.equal(select(many).length,3);}

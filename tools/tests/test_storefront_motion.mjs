@@ -43,11 +43,11 @@ test('priority first slide is stable and starts paused', () => {
 });
 test('manual navigation holds the slide, then resumes; only Pause stops it', () => {
   const r = setup(); r.next.events.click();
-  assert.equal(r.jobs.size,1); assert.ok(r.delay() >= 12000); assert.equal(r.play.textContent,'Pause'); assert.equal(r.announcement.textContent,'Slide 2');
-  r.tick(12000); r.advance(); assert.equal(r.slides[2].inert,false); assert.equal(r.delay(),6500);
+  assert.equal(r.jobs.size,1); assert.ok(r.delay() >= 8000); assert.equal(r.play.textContent,'Pause'); assert.equal(r.announcement.textContent,'Slide 2');
+  r.tick(8000); r.advance(); assert.equal(r.slides[2].inert,false); assert.equal(r.delay(),4000);
   r.prev.events.click(); assert.equal(r.slides[1].inert,false);
   r.play.events.click(); assert.equal(r.jobs.size,0); assert.equal(r.play.textContent,'Play');
-  r.play.events.click(); assert.equal(r.jobs.size,1); assert.equal(r.delay(),6500);
+  r.play.events.click(); assert.equal(r.jobs.size,1); assert.equal(r.delay(),4000);
 });
 test('reduced motion still rotates slower; mouse hover, offscreen and background tabs stop timers; touch never counts as hover', () => {
   const r=setup(true); assert.equal(r.jobs.size,1); assert.equal(r.delay(),9000); assert.equal(r.play.hidden,false);
@@ -59,8 +59,8 @@ test('reduced motion still rotates slower; mouse hover, offscreen and background
   s.media.matches=true; s.media.events.change(); assert.equal(s.jobs.size,0); s.play.events.click(); assert.equal(s.delay(),9000);
 });
 test('keyboard focus holds, tap focus does not; horizontal touch changes slide without capturing vertical scroll', () => {
-  const r=setup(); r.hero.events.focusin({target:{matches:()=>true}}); assert.equal(r.jobs.size,1); assert.ok(r.delay()>=12000);
-  const q=setup(); q.hero.events.focusin({target:{matches:()=>false}}); assert.equal(q.delay(),6500);
+  const r=setup(); r.hero.events.focusin({target:{matches:()=>true}}); assert.equal(r.jobs.size,1); assert.ok(r.delay()>=8000);
+  const q=setup(); q.hero.events.focusin({target:{matches:()=>false}}); assert.equal(q.delay(),4000);
   const target={closest:()=>null};
   r.hero.events.pointerdown({pointerType:'touch',clientX:200,clientY:100,target}); r.hero.events.pointerup({clientX:80,clientY:105}); assert.equal(r.slides[1].inert,false);
   r.hero.events.pointerdown({pointerType:'touch',clientX:200,clientY:100,target}); r.hero.events.pointerup({clientX:80,clientY:200}); assert.equal(r.slides[1].inert,false);
