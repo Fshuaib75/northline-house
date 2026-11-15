@@ -277,7 +277,7 @@ body{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 <div class="wrap">
   <section class="intro">
     <span class="eyebrow">Agent catalogue · prices updated <span id="upd">3 Oct 2026</span></span>
-    <h1>Share the styles. <em>Earn on every sale.</em></h1>
+    <h1>Share styles. <em>Earn commission.</em></h1>
   </section>
 
   <section class="agent">
@@ -288,7 +288,7 @@ body{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
       </label>
       <div class="shoplink" id="shopBox" hidden>
         <h2 style="margin-top:14px">Your shop link<span id="shopFor" style="text-transform:none;letter-spacing:0"></span></h2>
-        <p>Share it on your status, Instagram or with customers. They browse and order themselves, and every order through it is credited to you.</p>
+        <p>Share your link. Customers browse and order; orders through it are credited to you.</p>
         <code id="shopUrl"></code>
         <div class="acts"><button class="mini" id="shopCopy">Copy link</button><a class="mini" id="shopWa" target="_blank" rel="noopener">Share on WhatsApp</a></div>
       </div>
@@ -662,7 +662,7 @@ function cardHtml(i){
   const gone=soldOut(i);
   return `<article class="card${gone?" out":""}" data-ref="${esc(i.ref)}">
     <div class="ph">${img}${needsConfirmation(i)?`<span class="tag">Confirm availability</span>`:gone?"":isBack(i)?`<span class="tag back">Back in stock</span>`:allSizes(i)?`<span class="tag all">All sizes</span>`:fewLeft(i)?`<span class="tag few">Few sizes left</span>`:""}${(i.imgs||[]).length>1?`<span class="pcount">More photos ›</span>`:""}</div>
-    <div><div class="mb">${esc(i.brand)}</div><div class="mname">${esc(i.model)}</div><div class="mcol">${esc([i.colour,i.desc].filter(Boolean).join(" · "))}</div></div>
+    <div><div class="mb">${esc(i.brand)}</div><div class="mname">${esc(i.model)}</div><div class="mcol">${esc([i.colour,productCopy(i)].filter(Boolean).join(" · "))}</div></div>
     <div class="price">${N(i.price)} <span class="earn">you earn ${N(i.comm)}</span></div><p class="hint">Prices include shipping from Türkiye to Nigeria. Delivery from our pickup point in Abuja to your address is paid by you on delivery.</p>
     ${gone?`<div class="soldout">Sold out for now</div><button class="ntf" title="Ask Northline to tell you when it’s back">Customer wants it: tell me when it’s back</button>`:`<div class="picker">
       <select aria-label="Size">${sizesOf(i).map(s=>inStock(i,s)?`<option${s===S.size?" selected":""}>${s}</option>`:`<option value="${s}" disabled>${s} · sold out</option>`).join("")}</select>
@@ -871,7 +871,7 @@ $("grid").addEventListener("click",e=>{
     copy(`${i.model}${i.colour?" · "+i.colour:""} · ${N(i.price)}\nOrder here: ${shopUrl(i.ref)}`); return;
   }
   if(e.target.closest(".cap")){
-    copy(`${i.model}${i.colour?" · "+i.colour:""}\n${i.desc?i.desc[0].toUpperCase()+i.desc.slice(1)+"\n":""}${N(i.price)}\n${[sizeLine(i),"DM to order"].filter(Boolean).join(" · ")}`);
+    copy(`${i.model}${i.colour?" · "+i.colour:""}\n${productCopy(i)?productCopy(i)+"\n":""}${N(i.price)}\n${[sizeLine(i),"DM to order"].filter(Boolean).join(" · ")}`);
   }
 });
 
@@ -973,6 +973,12 @@ async function stDraw(){ const i=ST.i, post=ST.fmt==="post", W=1080, H=post?1080
   }
   try{ const b=await new Promise(r=>cv.toBlob(r,"image/png")); if(ST.url) URL.revokeObjectURL(ST.url); ST.url=URL.createObjectURL(b); $("stSave").href=ST.url; $("stSave").download=`northline-${i.ref}-${ST.fmt}.png`; $("stSave").hidden=false; ST.blob=b; }
   catch(e){ ST.blob=null; $("stSave").hidden=true; $("stMsg").textContent="This photo can’t be turned into an image here. Take a screenshot of the preview instead."; }
+}
+// Presentation only: keep source descriptions intact for search, ranking and stock rules.
+function productCopy(item){
+  const parts=String(item.desc||"").replace(/[,;]?\s*confirm size before payment\.?/gi,"").replace(/\bpremium\s+/gi,"").split(/,\s+|;\s*/).map(s=>s.trim().replace(/[.!?]+$/,"")).filter(Boolean);
+  const seen=new Set(), hasSuede=parts.some(s=>s.toLowerCase()==="genuine suede");
+  return parts.filter(s=>{const key=s.toLowerCase();if((key==="suede"&&hasSuede)||seen.has(key))return false;seen.add(key);return true;}).map(s=>s[0].toUpperCase()+s.slice(1)).join(". ");
 }
 const stCaption=i=>`${i.model}${i.colour?" · "+i.colour:""}\n${N(i.price)}${sizeLine(i)?" · "+sizeLine(i):""}\n${code()?"Order here: "+shopUrl(i.ref):"Message me to order"}`;
 async function openStatus(i){ track("status/"+i.ref, i.model); ST.i=i; ST.img=null; ST.blob=null; $("stMsg").textContent="Loading photo…"; $("stSheet").hidden=false; await stDraw();

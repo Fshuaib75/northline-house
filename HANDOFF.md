@@ -2,6 +2,13 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-11-15: Codex, codex/minimal-brand-copy
+
+Did: owner's explicit cross-project copy request covers brand and social files as well as site copy. Shortened shop and agent headlines, metadata, introductions and actions; added display-only description cleanup in both pages and product-page generation; simplified social headline/tags, pinned order copy and brand voice guidance. Review: tools/review-artifacts/minimal-copy/README.md.
+Validation: 18 existing Node tests and 6 copy regression checks pass; inline scripts compile; both pages' CSS is byte-identical. Python tests blocked by inaccessible local Windows Python. No browser visual inspection.
+Next: owner review of draft PR before any merge or publication. No live writes or social posts.
+Watch out: preserve live catalogue and photo rules at deployment; PR #69's separate six-slide hero remains untouched. Descriptions in source data remain intact for search/ranking; ordering policy blocks are unchanged.
+
 ## 2026-11-14: Claude, claude/hero-rotation — handoff restored, rotation tested
 
 Did: restored this file. My merge of main into codex/mobile-shopping-edit (84a4e6b) wrote an empty HANDOFF.md, which reached main in #67 (593d770); this PR brings back every entry, including the missing codex/live-catalogue-readers note. Tested the rotation commit 15207e0 on a gh-pages copy with #67's full shop/index.html change and the live NL-PHOTO-RULES: autoplay on at 390×844 and 1366×900, three slides cycle, product grid fixed at 551px / 1097px through every rotation, CLS 0.010 / 0.000, slides 2–3 images requested after the load event on phones, reduced-motion starts still, no errors. womens-full-slide.jpg is a product-only photo.

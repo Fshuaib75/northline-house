@@ -164,14 +164,24 @@ def display_name(item):
     if name.casefold() not in {"", "shoe", "shoes", "slide", "slides", "sandal", "sandals", "bag", "accessory"}:
         return name
     kind = item.get("kind") or ({"slide": "slide", "slides": "slide", "sandal": "sandal", "sandals": "sandal"}.get(name.casefold())) or item.get("cat", "product")
-    desc = clean_description(item).split(",")[0].strip(" .")
+    desc = clean_description(item).split(". ")[0].strip(" .")
     if desc and not desc.casefold().startswith("confirm "):
         return desc[:1].upper() + desc[1:] + (" " + kind if kind not in desc.casefold() and kind not in {"shoes", "accessories"} else "")
     return {"shoes": "Everyday footwear", "bags": "Everyday bag", "accessories": "Everyday accessory"}.get(kind, "Everyday " + kind)
 
 def clean_description(item):
     desc = re.sub(r"[,;]?\s*confirm size before payment\.?", "", item.get("desc", ""), flags=re.I).strip(" ,.;")
-    return desc[:1].upper() + desc[1:]
+    desc = re.sub(r"\bpremium\s+", "", desc, flags=re.I)
+    parts = [p.strip(" .!?") for p in re.split(r",\s+|;\s*", desc) if p.strip(" .!?")]
+    has_suede = any(p.casefold() == "genuine suede" for p in parts)
+    seen, result = set(), []
+    for part in parts:
+        key = part.casefold()
+        if key in seen or (key == "suede" and has_suede):
+            continue
+        seen.add(key)
+        result.append(part[:1].upper() + part[1:])
+    return ". ".join(result)
 
 def grouped_items(items, drop):
     groups = {}
@@ -377,13 +387,13 @@ def hashtags(item):
 
 def caption(i):
     colours = style_colours(i)
-    lines = [display_name(i) + " · " + i.get("brand", ""), clean_description(i)]
+    lines = [display_name(i), clean_description(i)]
     for colour in colours:
         detail = " · ".join(filter(None, [colour.get("colour"), naira(colour["price"]), sizes_line(colour)]))
         lines.append(detail)
     lines.extend(["", "Shipping to Nigeria included · within 14 days of payment.",
                   "Abuja onward courier paid on delivery. Bank transfer after size confirmation. No size exchanges.",
-                  "Order via the link in bio or WhatsApp.", "", hashtags(i)])
+                  "Order: link in bio or WhatsApp.", "", "#northlinehouse"])
     return "\n".join(lines)
 
 def graph(path, params):
