@@ -10,7 +10,7 @@ import autopost as A
 
 PIN_COPY = [
     ("how-to-order", "How to order", ["Pick on northlinehouse.shop", "Send your order on WhatsApp", "We confirm your size", "Pay by bank transfer", "Delivered within 14 days of payment"],
-     "Pick your pieces on northlinehouse.shop → send your order on WhatsApp → we confirm your size → pay by bank transfer → delivered within 14 days of payment. We confirm availability before you pay. #northlinehouse"),
+     "Choose on northlinehouse.shop. Send your order on WhatsApp. We confirm availability and size; you pay by bank transfer. Delivery within 14 days of payment. #northlinehouse"),
     ("delivery-payment", "Delivery & payment", ["Prices include shipping to Nigeria", "Delivery from our Abuja pickup point is paid on delivery", "Bank transfer only after we confirm", "No size exchanges"],
      "Prices include shipping to Nigeria. Delivery from our Abuja pickup point to your address is paid to the courier on delivery. Bank transfer only after we confirm availability and your size. No size exchanges. Order on northlinehouse.shop. #northlinehouse"),
 ]

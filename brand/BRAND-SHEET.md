@@ -4,7 +4,9 @@ One page to keep open while shooting, posting or briefing anyone.
 
 ## Idea
 
-Northline is a considered edit of everyday essentials. The selection and the point of view are the product, not any one item. Every post carries the Northline name, never another brand's.
+Shoes, bags and clothing. Considered everyday essentials.
+
+Lead with Northline. Let the product photography carry the story.
 
 Don't lead with where products come from. "Curated in Istanbul" and "Curated from Turkey" are both ruled out as brand lines. Factual delivery and import terms on product pages are fine.
 
@@ -34,7 +36,15 @@ The logo on dark backgrounds is `#EFE8DC` (`brand/northline-wordmark-cream.svg`)
 
 ## Voice
 
-Short, calm, certain. "Two straps. Contoured footbed. Black or tan." / "Back in stock Friday." No hype words, no emoji clusters, no countdown stickers or discount banners.
+Short, calm, certain. One idea per line.
+
+- Brand bio: "Considered everyday essentials. Shop ↓"
+- Product copy: material, construction and fit. Keep verified details; remove repetition.
+- Social copy: product name, details, colour, price, sizes, ordering terms and one action. Use #northlinehouse.
+- Keep delivery, payment and exchange terms clear. Never shorten away a condition.
+- No hype, emoji clusters, countdowns or discount banners.
+
+Example: "Two straps. Contoured footbed. Black or tan."
 
 ## Product shoot
 
