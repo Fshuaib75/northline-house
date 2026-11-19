@@ -1,22 +1,7 @@
 {
  "note": "Styles whose photos don't load (blank) or couldn't be checked, since when, and which were sent to the review inbox (tools/photos/guard.py).",
  "blank": {
-  "SLZ-SA22SK010-230": "2026-11-15",
-  "USPA-BAG-VR046-HB": "2026-11-18",
-  "LJ-MOSSA-BRN": "2026-11-18",
-  "DF-B7005A5ER105": "2026-11-18",
-  "DF-C0701AXWT55": "2026-11-18",
-  "DF-C6208AXWT41": "2026-11-18",
-  "DF-D5686AXBN200": "2026-11-18",
-  "DF-D8085AXBK23": "2026-11-18",
-  "DF-B7005A5BK81": "2026-11-18",
-  "DF-B7004A5ER105": "2026-11-18",
-  "DF-D8070AXNV44": "2026-11-18",
-  "DF-E3128AXKH328": "2026-11-18",
-  "DF-B7004A5NV256": "2026-11-18",
-  "DF-D8070AXBG437": "2026-11-18",
-  "DF-E2501AXPR50": "2026-11-18",
-  "DF-C9589A5AR221": "2026-11-18"
+  "SLZ-SA22SK010-230": "2026-11-15"
  },
  "unchecked": {
   "DF-D8939AXWT34": "2026-10-25"
