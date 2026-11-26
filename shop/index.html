@@ -194,6 +194,9 @@ svg{display:block}
 @media (min-width:900px){.pdd{overflow:auto;padding:40px 36px 0}}
 .pdd h2{margin:2px 0 0;font:400 clamp(28px,4vw,36px)/1.1 var(--display);letter-spacing:-.01em}
 .pdd .pr{font:600 20px var(--ui);font-variant-numeric:tabular-nums}
+s.was{color:var(--muted);font-weight:400;text-decoration-thickness:1px;margin-right:2px}
+.sale-bar{background:#2E2C29;color:#F4F0E8;font:500 13px/1.4 var(--ui);text-align:center;padding:9px 16px}
+.sale-bar b{font-weight:600;letter-spacing:.04em}
 .pdd .desc{color:var(--ink-2);font-size:14.5px;margin:0}
 .sws{display:flex;gap:8px;flex-wrap:wrap}
 .sw{width:60px;aspect-ratio:4/5;border-radius:3px;background:var(--photo);position:relative;overflow:hidden;box-shadow:inset 0 0 0 1px var(--line)}
@@ -962,7 +965,7 @@ function cardHtml(c){
     <div class="ph${ph?"":" nophoto"}">${ph}${tag}</div>
     <div class="info"><span class="b">${esc(i.brand)}</span><span class="m">${esc(i.model)}</span>
       <span class="c">${n>1?`${dotsHtml(c.g.items,5)}${n} colours`:esc(i.colour||"")}</span>
-      <span class="p">${N(i.price)}</span><span class="card-sizes">${esc(sizeLabel)}</span>${revCard(c.g)}<span class="card-action">${action}<span aria-hidden="true">↗</span></span></div>
+      <span class="p">${priceHtml(i)}</span><span class="card-sizes">${esc(sizeLabel)}</span>${revCard(c.g)}<span class="card-action">${action}<span aria-hidden="true">↗</span></span></div>
   </article>`;
 }
 // ---------- numbered pages, and the whole view in the link ----------
@@ -1139,7 +1142,7 @@ function drawRec(g){ const i=g.items[0], sec=secOf(i);
   const top=GROUPS.map(h=>[sc(h),h]).filter(a=>a[0]>0).sort((a,b)=>b[0]-a[0]||(a[1].items[0].ref<b[1].items[0].ref?-1:1)).slice(0,4).map(a=>a[1]);
   $("pdRecS").hidden=!top.length;
   $("pdRec").innerHTML=top.map(h=>{ const x=h.items.find(y=>!soldOut(y))||h.items[0], im=imgTag(photoChain(x.img,x.imgs||[],x.full),`alt="${esc(x.model)}" loading="lazy"`,"card");
-    return `<button class="rec" type="button" data-ref="${esc(x.ref)}"><div class="ph">${im}</div><span class="b">${esc(x.brand)}</span><span class="m">${esc(x.model)}</span><span class="p">${N(x.price)}</span></button>`; }).join(""); }
+    return `<button class="rec" type="button" data-ref="${esc(x.ref)}"><div class="ph">${im}</div><span class="b">${esc(x.brand)}</span><span class="m">${esc(x.model)}</span><span class="p">${priceHtml(x)}</span></button>`; }).join(""); }
 $("pdRec").addEventListener("click",e=>{ const b=e.target.closest(".rec"); if(!b) return; const g=BYREF.get(b.dataset.ref); if(!g) return; const x=g.items.find(y=>y.ref===b.dataset.ref)||g.items[0];
   PD.items=g.items; PD.i=x; PD.size=null; PD.qty=1; drawPD(true); $("pd").querySelector(".pdin").scrollTop=0;
   try{ history.replaceState(history.state,"",urlFor({i:x.ref})); }catch(_){} track("rec/"+x.ref, x.brand+" "+x.model); });
@@ -1166,7 +1169,7 @@ function pdPhotos(i){ const l=(i.imgs&&i.imgs.length)?i.imgs:[i.full||i.img]; re
 function drawPD(newGallery){
   const i=PD.i, sz=sizesOf(i), one=oneSize(i);
   if(newGallery){ const ph=pdPhotos(i); $("pgt").innerHTML=ph.map((u,n)=>imgTag(photoChain(u, n?[]:[i.full,i.img]), `alt="${esc(i.model+" "+(i.colour||"")+" photo "+(n+1))}" ${n?'loading="lazy"':""}`, "pg")).join("")||PG_EMPTY; $("pgt").scrollLeft=0; pgUpd(); }
-  $("pdBrand").textContent=i.brand; $("pdName").textContent=i.model; $("pdPrice").textContent=N(i.price);
+  $("pdBrand").textContent=i.brand; $("pdName").textContent=i.model; $("pdPrice").innerHTML=priceHtml(i);
   const d=(i.desc||"").replace(/,?\s*confirm size before payment/i,"").trim().replace(/[.!?]+$/,""); $("pdDesc").textContent=d?d[0].toUpperCase()+d.slice(1)+".":""; $("pdDesc").hidden=!d;
   $("pdColour").textContent=i.colour||""; $("pdColours").hidden=PD.items.length<2&&!i.colour;
   $("pdSw").innerHTML=PD.items.length>1?PD.items.map(x=>`<button class="sw" data-ref="${esc(x.ref)}" aria-pressed="${x===i}" aria-label="${esc(x.colour||x.ref)}" title="${esc(x.colour||"")}">${x.img?imgTag(photoChain(x.img, x.imgs||[], x.full), 'alt="" loading="lazy"'):""}</button>`).join(""):"";
@@ -1197,7 +1200,7 @@ $("pdSG").onclick=()=>{ openSG(PD.i); track("sizeguide/"+PD.i.ref, PD.i.model); 
 $("pdNotify").addEventListener("click",()=>track("notify/"+PD.i.ref, PD.i.brand+" "+PD.i.model+" · "+(PD.i.colour||"")+(S.size?" · "+S.size:"")));
 $("pdAdd").onclick=()=>{ const i=PD.i; if(soldOut(i)) return;
   if(!PD.size){ $("pdErr").textContent="Choose your size first. Not sure? Open the size guide."; $("pdErr").hidden=false; $("pdSz").scrollIntoView({block:"center",behavior:"smooth"}); return; }
-  const ex=cart.find(c=>c.ref===i.ref&&c.size===PD.size); if(ex) ex.qty+=PD.qty; else cart.push({ref:i.ref,model:i.model,colour:i.colour,price:i.price,comm:i.comm,g:i.g,img:i.img,size:PD.size,qty:PD.qty});
+  const ex=cart.find(c=>c.ref===i.ref&&c.size===PD.size); if(ex) ex.qty+=PD.qty; else cart.push({ref:i.ref,model:i.model,colour:i.colour,price:i.price,was:i.was,comm:i.comm,g:i.g,img:i.img,size:PD.size,qty:PD.qty});
   store.set("nl-shop-cart",cart); bagUI(); track("add/"+i.ref, i.brand+" "+i.model+" · "+(i.colour||""));
   toast(`Added to bag: ${i.model}${PD.size!=="One size"?", size "+PD.size:""}`); closeOv(); };
 
@@ -1231,7 +1234,7 @@ function reconcileCart(saved,items,available){
  for(const row of saved){const i=items.find(i=>i.ref===row.ref);
   if(!i||!available(i,row.size)){changes.push((row.model||row.ref)+' · '+row.size+' removed: unavailable');continue;}
   if(row.price!==i.price)changes.push((i.model||i.ref)+': price changed from '+row.price+' to '+i.price);
-  rows.push({...row,model:i.model,colour:i.colour,price:i.price,comm:i.comm,g:i.g});
+  rows.push({...row,model:i.model,colour:i.colour,price:i.price,was:i.was,comm:i.comm,g:i.g});
  }return {rows,changes};
 }
 function validateCart(){
@@ -1247,12 +1250,12 @@ async function currentCart(){
  Object.keys(STOCK).forEach(ref=>delete STOCK[ref]);
  if(typeof STOCK_CHECKED!=='undefined')Object.keys(STOCK_CHECKED).forEach(ref=>delete STOCK_CHECKED[ref]);
  brandStock(b);capPhotos(c);const prices=p.switchAt&&todayNG()>=p.switchAt?{...p.prices,...p.next}:p.prices;
- ITEMS=ITEMS.filter(i=>prices[i.ref]&&!(p.hidden||[]).includes(i.ref)).map(i=>({...i,price:prices[i.ref][0],comm:prices[i.ref][1]}));
+ ITEMS=ITEMS.filter(i=>prices[i.ref]&&!(p.hidden||[]).includes(i.ref)).map(i=>onSale({...i,price:prices[i.ref][0],comm:prices[i.ref][1]}));
  return validateCart();
 }
 function orderText(){
   const lines=cart.map((c,n)=>`${n+1}. ${c.model} · ${c.colour||"—"}${c.size&&c.size!=="One size"?" · size "+c.size:""} · x${c.qty} · ${N(c.price*c.qty)} [${c.ref}]`);
-  return ["NORTHLINE ORDER (shop)", `Agent: ${REF.code||"DIRECT"}`, "", `Customer: ${$("cName").value.trim()}`, `Phone: ${$("cPhone").value.trim()}`, `Delivery: ${$("cAddr").value.trim()}`, $("cFoot").value.trim()?`Foot length: ${$("cFoot").value.trim()} cm`:"", $("cNote").value.trim()?`Note: ${$("cNote").value.trim()}`:"", "", ...lines, "", `Total: ${N(cart.reduce((s,c)=>s+c.price*c.qty,0))} (${((n)=>n+" item"+(n===1?"":"s"))(cart.reduce((s,c)=>s+c.qty,0))})`, "Delivery from Abuja: paid on delivery", "", "Seen: delivery up to 14 days · bank transfer · no size exchanges"].filter((x,i,a)=>!(x===""&&a[i-1]==="")).join("\n");
+  return ["NORTHLINE ORDER (shop)", `Agent: ${REF.code||"DIRECT"}`, "", `Customer: ${$("cName").value.trim()}`, `Phone: ${$("cPhone").value.trim()}`, `Delivery: ${$("cAddr").value.trim()}`, $("cFoot").value.trim()?`Foot length: ${$("cFoot").value.trim()} cm`:"", $("cNote").value.trim()?`Note: ${$("cNote").value.trim()}`:"", "", ...lines, "", `Total: ${N(cart.reduce((s,c)=>s+c.price*c.qty,0))} (${((n)=>n+" item"+(n===1?"":"s"))(cart.reduce((s,c)=>s+c.qty,0))})`, ...(()=>{ const sv=cart.reduce((s,c)=>s+(c.was?(c.was-c.price)*c.qty:0),0); return sv?[`${SALE.name} prices: you save ${N(sv)}`]:[]; })(), "Delivery from Abuja: paid on delivery", "", "Seen: delivery up to 14 days · bank transfer · no size exchanges"].filter((x,i,a)=>!(x===""&&a[i-1]==="")).join("\n");
 }
 function check(){
   const miss=[]; if(!$("cName").value.trim()) miss.push("your name"); if(!$("cPhone").value.trim()) miss.push("your phone number"); if(!$("cAddr").value.trim()) miss.push("delivery address");
@@ -1327,6 +1330,13 @@ const BUILD="20261003072126";
 // price list switch date (Nigeria time): only when prices.json names one
 let SWITCH="";
 const todayNG = () => new Date(Date.now()+3600e3).toISOString().slice(0,10);
+// ---------- Black Friday week (owner, 26 Nov 2026): each style drops by its agent commission; real price shown crossed out ----------
+const SALE = {name:"Black Friday", start:"2026-11-27", end:"2026-12-03", endLabel:"Thu 3 Dec"};
+const saleOn = () => { const d=todayNG(); return d>=SALE.start && d<=SALE.end; };
+const onSale = i => saleOn() && i.comm>0 && i.price>i.comm ? {...i, was:i.price, price:i.price-i.comm} : i;
+const priceHtml = i => i.was ? `<s class="was">${N(i.was)}</s> <span class="now">${N(i.price)}</span>` : N(i.price);
+function saleBar(){ if(!saleOn()||document.querySelector(".sale-bar")) return; const b=document.createElement("div"); b.className="sale-bar"; b.setAttribute("role","note");
+  b.innerHTML=`<b>${SALE.name} week</b> · Every style reduced until ${SALE.endLabel}`; document.body.prepend(b); }
 function commText(){ return !!SWITCH && todayNG()>=SWITCH; }
 const fresh = f => fetch("../"+f+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.ok?r.json():null).catch(()=>null);
 const heroPool=fresh("hero.json");
@@ -1353,7 +1363,8 @@ Promise.all([catalogueReady,fresh("products.json"), fresh("prices.json"), fresh(
   if(j&&j.prices){
     SWITCH=j.switchAt||"";
     const P = (commText() && j.next) ? Object.assign({}, j.prices, j.next) : j.prices;
-    ITEMS = ALL.filter(i=>P[i.ref]).map(i=>({...i, price:P[i.ref][0], comm:P[i.ref][1], band:band(P[i.ref][0])}));
+    ITEMS = ALL.filter(i=>P[i.ref]).map(i=>onSale({...i, price:P[i.ref][0], comm:P[i.ref][1], band:band(P[i.ref][0])}));
+    saleBar();
     dropDead();
   } else {priceFailure();return;}
   PRICE_READY=true;

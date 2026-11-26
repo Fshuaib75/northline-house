@@ -5,7 +5,7 @@ import vm from 'node:vm';
 const html=fs.readFileSync(new URL('../../shop/index.html',import.meta.url),'utf8');
 const source=html.slice(html.indexOf('function cardHtml(c){'),html.indexOf('// ---------- numbered pages'));
 const render=(item,out=false)=>{
-  const ctx=vm.createContext({sizesOf:i=>i.sizes,inStock:(i,s)=>i.stock.includes(s),needsConfirmation:i=>!!i.stale,oneSize:i=>i.sizes[0]==='One size',inDrop:()=>false,isBack:()=>false,isFresh:()=>false,imgTag:()=>'',photoChain:()=>[],esc:s=>String(s),N:p=>String(p),revCard:()=>'',dotsHtml:()=>''});
+  const ctx=vm.createContext({sizesOf:i=>i.sizes,inStock:(i,s)=>i.stock.includes(s),needsConfirmation:i=>!!i.stale,oneSize:i=>i.sizes[0]==='One size',inDrop:()=>false,isBack:()=>false,isFresh:()=>false,imgTag:()=>'',photoChain:()=>[],esc:s=>String(s),N:p=>String(p),revCard:()=>'',dotsHtml:()=>'',priceHtml:i=>String(i.price)});
   vm.runInContext(source,ctx);return ctx.cardHtml({rep:item,out,g:{items:[item,{sizes:['46'],stock:['46']}]}});
 };
 const shoe={ref:'TEST',brand:'Brand',model:'Palm',colour:'Black',price:25000,sizes:['40','41','42'],stock:['40','42']};
