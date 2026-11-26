@@ -1,12 +1,11 @@
 {
  "note": "Styles whose photos don't load (blank) or couldn't be checked, since when, and which were sent to the review inbox (tools/photos/guard.py).",
  "blank": {
-  "BMB-104808": "2026-11-24",
-  "MUYA-ONNO-BRN": "2026-11-25",
-  "BMB-102623": "2026-11-25"
+  "BMB-104808": "2026-11-24"
  },
  "unchecked": {
-  "DF-D8939AXWT34": "2026-10-25"
+  "DF-D8939AXWT34": "2026-10-25",
+  "BMB-102623": "2026-11-26"
  },
  "reported": {
   "blank": [
