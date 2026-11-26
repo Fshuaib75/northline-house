@@ -17,6 +17,6 @@ for(const path of ['index.html','shop/index.html'])test(path+' rechecks hidden r
  const stock={A:['42'],REMOVED:['40']};let checked;
  const c=vm.createContext({PRICE_READY:true,STOCK:stock,BACK:{},ITEMS:[{ref:'A',price:10},{ref:'HIDDEN',price:20}],alert:()=>{},
   fresh:async p=>p==='prices.json'?{prices:{A:[10,1],HIDDEN:[20,2]},next:{A:[30,3]},switchAt:'2026-11-14',hidden:['HIDDEN']}:{styles:{}},
-  todayNG:()=> '2026-11-14',onSale:i=>i,brandStock:()=>{stock.A=['41'];},capPhotos:()=>{},validateCart:()=>{checked=c.ITEMS;return true;}});
+  todayNG:()=> '2026-11-14',brandStock:()=>{stock.A=['41'];},capPhotos:()=>{},validateCart:()=>{checked=c.ITEMS;return true;}});
  vm.runInContext(h.slice(start,end),c);assert.equal(await c.currentCart(),true);assert.equal(checked.length,1);assert.equal(checked[0].price,30);assert.deepEqual(stock.A,['41']);assert.equal(stock.REMOVED,undefined);
 });

@@ -2,6 +2,12 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-11-26: Codex, codex/remove-black-friday-after-dec4 — prepared cleanup
+
+Did: prepared the post-sale removal of SALE, saleOn, onSale, priceHtml, saleBar, sale styles and test_black_friday.mjs. Card, detail and recommendation prices return to N(price); carts and order messages no longer carry sale metadata. Kept commText for the existing scheduled price switch. All Node tests pass.
+Next: owner reviews but merges and publishes only after 4 Dec Lagos time. If PR #73 lands first, rebase and remove its hero crossed-out price line/style as well.
+Watch out: no changes to live gh-pages or NL-PHOTO-RULES; this PR deliberately remains unmerged during the sale.
+
 ## 2026-11-26: Claude, claude/black-friday — Black Friday week in the shop
 
 Did: owner asked: Fri 27 Nov to Thu 3 Dec (Lagos date, `todayNG()`), every style's price drops by its agent commission from prices.json; the real price shows crossed out. `SALE`, `saleOn`, `onSale`, `priceHtml`, `saleBar` sit just after `todayNG` in `shop/index.html`. `onSale` runs in both price-loading paths, so cards, sorting, product panel, recommendations, bag, totals and the WhatsApp order all use the sale price; cart rows keep `was`; the order message adds "Black Friday prices: you save ₦X". A dark bar at the top names the sale while it runs. Starts and ends on its own; no data files changed. Tested in headless Chromium at 26 Nov, 27 Nov 00:30, 3 Dec 23:30 and 4 Dec 00:05 (Lagos): off/on/on/off, 810 of 810 priced styles reduced, no errors. New tools/tests/test_black_friday.mjs; test_card_details and test_cart_recheck got stand-ins for the new helpers; 144 Node tests pass.
