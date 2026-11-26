@@ -2,6 +2,12 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-11-26: Codex, codex/paused-agent-commission — pause commission for new orders
+
+Did: Orders and root agent earnings ignore commission on orders dated 27 Nov 2026 or later, including records containing old commission values. WhatsApp, past and manual entry saves zero commission on those dates. Older records and their payout grouping stay intact. Added tools/tests/test_paused_commission.mjs.
+Next: owner reviews this PR; publish after merge with the live NL-PHOTO-RULES block preserved. No orders.json or sealed files changed.
+Watch out: historic orders retain their stored commission. Agent earnings only count pre-cutoff orders toward payout groups.
+
 ## 2026-11-26: Claude, claude/bf-hero-price — hero slide shows the crossed-out price
 
 Did: during Black Friday the hero slides took the sale price but showed it alone. `shop/hero-pool.js` now puts the old price in `<s class="was">` before the sale price when `i.was` is set; `shop/index.html` adds a lighter colour for it on the dark hero. Inert outside the sale. 144 Node tests pass; previewed on the live shop at 375px.

@@ -26,7 +26,7 @@
           <td>${row.line}<br>${esc(row.inputDate)}${row.errors.length?`<ul class="entry-errors">${row.errors.map(e=>`<li>${esc(e)}</li>`).join('')}</ul>`:''}</td>
           <td>${rowMatch(row,i)}</td><td>${esc(row.size)}<br>× ${esc(row.qty)}</td><td>${Number.isFinite(row.price)?money(row.price):esc(row.price)}</td>
           <td>${esc(row.channel)}${row.channelType==='unknown'||s.rows[i].needsChannelChoice?`<select data-row="${i}" data-f="channelType" aria-label="Channel type for line ${row.line}"><option value="unknown">Choose channel type</option><option value="channel" ${row.channelType==='channel'?'selected':''}>Sales channel · no commission</option><option value="agent" ${row.channelType==='agent'?'selected':''}>Agent code</option></select>`:`<div class="hint">${row.channelType==='agent'?'Agent code':'Sales channel'}</div>`}</td>
-          <td>${row.channelType==='agent'?`<label class="f">₦ per item<input type="number" min="0" step="1" data-row="${i}" data-f="commission" value="${row.commission==null?'':esc(row.commission)}" aria-label="Commission per item for line ${row.line}"></label><span class="hint">Check the historical rate; today’s rate is a starting point.</span>`:money(0)}</td></tr>`).join('')}</tbody></table></div>
+          <td>${row.channelType==='agent'&&row.inputDate<'2026-11-27'?`<label class="f">₦ per item<input type="number" min="0" step="1" data-row="${i}" data-f="commission" value="${row.commission==null?'':esc(row.commission)}" aria-label="Commission per item for line ${row.line}"></label><span class="hint">Check the historical rate; today’s rate is a starting point.</span>`:money(0)}</td></tr>`).join('')}</tbody></table></div>
         <p class="entry-summary" role="status">${s.plan.errors.length?`Fix ${s.plan.errors.length} issue${s.plan.errors.length===1?'':'s'} before saving. No orders saved.`:`${s.plan.orders.length} paid order${s.plan.orders.length===1?'':'s'} · ${s.plan.units} item${s.plan.units===1?'':'s'} · ${money(s.plan.total)}. Paid dates match order dates.`}</p>`;
       $(kind+'Actions').hidden=!rows.length;
       const valid=rows.length>0&&!s.plan.errors.length;
@@ -73,7 +73,7 @@
         const ok=await save(d=>{
           // Stable preview IDs make retries safe even if a previous save response was lost.
           const known=new Set(d.orders.map(o=>o.id));
-          records.forEach(rec=>{if(!known.has(rec.id)){d.orders.push(JSON.parse(JSON.stringify(rec)));known.add(rec.id);}});
+          records.forEach(rec=>{if(!known.has(rec.id)){if(rec.at>='2026-11-27')rec.items.forEach(it=>it.comm=0);d.orders.push(JSON.parse(JSON.stringify(rec)));known.add(rec.id);}});
         },`${records.length} paid ${kind==='past'?'past':'hand-entered'} order${records.length===1?'':'s'}`);
         if(ok){
           clear(kind);
