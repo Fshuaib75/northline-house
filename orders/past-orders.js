@@ -91,7 +91,7 @@
       const [inputDate='',query='',size='',qty='',price='',channel='']=fields;
       const matched=matchStyle(query,options.catalogue||[]), classified=classifyChannel(channel,options.agents||[]);
       const row={line:index+1,inputDate,query,size,qty,price,...classified,...matched,freeText:false,
-        commission:classified.channelType==='agent'?commissionFor(matched.item,options.prices):0,parseErrors,errors:[]};
+        commission:classified.channelType==='agent'&&inputDate<'2026-11-27'?commissionFor(matched.item,options.prices):0,parseErrors,errors:[]};
       rows.push(validateRow(row,options));
     });
     return rows;
@@ -108,6 +108,7 @@
     if(price==null) fail('Price per item must be a whole naira amount from 0 to 1,000,000,000.');
     if(qty!=null&&price!=null&&!Number.isSafeInteger(qty*price)) fail('This line total is too large.');
     row.qty=qty==null?row.qty:qty;row.price=price==null?row.price:price;
+    if(row.inputDate>='2026-11-27') row.commission=0;
     if(row.freeText){row.item=null;row.match='unmatched';}
     else if(!row.item||!text(row.item.ref)) fail(row.match==='ambiguous'?'More than one catalogue style matches. Choose a style or confirm free text.':'No catalogue match. Choose a style or confirm free text.');
     else row.match='matched';

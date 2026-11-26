@@ -376,8 +376,10 @@ function parseOrders(text){
 let PARSED=[];
 $("parseBtn").onclick=()=>{ PARSED=parseOrders($("paste").value); $("parseMsg").textContent=PARSED.length?`${PARSED.length} order${PARSED.length===1?"":"s"} found`:"No “NORTHLINE ORDER” found in the text."; drawPreview(); };
 const total=o=>(o.items||[]).reduce((s,it)=>s+(it.price||0)*(it.qty||1),0);
+const COMMISSION_END="2026-11-27";
+const commissionEligible=o=>String(o.at||"")<COMMISSION_END;
 const isMarketing=code=>NLPastOrders.classifyChannel(code||"DIRECT",DATA.agents||[]).channelType!=="agent";
-const commOf=o=>isMarketing(o.agent)?0:(o.items||[]).reduce((s,it)=>s+(it.comm||0)*(it.qty||1),0);
+const commOf=o=>!commissionEligible(o)||isMarketing(o.agent)?0:(o.items||[]).reduce((s,it)=>s+(it.comm||0)*(it.qty||1),0);
 const units=o=>(o.items||[]).reduce((s,it)=>s+(it.qty||1),0);
 const itemLine=it=>`${esc(it.model)}${it.colour?" · "+esc(it.colour):""}${it.size&&it.size!=="One size"?" · size "+esc(it.size):""}${it.qty>1?" ×"+it.qty:""}`;
 function drawPreview(){
@@ -388,7 +390,7 @@ function drawPreview(){
       <label class="f">Agent code (empty = direct sale)<input data-f="agent" value="${esc(o.agent)}"></label>
       <label class="f">Order date<input type="date" data-f="at" value="${esc(o.at)}"></label>
     </div>
-    <ul style="margin:0;padding:0;list-style:none;display:grid;gap:4px;font-size:14px">${o.items.map(it=>`<li style="display:flex;justify-content:space-between;gap:10px"><span>${itemLine(it)} <span class="hint">${esc(it.ref)}</span></span><span style="white-space:nowrap">${N(it.price*it.qty)}${it.comm?` · agent ${N(it.comm*it.qty)}`:""}</span></li>`).join("")}</ul>
+    <ul style="margin:0;padding:0;list-style:none;display:grid;gap:4px;font-size:14px">${o.items.map(it=>`<li style="display:flex;justify-content:space-between;gap:10px"><span>${itemLine(it)} <span class="hint">${esc(it.ref)}</span></span><span style="white-space:nowrap">${N(it.price*it.qty)}${commissionEligible(o)&&it.comm?` · agent ${N(it.comm*it.qty)}`:""}</span></li>`).join("")}</ul>
     <div class="row" style="justify-content:space-between"><b>Total ${N(total(o))}</b><span class="hint">${units(o)} item${units(o)===1?"":"s"}${commOf(o)?" · agent earns "+N(commOf(o)):""}</span></div>
     <div class="row"><button class="btn primary" data-a="save" ${o.items.length?"":"disabled"}>Save: waiting for payment</button><button class="btn good" data-a="savepaid" ${o.items.length?"":"disabled"}>Save as paid</button><button class="lnk" data-a="drop">Discard</button></div>
   </div>`).join("");
@@ -397,7 +399,7 @@ $("preview").addEventListener("input",e=>{ const p=e.target.closest("[data-k]"),
 $("preview").addEventListener("click",async e=>{ const b=e.target.closest("[data-a]"); if(!b) return; const k=+b.closest("[data-k]").dataset.k, o=PARSED[k];
   if(b.dataset.a==="drop"){ PARSED.splice(k,1); drawPreview(); return; }
   if(isMarketing(o.agent)){o.channel=NLPastOrders.classifyChannel(o.agent||o.channel||'DIRECT').channel;o.agent='';o.items.forEach(it=>it.comm=0);}
-  const rec={id:o.id, at:o.at, agent:o.agent, channel:o.channel, src:o.src, status:b.dataset.a==="savepaid"?"paid":"waiting", items:o.items};
+  const rec={id:o.id, at:o.at, agent:o.agent, channel:o.channel, src:o.src, status:b.dataset.a==="savepaid"?"paid":"waiting", items:o.items.map(it=>({...it,comm:commissionEligible(o)?it.comm:0}))};
   if(rec.status==="paid") rec.paid=today();
   b.disabled=true;
   const dup=DATA.orders.find(x=>x.agent===rec.agent&&x.at===rec.at&&JSON.stringify(x.items.map(i=>[i.ref,i.size,i.qty]))===JSON.stringify(rec.items.map(i=>[i.ref,i.size,i.qty])));
@@ -427,7 +429,7 @@ $("orderList").addEventListener("click",async e=>{ const b=e.target.closest("[da
 // ---------- agents: earnings and payouts (same rule as the agent page) ----------
 function earnings(who){ const k=String(who).toUpperCase();
   if(isMarketing(k))return {items:0,earned:0,paidOut:0,owed:0,toNext:1};
-  const mine=DATA.orders.filter(o=>o.status==="paid"&&String(o.agent||"").toUpperCase()===k).sort((a,b)=>String(a.paid||a.at).localeCompare(String(b.paid||b.at))||String(a.id).localeCompare(String(b.id)));
+  const mine=DATA.orders.filter(o=>o.status==="paid"&&commissionEligible(o)&&String(o.agent||"").toUpperCase()===k).sort((a,b)=>String(a.paid||a.at).localeCompare(String(b.paid||b.at))||String(a.id).localeCompare(String(b.id)));
   const u=[]; mine.forEach(o=>(o.items||[]).forEach(it=>{ for(let n=0;n<(it.qty||1);n++) u.push(it.comm||0); }));
   const done=u.length<1?0:1+Math.floor((u.length-1)/5)*5, due=u.slice(0,done).reduce((s,x)=>s+x,0), waiting=u.slice(done).reduce((s,x)=>s+x,0);
   const paidOut=DATA.payouts.filter(p=>String(p.agent||"").toUpperCase()===k).reduce((s,p)=>s+(p.amount||0),0);
