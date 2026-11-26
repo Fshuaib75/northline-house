@@ -2,6 +2,14 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<script>
+/* Visitors to northlinehouse.shop go straight to the shop (agent program paused, Nov 2026).
+   Old agent links (?a=CODE, &i=REF) carry over to shop/. Owner can still open this page at /?agents.
+   This file stays: the Instagram autopost and photo guard read its catalogue. */
+(function(){var s=new URLSearchParams(location.search);if(s.has("agents"))return;
+location.replace(location.pathname.replace(/[^/]*$/,"")+"shop/"+location.search+location.hash);})();
+</script>
+<link rel="canonical" href="https://northlinehouse.shop/shop/">
 <meta name="theme-color" content="#F4F0E8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Northline House Agents</title>
