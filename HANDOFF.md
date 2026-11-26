@@ -2,6 +2,11 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-11-26: Claude, claude/sale-look — Black Friday look: countdown bar, save tags, hero labels
+
+Did: owner asked for more polish on the sale. `shop/index.html`: the sale bar is now a link to #browse with "BLACK FRIDAY WEEK · Every style reduced · Ends in 6d 21h" (live countdown to 3 Dec 23:59 Lagos via `saleLeft()`; the middle part hides under 420px). Cards on sale get a dark `tag save` "Save ₦X" (sold out and confirm-availability tags still win; it replaces New/This week/Back in stock during the sale). While the sale runs, the fixed first hero slide reads "Every style, reduced." with "Shop the sale". `shop/hero-pool.js`: product slides' kicker reads "BLACK FRIDAY · SAVE ₦X" when `i.was` is set. All inert outside the sale. 147 Node tests pass; previewed on the live shop at 375 and 1366 wide with real photos.
+Next: owner publishes `shop/index.html` and `shop/hero-pool.js`. Remove with the rest of the sale code in #76 after 4 Dec (rebase #76).
+
 ## 2026-11-26: Codex, codex/paused-agent-commission — pause commission for new orders
 
 Did: Orders and root agent earnings ignore commission on orders dated 27 Nov 2026 or later, including records containing old commission values. WhatsApp, past and manual entry saves zero commission on those dates. Older records and their payout grouping stay intact. Added tools/tests/test_paused_commission.mjs.
