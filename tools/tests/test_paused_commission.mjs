@@ -42,3 +42,13 @@ test('orders and agent earnings preserve older payouts but ignore later orders e
   assert.equal(ctx.earnings('AMINA').earned,0);
   assert.equal(ctx.earningsOf(data,'AMINA').earned,0);
 });
+
+test('WhatsApp imports on and after the cutoff never suggest a commission',()=>{
+  const ctx=vm.createContext({DATA:{agents:['AMINA']},NLPastOrders:Past,PRICES:{SHOE:[40000,4000]},CAT:new Map(),today:()=> '2026-11-27',N:String});
+  vm.runInContext(orders.slice(orders.indexOf('const money='),orders.indexOf('let PARSED=')),ctx);
+  for(const suffix of ['', ' · earns ₦4,000']){
+    const imported=ctx.parseOrders(`NORTHLINE ORDER\nAgent: AMINA\n1. Shoe · Black · size 42 · x1 · ₦40,000 [SHOE${suffix}]`)[0];
+    assert.equal(imported.items[0].comm,0);
+    assert.equal(imported.problems.length,0);
+  }
+});

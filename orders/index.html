@@ -364,6 +364,7 @@ function parseOrders(text){
       if(earns) comm=money(earns[1]); else if(hund) comm=parseInt(hund[1],10)*100;
       else if(agent&&src==="agent"&&PRICES[ref]) comm=PRICES[ref][1];
       else if(!agent) comm=0;
+      if(today()>="2026-11-27") comm=0;
       if(comm==null){ comm=PRICES[ref]?PRICES[ref][1]:0; if(agent) problems.push(`No commission in the text for ${ref}: used today’s ${N(comm)}.`); }
       if(!agent)comm=0;
       const c=CAT.get(ref);
