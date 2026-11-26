@@ -2,6 +2,12 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-11-26: Codex, codex/review-hero-pr73 — PR #73 review
+
+Did: reviewed PR #73 at 2379cab: dynamic hero price prepends the crossed-out old price only when was > price; scoped color styling. All 144 Node tests and git diff --check pass. Left a COMMENT review on #73; no merge or deployment.
+Next: owner or reviewer runs actual 390×844 and 1366×900 sale-window browser rotation/restoration checks before merge. Report slide copy fit, grid position and horizontal overflow; cleanup PR #76 must remove this dynamic hero price/style if #73 lands first.
+Watch out: viewport measurement was blocked locally: /usr/bin/chromium points at a missing /usr/lib/chromium/chromium; the cloud browser cannot reach the local preview server. No CLS or overflow result is claimed.
+
 ## 2026-11-26: Claude, claude/black-friday — Black Friday week in the shop
 
 Did: owner asked: Fri 27 Nov to Thu 3 Dec (Lagos date, `todayNG()`), every style's price drops by its agent commission from prices.json; the real price shows crossed out. `SALE`, `saleOn`, `onSale`, `priceHtml`, `saleBar` sit just after `todayNG` in `shop/index.html`. `onSale` runs in both price-loading paths, so cards, sorting, product panel, recommendations, bag, totals and the WhatsApp order all use the sale price; cart rows keep `was`; the order message adds "Black Friday prices: you save ₦X". A dark bar at the top names the sale while it runs. Starts and ends on its own; no data files changed. Tested in headless Chromium at 26 Nov, 27 Nov 00:30, 3 Dec 23:30 and 4 Dec 00:05 (Lagos): off/on/on/off, 810 of 810 priced styles reduced, no errors. New tools/tests/test_black_friday.mjs; test_card_details and test_cart_recheck got stand-ins for the new helpers; 144 Node tests pass.
