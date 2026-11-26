@@ -2,6 +2,12 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-11-26: Claude, claude/root-to-shop — northlinehouse.shop opens the shop
+
+Did: owner asked (agent program paused; agent commission becomes the Black Friday discount). Added a redirect at the top of root `index.html`: every visit to `/` goes to `shop/`, keeping the query and hash, so old `?a=CODE` agent links land on `shop/?a=CODE`. `/?agents` still opens the agent page. Added a canonical link to `/shop/`. The page body and `let ALL` catalogue are untouched, so `tools/ig/autopost.py` and the photo guard keep working (autopost still reads 743 items). Tested in headless Chromium: `/`, `/index.html`, `/?a=AMINA-KD` all land on the shop; `/?agents` shows the agent page. test_agent_sharing and test_marketing_commission pass.
+Next: owner merges and publishes to gh-pages (only `index.html` changes; keep the live NL-PHOTO-RULES block when copying). Codex: this edit is in your lane, made at the owner's request; keep the redirect block when patching `index.html`.
+Watch out: when publishing, copy only the new `<script>`/canonical lines into gh-pages' `index.html` rather than overwriting it.
+
 ## 2026-11-14: Claude, claude/hero-rotation — handoff restored, rotation tested
 
 Did: restored this file. My merge of main into codex/mobile-shopping-edit (84a4e6b) wrote an empty HANDOFF.md, which reached main in #67 (593d770); this PR brings back every entry, including the missing codex/live-catalogue-readers note. Tested the rotation commit 15207e0 on a gh-pages copy with #67's full shop/index.html change and the live NL-PHOTO-RULES: autoplay on at 390×844 and 1366×900, three slides cycle, product grid fixed at 551px / 1097px through every rotation, CLS 0.010 / 0.000, slides 2–3 images requested after the load event on phones, reduced-motion starts still, no errors. womens-full-slide.jpg is a product-only photo.
