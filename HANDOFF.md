@@ -2,6 +2,11 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-11-26: Claude, claude/bf-hero-price — hero slide shows the crossed-out price
+
+Did: during Black Friday the hero slides took the sale price but showed it alone. `shop/hero-pool.js` now puts the old price in `<s class="was">` before the sale price when `i.was` is set; `shop/index.html` adds a lighter colour for it on the dark hero. Inert outside the sale. 144 Node tests pass; previewed on the live shop at 375px.
+Next: owner publishes `shop/hero-pool.js` and `shop/index.html` (keep live NL-PHOTO-RULES).
+
 ## 2026-11-26: Claude, claude/black-friday — Black Friday week in the shop
 
 Did: owner asked: Fri 27 Nov to Thu 3 Dec (Lagos date, `todayNG()`), every style's price drops by its agent commission from prices.json; the real price shows crossed out. `SALE`, `saleOn`, `onSale`, `priceHtml`, `saleBar` sit just after `todayNG` in `shop/index.html`. `onSale` runs in both price-loading paths, so cards, sorting, product panel, recommendations, bag, totals and the WhatsApp order all use the sale price; cart rows keep `was`; the order message adds "Black Friday prices: you save ₦X". A dark bar at the top names the sale while it runs. Starts and ends on its own; no data files changed. Tested in headless Chromium at 26 Nov, 27 Nov 00:30, 3 Dec 23:30 and 4 Dec 00:05 (Lagos): off/on/on/off, 810 of 810 priced styles reduced, no errors. New tools/tests/test_black_friday.mjs; test_card_details and test_cart_recheck got stand-ins for the new helpers; 144 Node tests pass.
