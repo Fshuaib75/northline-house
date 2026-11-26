@@ -75,7 +75,7 @@
       [...slide.children].forEach(e=>e.setAttribute('aria-hidden','true'));slide.classList.add('hero-product');
       const box=document.createElement('div');box.className='hero-pool-content';
       const copy=document.createElement('div');copy.className='hero-copy';
-      const kicker=document.createElement('p');kicker.className='kicker';kicker.textContent='NORTHLINE HOUSE';
+      const kicker=document.createElement('p');kicker.className='kicker';kicker.textContent=i.was>i.price?'BLACK FRIDAY · SAVE ₦'+Number(i.was-i.price).toLocaleString('en-NG'):'NORTHLINE HOUSE';
       const heading=document.createElement(n?'h2':'h1');heading.textContent=i.brand+' '+i.model;
       const price=document.createElement('p');price.className='hero-description';const ng=v=>'₦'+Number(v).toLocaleString('en-NG');price.textContent=ng(i.price);if(i.was>i.price){const was=document.createElement('s');was.className='was';was.textContent=ng(i.was);price.prepend(was,' ');}
       const link=document.createElement('a');link.className='hero-cta';link.textContent='Shop this style';const url=new URL(location.href);url.search='';url.hash='browse';url.searchParams.set('i',i.ref);const agent=checks.agent();if(agent)url.searchParams.set('a',agent);link.href=url.pathname+url.search+url.hash;
