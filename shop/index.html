@@ -1338,7 +1338,7 @@ const BUILD="20261003072126";
 let SWITCH="";
 const todayNG = () => new Date(Date.now()+3600e3).toISOString().slice(0,10);
 // ---------- Black Friday week (owner, 26 Nov 2026): each style drops by its agent commission; real price shown crossed out ----------
-const SALE = {name:"Black Friday", start:"2026-11-27", end:"2026-12-03", endLabel:"Thu 3 Dec", endLong:"Thursday 3 December"};
+const SALE = {name:"Black Friday", start:"2026-11-27", end:"2026-11-27", endLabel:"Thu 3 Dec", endLong:"Thursday 3 December"};
 const saleOn = () => { const d=todayNG(); return d>=SALE.start && d<=SALE.end; };
 const onSale = i => saleOn() && i.comm>0 && i.price>i.comm ? {...i, was:i.price, price:i.price-i.comm} : i;
 const priceHtml = i => i.was ? `<s class="was">${N(i.was)}</s> <span class="now">${N(i.price)}</span>` : N(i.price);
