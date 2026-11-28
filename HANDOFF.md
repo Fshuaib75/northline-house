@@ -2,6 +2,11 @@
 
 Newest entry first. Rules and format are in `AGENTS.md`.
 
+## 2026-11-28: Claude, claude/end-black-friday — Black Friday switched off early
+
+Did: owner decided not to run Black Friday. `SALE.end` in `shop/index.html` is now "2026-11-27", so `saleOn()` is false from 28 Nov (Lagos): normal prices, no sale bar, no Save tags, no hero sale labels. test_black_friday.mjs updated to match. Orders placed on 27 Nov at the reduced price should still be honoured at that price.
+Next: the sale code is inert; Codex's draft #76 can remove it whenever (rebase it first; it should also drop the hero <s class="was"> and the #79 additions).
+
 ## 2026-11-26: Claude, claude/sale-look — Black Friday look: countdown bar, save tags, hero labels
 
 Did: owner asked for more polish on the sale. `shop/index.html`: the sale bar is now a link to #browse with "BLACK FRIDAY WEEK · Every style reduced · Ends in 6d 21h" (live countdown to 3 Dec 23:59 Lagos via `saleLeft()`; the middle part hides under 420px). Cards on sale get a dark `tag save` "Save ₦X" (sold out and confirm-availability tags still win; it replaces New/This week/Back in stock during the sale). While the sale runs, the fixed first hero slide reads "Every style, reduced." with "Shop the sale". `shop/hero-pool.js`: product slides' kicker reads "BLACK FRIDAY · SAVE ₦X" when `i.was` is set. All inert outside the sale. 147 Node tests pass; previewed on the live shop at 375 and 1366 wide with real photos.
